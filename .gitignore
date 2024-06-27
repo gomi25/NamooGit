@@ -1,6 +1,10 @@
 /build/
 .classpath
-.settings
+.settings/
 .project
 /bin/
+<<<<<<< HEAD
 *.jar
+=======
+*.jar
+>>>>>>> branch 'main' of https://github.com/gomi25/NamooGit.git
