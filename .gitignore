@@ -1,0 +1,5 @@
+/build/
+.classpath
+.settings
+.project
+java/org/apache/catalina/startup/catalina.properties
