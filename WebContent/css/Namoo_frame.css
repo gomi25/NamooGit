@@ -1,0 +1,1318 @@
+@charset "UTF-8";
+
+* { box-sizing: border-box; }
+.border { border: 1px solid red; }
+.fl { float: left; }
+.fr { float: right; }
+body { margin: 0; overflow-y: hidden; }
+
+/*============================ #div_header ============================*/
+#div_header { 
+	width: 100%;
+	height: 53px;
+	border-bottom: 1px solid #E5E5E5;
+}
+#div_header_left {
+	height: 100%;
+	width: auto;
+}
+#div_header_left > #div_logo {
+	width: 32px;
+	height: 32px;
+	background-color: #FFF !important;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, .12);
+    margin: 9px 0px 9px 15px
+}
+#div_header_left > #div_logo > img {
+	height: 30px;
+}
+#div_header_left > #div_select_team {
+	/* height: 32px;
+	margin-left: 10px;
+  	margin-top: 13px; */
+  	height: 40px;
+    margin: 6px 10px 6px 5px;
+    padding: 6px 5px;
+    cursor: pointer;
+}
+#div_header_left > #div_select_team:hover,
+#div_header_left > #div_select_team:focus {
+	border-radius: 6px;
+    background-color: #F2F4F8; 
+}
+#div_header_left > #div_select_team > span {
+	font-size: 18px;
+	font-weight: 700;
+	color: rgb(51,51,51);
+}
+#div_header_left > #div_select_team > .ic_arrow_bottom { 
+	margin: 8px 4px 8px 6px;
+}
+#div_header_right > div > div.on {
+	position: absolute;
+	top: 12px;
+    right: 222px;
+	background-color: rgb(255,92,72);
+	width: 6px;
+	height: 6px;
+	border-radius: 3px;
+}
+#div_header_right {
+	height: 100%;
+	width: auto;
+	position: relative;
+}
+#div_header_right > div {
+	height: 40px;
+    width: 40px;
+    padding: 8px;
+    margin: 6px;
+    cursor: pointer;
+}
+#div_header_right > div:hover { 
+	background: #F2F4F8;
+	border-radius: 6px;
+}
+#div_header_right > div:nth-child(6):hover,
+#div_header_right > div:nth-child(7):hover {
+	background: #fff;
+}
+#div_header_right > div:nth-child(2) {
+	padding: 8px 0px;
+}	
+#div_header_right > div > .ic_arrow_bottom {     
+	margin: 8px 2px; 
+	filter: invert(72%) sepia(0%) saturate(0%) hue-rotate(147deg) brightness(91%) contrast(90%);
+}
+.ic_header_alarm, .ic_header_org_chat, .ic_header_org_chat, 
+.ic_header_search, .ic_header_question, .ic_header_menu, .ic_header_setting { 
+	width: 23px;
+    height: 23px;
+    background-size: 100%;
+    filter: invert(72%) sepia(0%) saturate(0%) hue-rotate(147deg) brightness(91%) contrast(90%);
+}
+.ic_header_alarm {
+    background-image: url("https://cdn-icons-png.flaticon.com/512/11985/11985570.png");
+}
+.ic_header_org_chat {
+    background-image: url("https://cdn-icons-png.flaticon.com/512/2915/2915760.png");
+}
+.ic_header_search {
+    background-image: url("https://cdn-icons-png.flaticon.com/512/2089/2089805.png");
+}
+.ic_header_question {
+    background-image: url("https://cdn-icons-png.flaticon.com/512/18/18436.png");
+}
+.ic_header_menu {
+    background-image: url("https://cdn-icons-png.flaticon.com/512/4096/4096216.png");
+}
+.ic_header_setting {
+    background-image: url("https://cdn-icons-png.flaticon.com/512/2976/2976215.png");
+}
+
+.pop_up_box { 
+	position: absolute;
+	padding: 5px;
+	width: 200px;
+	height: 200px;
+	border: 1px solid #E5E5E5;
+    border-radius: 8px;
+	background-color: white;
+    color: #333;
+	box-shadow: 0 8px 16px rgba(0, 0, 0, .08);
+	/*display: none;*/
+	z-index: 12;
+}
+#div_header_right > #pop_up_header_menu {
+	display: none;
+    top: 35px;
+    right: 54px;
+    width: 84px;
+	height: 108px;
+}
+#div_header_right > #pop_up_header_setting {
+	display: none;
+	top: 35px;
+    right: 6px;
+    width: 160px;
+	height: 196px;
+}
+#pop_up_header_menu > div, 
+#pop_up_header_setting > div {
+	width: 100%;
+	height: 30px;
+	padding: 4px;
+	border-radius: 6px;
+	font-size: 14px;
+}
+#pop_up_header_menu > div:hover, 
+#pop_up_header_setting > div:hover {
+	background-color: #f5f5f5;
+}	
+
+
+#div_total_side {
+    display: flex; /* Flexbox 레이아웃을 사용 */
+}
+/*============================ #div_side1 ============================*/
+#div_side1 {
+	width: 260px;
+	min-height: 900px;
+	border-right: 1px solid #E5E5E5;
+	background-color: rgb(250, 251, 252);
+	position: relative;
+}
+#div_side2 {
+    flex-grow: 1 !important; /* 나머지 공간을 차지 */
+}
+/* .profile_img {
+	width: 30px;
+	height: 30px;
+	border-radius: 15px;
+	margin-right: 8px;
+	border: 1px solid rgb(221, 221, 221);
+} */
+/* .profile_name { 
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+	font-weight: 700;
+	color: rgb(51,51,51);
+} */
+#div_side1 > div:not(:first-child) { border-top: 1px solid #E5E5E5; }
+#div_side1 > div:nth-child(1) { 
+	height: 54px; 
+	padding: 6px; 
+	position: relative;
+	background-color: white;
+}
+#div_profile_box { 
+	width: 100%;
+	height: 100%;
+	padding: 2px; 
+    border-radius: 6px;
+    cursor: pointer;
+}
+#div_profile_box:hover { background: #F2F4F8; }
+#div_profile_box > img {
+	position: absolute;
+    top: 12px;
+    left: 13px;
+	width: 30px;
+	height: 30px;
+	border-radius: 15px;
+	margin-right: 8px;
+	border: 1px solid rgb(221, 221, 221);
+}
+#div_profile_box > div { 
+	height:100%; 
+	width:100%;
+	padding-left: 44px;
+    line-height: 40px;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+	font-weight: 700;
+	color: rgb(51,51,51);
+}
+#div_side1 > #div_room_search { height: 56px; padding: 12px 8px; }
+#div_side1 > #div_room_search > div { 
+	height:100%; 
+	width:100%; 
+
+    padding: 6px 16px 6px 13px;
+    font-weight: 400;
+    font-size: 12px;
+    border-radius: 6px;
+    background-color: #F2F4F8;
+    color: #333;
+    cursor: pointer;
+}
+#div_side1 > #div_room_search > div:hover { 
+	background-color: #E1E4E7;
+}	
+
+.ic_search {
+    width: 15px;
+    height: 15px;
+    background-image: url(https://cdn-icons-png.flaticon.com/512/2089/2089805.png);
+    background-size: 100%;
+    filter: invert(94%) sepia(0%) saturate(0%) hue-rotate(157deg) brightness(46%) contrast(83%);
+}
+#div_side1 > #div_room_search > div > .ic_search {
+    margin: 2px;
+}
+#div_side1 > #div_room_search > div > span:nth-child(2) {
+	margin-right: 90px;
+    margin-left: 4px;
+}
+#div_side1 > #div_room_search > div > span:nth-child(3) {
+	color: #a2a2a2;
+    line-height: 20px;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+/* 토픽목록 및 채팅 목록 블럭*/
+#div_side1 > #div_topicroom_list_header,
+#div_side1 > #div_chatroom_list_header { 
+	height: 40px; 
+	position: relative; 
+	cursor: pointer;
+}
+
+/* 토픽목록 및 채팅 목록 아래 화살표 ↓ */
+#div_side1 > #div_topicroom_list_header > div:nth-child(1),
+#div_side1 > #div_chatroom_list_header > div:nth-child(1) { 
+	position: absolute; 
+	top: 16px;
+    left: 13px;
+	
+	width: 8px;
+	height: 8px;
+	background-image: url("https://cdn-icons-png.flaticon.com/512/61/61041.png");
+	background-size: 100%;	
+}
+
+#div_side1 > #div_topicroom_list_header > div:nth-child(2),
+#div_side1 > #div_chatroom_list_header > div:nth-child(2) { 
+	position: absolute; 
+	top: 7px;
+	left: 28px;
+	font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    line-height: 25px;
+}
+#div_side1 > #div_topicroom_list_header > div:nth-child(3),
+#div_side1 > #div_chatroom_list_header > div:nth-child(3) { 
+	position: absolute; 
+	left: 66px;
+	top: 10px; 
+	background: rgba(255, 92, 72, .24);
+    color: #FF5C48;
+    height: 18px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 18px;
+    border-radius: 10px;
+    max-width: 41px;
+    min-width: 26px;
+    padding: 0 7px;
+    text-align: center;
+}
+/* 토픽목록 및 채팅목록 +버튼 */
+.ic_plus {
+	width: 16px;
+	height: 16px;
+	background-image: url("https://cdn-icons-png.flaticon.com/512/9728/9728172.png");
+	background-size: 100%;	
+	cursor: pointer;
+}
+#div_side1 > #div_topicroom_list_header > .ic_plus,
+#div_side1 > #div_chatroom_list_header > .ic_plus { 
+	position: absolute; 
+	top: 10px;
+    right: 15px;
+}
+/* 토픽목록 및 채팅목록 +버튼:hover */
+#div_side1 > #div_topicroom_list_header > div:nth-child(4):hover,
+#div_side1 > #div_chatroom_list_header > div:nth-child(4):hover {
+    background-color: #ECEFF1;
+	border-radius: 4px;
+}	
+
+/*토픽 필터부분*/
+#div_side1 > #div_topicroom_filter {
+	padding: 3px 9px;
+	font-weight: 600;
+	height: 35px;
+}
+#div_side1 > #div_topicroom_filter > div {
+    display: inline-block;
+    margin-left: 10px;
+	height: 30px;
+    padding: 2px;
+	cursor: pointer;
+}	
+#div_side1 > #div_topicroom_filter > div:hover {
+	color: #00C473;	
+	background-color: #F2F4F8; 
+	border-radius: 6px;
+}	
+#div_side1 > #div_topicroom_filter > div > div {
+    margin: 4px;
+    width: 16px;
+    height: 16px;
+	background-image: url("https://cdn-icons-png.flaticon.com/512/7794/7794632.png");
+	background-size: 100%;
+}	
+#div_side1 > #div_topicroom_filter > div > span {
+    color: #333;
+    font-size: 14px;
+    padding: 2px;
+}	
+#div_side1 > #div_topicroom_filter > img {
+    height: 12.5px;
+}
+#div_side1 > #div_topicroom_filter > span {
+	font-size: 12px;
+    color: #a2a2a2;
+    /* display: inline-block; */
+	float: right;
+	margin-right: 2px;
+    line-height: 26px;
+}    
+
+/* 토픽방 목록 */
+#div_side1 > #div_topicroom_list_body { 
+	margin-bottom: 2px;
+	/* height: 343px;  */
+    height: 210px;
+    /* max-height: 250px; */
+    /* min-height: 250px; */
+    overflow-y: scroll;
+    border-top: none;
+    padding-top: 2px;
+}
+#div_side1 > #div_topicroom_list_body::-webkit-scrollbar {
+    display: none;
+}
+
+.topic_folder > div:nth-child(1) {
+	cursor: pointer;
+}
+.topic_folder > div:nth-child(2) {
+	display: none;
+}
+/*토픽 폴더부분*/
+.topic_folder {   
+	width: 258px;
+	position: relative;
+	padding: 4px 10px 4px 4px;
+    margin-left: 3px;
+    margin-bottom: 3px;
+	border-bottom: 1px solid rgb(229, 229, 229);
+}
+.topic_folder > div:nth-child(1) {    
+	height: 35px;
+}
+.topic_folder > div:nth-child(1):hover {    
+	color: #00C473;	
+	background-color: #F2F4F8; 
+	border-radius: 6px;
+}
+.ic_topic_folder_open {
+	display: none;
+	margin: 7px;
+	width: 15px;
+	height: 15px;
+	background-image: url("https://cdn-icons-png.flaticon.com/512/5082/5082617.png");
+	background-size: 100%;
+	filter: invert(65%) sepia(6%) saturate(9%) hue-rotate(314deg) brightness(102%) contrast(82%);	
+}
+.ic_topic_folder_close {
+	margin: 7px;
+	width: 15px;
+	height: 15px;
+	background-image: url("https://cdn-icons-png.flaticon.com/512/3832/3832401.png");
+	background-size: 100%;
+	filter: invert(65%) sepia(6%) saturate(9%) hue-rotate(314deg) brightness(102%) contrast(82%);	
+}
+.ic_topic_folder_more_menu {
+	margin: 3px;
+	display: none;
+	border-radius: 15px;
+	width: 22px;
+	height: 22px;
+	background-image: url("https://cdn-icons-png.flaticon.com/128/8638/8638553.png");
+	background-size: 100%;
+/* 	filter: invert(100%) sepia(3%) saturate(286%) hue-rotate(219deg) brightness(116%) contrast(90%);	 */
+}
+.topic_folder:hover .ic_topic_folder_more_menu {
+	display: block;
+}	
+.topic_folder .ic_topic_folder_more_menu:hover {
+	background-color: #f2f2f2;
+}	
+.topic_folder > div > span:nth-child(3) {    
+    margin : 5px 0;
+    font-size: 14px;
+    line-height: 20px;
+    color: #333;
+    max-width: 133px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.topic_folder > div > span:nth-child(4) {    
+	margin: 5px;
+    font-size: 12px;
+    color: #A2A2A2;
+}
+/* 폴더안의 토픽*/
+#bookmark {
+	display: inline-block;
+	height: 35px;
+	width: 22px;
+}
+.ic_bookmark_on {
+	display: inline-block;
+	margin: 7px 3px 0 5px;
+	width: 14px;
+	height: 14px;
+	background-image: url("https://cdn-icons-png.flaticon.com/512/1828/1828884.png");
+	background-size: 100%;
+}
+.ic_bookmark_off {
+	display: inline-block;
+	margin: 7px 3px 0 5px;
+	width: 14px;
+	height: 14px;
+}
+.topic_item:hover .ic_bookmark_off {
+	background-image: url("https://cdn-icons-png.flaticon.com/512/1828/1828961.png");
+	background-size: 100%;
+	filter: invert(95%) sepia(0%) saturate(0%) hue-rotate(139deg) brightness(84%) contrast(87%);
+}
+.ic_alarm_off {
+	display: inline-block;
+	margin-left: 4px;
+	width: 16px;
+	height: 16px;
+	background-image: url("https://cdn-icons-png.flaticon.com/512/8515/8515405.png");
+	background-size: 100%;
+	filter: invert(94%) sepia(0%) saturate(0%) hue-rotate(157deg) brightness(87%) contrast(83%);
+}
+.topic_item {
+	position: relative;
+	width: 244px;
+	height: 35px;
+	padding: 0 40px 0 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 32px;
+    text-align: left;
+    cursor: pointer;
+}
+.topic_item:hover{
+	color: #00C473;	
+	background-color: #F2F4F8; 
+	border-radius: 6px;
+}
+/* 토픽폴더 안에 없는 일반 토픽방 */
+#div_side1 > div > .topic_item {
+	margin-left: 7px;
+	width: 244px;
+}
+
+
+
+/********************** 프로젝트 목록 - 나중에 합칠 부분 **********************/
+#div_side1 > #div_project_list_header { 
+	height: 40px; 
+    width: 262px;
+	position: relative; 
+	cursor: pointer;
+}	
+#div_side1 > #div_project_list_body { 
+    margin-bottom: 2px;
+    height: 190px;
+    width: 262px;
+    overflow-y: scroll;
+}
+#div_side1 > #div_project_list_body::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+/********************** 채팅방 목록  **********************/
+#div_side1 > #div_chatroom_list_body { 
+	padding-top: 5px;
+	/* height: 343px;  */
+     height: 190px;
+    /* max-height: 250px; */
+    /* min-height: 250px; */
+    overflow-y: scroll;
+}
+#div_side1 > #div_chatroom_list_body::-webkit-scrollbar {
+    display: none;
+}
+
+/* 채팅방이름 */
+#div_side1 > #div_chatroom_list_body > .topic_item > span {
+	position: absolute;
+	left: 55px;
+	width: 118px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+/*============ YG ==============*/
+.topic_item > div:nth-child(2) { 
+	margin-top: 4px;
+    margin-left: 4px; 
+    width:23px; 
+    height:23px; 
+}
+.topic_item > div:nth-child(2):has(img:nth-child(1)) > img { border-radius: 20px; width: 22px; }
+
+.topic_item > div:nth-child(2):has(img:nth-child(3)) > img:nth-child(1) { height: 11px; object-fit: cover; width: 22px; }
+.topic_item > div:nth-child(2):has(img:nth-child(3)) > img:not(:nth-child(1)) { width: 11px; }
+.topic_item > div:nth-child(2):has(img:nth-child(3)) > img:nth-child(1) { border-radius:0; border-top-left-radius: 20px; border-top-right-radius: 20px;}
+.topic_item > div:nth-child(2):has(img:nth-child(3)) > img:nth-child(2) { border-radius:0; border-bottom-left-radius: 20px; }
+.topic_item > div:nth-child(2):has(img:nth-child(3)) > img:nth-child(3) { border-radius:0; border-bottom-right-radius: 20px; }
+
+.topic_item > div:nth-child(2):nth-child(2):has(img:nth-child(4)) > img:not(:nth-child(11)) { width: 11px; }
+.topic_item > div:nth-child(2):has(img:nth-child(4)) > img:nth-child(1) { border-radius:0; border-top-left-radius: 20px;}
+.topic_item > div:nth-child(2):has(img:nth-child(4)) > img:nth-child(2) { border-radius:0; border-top-right-radius: 20px;}
+.topic_item > div:nth-child(2):has(img:nth-child(4)) > img:nth-child(3) { border-radius:0; border-bottom-left-radius: 20px;}
+.topic_item > div:nth-child(2):has(img:nth-child(4)) > img:nth-child(4) { border-radius:0; border-bottom-right-radius: 20px;}
+
+
+/* topic_item 안에 있는 .chat_profile */
+.topic_item > .chat_profile {
+	width: 23px;
+	border-radius: 15px;
+}
+.topic_item:hover > .exit {
+	position: absolute;
+	display: inline-block;
+    top: 10px;
+    right: 10px;
+	width: 11px;
+	height: 11px;
+	background-image: url("https://cdn-icons-png.flaticon.com/512/61/61155.png");
+	background-size: 100%;
+	filter: invert(94%) sepia(0%) saturate(0%) hue-rotate(157deg) brightness(87%) contrast(83%);
+    z-index: 4;
+}
+
+.div_unread {
+	position: absolute;
+    top: 6px;
+    right: 2px;
+    max-width: 41px;
+    min-width: 26px;
+    padding: 0 7px;
+    height: 18px;
+    background-color: #FF5B49;
+    color: white;
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 10px;
+    z-index: 5;
+}
+
+/* #div_side1 > div_chatroom_list_body { height: 265px; }
+#div_side1 > div:nth-child(7) { height: 46px; }
+#div_side1 > div:nth-child(8) { height: 100%; } */
+
+/*============================ div_side1 - 팝업창 ============================*/
+/********************** 대화방 검색 **********************/
+#search_all_room {
+	display: none;
+	position: absolute;
+    top: 15%;
+    left: 250%;
+    width: 500px;
+    height: 470px;
+    padding: 4px;
+    border: 1px solid #DDD;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, .08);
+    z-index: 12;
+}
+#search_all_room > div:nth-child(1) {
+    height: 70px;
+    width: 490px;
+	padding: 20px;
+	font-size: 18px;
+    font-weight: 800;
+}
+#search_all_room > div:nth-child(1) > .exit {
+	position: absolute;
+    right: 25px;
+    top: 25px;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url(https://cdn-icons-png.flaticon.com/512/61/61155.png);
+    background-size: 100%;
+    filter: invert(94%) sepia(0%) saturate(0%) hue-rotate(157deg) brightness(87%) contrast(83%);
+    cursor: pointer;
+}
+
+#search_all_room > div:nth-child(2) {
+    margin: 10px auto;
+    width: 450px;
+}
+#search_all_room > div:nth-child(2) > input {
+	width: 100%;
+    height: 40px;
+    display: block;
+    border-radius: 6px;
+    /* border: 1px solid #c2c2c2; */
+    border: 1px solid #ddd;
+    padding: 10px 5px 10px 10px;
+    font-size: 14px;
+}
+#search_all_room > div:nth-child(2) > input:hover {
+	background: #f5f5f5;
+}
+#search_all_room > div:nth-child(2) > input:focus {
+	outline: none;
+    border: 1px solid #00C473;
+    background: #f5f5f5;
+}
+#search_all_room > div:nth-child(3) {
+    width: 480px;
+	height: 250px;
+    margin: 5px;
+    overflow-y: scroll; 
+}
+#search_all_room > div:nth-child(3)::-webkit-scrollbar {
+    display: none;
+}
+.other_topicroom_item:hover, .my_topicroom_item:hover,
+.group_chatroom_item:hover, .one_chatroom_item:hover {
+	background-color: #f5f5f5;
+}
+.other_topicroom_item, .my_topicroom_item {
+	width: 450px;
+    height: 50px;
+    padding: 13px 10px;
+    margin: 2px auto;
+    border-radius: 6px;
+	cursor: pointer;
+}
+.group_chatroom_item, .one_chatroom_item {
+    width: 450px;
+    height: 50px;
+    padding: 4px 10px;
+    margin: 2px auto;
+    border-radius: 6px;
+	cursor: pointer;
+}
+.other_topicroom_item .ic_board, .my_topicroom_item .ic_board {
+	width: 24px;
+	height: 24px;
+	background-image: url("https://cdn-icons-png.flaticon.com/512/4770/4770380.png");
+	background-size: 100%;
+	filter: invert(78%) sepia(0%) saturate(4946%) hue-rotate(34deg) brightness(80%) contrast(96%);
+	margin-left: 3px;
+    margin-right: 7px;
+}
+.group_chatroom_item > div:has(img:nth-child(3)) > img:nth-child(1) { height: 15px; object-fit: cover; width: 30px; }
+.group_chatroom_item > div:has(img:nth-child(3)) > img:not(:nth-child(1)) { width: 15px; }
+.group_chatroom_item > div:has(img:nth-child(3)) > img:nth-child(1) { border-radius:0; border-top-left-radius: 20px; border-top-right-radius: 20px;}
+.group_chatroom_item > div:has(img:nth-child(3)) > img:nth-child(2) { border-radius:0; border-bottom-left-radius: 20px; }
+.group_chatroom_item > div:has(img:nth-child(3)) > img:nth-child(3) { border-radius:0; border-bottom-right-radius: 20px; }
+
+.group_chatroom_item > div:has(img:nth-child(4)) > img:not(:nth-child(11)) { width: 15px; }
+.group_chatroom_item > div:has(img:nth-child(4)) > img:nth-child(1) { border-radius:0; border-top-left-radius: 20px;}
+.group_chatroom_item > div:has(img:nth-child(4)) > img:nth-child(2) { border-radius:0; border-top-right-radius: 20px;}
+.group_chatroom_item > div:has(img:nth-child(4)) > img:nth-child(3) { border-radius:0; border-bottom-left-radius: 20px;}
+.group_chatroom_item > div:has(img:nth-child(4)) > img:nth-child(4) { border-radius:0; border-bottom-right-radius: 20px;}
+
+.one_chatroom_item > div > img {
+	width: 30px;
+	border-radius: 20px;
+}
+
+.other_topicroom_item > div:nth-child(2) > span:nth-child(1),
+.my_topicroom_item > div:nth-child(2) > span:nth-child(1),
+.group_chatroom_item > div:nth-child(2) > div > span,
+.one_chatroom_item > div:nth-child(2) > div > span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #333;
+    font-size: 14px;
+    line-height: 20px;
+    /* font-weight: 700; */
+    margin-left: 5px;
+    /* padding: 2px; */
+ }   
+ 
+.group_chatroom_item > div:nth-child(1),
+.one_chatroom_item > div:nth-child(1) {
+	width: 30px; 
+	height: 30px; 
+	margin-right: 5px;
+	margin-top: 5px;
+} 
+.group_chatroom_item > div:nth-child(2),
+.one_chatroom_item > div:nth-child(2) {
+	width: 380px;
+	height: 40px; 
+	font-size: 14px;
+} 
+.one_chatroom_item > div:nth-child(2) > div:nth-child(2) > span {
+	font-size: 13px;
+    line-height: 18px;
+    color: #a2a2a2;
+}
+#search_all_room > div:nth-child(4) {
+    width: 480px;
+	height: 70px;
+	padding: 15px 20px;
+}
+#search_all_room > div:nth-child(4) button {
+	padding: 10px 20px;
+    background-color: #f2f4f8;
+    border: 0;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 20px;
+    cursor: pointer;
+}
+#search_all_room > div:nth-child(4) button .ic_board {
+	margin: 1px 6px 0 0;
+	width: 18px;
+	height: 18px;
+	background-image: url("https://cdn-icons-png.flaticon.com/512/4770/4770380.png");
+	background-size: 100%;
+	filter: invert(78%) sepia(0%) saturate(4946%) hue-rotate(34deg) brightness(80%) contrast(96%);
+} 
+#search_all_room .ic_plus, #div_topic_openlist .ic_plus{
+	margin: 1px 5px 0 0;
+    width: 16px;
+	height: 16px;
+	background-image: url("https://cdn-icons-png.flaticon.com/512/9728/9728172.png");
+	background-size: 100%;	
+	filter: invert(56%) sepia(34%) saturate(5131%) hue-rotate(120deg) brightness(99%) contrast(101%);
+}
+#search_all_room > div:nth-child(4) > a:nth-child(1) > button {
+    margin: 0 20px;
+}
+#search_all_room > div:nth-child(4) > a:nth-child(2) > button {
+	color: #00C473;
+	margin: 0 8px;
+}
+	
+
+/********************** 토픽 '+버튼' 클릭 시 팝업창 **********************/
+#div_topic_plus {
+	position: absolute;
+	top: 120px;
+    right: -170px;	
+    width: 180px;
+    height:120px;
+    padding: 4px;
+    background: #fff;
+    display: none;
+    border: 1px solid #DDD;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, .08);
+    z-index: 12;
+}
+#div_topic_plus > div {
+    color: #333;
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 6px;
+    padding: 8px 10px;
+    line-height: 20px;
+	cursor: pointer;
+}
+#div_topic_plus > div:hover {
+	background: #f5f5f5;
+}
+
+/********************** 토픽 '+버튼' 클릭 시 팝업창 -> 새로운 토픽 생성하기 **********************/
+#div_topic_create {
+	display: none;
+	position: absolute;
+	top: 5%;
+    left: 250%;
+	width: 560px;
+	height: 660px;
+	padding: 4px;
+	border: 1px solid #DDD;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, .08);
+    z-index: 12;
+}
+
+/* 상단부 */
+#div_topic_create > div:nth-child(1) {
+	position: relative;
+	width: 550px;
+	height: 75px;
+	padding: 24px;
+    font-size: 18px;
+    font-weight: 800;
+}
+#div_topic_create > div:nth-child(1) > .exit,
+#div_notice_register > div:nth-child(1) > .exit {
+/* 	position: absolute;
+	right: 40px;
+    top: 30px; */
+    margin: 5px;
+    display: inline-block;
+    width: 16px;
+	height: 16px;
+	background-image: url("https://cdn-icons-png.flaticon.com/512/61/61155.png");
+	background-size: 100%;
+	filter: invert(94%) sepia(0%) saturate(0%) hue-rotate(157deg) brightness(87%) contrast(83%);
+    cursor: pointer;
+}
+
+/* 중앙부 */
+#div_topic_create > div:nth-child(2) {
+	width: 550px;
+	height: 500px;	
+	padding: 15px;
+	font-size: 14px;
+	font-weight: 700;
+	color: #333;
+}
+#div_topic_create > div:nth-child(2) div > label:nth-child(1) {
+	display: inline-block;
+   	margin-bottom: 5px;
+}
+#div_topic_create > div:nth-child(2) > div > span {
+	display: inline-block;
+}
+#div_topic_create > div:nth-child(2) > div:nth-child(1) > span:nth-child(2),
+#div_topic_create > div:nth-child(2) > div:nth-child(3) > span:nth-child(2) {
+	color: red;
+	margin-left: 2px;
+} 
+#div_topic_create > div:nth-child(2) > div:nth-child(3) > span:nth-child(3) {
+	margin-left: 2px;
+	font-size: 11px;
+    line-height: 13px;
+    color: #a2a2a2;
+} 
+.text_max_value {
+    margin-top: 2px;
+    font-size: 12px;
+	line-height: 15px;
+    color: gray;
+}
+.text_current_value {
+    margin-top: 2px;
+    margin-right: 4px;
+    font-size: 12px;	
+	line-height: 15px;
+    color: black;
+}
+
+#div_topic_create input[type='text'], 
+#div_topic_create textarea {
+	display: block;
+	width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 9px 10px;
+    line-height: 16px;
+    font-size: 14px;
+    resize: none;
+}
+#div_topic_create input::placeholder, 
+#div_topic_create textarea::placeholder {
+    color: #a2a2a2;
+}
+#div_topic_create input[type='text']:focus, 
+#div_topic_create textarea:focus {
+	outline: none;
+  		border: 1px solid #00C473;
+	background: #f5f5f5;
+}
+#div_topic_create input[type='text']:hover, 
+#div_topic_create textarea:hover {
+	background: #f5f5f5;
+}	
+
+.topic_open_select input[type='radio'] {
+	display: none;	
+}
+.topic_open_select input[type='radio']+label {
+	display: inline-block;
+	cursor: pointer;	
+}
+.topic_open_select input[type=radio]:checked+label {
+    color : #00C473;
+}
+.topic_public, .topic_private  {
+	display: inline-block;
+  		margin-right: 20px;
+  		padding: 5px;
+  		border: 1px solid #ddd;
+    border-radius: 6px;
+    font-weight: normal;
+    cursor: pointer;
+}
+.topic_public > label, .topic_private > label  {
+    cursor: pointer;
+}
+.topic_public > div, 
+.topic_private > div {
+	margin: 15px 5px;
+	width: 20px;
+   	height: 20px;
+   	width: 18px;
+	height: 18px;
+	background-size: 100%;
+	filter: invert(73%) sepia(52%) saturate(8%) hue-rotate(9deg) brightness(97%) contrast(91%);
+    cursor: pointer;
+}
+.topic_public > div:nth-child(1) {
+	background-image: url("https://cdn-icons-png.flaticon.com/512/722/722358.png");
+}
+.topic_private > div:nth-child(1) {
+	background-image: url("https://cdn-icons-png.flaticon.com/512/7042/7042918.png");
+}
+.topic_public > div:nth-child(4), 
+.topic_private > div:nth-child(4) {
+	background-image: url("https://cdn-icons-png.flaticon.com/512/10486/10486563.png");
+}
+.topic_public > label,
+.topic_private > label {
+	padding: 15px 0;
+    width: 160px;
+}
+.topic_public:hover, .topic_private:hover,
+.topic_public:focus, .topic_private:hover:focus {
+	border-color : #00C473;
+} 
+.topic_public:hover > div, .topic_private:hover > div,
+.topic_public:focus > div, .topic_private:focus > div {
+	filter: invert(71%) sepia(69%) saturate(5840%) hue-rotate(123deg) brightness(99%) contrast(104%);
+}
+
+.folder_select_option {
+	padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-weight: normal;
+    cursor: pointer;
+}
+.folder_select_option:hover {
+	background: #f5f5f5;
+}
+.folder_select_option > span {
+	display: inline-block;
+}
+.folder_select_option > div {
+	display: inline-block;
+	margin: 3px;
+    top: 16px;
+    left: 13px;
+    width: 12px;
+    height: 12px;
+    background-image: url("https://cdn-icons-png.flaticon.com/512/61/61041.png");
+    background-size: 100%;
+}
+#div_topic_create > div:nth-child(2) > div:nth-child(4) > span {
+	margin-left: 2px;
+    font-size: 11px;
+    line-height: 13px;
+    color: #a2a2a2;
+}
+
+/* 하단부 */
+#div_topic_create > div:nth-child(3),
+#div_topic_update > div:nth-child(3) {
+	width: 550px;
+	height: 75px;	
+	padding: 20px;
+}
+#div_topic_create > div:nth-child(3) > button,
+#div_notice_register > div:nth-child(3) > button,
+#div_topic_update > div:nth-child(3) > button {
+	float: right;
+    padding: 8px 16px;
+    color: #c2c2c2;
+    background-color: transparent;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20px;
+    border: 0;
+    border-radius: 6px;
+}	
+#div_topic_create > div:nth-child(3) > button:focus,
+#div_notice_register > div:nth-child(3) > button:focus,
+#div_topic_update > div:nth-child(3) > button:focus {
+	outline: none;
+}	
+#div_topic_create > div:nth-child(3) > button:not(.green_light):first-child:hover,
+#div_notice_register > div:nth-child(3) > button:not(.green_light):first-child:hover,
+#div_topic_update > div:nth-child(3) > button:not(.green_light):first-child:hover {
+    cursor: not-allowed;
+    /* pointer-events : none; */
+}
+#div_topic_create > div:nth-child(3) > button:last-child:hover,
+#div_notice_register > div:nth-child(3) > button:last-child:hover,
+#div_topic_update > div:nth-child(3) > button:last-child:hover {
+	background-color: #F2F4F8;
+    color: black;
+    cursor: pointer;
+}
+#div_notice_register > div:nth-child(3) > button.green_light:first-child,
+#div_topic_update > div:nth-child(3) > button.green_light:first-child {
+    background-color: #00C473;
+    color: white;
+    cursor: pointer;
+}
+#div_notice_register > div:nth-child(3) > button.green_light:first-child:hover,
+#div_topic_update > div:nth-child(3) > button.green_light:first-child:hover {
+    background-color: #21D78C;
+}	
+/* #div_chat_start > div:nth-child(2) > div:nth-child(5) > button.green_light:first-child {
+	color: white;
+    background-color: #00C473;
+}	
+#div_chat_start > div:nth-child(2) > div:nth-child(5) > button.green_light:first-child:hover {
+    background-color: #21D78C;
+    cursor: pointer;
+} */
+
+/********************** 토픽 '+버튼' 클릭 시 팝업창 -> 참여 가능한 토픽 보기 **********************/
+#div_topic_openlist {
+	display: none;
+	position: absolute;
+	top: 25%;
+    left: 250%;
+	width: 500px;
+	height: 300px;
+	padding: 4px;
+	border: 1px solid #DDD;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, .08);
+    z-index: 12;
+}
+/* 상단부 */
+#div_topic_openlist > div:nth-child(1) {
+	position: relative;
+	width: 490px;
+	height: 70px;
+	padding: 20px 20px 20px 25px;
+    font-size: 18px;
+    font-weight: 800;
+}
+#div_topic_openlist > div:nth-child(1) > .exit {
+	position: absolute;
+	right: 25px;
+    top: 25px;
+    
+    display: inline-block;
+    width: 16px;
+	height: 16px;
+	background-image: url("https://cdn-icons-png.flaticon.com/512/61/61155.png");
+	background-size: 100%;
+	filter: invert(94%) sepia(0%) saturate(0%) hue-rotate(157deg) brightness(87%) contrast(83%);
+    cursor: pointer;
+}
+#div_topic_openlist > div:nth-child(2) {
+	width: 490px;
+	height: 35px;
+	padding: 0 25px;
+}
+#div_topic_openlist > div:nth-child(2) > input {
+	width: 100%;
+    height: 40px;
+	display: block;
+    border-radius: 6px;
+    /* border: 1px solid #c2c2c2; */
+    border: 1px solid #ddd;
+    padding: 10px 5px 10px 10px;
+    font-size: 14px;
+}
+#div_topic_openlist > div:nth-child(2) > input::placeholder {
+    color: #a2a2a2;
+}
+#div_topic_openlist > div:nth-child(2) > input:hover {
+	background: #f5f5f5;
+}
+#div_topic_openlist > div:nth-child(2) > input:focus {
+	outline: none;
+	border: 1px solid #00C473;
+	background: #f5f5f5;
+}
+#div_topic_openlist > div:nth-child(3) {
+	margin: 5px 0;
+	width: 490px;
+	height: 110px;
+}
+#div_topic_openlist > div:nth-child(3) > div:nth-child(1) {
+	margin: 12px 5px 0px 30px;
+    width: 8px;
+    height: 8px;
+	background-image: url("https://cdn-icons-png.flaticon.com/512/5800/5800621.png");
+	background-size: 100%;
+}
+#div_topic_openlist > div:nth-child(3) > span {
+    margin: 5px 0px;
+    font-size: 14px;
+    cursor: pointer;
+}
+#div_topic_openlist > div:nth-child(3) > div:nth-child(3) {
+	margin: 0 auto;
+	width: 480px;
+    height: 80px;
+    overflow-y: scroll;
+}
+#div_topic_openlist > div:nth-child(3) > div:nth-child(3)::-webkit-scrollbar {
+    display: none;
+}
+/* .other_topicroom_item {
+	width: 450px;
+    height: 78px;
+    padding: 25px;
+    margin: 0 auto;
+    border-radius: 6px;
+} */
+.other_topicroom_item:hover {
+	background-color: #f5f5f5;
+}
+.other_topicroom_item > div:nth-child(2) > span {
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #333;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 700;
+    margin-left: 5px;
+    padding: 2px;
+}
+.other_topicroom_item > div:nth-child(3) {
+	border-radius: 6px;
+    padding: 2px;
+}
+.other_topicroom_item > div:nth-child(3) > span {
+	margin-left: 3px;
+    color: #a2a2a2;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+}
+.other_topicroom_item .ic_board {
+	width: 24px;
+	height: 24px;
+	background-image: url("https://cdn-icons-png.flaticon.com/512/4770/4770380.png");
+	background-size: 100%;
+	filter: invert(78%) sepia(0%) saturate(4946%) hue-rotate(34deg) brightness(80%) contrast(96%);
+}
+.other_topicroom_item .ic_member {
+	width: 21px;
+	height: 21px;
+	background-image: url("https://cdn-icons-png.flaticon.com/512/7218/7218085.png");
+	background-size: 100%;
+	filter: invert(78%) sepia(0%) saturate(4946%) hue-rotate(34deg) brightness(80%) contrast(96%);
+}
+/* 하단부 */
+#div_topic_openlist > div:nth-child(4) {
+	width: 490px;
+	height: 60px;
+	padding: 10px 130px;
+}
+#div_topic_openlist > div:nth-child(4) button {
+	padding: 10px 30px;
+    width: 230px;
+    color: #00C473;
+    background-color: #f2f4f8;
+    border: 0;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 20px;
+    cursor: pointer;
+}	
+#div_topic_openlist > div:nth-child(4) button:hover {
+	background-color: #DFE1E5;
+}
+
+/* 참여 가능한 토픽 목록 보기에서 '보기 옵션' */
+.list_view_option {
+	display: none;
+	position: absolute;
+	top: 19%;
+    left: 13%;
+	width: 160px;
+	height: 120px;
+	margin-top: 10px;
+	padding: 6px;
+    border: 1px solid #DDD;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 14px;
+    color: #333;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, .08);
+    z-index: 12;
+}
+.list_view_option > div {
+	width: 145px;
+	height: 35px;
+	padding: 8px 10px;
+    border-radius: 6px;
+}
+.list_view_option > div:first-child {
+    color: #a2a2a2;
+}
+.list_view_option > div:not(:first-child):hover {
+	/* color: #00B474; */
+	background-color: #f5f5f5;
+	cursor: pointer;
+}
+.list_view_option > div > div:nth-child(1) {
+	width: 100px;
+	height: 20px;
+}
+.list_view_option > div > .check{
+	display: none;
+	margin: 2px;
+	width: 15px;
+	height: 15px;
+	background-size: 100%;
+	background-image: url("https://cdn-icons-png.flaticon.com/512/10486/10486563.png");
+	filter: invert(59%) sepia(60%) saturate(5772%) hue-rotate(131deg) brightness(97%) contrast(103%);
+}
+
+/*============================ div_side2 ============================*/
+#div_side2 {
+	width: 1657px;
+	min-height: 900px;
+	background-color: rgb(229, 229, 229); 
+}
+.div_side2_container {
+    background: url(https://cdn.jandi.com/app/assets/images/sticker/c768526b.odaeri_entry.png);
+    width: 570px;
+    height: 500px;
+    margin: 180px auto;
+}
+
+/*============================토픽방 상단메뉴바 팝업창============================*/
+#div_transparent_filter {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: none;
+	background-color: rgba(1,1,1,0);
+	z-index: 11;
+}
+#div_grey_filter {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: none;
+    background-color: rgba(0, 0, 1, 0.45);	
+    z-index: 11;
+}
