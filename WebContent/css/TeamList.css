@@ -1,0 +1,540 @@
+@charset "UTF-8";
+
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+* { box-sizing: border-box; font-family: Noto Sans KR, sans-serif; }
+.border { border: 1px solid red; }
+.fl { float: left; }
+.fr { float: right; }
+html, body {
+    background-color: #FAFAFA;
+    overflow: hidden; /* 수평 스크롤바 숨기기 */
+    margin: 0;
+}
+#div_header {
+    width: 1925px;
+    height: 60px;
+    border-bottom: 1px solid #ddd;
+    background-color: rgba(250, 250, 252, .95);
+    position: relative; /* position 설정 */
+    top: 0;
+    left: 0;
+    right: 0;
+    min-width: 780px;
+    /* padding: 13px 20px 14px 154px; */
+    background-color: #FFF;
+    line-height: 33px;
+    z-index: 100; /* 기존 z-index 값보다 낮게 설정 */
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12);
+}
+#div_header > #div_logo > img {
+    margin: 18px;
+    margin-left: 20px;
+}
+#div_pcAppDownload {
+    margin: 12px 155px;
+}
+#div_lang {
+    width: 76px;
+    height: 38px;
+    margin-top: 12px;
+}
+#div_email {
+    width: 102.89px;
+    height: 38px;
+    margin-top: 10px;
+    margin-right: 9px;
+    position: relative;
+    font-size: .875rem;
+}
+#div_email > img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid #e8eaec;
+    margin-left: 14px;
+    margin-top: 5px;
+}
+/* 드롭다운 메뉴 */
+.dropdown_menu { 
+    left: -30px;
+    margin-top: -2px;
+    min-width: 8rem;
+    padding: 4px 0 5px;
+    margin-top: 3px;
+    border: 1px solid rgba(0, 0, 0, .15);
+    box-shadow: 0 1px 3px 0 rgba(2, 23, 34, .15);
+    border-radius: 3px;
+    padding: 3px 0;
+    color: #333;
+    font-size: .875rem;
+    background-color: #fff;
+    position: absolute;
+    z-index: 100;
+    top: 100%;
+    display: none;
+}
+.option-title:first-child {
+    margin-top: -3px;
+    margin-bottom: 5px
+}
+.option-title {
+    position: relative;
+    padding: 0 .625rem;
+    font-size: .625rem;
+    color: #9f9f9f;
+    line-height: 2em;
+    font-weight: 700;
+}
+.option-txt {
+    display: inline-block;
+    max-width: 100%;
+    white-space: nowrap;
+    padding-right: 10px;
+}
+.option-item {
+    position: relative;
+    padding: 0 .75rem;
+    display: block;
+    width: 100%;
+    line-height: 2.0625rem;
+    cursor: pointer;
+    text-align: left;
+}
+
+.option-item:hover {
+    background-color: rgba(0, 0, 0, .05);
+}
+.option-icon .option-txt {
+    padding-left: 1.625rem;
+    padding-right: .5rem;
+}
+.option-list {
+    padding: 0px;
+    margin: 0px;
+}
+.settings, .logout {
+    position: absolute;
+    margin-top: -27px;
+}
+#select_email {
+    position: absolute;
+    right: 15px;
+    bottom: 2px;
+    font-size: .875rem;
+}
+#select_language {
+    font-size: .875rem;
+    padding-left: 20px;
+}
+#div_border {
+    border-right: 1px solid rgba(0, 0, 0, .12);
+    height: 22px;
+    margin-top: 18px;
+    width: 1px;
+}
+#div_lang:hover {
+    background-color: rgba(0, 0, 0, .05);
+}
+#div_email:hover {
+    background-color: rgba(0, 0, 0, .05);
+}
+#div_main {
+    width: 1910px;
+    height:100%;
+    margin-top: 65px;
+}
+#div_profile {
+    width: 780px;
+    height: 113px;
+    margin: 0 auto;
+    padding-top: 10px;
+    padding-bottom: 6px;
+}
+#div_team_list_main {
+    width: 780px;
+    height: 453px;
+    margin: 0 auto;
+    z-index: 1001;
+}
+#div_profile_txt {
+    width: 780px;
+    height: 18px;
+}
+#div_profile_txt > span {
+    line-height: 18px;
+    font-size: 14px;
+    color: #777;
+}
+#div_user_profile {
+    width: 780px;
+    height: 48px;
+    margin-top: 15px;
+}
+#div_user_img {
+    width: 48px;
+    height: 48px;
+    float: left;
+}
+#div_user_img > img{
+    box-sizing: content-box;
+    width: 3rem;
+    /* height: 100%; */
+    border: 1px solid #e8eaec;
+    border-radius: 50%;
+    /* position: absolute; */
+}
+#div_user_name {
+    width: 63px;
+    height: 23px;
+    margin-left: 60px;
+}
+#div_user_name > span {
+    font-size: 1.3125rem;
+    line-height: 1.35em;
+    color: #333;
+    font-weight: 600;
+}
+#div_email_txt {
+    width: 530px;
+    height: 17.08px;
+    margin-top: -5px;
+}
+#div_email_txt > span {
+    font-size: .8125rem;
+    color: #999;
+}
+#div_button_setting {
+    width: 77.78px;
+    height: 18px;
+    margin-right: 10px;
+    margin-top: -10px;
+}
+.btn_profile_edit {
+    width: 77.78px;
+    height: 18px;
+    transform: translateY(-50%);
+    color: #999;
+    background-color: #FAFAFA;
+    border: 0px;
+}
+#div_pencil {
+    width: 14px;
+    height: 14px;
+}
+#div_set_account {
+    width: 74px;
+    height: 16px;
+}
+#div_set_account > span {
+    color: #999;
+    font-weight: 700;
+}
+#div_set_account:hover span {
+    color: rgb(112, 112, 112); /* 마우스 오버 시 텍스트 색상 변경 */
+    text-decoration: underline; /* 마우스 오버 시 밑줄 추가 */
+}
+#div_team_list_txt {
+    width: 780px;
+    height: 20px;
+    margin-top: 15px;
+}
+#div_team_list_txt > span {
+    line-height: 18px;
+    font-size: 14px;
+    color: #777;
+    font-weight: 500;
+}
+#div_main_pic {
+    width: 780px;
+    height: 304px;
+    margin-top: 10px;
+    padding-top: 46px;
+    padding-bottom: 42px;
+    padding-left: 24px;
+    padding-right: 24px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, .11);
+    box-shadow: 0 1px 4px -2px rgba(0, 0, 0, .08);
+}
+#div_main_txt_button {
+    width: 370px;
+    height: 214px;
+}
+#div_txt1 {
+    width: 334px;
+    height: 76px;
+    margin: 0 auto 15px;
+    text-align: center;
+}
+#div_txt1 > span {
+    color: rgb(51, 51, 51);
+    font-size: 28px;
+    font-weight: 700;
+}
+#div_txt2 {
+    width: 325px;
+    height: 44px;
+    margin: 0 auto;
+    text-align: center;
+}
+#div_txt2 > span {
+    color: rgb(91, 110, 120);
+    font-size: 15px;
+}
+#div_team_make_button {
+    width: 340px;
+    height: 36px;
+    margin-top: 43px;
+    margin: 43px 14px 0px 14px;
+}
+.btn_btn_big:hover {
+    background-color: rgba(0, 0, 0, .08);
+}
+.btn_btn_green {
+    background-color: #00C473;
+    border: 1px solid #00C473;
+    padding: 0 .75rem;
+    border-radius: 3px;
+    height: 33px;
+    margin-left: 107px;
+}
+.btn_btn_green > span {
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+}
+#div_team_make_big {
+    width: 780px;
+    height: 97px;
+    margin-top: 6px;
+}
+.btn_btn_big {
+    background-color: rgba(0, 0, 0, .05);
+    border: 1px solid transparent;
+    width: 100%;
+    height: 100%;
+    border-radius: 3px;
+    color: #999;
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+#div_team_make_big > span {
+    color: #999;
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+#div_footer {
+    width: 1910px;
+    height: 66px;
+    margin: 0 auto;
+    padding-top: 22px;
+    padding-bottom: 25px;
+    color: #999;
+}
+#div_inner_footer {
+    width: 780px;
+    height: 17.078px;
+    margin: 0px 565px 0px 565px;
+}
+#div_toss_lab {
+    width: 138.02px;
+    height: 17.08px;
+    margin-left: 34px;
+}
+#div_toss_lab > span {
+    font-size: 14px;
+}
+#div_three_txt {
+    width: 407.672px;
+    height: 17.078px;
+    margin-right: -25px;
+    margin-left: 34px;
+    color: rgb(153, 153, 153);
+    font-size: 14px;
+}
+#div_QnA {
+    width: 91.78px;
+    height: 16px;
+}
+#div_QnA:hover a {
+    color: rgb(112, 112, 112); /* 마우스 오버 시 텍스트 색상 변경 */
+    text-decoration: underline; /* 마우스 오버 시 밑줄 추가 */
+}
+#div_QnA > a {
+    text-decoration: none;
+    color: rgb(153, 153, 153);
+}
+#div_private {
+    width: 112px;
+    height: 17.078px;
+    margin-left: 34px;
+}
+#div_private:hover a {
+    color: rgb(112, 112, 112); /* 마우스 오버 시 텍스트 색상 변경 */
+    text-decoration: underline; /* 마우스 오버 시 밑줄 추가 */
+}
+#div_private > a {
+    text-decoration: none;
+    color: rgb(153, 153, 153);
+}
+#div_service {
+    width: 59.891px;
+    height: 17.078px;
+    margin-left: 34px;
+}
+#div_service:hover a {
+    color: rgb(112, 112, 112); /* 마우스 오버 시 텍스트 색상 변경 */
+    text-decoration: underline; /* 마우스 오버 시 밑줄 추가 */
+}
+#div_service > a {
+    text-decoration: none;
+    color: rgb(153, 153, 153);
+}
+
+/* 팀 생성 창 */
+.teamMakeImg {
+    width: 25px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+#team-make-header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    min-width: 780px;
+    height: 60px;
+    padding: 13px 20px 14px 154px;
+    background-color: #FFF;
+    line-height: 33px;
+    z-index: 100;
+    z-index: 102; /* 헤더가 다른 모든 요소들보다 앞에 오도록 높은 z-index 값 설정 */
+}
+/* 팀 생성 창이 다른 메인창보다 앞에 오도록 z-index 조정 */
+#team-make-main {
+    width: 1920px;
+    height: 924px;
+    position: absolute; /* absolute로 설정하여 화면 상단에 고정 */
+    z-index: 200; /* 다른 요소들보다 높은 z-index 값 설정 */
+    background-color: white;
+}
+#team-make-content {
+    height: 571px;
+    margin-top: 50px;
+}
+#team-make-content h2 {
+    text-align: center;
+    margin-top: 70px;
+}
+#border {
+    border: 1px solid #00c473;
+    margin: 30px auto;
+    width: 80px;
+}
+fieldset {
+    width: 390px;
+    height: 169px;
+    margin: 0px auto;
+    margin-top: 170px;
+    border: none;
+}
+h5 {
+    color: #777;
+    font-size: .9375rem;
+    font-weight: 500;
+    color: #333;
+    padding-bottom: .5rem;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+/* 도움말 메시지 창 스타일 */
+.tooltip, .tooltip2 {
+    display: none; /* 기본적으로 숨김 */
+    position: absolute;
+    background-color: #00C473;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    top: 230px; /* 적절한 위치 조정 */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 200;
+    white-space: nowrap;
+    text-align: center;
+}
+
+input[type='text']:focus {
+	outline: 1px solid #00c473;
+}
+input[type='text']{
+	text-align: left;
+    width: 390px;
+    height: 46px;
+    border: 1px solid #d2d2d2;
+/*     padding: 15px 12px; */
+    border-radius: 4px;
+    padding: 0 .6875rem;
+    font-size: 1rem;
+}
+#h5_team_domain {
+    margin-top: 10px;
+}
+#div_sub_fix {
+    margin-top: 427px;
+    margin-right: 765px;
+    display: table-cell;
+    width: 6rem;
+    border-color: #d2d2d2;
+    border-width: 1px 1px 1px 0;
+    border-style: solid;
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-radius: 0 4px 4px 0;
+    height: 2.875rem;
+    line-height: 2.75rem;
+    background: #f1f4f8;
+    text-indent: .625rem;
+    color: #728b98;
+    font-weight: 400;
+    font-size: .875rem;
+}
+#input_team_domain:focus {
+	border: 1px solid #00c473;
+}
+#input_team_domain {
+    text-align: left;
+    height: 46px;
+    border: 1px solid #d2d2d2;
+/*     padding: 15px 12px; */
+    border-radius: 4px;
+    padding: 0 .6875rem;
+    font-size: 1rem;
+}
+#div_button {
+    text-align: center;
+}   
+#button {
+    border-radius: 6px;
+    color: #fff;
+    background-color: #99e7c7;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 30px;
+    width: 15%;
+    padding: 10px 0;
+    border: none;
+    cursor: not-allowed; /* 비활성화 상태일 때 커서 모양 변경 */
+}
+
+#button.enabled {
+    background-color: #00c473; /* 활성화 상태일 때 배경색 */
+    cursor: pointer; /* 활성화 상태일 때 커서 모양 변경 */
+}
+
+#div_team_make_button .btn_btn_green,
+#div_team_make_big .btn_btn_big {
+    cursor: pointer; /* 마우스 커서를 손가락 모양으로 변경 */
+}
+

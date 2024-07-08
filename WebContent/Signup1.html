@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>회원가입 약관 동의</title>
+	<link rel="stylesheet" href="css/Signup1.css"/>
+	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+	<script>
+		 $(document).ready(function() {
+            function toggleNextButton() {
+                var allChecked = $('#agree1_checkbox').is(':checked') &&
+                                 $('#agree2_checkbox').is(':checked') &&
+                                 $('#agree3_checkbox').is(':checked');
+                if (allChecked) {
+                    $('#div_next').css('background-color', '#00c473').prop('disabled', false);
+                } else {
+                    $('#div_next').css('background-color', '#99e7c7').prop('disabled', true);
+                }
+            }
+
+            // 모두 동의 버튼 클릭 시
+            $('input[value="all"]').click(function() {
+                var isChecked = $(this).is(':checked');
+                $('input[type="checkbox"]').not('[value="all"]').prop('checked', isChecked);
+                toggleNextButton();
+            });
+
+            // 개별 동의 버튼 클릭 시
+            $('input[type="checkbox"]').not('[value="all"]').click(function() {
+                var allChecked = $('#agree1_checkbox').is(':checked') &&
+                                 $('#agree2_checkbox').is(':checked') &&
+                                 $('#agree3_checkbox').is(':checked');
+                $('input[value="all"]').prop('checked', allChecked);
+                toggleNextButton();
+            });
+
+            // 초기 상태에서 버튼 활성화 설정
+            toggleNextButton();
+
+            function toggleNextButton() {
+                var allChecked = $('#agree1_checkbox').is(':checked') &&
+                                 $('#agree2_checkbox').is(':checked') &&
+                                 $('#agree3_checkbox').is(':checked');
+                if (allChecked) {
+                    $('#div_next').css('background-color', '#00c473').prop('disabled', false);
+                } else {
+                    $('#div_next').css('background-color', '#99e7c7').prop('disabled', true);
+                }
+            }
+			// 보기를 눌렀을 때 팝업창이 뜨도록 설정
+			// 보기 링크를 클릭했을 때
+            $('.SignupTerms').click(function(event) {
+                event.preventDefault();
+                $('.modalContainer').show();
+            });
+
+            // 확인 버튼을 클릭했을 때
+            $('.footerBtn button').click(function() {
+                $('.modalContainer').hide();
+            });
+        });
+	</script>
+</head>
+<body>
+<!------------------------상단 헤더----------------------->
+   <div id="div_header1">
+      <div class="fl">
+         <img src="https://jandi-box.com/teams/0/logo.png?timestamp=20190628">
+         <span>NAMOO</span>
+      </div>
+      <div class="fl"><a href="hsttps://www.jandi.com/landing/kr/industry">고객사례</a></div>
+      <div class="fl"><a href="https://www.jandi.com/landing/kr/consult">도입문의</a></div>
+      <div class="fl"><a href="https://support.jandi.com/ko/">헬프센터</a></div>
+      <div class="fl"><a href="https://blog.jandi.com/ko/">블로그</a></div>
+      <div class="fr"><a href="http://localhost:9090/WebProject1/nammo_login.html"><strong>로그인</strong></a></div>
+      <div class="fr"><a href="https://www.jandi.com/landing/kr/download"><strong>다운로드</strong></a></div>
+   </div>
+
+	<div id="div_content">
+		<h1>회원가입</h1>
+		<h4>나무 약관 동의</h4>
+		<div id="div_content_box">
+			<div id="agree-all">
+				<input type="checkbox" value="all"><label><span><b>모두 동의</b></span></label>
+					<div style="
+					border-bottom: 1px solid #d8dbdf;
+    				padding-bottom: 15px;">
+    			</div>
+			</div>
+    		<div id = "agree1" style="margin-top: 25px;">
+	    		<div class="agree_checkbox_area">
+					<input type="checkbox" id="agree1_checkbox">
+					<label for="agree1_checkbox">
+					<span>[필수] 이용 약관</span>
+				</div>
+				</label>
+				<a href="#" class="fr underLine SignupTerms" style="display: contents;"><span style="margin-right: -185px;">보기</span></a><br/>
+    		</div>
+    		<div id = "agree2">
+				<div class="agree_checkbox_area">
+					<input type="checkbox" id="agree2_checkbox">
+					<label for="agree2_checkbox">
+						<span>[필수] 개인정보 수집 및 이용에 대한 동의</span>
+					</label>
+				</div>	
+				<a href="#" class="fr SignupTerms" style="display: contents;"><span style="margin-right: -20px;">보기</span></a><br/>
+    		</div>
+    		<div id = "agree3">
+				<div class="agree_checkbox_area">
+	    		<input type="checkbox" id="agree3_checkbox"><label for="agree3_checkbox"><span>[필수] 만 14세 이상입니다.</span>
+					</label>
+					</div>
+					<a href="#" class="fr SignupTerms">보기</a>
+			</div>
+		</div>
+		<button type="submit" disabled id="div_next">다음</button>
+		<div id="div_already_login">
+			<p>이미 가입하셨나요?</p>
+			<a href="Signup2.html">로그인</a>
+		</div>
+	</div>
+
+	<!-- 약관 보기 -->
+	<div class="modalContainer">
+		<div class="modalBox modalBox2">
+			<div class="modalWrapper">
+				<div class="modalHeader">
+					<h3>[필수] 이용 약관</h3>
+				</div>
+				<div class="modalBody">
+					<div class="service_jdContainer">
+						<div class="service_jdPopHead">
+							<h1>나무 서비스 이용 약관</h1>
+						</div>
+						<div class="service_jdContents">
+							<div class="termsSectionWrapper termsSectionModal">
+								<div>
+									<section class="termsBlock">
+										<h3>준비 중입니다.</h3>
+									</section>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modalFooter">
+						<div class="footerBtn">
+							<button type="button">확인</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="overlay"></div>
+	</div>
+</body>
+</html>

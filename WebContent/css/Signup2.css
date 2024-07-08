@@ -1,0 +1,294 @@
+@charset "UTF-8";
+
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+* { box-sizing: border-box; font-family: Noto Sans KR, sans-serif; }
+.border { border: 1px solid red; }
+.fl { float: left; }
+.fr { float: right; }
+
+/* .SignupForm_passwordLevelBarBox__3xe7o {
+    margin: 5px auto 10px;
+    width: -moz-calc(100% - 2px);
+    width: calc(100% - 2px)
+}
+
+.SignupForm_passwordLevelBarBox__3xe7o .SignupForm_passwordLevelBar__2aZvM {
+    height: 5px;
+    border-radius: 5px
+}
+
+.SignupForm_passwordLevelBarBox__3xe7o .SignupForm_passwordLevelBar__2aZvM.SignupForm_level1__jAOKt {
+    width: 33%;
+    background-color: #e60012
+}
+
+.SignupForm_passwordLevelBarBox__3xe7o .SignupForm_passwordLevelBar__2aZvM.SignupForm_level2__bhQyN {
+    width: 66%;
+    background-color: #00c05d
+}
+
+.SignupForm_passwordLevelBarBox__3xe7o .SignupForm_passwordLevelBar__2aZvM.SignupForm_level3__12iM4 {
+    width: 100%;
+    background-color: #00abe6
+} */
+
+input {
+	background-color: transparent;
+    outline: none;
+    border: 0;
+    -webkit-appearance: none;
+    margin: 0px;
+    }
+body { margin: 0; overflow-y: hidden; }
+/*-------------------헤더------------------*/
+#div_header1{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 66px;
+    z-index: 10; 
+    background-color: rgba(250, 250, 252, .95);
+    font-size: 14px;
+    line-height: 20px;
+    border-bottom: 1px solid #ddd;
+}
+#div_header1 > div:nth-child(1){ /*로고 +이름*/
+   position: relative;
+   width: 124px;
+   height: 30px;
+   margin-top: 10px; 
+   margin-left: 260px;
+   font: inherit;
+   font-size: 20px;
+   font-weight: 900;
+}
+#div_header1 > div:nth-child(1) > img {   /*로고*/
+   position: absolute;
+   width: auto; 
+   height: 40px;   
+   margin: 0px auto;
+   left: 0;
+}
+#div_header1 > div:nth-child(1) > span { /*나무이름*/
+   position: absolute;
+   margin-top: 10px;
+   right: 0;
+   letter-spacing: 1.5px;
+   
+}
+#div_header1 > div:nth-child(2){    /*고객사례*/
+   margin-top: 15px;
+   margin-left: 40px;
+   padding: 8px 14px;
+   height: 50px;
+   align-items: center;
+   font-weight: 600;
+   color: #333;
+}
+#div_header1 > div:nth-child(2):hover {
+   color: #7b7b7b;
+}   
+#div_header1 > div:nth-child(3){   /*도입문의*/
+   margin-top: 15px;
+   margin-left: 24px;
+   padding: 8px 14px;
+   height: 50px;
+   align-items: center;
+   font-weight: 600;
+   color: #333;
+}
+#div_header1 > div:nth-child(3):hover {
+   color: #7b7b7b;
+}   
+#div_header1 > div:nth-child(4){   /*헬프센터*/
+   position: relative;
+   margin-top: 15px;
+   margin-left: 24px;
+   padding: 8px 14px;
+   height: 50px;
+   align-items: center;
+   font-weight: 600;
+   color: #333;
+}
+#div_header1 > div:nth-child(4):hover {
+   color: #7b7b7b;
+}   
+#div_header1 > div:nth-child(5){   /*블로그*/
+   margin-top: 15px;
+   margin-left: 24px;
+   padding: 8px 14px;
+   height: 50px;
+   align-items: center;
+   font-weight: 600;
+   color: #333;
+}
+#div_header1 > div:nth-child(5):hover {
+   color: #7b7b7b;
+}   
+#div_header1 > div:nth-child(6){    /*로그인*/
+   font-weight: 500;
+   padding: 7px 14px;
+   background-color: #00c473;
+   color: #fff;
+   border-color: #00c473;
+      border-radius : 6px;
+    margin-right: 282px;
+    margin-top: 15px;
+}
+#div_header1 > div:nth-child(6):hover {
+   background: #00b76b;
+}
+#div_header1 > div:nth-child(7){ /*다운로드*/
+   padding: 7px 14px;
+   border: 1px solid #ddd;
+   font-weight: 500;
+   border-radius : 6px;
+   margin-top: 15px;
+   margin-right: 8px;
+}
+
+
+#div_header1 > div > a {
+    color: black;
+    text-decoration: none;
+}
+#div_header1 > div:nth-child(6) a { /* 로그인 링크 */
+    color: white; /* 로그인 링크는 배경색과 조화를 이루도록 흰색으로 설정 */
+}
+
+main {
+	width: 1920px;
+    height: 637px;
+}
+main > h1 {
+	margin: 56px auto;
+    width: 404px;
+    color: #333;
+}
+form {
+	margin-top: -40px;
+	margin: 55px auto;
+    width: 431px;
+    height: 527px;
+    word-break: keep-all;
+    word-wrap: break-word;
+}
+fieldset {
+	width: 404px;
+    height: 431px;
+    border: 0px;
+}
+#div_input_name > input[type='text']:focus  {
+	outline: 1px solid #00c473;
+}
+#div_input_name > input[type='text']  {
+    text-align: left;
+    width: 404px;
+    height: 50px;
+    border: 1px solid #e0e4ed;
+/*     padding: 15px 12px; */
+    border-radius: 4px;
+    padding: 12px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+#div_input_email {
+	margin-top: 20px;
+    position: relative; /* 부모 요소에 상대 위치 설정 */
+}
+#div_input_email > input[type='text']:focus {
+	outline: 1px solid #00c473;
+}	
+#div_input_email > input[type='text'] {
+	text-align: left;
+    width: 404px;
+    height: 50px;
+    border: 1px solid #e0e4ed;
+/*     padding: 15px 12px; */
+    border-radius: 4px;
+    padding: 12px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+#div_input_pw {
+	margin-top: 20px;
+}
+#span_pw_txt {
+	font-size: 14px;
+}
+#div_input_pw > input[type='password']:focus {
+	outline: 1px solid #00c473;
+}
+#div_input_pw > input[type='password'] {
+	text-align: left;
+    width: 404px;
+    height: 50px;
+    border: 1px solid #e0e4ed;
+/*     padding: 15px 12px; */
+    border-radius: 4px;
+    padding: 12px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+#div_input_pw > input[type='password'] > input[type='password']:focus {
+	outline: 1px solid #00c473;
+}
+#div_input_pw > input[type='password'] > input[type='password']{
+	text-align: left;
+    width: 404px;
+    height: 50px;
+    border: 1px solid #e0e4ed;
+/*     padding: 15px 12px; */
+    border-radius: 4px;
+    padding: 12px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+#div_input_email {
+    margin-top: 20px;
+    position: relative; /* 부모 요소에 상대 위치 설정 */
+}
+.error {
+    color: red; /* 오류 메시지를 빨간색 텍스트로 설정 */
+    margin-top: 3px;
+    display: block;
+    margin-bottom: -5px;
+}
+
+#div_next {
+    border-radius: 6px;
+    color: #fff;
+    background-color: #99e7c7;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 30px;
+    width: 95%;
+    text-align: center;
+    padding: 10px 0;
+    border: none;
+    margin-left: 12px;
+    cursor: not-allowed; /* 기본 상태에서 클릭 불가능 */
+}
+#div_next:enabled {
+    cursor: pointer; /* 활성화 시 클릭 가능 */
+    background-color: #00c473; /* 버튼 활성화 시 배경색 변경 */
+}
+#div_already_login {
+    text-align: center;
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+}
+#div_already_login > a {
+	margin-left: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: underline;
+    color: #000;
+}
+a {
+	color: #a2a2a2;	
+}
