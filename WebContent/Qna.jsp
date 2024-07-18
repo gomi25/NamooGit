@@ -61,14 +61,14 @@
 		<div>
 			<div class="fl"> <a href="https://www.naver.com">고객사례 </a></div> 
 			<div class="fl"><a href="https://www.naver.com">도입문의</a></div>
-			<div class="fl"><a href="https://www.naver.com">리소스</a></div>
+			<div class="fl"><a href="NamooHelpMain.jsp">헬프센터</a></div>
 			<div class="fl"><a href="https://www.naver.com"><img src="https://cdn.jandi.com/landing/_next/static/media/arrow_mini_down.ad231965c95d19a3510b2e6c538470fe.svg/"></a></div>
 			<div class="fl"><a href="https://www.naver.com">블로그</a></div>
 			
 		</div>
 		<div class="center" >
-			<div class="fr"><a href="https://www.naver.com"><span>로그인</span></a></div>
-			<div class="border fr"><a href="https://www.naver.com">다운로드</a></div>
+			<div class="fr"><a href="NamooLogin.jsp"><span>로그인</span></a></div>
+			<div class="border fr">다운로드</div>
 		</div>
 		
 		
