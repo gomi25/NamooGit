@@ -1,0 +1,589 @@
+@charset "UTF-8";
+/*--------------------------------메인 구조--------------------------------*/
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css); 
+*{box-sizing: border-box;
+font-family: Noto Sans KR, sans-serif;}
+.border{ border: 1px solid red; }
+.fl{ float:left; }
+.fr{ float:right; }
+body{ margin:0; background-color: rgb(248, 248, 248);}
+a{ text-decoration-line: none; color: inherit;}
+/*------------------------------제이쿼리----------------------------------*/
+#transparent_screen {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(1,1,1,0);	
+	display: none;
+	z-index: 1;
+}
+/*----------------------------------헤더----------------------------------*/
+#div_header {
+	position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    min-width: 780px;
+    height: 60px;
+    padding: 13px 20px 14px 154px;
+    background-color:  #FFF;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12);
+    z-index: 10;
+}
+#div_logo { /* ------로고 + namoo------ */
+	margin-left: -143px;
+	position: relative;
+	width: 120px;
+	height: 30px;
+	margin-top: -5px;
+}
+#div_logo > img { /* 로고 이미지 */
+	position: absolute;
+	width: 40px;
+}
+#div_logo > div { /* namoo이름 */
+	position: absolute;
+	font-size: 20px;
+	font-weight: 900;	
+	margin-top: 5px;
+	margin-left: 40px;
+	letter-spacing: 1.5px;
+}
+#div_pc_app { /*-----윈도우이미지 + pc앱 다운로드 -----*/
+	background-color: #00C473;
+    color: #fff;
+    border-radius: 3px;
+    height: 33px;
+    padding: 5px 18px 0 14px;
+    margin-top: 0px;
+}
+#div_pc_app > div:nth-child(1){ /* pc앱 다운로드 */
+    background-image: url(https://cdn.jandi.com/main/assets/images/ca021738.platform-logo.png);
+    background-size: auto 21px;
+    background-position: left 0;
+    background-repeat: no-repeat;
+    width: 25px;
+    display: inline-block;
+    height: 40px;    
+}
+#div_pc_app > div:nth-child(2){
+	font-size: 14px;
+	font-weight: 600;
+	margin-left: 14px;
+}
+#div_member_name { /* 프사 + 이름 */
+	display: block;
+	width: 102px;
+    height: 38px;
+    line-height: 38px;
+    padding: 0 12px;
+    position: relative;
+    color: #555;
+    font-weight: 550;
+    cursor: pointer;
+}
+#div_member_name > img {/* 프사 */
+	position: absolute;
+	width: 28px;
+	border-radius: 50%;
+	margin-left: 0;
+	border: 0.1px solid #DCDCDC;
+}
+#div_member_name > div:nth-child(2) { /* 이름 */
+	position: absolute;
+    font-size: 14px;
+    margin-left: 37px;
+    margin-top: -6px;
+    letter-spacing: 0.5px;
+}
+/*----------------------------------바디----------------------------------*/
+#div_body{ /* 전체 바디 */
+	position: relative;
+	color: #333;
+	width: 100%;
+	height: 1300px;
+	margin: 0 auto;
+	margin-top: 60px;
+}
+#div_setting_box1{ /* 계정설정 영역 */
+	width: 780px;
+	height: 1120px;;
+    margin: 0 auto;
+    padding-top: 24px; 
+}
+#div_category{	/* 카테고리 */
+	width: 780px;
+	height: 35px;
+	line-height: 18px;
+    font-size: 14px;
+    color: #777;
+}
+#div_setting_box2{ /* 계정설정 틀2 */
+	width: 780px;
+	border: 1px solid rgba(0, 0, 0, .11);
+	box-shadow: 0 3px 10px -2px rgba(0, 0, 0, .08);
+    background: #fff;
+    padding: 18px 32px 45px 32px;
+}
+/*-------------------------------프사-------------------------------*/
+#div_profile_pic {/* 프사 영역 */
+	width: 714px;
+	height: 94px;
+	font-size: 16px;
+	border: solid #DCDCDC;
+	border-width: 0 0 0.5px 0; 
+}
+#div_profile_pic > div:nth-child(1) {/* 프사 글자 영역  + 글자 스타일*/
+	width: 224px;
+	height: 92px;
+	padding: 20px 0 25px 15px;
+	font-weight: 600;
+}
+#div_profile_pic > div:nth-child(2) { /* 프사 이미지  영역*/
+	padding: 20px 24px 24px 0;
+	width: 490px;
+	height: 92px;
+}
+#div_profile_pic > div:nth-child(2) > img { /* 프사 사진 */
+	position: relative;
+	width: 46px;
+	height: 46px;
+	border: 0.1px solid #DCDCDC;
+	border-radius: 50%;
+	margin-left: 0;
+	cursor: pointer;
+	object-fit: cover;
+}
+#select_pic { /* 프사 변경 창 */
+	position: absolute;
+	width: 161px;
+	padding: 8px 0;
+	margin-left: 265px;
+	margin-top: 35px;
+	border: 1px solid rgba(0, 0, 0, .11);
+	border-radius: 3px;
+	box-shadow: 0 3px 10px -2px rgba(0, 0, 0, .08);
+    background: #fff;
+    display: none;
+    z-index: 2;
+}
+.pic-upload { /* 사진올리기 */
+	font-size: 14px;
+	padding: 0 12px;
+	height: 26px;
+	cursor: pointer;
+}
+.pic-upload:hover { /* 사진올리기 호버  */
+	 background-color: #fafafb;
+}
+#pic_file{ /* 인풋 파일 안 보이게 하기 */
+	display: none;	
+}
+.default_profile { /* 사진올리기 */
+	font-size: 14px;
+	padding: 0 12px;
+	height: 26px;
+	cursor: pointer;
+}
+.default_profile:hover { /* 사진올리기 호버  */
+	 background-color: #fafafb;
+}
+#resetImage{
+	display: none;
+}
+/*-------------------------------이름------------------------------*/
+#div_profile_name { /* 이름 전체 영역 */
+	width: 714px;
+	height: 70px;
+	border: solid #DCDCDC;
+	border-width: 0 0 0.5px 0; 
+	cursor: pointer;
+}
+#div_profile_name:hover{
+    background-color: #fafafb;
+}
+#div_profile_name >  div:nth-child(1) { /* '이름'칸 */
+	width: 224px;
+	height: 100%;
+	padding: 20px 0 25px 15px;
+	font-weight: 600;
+}
+/*-------------------------------(1)-------------------------------*/
+#div_profile_name >  div:nth-child(2) {	/* 이름 표시 영역 */
+	padding: 20px 24px 24px 0;
+	width: 490px;
+	height: 70px;
+	display: block;
+}
+#div_profile_name >  div:nth-child(2) > div:nth-child(1){ /* 표시되는 이름 */
+	width: 450px;
+	height: 20px;
+}
+#div_profile_name >  div:nth-child(2) > div:nth-child(2){ /* 꺽쇠 */
+	width: 14px;
+	height: 14px;
+	margin-top: 2px;
+	margin-left: -14px;
+	font-size:9px;
+	color: #00A66D;
+	font-weight: 1000;
+}
+/*-------------------------------(2)-------------------------------*/
+#div_input_name { /* 인풋 영역 */
+	width: 490px;
+	height: 124px;
+	padding: 20px 24px 14px 0;
+	display: none;
+}
+#div_input_name > div:nth-child(1) > input { /* 인풋 칸 */
+	width: 430px;
+	height: 35px;
+	padding: 0 11px;
+	border: 1px solid gainsboro;
+	border-radius: 3px;
+}
+#div_input_name > div:nth-child(1) > input:focus { /* 인풋칸 포커스 효과 */
+	outline: none;
+	border-color:#4f8ff4;
+}
+#div_input_name > div:nth-child(2){ /* 취소버튼 */
+    width: 56px;
+    height: 35px;
+	border-radius: 3px;
+    font-weight: 500;
+    background-color: #fff;
+    color: #888;
+    border: 1px solid #DCDCDC;
+    padding: 2.5px 12px;
+    font-size: 15px;
+    margin-top: 15px;
+    cursor: pointer;
+}
+#div_input_name > div:nth-child(3) input[type="button"]{	/* 확인버튼 */
+    width: 56px;
+    height: 35px;
+	border-radius: 3px;
+    font-weight: 500;
+    background-color: #d0cfd4;
+    color: rgba(255, 255, 255, .8);
+    border: 1px solid #DCDCDC;
+    padding: 2.5px 12px;
+    font-size: 15px;
+    margin-top: 15px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+#div_input_name > div:nth-child(4){	/* 꺽쇠 */
+	width: 14px;
+	height: 14px;
+	margin-top: -37PX;
+	margin-left: -14px;
+	font-size:9px;
+	color: #00A66D;
+	font-weight: 1000;
+	cursor: pointer;
+}
+/*-------------------------------이메일------------------------------*/
+#div_email{ /* 이메일 전체 영역 */
+	width: 714px;
+	height: 70px;
+	border: solid #DCDCDC;
+	border-width: 0 0 0.5px 0; 
+}
+#div_email:hover { /* 이메일 호버 효과 */
+	background-color: #fafafb;
+}
+#div_email > div:nth-child(1) { /* 이메일 글자 */
+	width: 224px;
+	height: 69px;
+	padding: 25px 0 25px 15px;
+	font-weight: 600;
+}
+#div_email > div:nth-child(2){ /* 이메일 표시 */
+	width: 490px;
+	height: 69px;
+	padding: 25px 15px 25px 0;
+}
+/*-------------------------------전화번호------------------------------*/
+#div_phone_number{ /* 전화번호 전체 영역 */
+	width: 714px;
+	height: 70px;
+	border: solid #DCDCDC;
+	border-width: 0 0 0.5px 0; 
+}
+#div_phone_number:hover { /* 전화번호 호버 효과 */
+	background-color: #fafafb;
+}
+#div_phone_number > div:nth-child(1) { /* 전화번호 글자 */
+	width: 224px;
+	height: 69px;
+	padding: 25px 0 25px 15px;
+	font-weight: 600;
+}
+#div_phone_number > div:nth-child(2){ /* 전화번호 표시 */
+	width: 490px;
+	height: 69px;
+	padding: 25px 15px 25px 0;
+}
+/*-------------------------------비밀번호------------------------------*/
+#div_password{ /* 비밀번호 전체 영역 */
+	width: 714px;
+	height: 70px;
+	border: solid #DCDCDC;
+	border-width: 0 0 0.5px 0; 
+}
+#div_password:hover { /* 비밀번호 호버 */
+	background-color: #fafafb;
+}
+#div_password >div:nth-child(1){ /* '비밀번호 변경하기' */
+	width: 224px;
+	height: 70px;
+	padding: 25px 0 25px 15px;
+	font-weight: 600;
+}
+/*-------------------------------(1)-------------------------------*/
+#div_password >div:nth-child(2){ /* 비밀번호 표시 영역 */
+	width: 490px;
+	height: 70px;
+	padding: 20px 24px 24px 0;
+	display: block;
+}
+#div_password >div:nth-child(2) > div:nth-child(1){ /* 별표 */
+	width: 450px;
+	height: 20px;
+	font-size: 9px;
+	margin-top: 7px;
+}
+#div_password >div:nth-child(2) > div:nth-child(2){ /* 꺽쇠 */
+	width: 14px;
+	height: 14px;
+	margin-top: 8px;
+	margin-left: 0px;
+	font-size:9px;
+	color: #00A66D;
+	font-weight: 1000;
+	cursor: pointer;
+}
+/*-------------------------------(2)-------------------------------*/
+#div_change_password {
+	width: 490px;
+	height: 320px;
+	padding: 22px 24px 14px 0;
+	display: none;
+}
+#div_change_password > div:nth-child(1) { /* '현재 비밀번호' */
+	width: 450px;
+	height: 26px;
+	padding: 0 0 8px;
+	font-size: 15px;
+}
+#div_change_password > div:nth-child(2){ /* 꺽쇠 ∧ */
+	width: 14px;
+	height: 14px;
+	margin-top: 0;
+	margin-left: 0px;
+	font-size:9px;
+	font-weight: 1000;
+	color: #00A66D;
+	cursor: pointer;
+}
+#div_change_password > div:nth-child(3) > input { /* 현재 비밀번호 입력칸 */
+	width: 430px;
+	height: 35px;
+	border: 1px solid #e03703;
+    border-radius: 3px;
+}
+#div_change_password > div:nth-child(3) > input:focus {
+	outline: none;
+	border-color:#4f8ff4;
+}
+#div_change_password > div:nth-child(4) { /* '새 비밀번호' */
+	width: 430px;
+	height: 26px;
+	padding: 0 0 8px;
+	font-size: 15px;
+	margin: 24px 0 0;
+}
+#div_change_password > div:nth-child(5) > input { /* 새 비밀번호 입력칸 */
+	width: 430px;
+	height: 35px;
+	border: 1px solid #e03703;
+    border-radius: 3px;
+}
+#div_change_password > div:nth-child(5) > input:focus {
+	outline: none;
+	border-color:#4f8ff4;
+}
+#div_change_password > div:nth-child(6) { /* '비밀번호 확인' */
+	width: 430px;
+	height: 26px;
+	padding: 0 0 8px;
+	font-size: 15px;
+	margin: 24px 0 0;
+}
+#div_change_password > div:nth-child(7) > input { /* 비밀번호 확인 입력칸 */
+	width: 430px;
+	height: 35px;
+	border: 1px solid #e03703;
+    border-radius: 3px;
+}
+#div_change_password > div:nth-child(7) > input:focus {
+	outline: none;
+	border-color:#4f8ff4;
+}
+#div_change_password > div:nth-child(8) { /* 취소  */
+	width: 56px;
+    height: 35px;
+	border-radius: 3px;
+    font-weight: 500;
+    background-color: #fff;
+    color: #888;
+    border: 1px solid #DCDCDC;
+    padding: 2.5px 12px;
+    font-size: 15px;
+    margin-top: 18px;
+    cursor: pointer;
+}
+#div_change_password > div:nth-child(9) input[type="button"]{ /* 확인 */
+	width: 56px;
+    height: 35px;
+	border-radius: 3px;
+    font-weight: 500;
+    background-color: #d0cfd4;
+    color: rgba(255, 255, 255, .8);
+    border: 1px solid #DCDCDC;
+    padding: 2.5px 12px;
+    font-size: 15px;
+    margin-top: 18px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+/*-------------------------------계정삭제-------------------------------*/
+#div_delete { /* 계정삭제 영역  */
+	width: 714px;
+	height: 70px;
+}
+#div_delete:hover{
+	background-color: #fafafb;
+}
+#div_delete > div:nth-child(1) { /* '나무계정삭제' 영역 */
+	width: 224px;
+	height: 70px;
+	padding: 25px 0 25px 15px;
+	font-weight: 600;
+}
+/*-------------------------------(1)-------------------------------*/
+#div_delete > div:nth-child(2) { /* 나무계정삭제 오른쪽 영역 */
+	width: 490px;
+	height: 70px;
+	padding: 22px 24px 14px 0;
+	display: block;
+}
+#div_delete > div:nth-child(2) > div{ /* 꺽쇠  */
+	width: 14px;
+	height: 14px;
+	margin-top: 0;
+	margin-left: 0px;
+	font-size:9px;
+	font-weight: 1000;
+	color: #00A66D;
+	cursor: pointer;
+}
+/*-------------------------------(2)-------------------------------*/
+#div_delete_input{ /* 계정삭제 input 전체 영역 */
+	width: 490px;
+	height: 200px;
+	padding: 22px 24px 14px 0;
+	display: none;
+}
+#div_delete_input > div:nth-child(1) { /* 비밀번호 글자 */
+	width: 450px;
+	height: 26px;
+	padding: 0 0 8px;
+	font-size: 15px;
+	font-weight: 600;
+}
+#div_delete_input > div:nth-child(2) { /* 꺽쇠 */
+	width: 14px;
+	height: 14px;
+	margin-top: 0;
+	margin-left: 0px;
+	font-size:9px;
+	font-weight: 1000;
+	color: #00A66D;
+	cursor: pointer; 
+}
+#div_delete_input > div:nth-child(3) > input { /* 비밀번호 입력란 */
+	width: 430px;
+	height: 35px;
+	padding: 0 11px;
+	border: 1px solid gainsboro;
+	border-radius: 3px;
+	font-weight: 400;
+	margin-top:5px;
+}
+#div_delete_input > div:nth-child(3) > input:focus {
+	outline: none;
+	border: none;
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12);
+}
+#div_delete_input > div:nth-child(4){ /* 계정삭제동의란 */
+	width: 430px;
+	height: 35px;
+	font-size: 15px;
+	font-weight: 600;
+	margin-top: 20px;
+}
+#div_delete_input > div:nth-child(4) > input {/* 계정삭제동의 체크박스 */
+	margin-right: 10px;
+}
+#div_delete_input > div:nth-child(5) input[type="button"] { /* 나무계정삭제 버튼 */
+	width: 124px;
+    height: 35px;
+	border-radius: 3px;
+    font-weight: 500;
+    background-color: #d0cfd4;
+    color: rgba(255, 255, 255, .8);
+    border: 1px solid #DCDCDC;
+    padding: 2.5px 12px;
+    font-size: 15px;
+    cursor: pointer;
+}
+#div_delete_input > div:nth-child(6) { /* 취소 버튼 */
+	width: 56px;
+    height: 35px;
+	border-radius: 3px;
+    font-weight: 500;
+    background-color: #fff;
+    color: #888;
+    border: 1px solid #DCDCDC;
+    padding: 2.5px 12px;
+    font-size: 15px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+/*------------------------------footer-------------------------------*/
+#div_footer{
+	width: 780px;
+	height: 66px;
+	padding: 22px 0 25px;
+	margin: 0 auto;
+}
+#div_footer > div:nth-child(1) {
+	margin-left: 34px;
+	font-size: 14px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
