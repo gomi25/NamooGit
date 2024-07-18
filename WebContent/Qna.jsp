@@ -63,7 +63,7 @@
 			<span><a href="NamooMain.jsp">NAMOO</a></span>
 		</div>
 		<div class="fl"><a href="hsttps://www.jandi.com/landing/kr/industry">고객사례</a></div>
-		<div class="fl"><a href="https://www.jandi.com/landing/kr/consult">도입문의</a></div>
+		<div class="fl"><a href="Qna.jsp">도입문의</a></div>
 		<div class="fl"><a href="NamooHelpMain.jsp">헬프센터</a></div>
 		<div class="fl"><a href="https://blog.jandi.com/ko/">블로그</a></div>
 		<div class="fr"><a href="NamooLogin.jsp"><strong>로그인</strong></a></div>
