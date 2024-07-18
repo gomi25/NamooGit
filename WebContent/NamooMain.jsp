@@ -73,7 +73,7 @@
 	
 	<!------------------- 도입문의, 회원가입 버튼 ---------------->
 	<div id="div_body_button">
-		<div class="fl"><a href="https://www.jandi.com/landing/kr/consult">도입문의</a></div>
+		<div class="fl"><a href="Qna.jsp">도입문의</a></div>
 		<div class="fl"><a href="https://www.jandi.com/landing/kr/signup">회원가입</a></div>
 	</div>
 	<!---------------------------영상 ------------------------>
@@ -187,8 +187,8 @@
                   <li><a href="https://www.jandi.com/landing/kr/features">기능</a></li>
                   <li><a href="https://www.jandi.com/landing/kr/security">보안</a></li>
                   <li><a href="https://www.jandi.com/landing/kr/pricing">요금안내</a></li>
-                  <li><a href="https://support.jandi.com/ko/">헬프센터</a></li>
-                  <li><a href="https://www.jandi.com/landing/kr/consult">도입문의</a></li>
+                  <li><a href="NamooHelpMain.jsp">헬프센터</a></li>
+                  <li><a href="Qna.jsp">도입문의</a></li>
                </ul>
             </div>
             <div id="footer_info2">
