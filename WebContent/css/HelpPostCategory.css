@@ -1,0 +1,483 @@
+@charset "UTF-8";
+/*--------------------------------메인 구조--------------------------------*/
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css); 
+*{box-sizing: border-box;
+font-family: Noto Sans KR, sans-serif;}
+.border{ border: 1px solid red; }
+.fl{ float:left; }
+.fr{ float:right; }
+body{ margin:0; background-color: #fff}
+a{ text-decoration-line: none; color: inherit;}
+/*--------------------------------헤더--------------------------------*/
+#div_header{ /* 헤더 전체 영역 */
+	width: 100%;
+	height: 196px;
+	padding: 0 210px 36px 210px;
+	background-image: url('https://downloads.intercomcdn.com/i/o/346407/b8c7a231908b61c588dc3980/3101e8e81257d37571cece18aebe3db3.jpg');
+	background-size: 100%;
+	margin-bottom: 36px;
+}
+
+#div_header_company{ /* 로고 + 나무 + 나무로 이동 */
+	top: 0;
+	width: 960px;
+	height: 61px;
+	margin: 0 auto;
+	padding-top: 24px;
+	
+}
+#div_header_company > div:nth-child(1) { /* 로고 + 나무 */
+	width: 140px;
+	height: 35px;
+    margin-bottom: 0;
+}
+#div_header_company > div:nth-child(1)  > div:nth-child(1) > img {
+	border-radius: 10px;
+}
+#div_header_company > div:nth-child(1) > div:nth-child(2) { /* NAMOO */
+	font-size: 20px;
+	font-weight: 600;	
+	margin-left: 10px;
+	letter-spacing: 3px;
+	color: white;
+}
+#div_header_company > div:nth-child(2){	/* 나무로 이동  */
+	font-size: 14px;
+	color: white;
+	font-weight: 500;
+}
+/*--------------------------------검색창--------------------------------*/
+#div_header_search{ /* 헤더 검색창 전체 영역 */
+	margin: 0 auto;
+	margin-top: 50px;
+	width: 960px;
+	height: 121px;
+}
+#div_header_search > div:nth-child(1) { /* 검색창 영역 */
+	width: 960px;
+	height: 62px;
+}
+#div_header_search > div:nth-child(1) > input { /* 검색창 인풋박스 */
+	width: 955px;
+	height: 60px;
+	padding: 0 30px;
+	outline: none;
+	border-radius: 10px;
+	border: none;
+	background-color: hsla(0, 0%, 100%, .2);
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12);
+	font-size: 20px;
+}
+#div_header_search > div:nth-child(1) > input::placeholder { /* 검색창 placeholder */
+	color: #fff;
+}
+#div_header_search > div:nth-child(1) > input:hover { /* 검색창 호버 */
+	outline: none;
+	border: none;
+	box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, .1);
+	transition: 0.7s;
+}
+#div_header_search > div:nth-child(1) > input:focus { /* 검색창 포커스 */
+	background-color: #fff;
+	outline: none;
+	border: none;
+	box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, .1);
+}
+#div_header_search > div:nth-child(1) > input:focus::placeholder{ /* 검색창 포커스시 placeholder색상 */
+	color: #858585;
+}
+/*--------------------------------바디--------------------------------*/
+#div_body{
+	width: 100%;
+	height: 1500px;
+	padding: 0 40px;
+}
+/*----------------------------바디 전체 영역--------------------------------*/
+#div_body_area {
+	width: 960px;
+	height: 1350px;
+	margin: 0 auto;
+
+}
+/*------------------------------ 글 경로 --------------------------------*/
+#div_body_area > div:nth-child(1) { /* [모든 콜렉션 > 자주 묻는 질문] 영역*/
+	width: 960px;
+	height: 39px;
+	padding: 0 0 16px;
+	font-size: 14px;
+	letter-spacing: 1px;
+}
+#div_body_area > div:nth-child(1) > div:nth-child(1){ /* '모든 콜렉션' */
+	width: 83px;
+	height: 22px;
+}
+#div_body_area > div:nth-child(1) > div:nth-child(1):hover{
+	color: #737373;
+}
+#div_body_area > div:nth-child(1) > div:nth-child(2){/* 꺽쇠 */
+	width: 14px;
+	height: 8px;
+	font-size: 10px;
+	margin-top: 4px;
+}
+#div_body_area > div:nth-child(1) > div:nth-child(3){ /* 자주 묻는 질문 */
+	color: #737373;
+	font-weight: 500;
+}
+/*--------------------------- 주제 + 부주제-----------------------------*/
+#div_body_area > div:nth-child(2){ /* [주제+부주제] 영역 */
+	width: 960px;
+	height: 170px;
+}
+#div_body_area > div:nth-child(2) > div:nth-child(1){ /* 이미지 영역*/
+	width: 960px;
+	height: 40px;
+	margin-bottom: 20px;
+}
+#div_body_area > div:nth-child(2) > div:nth-child(1) > img { /* 이미지 */
+	width: 40px;
+}
+#div_body_area > div:nth-child(2) > div:nth-child(2) { /* 주제 */
+	width: 960px;
+	height: 40px;
+	font-size: 32px;
+	font-weight: 600;
+	letter-spacing: 2px;
+	margin: 0 0 4px;
+}
+#div_body_area > div:nth-child(2) > div:nth-child(3){ /* 부주제 */
+	width: 960px;
+	height: 24px;
+	font-size: 16px;
+	font-weight: 400;
+	margin-top: 5px;
+}
+#div_body_area > div:nth-child(2) > div:nth-child(4){ /* n개의 자료 */
+	width: 960px;
+	margin-top:20px;
+	font-size: 14px;
+	color: #737373;
+}
+/*---------------------------질문 목록 분류----------------------------*/
+.div_category{
+	margin-top: 40px;
+	width: 960px;
+}
+/*---------------------------목록 1번 (권한)----------------------------*/
+.div_category_01{ /* 권한 영역 */
+	width: 960px;
+	border: 1px solid #e5e7eb;
+	padding: 12px;
+	border-radius: 10px;
+	margin-bottom: 24px;
+}
+.div_category_01 > div:nth-child(1) { /* 권한 */
+	width: 910px;
+	height: 67px;
+	font-size: 22px;
+	padding: 12px 0 12px 12px; 
+	border: solid #DCDCDC;
+	border-width: 0 0 0.5px 0;
+	margin-bottom: 4px;
+	font-weight: 500;
+}
+.div_category_01 > div:not(:first-child) { /* 글제목-1 영역 */
+	width: 910px;
+	height: 52px;
+	padding: 12px;
+	cursor: pointer;
+}
+.div_category_01 > div:not(:first-child):hover { /* 글제목-1 호버 */
+	background-color: #00c47317;
+	border-radius: 10px;
+	color: rgb(0, 196, 115);
+	transition: 0.5s;
+}
+.div_category_01 > div:not(:first-child) > div:nth-child(1) { /* 글제목 1번 */
+	width: 700px;
+	height: 26px;
+}
+.div_category_01 > div:not(:first-child) > div:nth-child(2) { /* 꺽쇠 */
+	font-size:12px;
+	font-weight: 1000;
+	color: #00A66D;
+}
+/*
+.div_category_01 > div:nth-child(3){ / * 글제목-2 영역 * /
+	width: 910px;
+	height: 52px;
+	padding: 12px;
+	cursor: pointer;
+}
+.div_category_01 > div:nth-child(3):hover { / * 글제목-2 호버 * /
+	background-color:  #00c47317;
+	border-radius: 10px;
+	color: rgb(0, 196, 115);
+	transition: 0.5s;
+}
+.div_category_01 > div:nth-child(3) > div:nth-child(1) { / * 글제목 2번 * /
+	width: 700px;
+	height: 26px;
+}
+.div_category_01 > div:nth-child(3) > div:nth-child(2) { / * 꺽쇠 * /
+	font-size:12px;
+	font-weight: 1000;
+	color: #00A66D;
+}
+*/
+
+/*---------------------------목록 2번 (잔디 시작하기)----------------------------*/
+#div_category_02{ /* '잔디 시작하기' 영역 */
+	width: 960px;
+	border: 1px solid #e5e7eb;
+	padding: 12px;
+	border-radius: 10px;
+	margin-bottom: 24px;
+	margin-top: 20px;
+}
+#div_category_02 > div:nth-child(1) { /* '잔디 시작하기' */
+	width: 910px;
+	height: 67px;
+	font-size: 22px;
+	padding: 12px 0 12px 12px; 
+	border: solid #DCDCDC;
+	border-width: 0 0 0.5px 0;
+	margin-bottom: 4px;
+	font-weight: 500;
+}
+#div_category_02 > div:nth-child(2){ /* 글제목-1 영역 */
+	width: 910px;
+	height: 52px;
+	padding: 12px;
+	cursor: pointer;
+}
+#div_category_02 > div:nth-child(2):hover { /* 글제목-1 호버 */
+	background-color:  #00c47317;
+	border-radius: 10px;
+	color: rgb(0, 196, 115);
+	transition: 0.5s;
+}
+#div_category_02 > div:nth-child(2) > div:nth-child(1) { /* 글제목 1번 */
+	width: 700px;
+	height: 26px;
+}
+#div_category_02 > div:nth-child(2) > div:nth-child(2) { /* 꺽쇠 */
+	font-size:12px;
+	font-weight: 1000;
+	color: #00A66D;
+}
+#div_category_02 > div:nth-child(3){ /* 글제목-2 영역 */
+	width: 910px;
+	height: 52px;
+	padding: 12px;
+	cursor: pointer;
+}
+#div_category_02 > div:nth-child(3):hover { /* 글제목-2 호버 */
+	background-color: #00c47317;
+	border-radius: 10px;
+	color: rgb(0, 196, 115);
+	transition: 0.5s;
+}
+#div_category_02 > div:nth-child(3) > div:nth-child(1) { /* 글제목 2번 */
+	width: 700px;
+	height: 26px;
+}
+#div_category_02 > div:nth-child(3) > div:nth-child(2) { /* 꺽쇠 */
+	font-size:12px;
+	font-weight: 1000;
+	color: #00A66D;
+}
+/*---------------------------목록 3번 (잔디 시작하기)----------------------------*/
+#div_category_03{ /* '용량 및 백업' 영역 */
+	width: 960px;
+	border: 1px solid #e5e7eb;
+	padding: 12px;
+	border-radius: 10px;
+	margin-bottom: 24px;
+	margin-top: 20px;
+}
+#div_category_03 > div:nth-child(1) { /* '용량 및 백업' */
+	width: 910px;
+	height: 67px;
+	font-size: 22px;
+	padding: 12px 0 12px 12px; 
+	border: solid #DCDCDC;
+	border-width: 0 0 0.5px 0;
+	margin-bottom: 4px;
+	font-weight: 500;
+}
+#div_category_03 > div:nth-child(2){ /* 글제목-1 영역 */
+	width: 910px;
+	height: 52px;
+	padding: 12px;
+	cursor: pointer;
+}
+#div_category_03 > div:nth-child(2):hover { /* 글제목-1 호버 */
+	background-color:  #00c47317;
+	border-radius: 10px;
+	color: rgb(0, 196, 115);
+	transition: 0.5s;
+}
+#div_category_03 > div:nth-child(2) > div:nth-child(1) { /* 글제목 1번 */
+	width: 700px;
+	height: 26px;
+}
+#div_category_03 > div:nth-child(2) > div:nth-child(2) { /* 꺽쇠 */
+	font-size:12px;
+	font-weight: 1000;
+	color: #00A66D;
+}
+#div_category_03 > div:nth-child(3){ /* 글제목-2 영역 */
+	width: 910px;
+	height: 52px;
+	padding: 12px;
+	cursor: pointer;
+}
+#div_category_03 > div:nth-child(3):hover { /* 글제목-2 호버 */
+	background-color:  #00c47317;
+	border-radius: 10px;
+	color: rgb(0, 196, 115);
+	transition: 0.5s;
+}
+#div_category_03 > div:nth-child(3) > div:nth-child(1) { /* 글제목 2번 */
+	width: 700px;
+	height: 26px;
+}
+#div_category_03 > div:nth-child(3) > div:nth-child(2) { /* 꺽쇠 */
+	font-size:12px;
+	font-weight: 1000;
+	color: #00A66D;
+}
+/*---------------------------목록 4번 (설정)----------------------------*/
+#div_category_04{ /* '설정' 영역 */
+	width: 960px;
+	border: 1px solid #e5e7eb;
+	padding: 12px;
+	border-radius: 10px;
+	margin-bottom: 24px;
+	margin-top: 20px;
+}
+#div_category_04 > div:nth-child(1) { /* '설정' */
+	width: 910px;
+	height: 67px;
+	font-size: 22px;
+	padding: 12px 0 12px 12px; 
+	border: solid #DCDCDC;
+	border-width: 0 0 0.5px 0;
+	margin-bottom: 4px;
+	font-weight: 500;
+}
+#div_category_04 > div:nth-child(2){ /* 글제목-1 영역 */
+	width: 910px;
+	height: 52px;
+	padding: 12px;
+	cursor: pointer;
+}
+#div_category_04 > div:nth-child(2):hover { /* 글제목-1 호버 */
+	background-color:  #00c47317;
+	border-radius: 10px;
+	color: rgb(0, 196, 115);
+	transition: 0.5s;
+}
+#div_category_04 > div:nth-child(2) > div:nth-child(1) { /* 글제목 1번 */
+	width: 700px;
+	height: 26px;
+}
+#div_category_04 > div:nth-child(2) > div:nth-child(2) { /* 꺽쇠 */
+	font-size:12px;
+	font-weight: 1000;
+	color: #00A66D;
+}
+#div_category_04 > div:nth-child(3){ /* 글제목-2 영역 */
+	width: 910px;
+	height: 52px;
+	padding: 12px;
+	cursor: pointer;
+}
+#div_category_04 > div:nth-child(3):hover { /* 글제목-2 호버 */
+	background-color:  #00c47317;
+	border-radius: 10px;
+	color: rgb(0, 196, 115);
+	transition: 0.5s;
+}
+#div_category_04 > div:nth-child(3) > div:nth-child(1) { /* 글제목 2번 */
+	width: 700px;
+	height: 26px;
+}
+#div_category_04 > div:nth-child(3) > div:nth-child(2) { /* 꺽쇠 */
+	font-size:12px;
+	font-weight: 1000;
+	color: #00A66D;
+}
+/*---------------------------목록 5번 (커넥트)----------------------------*/
+#div_category_05{ /* '커넥트' 영역 */
+	width: 960px;
+	border: 1px solid #e5e7eb;
+	padding: 12px;
+	border-radius: 10px;
+	margin-bottom: 24px;
+	margin-top: 20px;
+}
+#div_category_05 > div:nth-child(1) { /* '커넥트' */
+	width: 910px;
+	height: 67px;
+	font-size: 22px;
+	padding: 12px 0 12px 12px; 
+	border: solid #DCDCDC;
+	border-width: 0 0 0.5px 0;
+	margin-bottom: 4px;
+	font-weight: 500;
+}
+#div_category_05 > div:nth-child(2){ /* 글제목-1 영역 */
+	width: 910px;
+	height: 52px;
+	padding: 12px;
+	cursor: pointer;
+}
+#div_category_05 > div:nth-child(2):hover { /* 글제목-1 호버 */
+	background-color:  #00c47317;
+	border-radius: 10px;
+	color: rgb(0, 196, 115);
+	transition: 0.5s;
+}
+#div_category_05 > div:nth-child(2) > div:nth-child(1) { /* 글제목 1번 */
+	width: 700px;
+	height: 26px;
+}
+#div_category_05 > div:nth-child(2) > div:nth-child(2) { /* 꺽쇠 */
+	font-size:12px;
+	font-weight: 1000;
+	color: #00A66D;
+}
+#div_category_05 > div:nth-child(3){ /* 글제목-2 영역 */
+	width: 910px;
+	height: 52px;
+	padding: 12px;
+	cursor: pointer;
+}
+#div_category_05 > div:nth-child(3):hover { /* 글제목-2 호버 */
+	background-color:  #00c47317;
+	border-radius: 10px;
+	color: rgb(0, 196, 115);
+	transition: 0.5s;
+}
+#div_category_05 > div:nth-child(3) > div:nth-child(1) { /* 글제목 2번 */
+	width: 700px;
+	height: 26px;
+}
+#div_category_05 > div:nth-child(3) > div:nth-child(2) { /* 꺽쇠 */
+	font-size:12px;
+	font-weight: 1000;
+	color: #00A66D;
+}
+
+
+
+
+
+
+
+
+
+
+

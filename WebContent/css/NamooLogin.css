@@ -1,0 +1,464 @@
+@charset "UTF-8";
+/*=============================메인 구조==================================*/
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css); 
+*{box-sizing: border-box;
+font-family: Noto Sans KR, sans-serif;}
+.border{ border: 1px solid purple; }
+.fl{ float:left; }
+.fr{ float:right; }
+body{ margin:0; background-color: rgb(248, 248, 248);}
+a{ text-decoration-line: none; color: inherit;}
+
+/*===============================헤더===================================*/
+#div_header1{
+    position: fixed;
+    top: 0;
+	width: 100%;
+	height: 66px;
+	z-index: 10; 
+	background-color: rgba(250, 250, 252, .95);
+	font-size: 14px;
+    line-height: 20px;
+    border-bottom: 1px solid #ddd;
+    
+}
+#div_header1 > div:nth-child(1){ /*로고 +이름*/
+	position: relative;
+	width: 124px;
+	height: 30px;
+	margin-top: 10px; 
+	margin-left: 260px;
+	font: inherit;
+	font-size: 20px;
+	font-weight: 900;ㄴ
+}
+#div_header1 > div:nth-child(1) > img {	/*로고*/
+	position: absolute;
+	width: auto; 
+	height: 40px;	
+	margin: 0px auto;
+	left: 0;
+}
+#div_header1 > div:nth-child(1) > span { /*나무이름*/
+	position: absolute;
+	margin-top: 10px;
+	right: 0;
+	letter-spacing: 1.5px;
+	
+}
+#div_header1 > div:nth-child(2){ 	/*고객사례*/
+	margin-top: 15px;
+	margin-left: 40px;
+	padding: 8px 14px;
+	height: 50px;
+	align-items: center;
+	font-weight: 600;
+	color: #333;
+}
+#div_header1 > div:nth-child(2):hover {
+	color: #7b7b7b;
+}	
+#div_header1 > div:nth-child(3){	/*도입문의*/
+	margin-top: 15px;
+	margin-left: 24px;
+	padding: 8px 14px;
+	height: 50px;
+	align-items: center;
+	font-weight: 600;
+	color: #333;
+}
+#div_header1 > div:nth-child(3):hover {
+	color: #7b7b7b;
+}	
+#div_header1 > div:nth-child(4){	/*헬프센터*/
+	position: relative;
+	margin-top: 15px;
+	margin-left: 24px;
+	padding: 8px 14px;
+	height: 50px;
+	align-items: center;
+	font-weight: 600;
+	color: #333;
+}
+#div_header1 > div:nth-child(4):hover {
+	color: #7b7b7b;
+}	
+#div_header1 > div:nth-child(5){	/*블로그*/
+	margin-top: 15px;
+	margin-left: 24px;
+	padding: 8px 14px;
+	height: 50px;
+	align-items: center;
+	font-weight: 600;
+	color: #333;
+}
+#div_header1 > div:nth-child(5):hover {
+	color: #7b7b7b;
+}	
+#div_header1 > div:nth-child(6){ 	/*로그인*/
+	font-weight: 500;
+	padding: 7px 14px;
+	background-color: #00c473;
+	color: #fff;
+	border-color: #00c473;
+   	border-radius : 6px;
+ 	margin-right: 282px;
+    margin-top: 15px;
+}
+#div_header1 > div:nth-child(6):hover {
+	background: #00b76b;
+}
+#div_header1 > div:nth-child(7){ /*다운로드*/
+	padding: 7px 14px;
+	border: 1px solid #ddd;
+	font-weight: 500;
+	border-radius : 6px;
+	margin-top: 15px;
+	margin-right: 8px;
+}
+#div_header1 > div:nth-child(7):hover {
+	background: #dddddd40;
+}
+
+/*===============================바디====================================*/
+#div_body { /* 바디크기 */
+	margin: 0 auto;
+	height: 950px;
+}
+#div_login { /* 로그인 박스 안 요소  */
+	margin: 123px auto;
+	margin-bottom: 12px;
+    text-align: left;
+    width: 484px;
+    max-width: 100%;
+    padding: 40px;
+    border-radius: 6px;
+    border: 1px solid rgb(224, 228, 237);
+    background: rgb(255, 255, 255);
+}
+#div_login > div:nth-child(1) > h1 { /* 로그인 글자  */
+	margin-top: -3px;
+    font-weight: 700.4;
+}
+#div_email_pw {
+	position: relative;
+	margin: 0;
+    padding: 13px 0px;
+    border: 0;
+    width: 402px;
+    height: 163px;
+}
+#div_email_pw > div:nth-child(1) > input { /* 이메일 입력란  */
+	position: absolute;
+	margin : 0 auto;
+	margin-top: 1px;
+	height: 50px;
+    border: 1px solid #e0e4ed;
+    padding: 12px 12px;
+    border-radius: 4px;
+    width: 100%;
+    text-align: start;
+    color: rgb(0, 0, 0);
+}
+#div_email_pw > div:nth-child(1) > input:focus { /* 클릭시 색상 변경  */
+	outline: none;
+	border:  2px solid #00c473;
+}
+#div_email_pw > div:nth-child(1) input::placeholder {	/* 이메일 글자 */
+	font-size: 16px;
+	font-weight: 600;
+	color:  #cecece;
+	left:0;
+}
+#div_email_pw > div:nth-child(2) > input{ /* 비밀번호 입력란  */
+	position: absolute;
+	margin : 0 auto;
+	margin-top: 75px;
+	height: 50px;
+    border: 1px solid #e0e4ed;
+    padding: 12px 12px;
+    border-radius: 4px;
+    width: 100%;
+    text-align: start;
+    color: rgb(0, 0, 0);
+}
+#div_email_pw > div:nth-child(2) > input:focus { /* 클릭시 색상 변경  */
+	outline: none;
+	border:  2px solid #00c473;
+}
+#div_email_pw > div:nth-child(2) input::placeholder {	/* 비밀번호 글자 */
+	font-size: 16px;
+	font-weight: 600;
+	color:  #cecece;
+	left:0;
+}
+/*==============================체크박스==================================*/
+/* :root { */ /* 체크박스 디자인 */
+input[type="checkbox"] {
+	accent-color: rgb(91, 161, 141);
+	color-scheme: light;
+}
+#div_checkbox { /* 체크박스 ~ 비밀번호 찾기*/
+	margin-top: -11px;
+	padding: 0;
+	width: 402px;
+	height: 19px;
+	text-align: left;
+}
+#div_checkbox > div:nth-child(1) { /* 체크박스+이메일기억하기 */
+	position: relative;
+	width: 110px;
+    display: inline-block;
+	margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+	height: 18px;
+    line-height: 16px;
+	text-align: left;
+	
+}
+#div_checkbox > div:nth-child(1) > input {  /* 체크박스 */
+	margin: 0px 10px 0px 0px ;
+	width : 16px;
+	height: 16px;
+}
+#div_checkbox > div:nth-child(1) > label{  /*이메일기억하기 */
+	font-size: 12px;
+	position: absolute;
+	width: 85px;
+	margin-top: 0;
+	font-weight: 520;
+	color: #4f4f4f;
+}
+
+#div_checkbox > div:nth-child(2) {  /* 체크박스+로그인상태유지 */
+	position: relative;
+	width: 110px;
+    display: inline-block;
+	margin: 0;
+	margin-left: 20px;
+    padding: 0;
+    border: 0;
+    font: inherit;
+	height: 18px;
+    line-height: 16px;
+	text-align: left;
+	
+}
+#div_checkbox > div:nth-child(2) > input { /* 체크박스 */
+	margin: 0px 10px 0px 0px ;
+	width : 16px;
+	height: 16px;
+}
+
+#div_checkbox > div:nth-child(2) > label{ /* 로그인상태유지 */
+	font-size: 12px;
+	position: absolute;
+	width: 85px;
+	margin-top: 0;
+	font-weight: 520;
+	color: #4f4f4f;
+}
+#div_checkbox > div:nth-child(3) { /* 비밀번호 찾기 */
+	margin-top:2px;
+	font-size: 12px;
+	font-weight: 550;
+	color: #A2A2A2;
+	cursor: pointer;
+}
+/*===============================로그인 버튼===============================*/
+#div_login_submit {
+	margin: 0 auto;
+	margin-top: 38px;
+}
+#div_login_submit > button {
+	border-radius: 6px;
+    color: #fff;
+    background-color: #99e7c7;
+    width: 100%;
+    text-align: center;
+    margin: 16px 0;
+    line-height: 30px;
+    padding: 10px;
+	font-size: 16px;
+	font-weight: 450;
+	border: none;
+	cursor: pointer;
+}
+/*==============================회원가입 유도===============================*/
+#div_signup {
+	position: relative;
+	margin-top: 18px;
+	width: 402px;
+	height: 16px;
+}
+#div_signup > div:nth-child(1) { /* 잔디가 처음이신가요? + 회원가입 */
+	position: absolute;
+	top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+	font-size: 12px;
+}
+#div_signup > div:nth-child(1) > div:nth-child(1) { /* 잔디가 처음이신가요? */
+	font-size: 14px;
+	color: #333;
+	font-weight: 490;
+}
+#div_signup > div:nth-child(1) > div:nth-child(2) { /* 회원가입 */
+	margin-left: 6px;
+	font-size: 14px;
+	color: #333;
+	font-weight: 1000;
+	text-decoration: underline;
+}
+
+/*============================비밀번호 찾기 팝업=========================*/
+#grey_screen { /* 팝업 : 회색 배경 */
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.7);		
+	z-index: 1;
+    display: none;
+}
+#div_find_password{ /* 팝업: 창 전체 영역 */
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 420px;
+	height: 210px;
+	background-color: #fff;
+	padding: 16px 24px;
+	border-radius: 10px;
+	z-index: 2;
+	display: none;
+}
+#div_find_password_header{ /* 팝업창 헤더 : '비밀번호 찾기' */
+	width: 100%;
+	height: 38px;
+	padding: 0 0 16px;
+}
+#div_find_password_header h3 {
+	margin: 0;
+	font-size: 18px;
+}
+#div_find_password_body{ /* 팝업창 바디 : '이메일 주소를 입력해주세요' + 인풋 + 버튼 */
+	width: 100%;
+	height: 130px;
+	padding-top: 16px;
+}
+#div_find_password_body > div:nth-child(1){ /* '이메일 주소를 입력해주세요' */
+	width: 100%;
+	height: 14px;
+	margin-bottom: 10px;
+	font-size: 13px;
+	font-weight: 500;
+	color: #333333;
+}
+#div_find_password_body > div:nth-child(2) > input{ /* 이메일 입력란  */
+	height: 40px;
+    border: 1px solid #e0e4ed;
+    padding: 10px 12px;
+    border-radius: 4px;
+    width: 100%;
+    font-size: 14px;
+    text-align: start;
+    color: rgb(0, 0, 0);
+}
+#div_find_password_body > div:nth-child(2) > input:focus{
+	outline: none;
+}
+#div_find_password_body > div:nth-child(3){ /* 버튼 칸 */
+	width: 100%;
+	height: 30px;
+	margin-top: 20px;
+}
+#div_find_password_body > div:nth-child(3) > div:nth-child(1) {/* 확인 */
+	border-radius: 16px;
+	border: none;
+    background-color: #f2f4f8;
+    color: #a2a2a2;;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    margin-left: 5px;
+	cursor: pointer;
+}
+#div_find_password_body > div:nth-child(3) > div:nth-child(2){/* 닫기 */
+	border-radius: 16px;
+    background-color: #fff;
+    color: #a2a2a2;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    margin-left: 5px;
+    cursor: pointer;
+}
+/*============================이메일발송창 팝업=========================*/
+#div_send_email { /* 이메일 발송창 영역 */
+	position: absolute;
+	width: 500px;
+	height: 143px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 8px;
+    padding: 40px 24px 16px;
+    text-align: left;
+    background-color: #fff;
+    z-index: 2;
+    display: none;
+    
+}
+#div_send_email > div:nth-child(1){ /* 이메일 발송되었습니다. */
+	width: 100%;
+	height: 16px;
+	font-size: 16px;
+}
+#div_send_email > div:nth-child(2){ /* 확인 버튼 영역 */
+	height: 31px;
+	margin-top: 25px;
+}
+#div_send_email > div:nth-child(2) input{ /* 확인 버튼 */
+	border: none;
+	float: right;
+	color: #fff;
+    background-color: #00c473;
+    margin: 0 2px;
+    border-radius: 6px;
+    padding: 8px 27px;
+    min-width: 60px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
