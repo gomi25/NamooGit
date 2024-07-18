@@ -106,9 +106,9 @@ $(document).ready(function() {
         event.preventDefault(); // 폼 제출을 막음
         checkFormValidity(); // 폼 제출 전 최종 유효성 검사
         if (!$('#div_next').prop('disabled')) {
-            alert('Form is valid! Submitting...');
+            //alert('Form is valid! Submitting...');
             // 폼을 제출하거나 AJAX 요청을 보낼 수 있습니다.
-            // $(this).unbind('submit').submit();
+            $(this).unbind('submit').submit();
         }
     });
 });
