@@ -56,28 +56,22 @@
 	</script>
 </head>
 <body>
-	<div id="div_header1" >
-		<div class="fl"><img alt="잔디로고" src="https://jandi-box.com/teams/0/logo.png?timestamp=20190628"/><p>NAMOO</p></div>
-		<div>
-			<div class="fl"> <a href="https://www.naver.com">고객사례 </a></div> 
-			<div class="fl"><a href="https://www.naver.com">도입문의</a></div>
-			<div class="fl"><a href="NamooHelpMain.jsp">헬프센터</a></div>
-			<div class="fl"><a href="https://www.naver.com"><img src="https://cdn.jandi.com/landing/_next/static/media/arrow_mini_down.ad231965c95d19a3510b2e6c538470fe.svg/"></a></div>
-			<div class="fl"><a href="https://www.naver.com">블로그</a></div>
-			
+	<!-- 헤더 -->
+	<div id="div_header1">
+		<div class="fl">
+			<img src="https://jandi-box.com/teams/0/logo.png?timestamp=20190628">
+			<span><a href="NamooMain.jsp">NAMOO</a></span>
 		</div>
-		<div class="center" >
-			<div class="fr"><a href="NamooLogin.jsp"><span>로그인</span></a></div>
-			<div class="border fr">다운로드</div>
-		</div>
-		
-		
-
+		<div class="fl"><a href="hsttps://www.jandi.com/landing/kr/industry">고객사례</a></div>
+		<div class="fl"><a href="https://www.jandi.com/landing/kr/consult">도입문의</a></div>
+		<div class="fl"><a href="NamooHelpMain.jsp">헬프센터</a></div>
+		<div class="fl"><a href="https://blog.jandi.com/ko/">블로그</a></div>
+		<div class="fr"><a href="NamooLogin.jsp"><strong>로그인</strong></a></div>
+		<div class="fr"><a href="https://www.jandi.com/landing/kr/download"><strong>다운로드</strong></a></div>
 	</div>
 	<hr class="color_grey"/>
-	
+	<!-- 바디 -->	
 	<div id="div_content1">
-		
 		<div> 
 		<h1>도입문의</h1>
 		<span>협업툴 전문 컨설턴트가 빠르게 안내드립니다.</span>
@@ -194,7 +188,7 @@
 			
 		</div>
 	</form>
-<!-- QnA부분 -->
+		<!-- QnA부분 -->
 		<div id="div_QnA">
 			<div>
 				컨설팅 Q&A
