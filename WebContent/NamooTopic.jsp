@@ -15,8 +15,8 @@
 	String topicIdxParam = (String)request.getParameter("topicIdx"); // 이렇게 받으면 토픽방 이름 바뀜. topicIdx 2까지는 데이터가 바뀌는데 3부터는 또 안 바뀜
 	int topicIdx = (topicIdxParam != null) ? Integer.parseInt(topicIdxParam) : 1;
 	
-	int memberIdx = 2;     // 테스트
-	int teamIdx = 1;       // 테스트
+	int memberIdx = 2;     // 테스트 - session
+	int teamIdx = 1;       // 테스트 - parameter
 // 	int topicIdx = 1;	   // 테스트
 // 	int topicBoardIdx = 1; // 테스트
 	
@@ -28,22 +28,22 @@
 	SideDao sDao = new SideDao();
 	BookmarkDao bDao = new BookmarkDao();
 	ChatDao cDao = new ChatDao();
+	TopicDao tDao = new TopicDao();
 //============================팀 전체 멤버 조회 테스트==============================
 	ArrayList<TeamMemberDto> teamMemberList = sDao.getTeamMemberList(teamIdx);
 //============================팀 멤버 조회 테스트==============================
 	TeamMemberDto teamMember = sDao.getTeamMember(teamIdx, memberIdx);
 //============================토픽방목록, 채팅방목록 조회 테스트==============================
+	// 대화창검색 - 전체 토픽목록
+	ArrayList<TopicDto> listTopicAll = sDao.getAllTopicList(memberIdx, teamIdx);
 	// 폴더DTO 타입(int topicFolderIdx, int memberIdx, int teamIdx, String name)
 	ArrayList<FolderBoxDto> listFolderBox = sDao.getFolderList(memberIdx, teamIdx);
 	// 토픽DTO 타입(int topicIdx, String name, String information, int teamIdx, int open, int alarm, int unread, boolean bookmark)
 	ArrayList<TopicDto> listTopic = sDao.getTopicListOutside(memberIdx, teamIdx);
-	// 대화창검색 - 전체 토픽목록
-	ArrayList<TopicDto> listTopicAll = sDao.getAllTopicList(memberIdx, teamIdx);
 	
 	// 폴더에 포함된 토픽의 안 읽은 메시지 개수  및 토픽방 개수	
 	for(FolderBoxDto dto : listFolderBox) {
 		ArrayList<TopicDto> list2 = sDao.getTopicListFromFolderIdx(memberIdx, dto.getTopicFolderIdx());
-		
 		for(TopicDto dto2 : list2) {
 			cntUnreadTotal += dto2.getUnread();	// 폴더에 포함된 토픽의 안 읽은 메시지 개수
 			cntOfTopic++;	// 토픽방 개수 +1
@@ -66,16 +66,15 @@
 		cntChatTotalUnread += dto.getUnread();
 	}
 	
-	TopicDao tDao = new TopicDao();
-//============================토픽글 조회 테스트==============================
+//============================토픽글 조회==============================
 	ArrayList<TopicBoardDto> listTopicBoard = tDao.getTopicBoardList(teamIdx, topicIdx, memberIdx);
-//============================토픽댓글 조회 테스트==============================
+//============================토픽댓글 조회==============================
 // 	ArrayList<TopicCommentDto> listTopicComment = tdao.getTopicCommentList(topicBoardIdx, teamIdx);		
-//============================토픽전체멤버 조회 테스트==============================
+//============================토픽전체멤버 조회==============================
 	ArrayList<TopicMemberDto> listTopicMember = tDao.getTopicMemberList(teamIdx, topicIdx);
 	String topicName = tDao.getTopicNameFromTopicIdx(topicIdx);
 	String topicInformation = tDao.getTopicInformation(topicIdx);
-//============================토픽전체멤버 조회 테스트==============================
+//============================토픽전체멤버 조회==============================
 	ArrayList<TeamMemberDto> teamMemberOutOfTopic = tDao.getTeamMemberListOutOfTopic(teamIdx, topicIdx);
 
 //============================채팅전체멤버 조회 테스트==============================
@@ -94,8 +93,11 @@
 	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	
 	<script>
 		let context_path = '${pageContext.request.contextPath}';
+		let member_idx = <%=memberIdx%>;
+		let team_idx = <%=teamIdx%>;
 	</script>
 	<script src="${pageContext.request.contextPath}/js/NamooTopic.js"></script>
 </head>
@@ -157,11 +159,12 @@
 			</div>
 		</div>
 		
-	
+		<div style="clear:both;"></div>
 	</div>
 	
+<!--------------------------------------- #div_total_side --------------------------------------->	
 <div id="div_total_side">
-<!--------------------------------------- div_side1 --------------------------------------->	
+<!--------------------------------------- #div_side1 --------------------------------------->	
 	<div id="div_side1" class="fl">
 	<!---------- 프로필 ---------->		
 		<div> <!-- (1) 프로필 -->
@@ -466,6 +469,9 @@
 					<div class='<%=(chatDto.isBookmarkYn() ? "ic_bookmark_on" : "ic_bookmark_off") %> fl'></div>
 					<div class="fl">
 <%-- 					<% { // 반복문을 돌려 : ProfileUrlColorDto의 리스트에 대해서. %> --%>
+						<% if(listImgUrls.size()==0) { %> <!-- 여기여기 -->
+							<img class="fl" src="https://jandi-box.com/teams/0/logo.png?timestamp=20190628"/>
+						<% } %>						
 						<%
 							int cnt = 0;
 							for(String imgUrl : listImgUrls) { 
@@ -502,7 +508,10 @@
 			</div>
 			--%>			
 		</div>
-		
+
+	<!-- 여기까지 일단 완료 7.22(월) 17시 -->	
+	<!-- 여기서부터 이어서 !! -->	
+			
 	<!--------------------------------------- div_side1 - 팝업창 --------------------------------------->
 	<!---------- 토픽 '+버튼' 클릭 시 팝업창 ---------->			
 		<div id="div_topic_plus">
@@ -639,9 +648,7 @@
 
 				<!-- 하단부 / div:nth-child(4) -->
 				<div>
-					<a href="#">
-						<button> + 새 토픽 생성</button>
-					</a>
+					<button type="button"> + 새 토픽 생성</button>
 				</div>
 			</div>
 			
@@ -1658,10 +1665,10 @@
 				 	</div> 
 					
 				</div>
-				<!-- 댓글 수 -->
-				<div class="div_comment_count">
+				<!-- 댓글 수 --> <!-- 여기여기 -->
+				<div class="div_comment_count" topic_board_idx="<%=topicBoardDto.getTopicBoardIdx()%>" >
 					<span>댓글</span>
-					<%=tDao.getTopicCommentCnt(topicBoardDto.getTopicBoardIdx())%>
+					<span><%=tDao.getTopicCommentCnt(topicBoardDto.getTopicBoardIdx())%></span>
 				</div>
 				
 				<%
@@ -1728,7 +1735,7 @@
 					}
 				%>
 				
-				<!-- 댓글 입력창 --> <!-- 여기여기 -->
+				<!-- 댓글 입력창 -->
 <%-- 			<form class="form_write_comment" action="${pageContext.request.contextPath}/jsp/WriteTopicComment.jsp" method="get">	 --%>
 				<div class="div_comment_box">
 					<div class="div_comment_space">
@@ -1783,8 +1790,11 @@
 						
 					</div>
 				</div>
-<!-- 			</form>	 -->
-			
+<!-- 			</form>	 ajax 처리 위해 form 삭제-->
+			</div> <!-- .content_board 닫는 태그 (토픽글)-->
+			<%
+				}
+			%>		
 			
 <%-- 				<!-- 댓글 입력창 --> <!-- 원본 여기여기 -->
 			<form class="form_write_comment" action="${pageContext.request.contextPath}/jsp/WriteTopicComment.jsp" method="get">	
@@ -1842,13 +1852,9 @@
 					</div>
 				</div>
 			</form>	 --%>
-				
-				 
-			</div> <!-- .content_board 닫는 태그 (토픽글)-->
-		
-			<%
-				}
-			%>		
+			
+			
+			
 			
 		<!-- 토픽글 예시 -->
 			<div class="content_board">
