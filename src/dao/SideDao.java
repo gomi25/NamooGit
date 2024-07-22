@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import dto.ChatroomDto;
 import dto.FolderBoxDto;
-import dto.LaterProfileUrlColorDto;
 import dto.TeamMemberDto;
 import dto.TopicDto;
 
@@ -314,6 +313,29 @@ public class SideDao {
 		conn.close();
 		
 		return listRet;
+	}
+
+	// team_idx + member_idx -----> state를 리턴.(ex. 회의중)
+	public String getStateOfMember(int teamIdx, int memberIdx) throws Exception {
+		String sql = "SELECT tm.state" + 
+					" FROM team_member tm" + 
+					" WHERE tm.team_idx = ?" + 
+					" AND tm.member_idx = ?";
+		
+		Connection conn = getConnection();
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, teamIdx);
+		pstmt.setInt(2, memberIdx);
+		ResultSet rs = pstmt.executeQuery();
+		String result = "";
+		if(rs.next()) {
+			result = rs.getString(1);
+		}
+		rs.close();
+		pstmt.close();
+		conn.close();
+		
+		return result;
 	}
 	
 }
