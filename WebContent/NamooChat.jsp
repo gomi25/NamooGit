@@ -57,6 +57,9 @@
 	for(ChatroomDto dto : listChatroom) {
 		cntChatTotalUnread += dto.getUnread();
 	}
+	
+	//============================채팅글 조회==============================
+	ArrayList<ChatContentsDto> chatContentsDto = cDao.getChatContents(teamIdx, chatroomIdx, memberIdx);
 	//============================토픽글 조회==============================
 // 		ArrayList<TopicBoardDto> listTopicBoard = tDao.getTopicBoardList(teamIdx, topicIdx, memberIdx);
 	//============================토픽댓글 조회==============================
@@ -561,7 +564,7 @@
 	
 <!--------------------------------------- 채팅방 --------------------------------------->
 	<div id="div_side2" class="wide fl">
-<!---------- 채팅방 상단 - 채팅방 이름 & 메뉴 ---------->	
+	<!---------- 채팅방 상단 - 채팅방 이름 & 메뉴 ---------->	
 		<div id="div_title">
 			<!-- 상단(1) -->
 			<div class=" fl">
@@ -582,11 +585,12 @@
 				<div class=" fl" data-toggle="tooltip" title="더보기"><img src="img/threespot.png"/></div>
 			</div>
 		</div>
-<!---------- 채팅방 내용 ---------->			
-		<div id="div_content">
 		
-	<!--------------------------------------- 공지 --------------------------------------->
-	<!---------- 공지 등록하기---------->
+		<!---------- 채팅방 중앙부  ---------->			
+		<div id="div_content" class="scrollbar">
+		
+			<!--------------------------------------- 공지 --------------------------------------->
+			<!---------- 공지 등록하기---------->
 			<div id="div_notice_register" class="border"> 
 				<!-- 상단부 / div:nth-child(1) -->
 				<div>
@@ -616,12 +620,11 @@
 				</div>
 			</div>		
 			
+			<!---------- 채팅방 내용 ---------->
 			<div class="chat_date">
 				<div>2024년 4월 29일 월요일</div>
 				<div></div>
 			</div>
-
-
 
 			<div class="chat_notice">
 				<span><strong>이나무</strong> 님이 비공개 토픽을 생성했습니다.<span class="time">PM 3:31</span></span>
@@ -631,21 +634,27 @@
 				<span><strong>이나무</strong> 님이 채팅방 이름을 변경했습니다.<span class="time">PM 3:32</span></span>
 			</div>
 
-			<div class="chat_message">
+		<%
+			for(ChatContentsDto chatContents : chatContentsDto) {
+		%>		
+			<div class="chat_message" chat_idx="<%=chatContents.getChatIdx()%>">
 				<div class="fl">
-					<img class="profile_img" src="https://jandi-box.com/files-profile/444fd3d25ade24bc2ec6480e11949dfa?size=80"/>
+<!-- 					<img class="profile_img" src="https://jandi-box.com/files-profile/444fd3d25ade24bc2ec6480e11949dfa?size=80"/> -->
+					<img class="profile_img" src="<%=chatContents.getProfileUrl()%>"/>
 				</div>
 				<div class="fl">
-					<div class="profile_name">이나무</div>
+					<div class="profile_name"><%=chatContents.getName()%></div>
 					<div class="msg">
-						특정 재료에 알레르기가 있거나 선호하지 않는 음식이 있다면 말씀해주세요!
-						<span class="unread">1</span>
-						<span class="time">PM 3:33</span>
+						<%=chatContents.getContent()%>
+						<span class="unread"><%=chatContents.getUnreadCnt()%></span>
+						<span class="time"><%=chatContents.getWriteDate()%></span>
 					</div>
 				</div>
 				<div style="clear:both;"></div>
 			</div>
-			
+		<%
+			}
+		%>			
 			<div class="chat_message">
 				<div class="fl">
 					<img class="profile_img" src="https://jandi-box.com/files-profile/444fd3d25ade24bc2ec6480e11949dfa?size=80"/>
@@ -774,6 +783,8 @@
 				<div style="clear:both;"></div>
 			</div>
 		</div>
+
+		
 <!---------- 채팅방 하단 -채팅입력 ---------->			
 		<div id="div_bottom">
 			<!-- 채팅 입력창 -->
@@ -1089,9 +1100,7 @@
 	</div>
 	<div style="clear:both;"></div>
 
-	<div id="div_transparent_filter"></div>
-	<div id="div_grey_filter"></div>
-	
+
 	
 <!-- ---------------NamooChatMessageWindow.html------------------ -->
 		<!-- 메시지창 전체 -->
@@ -1189,6 +1198,254 @@
 			</div>
 		</div>
 		
-	</div>	
+	</div>
+	
+	<!--------------------------------------- 즐겨찾기 창 --------------------------------------->	
+	<div id="div_side_bookmark">
+		<div id="bookmark_header">
+			<div class="fl">즐겨찾기</div>
+			<div class="exit fr"></div>
+		</div>
+		<div id="bookmark_tab">
+			<div id="all_content" class="select">모든 형식</div>
+			<div id="file_content" class="">파일 형식</div>
+		</div>
+		<div id="bookmark_tab_content" class="scrollbar">
+			<div class="bookmark_text_item">
+				<div class="bookmark_item_top">
+					<div class="fl">먹는 것에 진심인 사람들</div> <!-- 방 이름 -->
+					<div class="ic_bookmark_on fr"></div>
+					<div class="ic_more_menu fr"></div>
+				</div>
+				<div class="bookmark_item_bottom">
+					<div class="profile_img"><img src=""></div>
+					<div>
+						<span class="profile_name">원혜경</span>
+						<span>2024/05/08 PM 09:02</span>
+						<span>내용들... @김민지</span>
+					</div>
+				</div>
+			</div>
+			<div class="bookmark_text_item">
+				<div class="bookmark_item_top">
+					<div class="fl">먹는 것에 진심인 사람들</div> <!-- 방 이름 -->
+					<div class="ic_bookmark_on fr"></div>
+					<div class="ic_more_menu fr"></div>
+				</div>
+				<div class="bookmark_item_bottom">
+					<div class="profile_img"><img src=""></div>
+					<div>
+						<span class="profile_name">원혜경</span>
+						<span>2024/05/08 PM 09:02</span>
+						<span>내용들... @김민지</span>
+					</div>
+				</div>
+			</div>
+			<div class="bookmark_text_item">
+				<div class="bookmark_item_top">
+					<div class="fl">먹는 것에 진심인 사람들</div> <!-- 방 이름 -->
+					<div class="ic_bookmark_on fr"></div>
+					<div class="ic_more_menu fr"></div>
+				</div>
+				<div class="bookmark_item_bottom">
+					<div class="profile_img"><img src=""></div>
+					<div>
+						<span class="profile_name">원혜경</span>
+						<span>2024/05/08 PM 09:02</span>
+						<span>내용들... @김민지</span>
+					</div>
+				</div>
+			</div>
+			<div class="bookmark_text_item">
+				<div class="bookmark_item_top">
+					<div class="fl">먹는 것에 진심인 사람들</div> <!-- 방 이름 -->
+					<div class="ic_bookmark_on fr"></div>
+					<div class="ic_more_menu fr"></div>
+				</div>
+				<div class="bookmark_item_bottom">
+					<div class="profile_img"><img src=""></div>
+					<div>
+						<span class="profile_name">원혜경</span>
+						<span>2024/05/08 PM 09:02</span>
+						<span>내용들... @김민지</span>
+					</div>
+				</div>
+			</div>
+			<div class="bookmark_text_item">
+				<div class="bookmark_item_top">
+					<div class="fl">먹는 것에 진심인 사람들</div> <!-- 방 이름 -->
+					<div class="ic_bookmark_on fr"></div>
+					<div class="ic_more_menu fr"></div>
+				</div>
+				<div class="bookmark_item_bottom">
+					<div class="profile_img"><img src=""></div>
+					<div>
+						<span class="profile_name">원혜경</span>
+						<span>2024/05/08 PM 09:02</span>
+						<span>내용들... @김민지</span>
+					</div>
+				</div>
+			</div>
+			<div class="bookmark_text_item">
+				<div class="bookmark_item_top">
+					<div class="fl">먹는 것에 진심인 사람들</div> <!-- 방 이름 -->
+					<div class="ic_bookmark_on fr"></div>
+					<div class="ic_more_menu fr"></div>
+				</div>
+				<div class="bookmark_item_bottom">
+					<div class="profile_img"><img src=""></div>
+					<div>
+						<span class="profile_name">원혜경</span>
+						<span>2024/05/08 PM 09:02</span>
+						<span>내용들... @김민지</span>
+					</div>
+				</div>
+			</div>
+			<div class="bookmark_file_item">
+				<div class="bookmark_item_top">
+					<div class="fl">먹는 것에 진심인 사람들</div>
+					<div class="ic_bookmark_on fr"></div>
+					<div class="ic_more_menu fr"></div>
+				</div>
+				<div class="bookmark_file_item_bottom">
+					<div class="file_img"><img src=""></div><!-- 파일이미지 -->
+					<div>
+						<span class="profile_name">테스트 메모.txt</span>
+						<span>원혜경</span>
+						<span>2024/05/08 PM 09:02</span>
+					</div>
+				</div>
+			</div>
+			<div class="bookmark_file_item">
+				<div class="bookmark_item_top">
+					<div class="fl">먹는 것에 진심인 사람들</div>
+					<div class="ic_bookmark_on fr"></div>
+					<div class="ic_more_menu fr"></div>
+				</div>
+				<div class="bookmark_file_item_bottom">
+					<div class="file_img"><img src=""></div><!-- 파일이미지 -->
+					<div>
+						<span class="profile_name">테스트 메모.txt</span>
+						<span>원혜경</span>
+						<span>2024/05/08 PM 09:02</span>
+					</div>
+				</div>
+			</div>
+			<div class="bookmark_file_item">
+				<div class="bookmark_item_top">
+					<div class="fl">먹는 것에 진심인 사람들</div>
+					<div class="ic_bookmark_on fr"></div>
+					<div class="ic_more_menu fr"></div>
+				</div>
+				<div class="bookmark_file_item_bottom">
+					<div class="file_img"><img src=""></div><!-- 파일이미지 -->
+					<div>
+						<span class="profile_name">테스트 메모.txt</span>
+						<span>원혜경</span>
+						<span>2024/05/08 PM 09:02</span>
+					</div>
+				</div>
+			</div>
+			<div class="bookmark_file_item">
+				<div class="bookmark_item_top">
+					<div class="fl">먹는 것에 진심인 사람들</div>
+					<div class="ic_bookmark_on fr"></div>
+					<div class="ic_more_menu fr"></div>
+				</div>
+				<div class="bookmark_file_item_bottom">
+					<div class="file_img"><img src=""></div><!-- 파일이미지 -->
+					<div>
+						<span class="profile_name">테스트 메모.txt</span>
+						<span>원혜경</span>
+						<span>2024/05/08 PM 09:02</span>
+					</div>
+				</div>
+			</div>
+			<div class="bookmark_ending_item">
+				<div class="ic_ending"></div>
+			</div>
+		</div>
+	</div>
+		
+	
+	
+	<!--------------------------------------- 기타 팝업창 --------------------------------------->	
+	<!-- 투명판 -->
+	<div id="div_transparent_filter"></div>
+	<!-- 회색판 -->
+	<div id="div_grey_filter"></div>
+	
+	<!-- (토픽의 팝업창 예시) 여기서부터 -->
+	<div id="delete_topic_pop_up" class="notification_pop_up">
+	    <div>토픽을 정말 삭제하시겠습니까?</div>
+	    <div>모든 메시지와 파일이 삭제되며 복구할 수 없습니다</div>
+	    <div>
+            <form action="${pageContext.request.contextPath}/jsp/DeleteTopic.jsp" id="deleteTopicForm" method="get">
+	            <input type="hidden" name="input_topicIdx" value="<%= request.getParameter("topicIdx") %>"/>
+	            <button type="button" class="btn btn_cancel">취소</button>
+	            <button type="submit" class="btn btn_danger" id="confirmDelete">확인</button>
+        	</form>
+	    </div>
+	</div>
+
+	<!-- 토픽 멤버 내보내기 시 알림창 -->
+	<div id="remove_topicMember_pop_up" class="notification_pop_up">
+		<div>정말 이 멤버를 내보내시겠습니까?</div>
+		<div id="remove_member_info">
+			<img class="profile_img" src=""/> <!-- 내보낼 멤버 이미지 -->
+			<span></span>
+		</div>
+		<div>
+			<button class="btn_cancel">취소</button>
+			<button class="btn_ok">확인</button>
+		</div>
+	</div>
+	<!-- 토픽 나가기 시 알림창 -->
+	<div id="exit_topic_pop_up" class="notification_pop_up">
+		<div>현재 이 토픽의 관리자입니다.</div>
+		<div>다른 멤버를 토픽관리자로 지정 후 나가실 수 있습니다.</div>
+		<div>
+			<button class="btn_cancel">취소</button>
+			<button class="btn_ok">확인</button>
+		</div>
+	</div>
+	<!-- 토픽 관리자 지정 시 알림창 -->
+	<div id="topic_manager_pick_pop_up" class="notification_pop_up">
+		<div>1명을 토픽 관리자로 지정하시겠습니까?</div>
+		<div>토픽 정보 변경을 통해 토픽 관리자를 관리할 수 있습니다.</div>
+		<div>
+			<button class="btn_cancel">취소</button>
+			<button class="btn_ok">확인</button>
+		</div>
+	</div>
+	<!-- 공지 삭제하기 시 알림창 -->
+	<div id="delete_noti_pop_up" class="notification_pop_up">
+		<div>공지를 삭제하시겠습니까?</div>
+		<div>대화방에서 공지가 삭제됩니다.</div>
+		<div>
+			<button class="btn_cancel">취소</button>
+			<button class="btn_ok">확인</button>
+		</div>
+	</div>
+	<!-- 토픽글 삭제 시 알림창 -->
+	<div id="delete_topic_board_pop_up" class="notification_pop_up">
+		<div>이 토픽글을 삭제하시겠습니까?</div>
+		<div>삭제하시면 복구할 수 없습니다.</div>
+		<div>
+			<button class="btn btn_cancel">취소</button>
+			<button class="btn btn_danger">확인</button>
+		</div>
+	</div>
+	<!-- 토픽댓글 삭제 시 알림창 -->
+	<div id="delete_topic_comment_pop_up" class="notification_pop_up">
+		<div>이 댓글을 삭제하시겠습니까?</div>
+		<div>삭제하시면 복구할 수 없습니다.</div>
+		<div>
+			<button type="button" class="btn btn_cancel">취소</button>
+			<button type="button" class="btn btn_danger">확인</button>
+		</div>
+	</div>
+	<!-- 토픽 예시 여기까지 -->	
+		
 </body>
 </html>

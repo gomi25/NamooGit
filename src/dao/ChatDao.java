@@ -19,7 +19,7 @@ public class ChatDao {
 	private Connection getConnection() throws Exception{
 		String driver = "oracle.jdbc.driver.OracleDriver";
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-		String id = "namoo";	
+		String id = "namoo"; 
 		String pw = "7777";	
 		
 		Class.forName(driver);
@@ -28,61 +28,104 @@ public class ChatDao {
 		return conn;
 	}
 	
-	//	특정 채팅방의 채팅글 조회 ---> 콘솔에서 프로필부분이 여러번 나옴..
-	public ArrayList<ChatContentsDto> getChatContents(int chatroomIdx) throws Exception {
-		ArrayList<ChatContentsDto> chatContents = new ArrayList<ChatContentsDto>(); 
-		ArrayList<ProfileUrlImgDto> profileUrlColor = new ArrayList<ProfileUrlImgDto>(); 
+	//	특정 채팅방의 채팅글 조회 
+	public ArrayList<ChatContentsDto> getChatContents(int teamIdx, int chatroomIdx, int memberIdx) throws Exception {
+		ArrayList<ChatContentsDto> listRet = new ArrayList<ChatContentsDto>(); 
 		
-		String sql = "	SELECT  c.chat_idx \"채팅글idx\", m.member_idx \"채팅멤버idx\", m.profile_pic_url profile_pic_url1," + 
-				"    (SELECT img_url FROM profile_img WHERE profile_img_idx = m.profile_img_idx) profile_pic_url2," + 
-				"    (SELECT color FROM color WHERE color_idx = m.color_idx) profile_color," + 
-				"    m.name \"이름\", tm.state \"상태\", c.content \"내용\", c.file_idx \"파일\", c.emoticon_idx \"이모티콘\"," + 
-				"    TO_CHAR(c.chat_date, 'PM HH:MI') \"작성일시\"," + 
-				"    (SELECT COUNT(*) FROM chat_unread WHERE chat_idx=c.chat_idx) \"안읽은사람수\", c.modified \"수정여부\"" + 
-				"	FROM team_member tm INNER JOIN member m on tm.member_idx = m.member_idx" + 
-				"	INNER JOIN chat c on m.member_idx = c.member_idx" + 
-				"	INNER JOIN chatroom cr on c.chatroom_idx = cr.chatroom_idx" + 
-				"	WHERE c.chatroom_idx = ?" + 
-				"	ORDER BY c.chat_date";
+		String sql = " SELECT  c.chat_idx, cr.chatroom_idx, NVL(m2.profile_pic_url, 'https://jandi-box.com/assets/ic-profile.png') profile_url, m2.member_idx," + 
+					"				    m2.name, tm2.state, c.content, c.file_idx, TO_CHAR(c.chat_date, 'PM HH:MI', 'NLS_DATE_LANGUAGE=AMERICAN') write_date," + 
+					"				    (SELECT COUNT(*) FROM chat_unread WHERE chat_idx = c.chat_idx) unread_cnt , c.modified " + 
+					" FROM team_member tm INNER JOIN member m on tm.member_idx = m.member_idx" + 
+					"    INNER JOIN chat_member cm ON m.member_idx = cm.member_idx" + 
+					"    INNER JOIN chatroom cr ON cm.chatroom_idx = cr.chatroom_idx" + 
+					"    INNER JOIN chat c ON cr.chatroom_idx = c.chatroom_idx" + 
+					"    INNER JOIN member m2 ON c.member_idx = m2.member_idx" + 
+					"    INNER JOIN team_member tm2 ON m2.member_idx = tm2.member_idx" + 
+					" WHERE tm.team_idx = ?" + 
+					"    AND tm2.team_idx = ?" + 
+					"    AND cr.chatroom_idx = ?" + 
+					"    AND m.member_idx = ?" + 
+					" ORDER BY c.chat_date DESC";
 		
 		Connection conn = getConnection();
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setInt(1, chatroomIdx);
+		pstmt.setInt(1, teamIdx);
+		pstmt.setInt(2, teamIdx);
+		pstmt.setInt(3, chatroomIdx);
+		pstmt.setInt(4, memberIdx);
 		
 		ResultSet rs = pstmt.executeQuery();
 		while(rs.next()) {
-			int chatIdx = rs.getInt("채팅글idx");
-			int memberIdx = rs.getInt("채팅멤버idx");
-			String profilePicUrl1 = rs.getString("profile_pic_url1");
-			int profilePicUrl2 = rs.getInt("profile_pic_url2");
-			ProfileUrlImgDto dto = new ProfileUrlImgDto(memberIdx, profilePicUrl1, profilePicUrl2);
-			profileUrlColor.add(dto);
-			String name = rs.getString("이름");
-			Integer state = rs.getInt("상태");
-			String content = rs.getString("내용");
-			Integer fileIdx = rs.getInt("파일");
-			if(rs.getInt("파일") == 0) {
-				fileIdx = null;
-			}
-			Integer emoticonIdx = rs.getInt("이모티콘");
-			if(rs.getInt("이모티콘") == 0) {
-				emoticonIdx = null;
-			}
-			String writeDate = rs.getString("작성일시");
-			int unreadCnt = rs.getInt("안읽은사람수");
-			int modified = rs.getInt("수정여부");
+			int chatIdx = rs.getInt("chat_idx");
+	        String profileUrl = rs.getString("profile_url");
+	        int writerMemberIdx = rs.getInt("member_idx");
+	        String name = rs.getString("name");
+	        String state = rs.getString("state");
+	        String content = rs.getString("content");
+	        Integer fileIdx = rs.getInt("file_idx");
+	        if(rs.getInt("file_idx") == 0) {
+	        	fileIdx = null;
+	        }
+	        String writeDate = rs.getString("write_date");
+	        int unreadCnt = rs.getInt("unread_cnt");
+			int modified = rs.getInt("modified");
 			
-			ChatContentsDto chatcontent = new ChatContentsDto(chatIdx, profileUrlColor, name, state, content, fileIdx, emoticonIdx, writeDate, unreadCnt, modified);
-			chatContents.add(chatcontent);
+			ChatContentsDto dto = new ChatContentsDto(chatIdx, chatroomIdx, writerMemberIdx, profileUrl, name, state, content, fileIdx, writeDate, unreadCnt, modified);
+			listRet.add(dto);
 		}
 		rs.close();
 		pstmt.close();
 		conn.close();
 		
-		return chatContents;
+		return listRet;
 	}
 	
+	/* 원본
+	 * // 특정 채팅방의 채팅글 조회 ---> 콘솔에서 프로필부분이 여러번 나옴.. public ArrayList<ChatContentsDto>
+	 * getChatContents(int chatroomIdx) throws Exception {
+	 * ArrayList<ChatContentsDto> chatContents = new ArrayList<ChatContentsDto>();
+	 * ArrayList<ProfileUrlImgDto> profileUrlColor = new
+	 * ArrayList<ProfileUrlImgDto>();
+	 * 
+	 * String sql =
+	 * "	SELECT  c.chat_idx \"채팅글idx\", m.member_idx \"채팅멤버idx\", m.profile_pic_url profile_pic_url1,"
+	 * +
+	 * "    (SELECT img_url FROM profile_img WHERE profile_img_idx = m.profile_img_idx) profile_pic_url2,"
+	 * +
+	 * "    (SELECT color FROM color WHERE color_idx = m.color_idx) profile_color,"
+	 * +
+	 * "    m.name \"이름\", tm.state \"상태\", c.content \"내용\", c.file_idx \"파일\", c.emoticon_idx \"이모티콘\","
+	 * + "    TO_CHAR(c.chat_date, 'PM HH:MI') \"작성일시\"," +
+	 * "    (SELECT COUNT(*) FROM chat_unread WHERE chat_idx=c.chat_idx) \"안읽은사람수\", c.modified \"수정여부\""
+	 * + "	FROM team_member tm INNER JOIN member m on tm.member_idx = m.member_idx"
+	 * + "	INNER JOIN chat c on m.member_idx = c.member_idx" +
+	 * "	INNER JOIN chatroom cr on c.chatroom_idx = cr.chatroom_idx" +
+	 * "	WHERE c.chatroom_idx = ?" + "	ORDER BY c.chat_date";
+	 * 
+	 * Connection conn = getConnection();
+	 * 
+	 * PreparedStatement pstmt = conn.prepareStatement(sql); pstmt.setInt(1,
+	 * chatroomIdx);
+	 * 
+	 * ResultSet rs = pstmt.executeQuery(); while(rs.next()) { int chatIdx =
+	 * rs.getInt("채팅글idx"); int memberIdx = rs.getInt("채팅멤버idx"); String
+	 * profilePicUrl1 = rs.getString("profile_pic_url1"); int profilePicUrl2 =
+	 * rs.getInt("profile_pic_url2"); ProfileUrlImgDto dto = new
+	 * ProfileUrlImgDto(memberIdx, profilePicUrl1, profilePicUrl2);
+	 * profileUrlColor.add(dto); String name = rs.getString("이름"); Integer state =
+	 * rs.getInt("상태"); String content = rs.getString("내용"); Integer fileIdx =
+	 * rs.getInt("파일"); if(rs.getInt("파일") == 0) { fileIdx = null; } Integer
+	 * emoticonIdx = rs.getInt("이모티콘"); if(rs.getInt("이모티콘") == 0) { emoticonIdx =
+	 * null; } String writeDate = rs.getString("작성일시"); int unreadCnt =
+	 * rs.getInt("안읽은사람수"); int modified = rs.getInt("수정여부");
+	 * 
+	 * ChatContentsDto chatcontent = new ChatContentsDto(chatIdx, profileUrlColor,
+	 * name, state, content, fileIdx, emoticonIdx, writeDate, unreadCnt, modified);
+	 * chatContents.add(chatcontent); } rs.close(); pstmt.close(); conn.close();
+	 * 
+	 * return chatContents; }
+	 */	
 
 	
 //	============================== 채팅 - 채팅 내용 관련 기능(1/4) ==============================
@@ -457,21 +500,6 @@ public class ChatDao {
 
 	
 //	============================== 채팅 - 채팅 입력 ==============================	
-//	 *******이모티콘 조회하는 기능 *******
-	/*
-	 * public ArrayList<EmoticonDto> getEmoticonList() throws Exception { Connection
-	 * conn = getConnection();
-	 * 
-	 * ArrayList<EmoticonDto> list = new ArrayList<EmoticonDto>(); String sql =
-	 * "SELECT * FROM emoticon"; PreparedStatement pstmt =
-	 * conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery();
-	 * while(rs.next()) { int emoticonIdx = rs.getInt("emoticon_idx"); String
-	 * emoticonUrl = rs.getString("emoticon_url"); EmoticonDto dto = new
-	 * EmoticonDto(emoticonIdx, emoticonUrl); list.add(dto); } rs.close();
-	 * pstmt.close(); conn.close();
-	 * 
-	 * return list; }
-	 */
 	
 //	 *******멘션(언급)하기 위한 채팅방 멤버 조회하는 기능 *******
 	

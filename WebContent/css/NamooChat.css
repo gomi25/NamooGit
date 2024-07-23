@@ -1379,16 +1379,8 @@ body { margin: 0; overflow-y: hidden; }
 
 
 
-
-
-
-
-
-
-
-
-
-/*============================채팅방 오른쪽 화면============================*/
+/*============================ div_side2 ============================*/
+/* 기존
 #div_side2 {
 	width: 1215px;
 	min-height: 900px;
@@ -1396,7 +1388,27 @@ body { margin: 0; overflow-y: hidden; }
 }
 #div_side2.wide {
 	width: 1657px;
+} */
+
+#div_side2 {
+	position: relative;
+	width: 1210px;
+	min-height: 880px;
+	max-height: 880px;
+/* 	background-color: rgb(229, 229, 229);  */
 }
+#div_side2.wide {
+    flex-grow: 1 !important; /* 나머지 공간을 차지 */
+}
+
+/* .div_side2_container {
+	display: none;
+    background: url(https://cdn.jandi.com/app/assets/images/sticker/c768526b.odaeri_entry.png);
+    width: 570px;
+    height: 500px;
+    margin: 180px auto;
+} */
+
 /********************** 채팅방 상단부 **********************/
 #div_title {
 	width: 100%;
@@ -1486,23 +1498,19 @@ body { margin: 0; overflow-y: hidden; }
 }
 
 
-
-
-
 #div_content {
 	position: relative;
 	width: 100%;
-	height: 738px;
-	border-bottom: 1px solid #E5E5E5;
+	height: 710px;
 	overflow-y: scroll;
-	padding-bottom: 40px;
+	padding: 20px 0px;
 }
 .msg {
 	max-width: 600px;
 }
-#div_content::-webkit-scrollbar {
+/* #div_content::-webkit-scrollbar {
     display: none;
-}
+} */
 #div_content > div.chat_date {
 	height:36px; 
 	margin-top:20px; 
@@ -1762,33 +1770,28 @@ body { margin: 0; overflow-y: hidden; }
 /*============================채팅방 하단부 - 입력창 부분============================*/
 #div_bottom {
 	width: 100%;
-	height: 100%;;
+	height: 110px;
+	border-top: 1px solid rgb(229, 229, 229);
 }
 /* 입력창 */
 #div_msg_input_body {
-	border-top: 1px solid rgb(229, 229, 229);
 	background-color : rgb(250, 250, 250);
-	border-bottom-color : rgb(229, 229, 229);
-	border-left-color : rgb(229, 229, 229);
-	border-right-color : rgb(229, 229, 229);
-	border-top-color : rgb(221, 221, 221);
 	color : rgb(51, 51, 51);
 	font-size : 14px;
 	line-height : 14px;
-	height : 103px;
 	padding: 8px 12px;
-	border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-bottom-color: #e5e5e5;
-    
-    position: fixed;
-    bottom: 0px;
-    width: 1215px;
 }
 #div_msg_input_body.wide {
-    width: 1657px;
+    width: 100%;
+    height: 100%;
+}
+#div_msg_space {
+	height: 90px;
+    width: 100%;
 }
 #div_msg_blank {
+	width: 100%;
+	height: 50px;
 	position: relative;
     font-size: 14px;
     line-height: 20px;
@@ -1796,10 +1799,10 @@ body { margin: 0; overflow-y: hidden; }
 }
 #div_msg_blank > textarea {
 	resize: none;	
-	border-radius: 7px;
+	border-radius: 6px;
     padding: 12px 44px 12px 12px;
 	width: 100%;
-	height: 50px;
+	height: 100%;
     border: 1px solid rgb(229, 229, 229);
 }
 #div_msg_blank > textarea {
@@ -1824,7 +1827,9 @@ body { margin: 0; overflow-y: hidden; }
     cursor: pointer;
 }
 #div_msg_icon {
-	padding: 4px;
+    margin: 2px;
+    padding: 4px;
+    height: 35px;
 }	
 #div_msg_icon > .ic_mention { 
 	margin-right: 3px;
@@ -1836,13 +1841,13 @@ body { margin: 0; overflow-y: hidden; }
     filter: invert(78%) sepia(0%) saturate(4946%) hue-rotate(34deg) brightness(80%) contrast(96%);
 }
 #div_msg_icon > .ic_file_clip { 
-	margin-top: 2px;
-	cursor: pointer;
+	margin: 5px;
     width: 19px;
     height: 19px;
     background-image: url("https://cdn-icons-png.flaticon.com/512/8300/8300057.png");
     background-size: 100%;
     filter: invert(78%) sepia(0%) saturate(4946%) hue-rotate(34deg) brightness(80%) contrast(96%);
+	cursor: pointer;
 }
 /*============================채팅방 상단메뉴바 팝업창============================*/
 #div_transparent_filter {
@@ -2521,7 +2526,7 @@ user -> 초록색 동그라미
     line-height: 20px;
 }
 
-
+/* 요기요기*/
 /**************************** FROM: NamooChatMessageWindow.css ****/
 #div_side_message {
 	border: 1px solid #E5E5E5;
@@ -2917,6 +2922,285 @@ user -> 초록색 동그라미
 }
 
 /* 하단부는 #div_topic_create 에 있음 */	
+
+
+
+/*============================ div_side2 옆에 오는 창 ============================*/
+#div_side_bookmark {
+	position: fixed;
+	margin-top: 53px;
+	width: 450px;
+	height: 900px;
+    top: 0;
+    right: 0;
+	border-left: 1px solid #E5E5E5;
+    background-color: white;
+    display: none;
+}
+#bookmark_header {
+	height: 55px;
+	width: 100%;
+	padding: 12px;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 18px;
+    color: #333;
+    font-weight: 700;
+    line-height: 28px;
+    border-bottom: 1px solid #E5E5E5;
+}
+#bookmark_header > .exit {
+    width: 18px;
+    height: 18px;
+    margin: 4px;
+    cursor: pointer;
+}	
+#bookmark_tab {
+    display: flex;
+    text-align: center;
+    height: 50px;
+    width: 100%;
+    border-bottom: 1px solid #E5E5E5;
+}
+#bookmark_tab > div {	/* #all_content, #file_content */
+	height: 100%;
+    width: 224px;
+    padding: 12px;
+    font-size: 14px;
+    cursor: pointer;
+}	
+#all_content {
+    color: #a2a2a2;
+    border-left: 1px solid #E5E5E5;
+}	
+#all_content.select {
+    color: black;
+	border-bottom: 4px solid #00c474;
+}	
+#file_content {
+    color: #a2a2a2;
+    border-left: 1px solid #E5E5E5;
+}	
+#file_content.select {
+    color: black;
+	border-bottom: 4px solid #00c474;
+}	
+
+#bookmark_tab_content {
+	height: 800px;
+	min-height: 800px;
+	max-height: 800px;
+	width: 100%;
+	overflow-y: auto;
+	padding-bottom: 20px; 
+	background-color: #F2F4F8;
+}
+#bookmark_tab_content .ic_bookmark_on {
+	margin: 2px 2px 2px 6px;	
+}	
+#bookmark_tab_content .ic_more_menu {
+	background-color: #20272d00;
+	filter: invert(64%) sepia(0%) saturate(7500%) hue-rotate(7deg) brightness(117%) contrast(105%);
+}	
+.file_img {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+    border: 1px solid rgb(221, 221, 221);
+    border-radius: 6px;	
+	background-color: white;
+}	
+.bookmark_text_item, .bookmark_file_item{
+	width: 100%;
+	height: 100px;	
+	padding: 10px;
+	border-bottom: 1px solid #E5E5E5;
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #fff;
+	cursor: pointer;
+}
+.bookmark_ending_item{
+	width: 100%;
+	height: 100px;	
+	padding: 10px;
+}	
+.bookmark_text_item:hover, .bookmark_file_item:hover {
+	background-color: #f5f5f5;
+}	
+.bookmark_item_top {
+	height: 25px;
+	padding: 2px;
+}	
+.bookmark_item_top > div:nth-child(1) {
+	font-size: 13px;
+    line-height: 20px;
+    color: #00c474;
+}    
+.bookmark_item_bottom, .bookmark_file_item_bottom {
+	display: flex;
+    flex-direction: row;
+	align-items: center;
+    height: 55px;
+	padding: 2px;
+}
+.bookmark_item_bottom .profile_name, .bookmark_file_item_bottom .profile_name{
+	line-height: 20px;
+	height: 20px;
+}	
+.bookmark_item_bottom > div:nth-child(2) > span:nth-child(2) {
+	font-size: 12px;
+    line-height: 16px;
+    color: #a2a2a2;
+    margin-left: 4px;
+}	
+.bookmark_item_bottom > div:nth-child(2) > span:nth-child(3) {
+	display: block;
+	font-size: 14px;
+}	
+.bookmark_file_item_bottom > div:nth-child(2) > span:nth-child(1) {
+	display: block;
+}
+.bookmark_file_item_bottom > div:nth-child(2) > span:nth-child(2) {
+    color: #a2a2a2;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 700;
+}	
+.bookmark_file_item_bottom > div:nth-child(2) > span:nth-child(3) {
+	color: #a2a2a2;
+    font-size: 13px;
+}	
+
+/*============================알림창============================*/
+/* 토픽 삭제 시 뜨는 알림창*/
+.notification_pop_up {
+	display: none;
+	position: absolute;
+    background-color: #FFF;
+    border-radius: 8px;
+    border: 0;
+    box-shadow: 0 3px 25px -5px rgba(0, 0, 0, .35);
+    left: 36%;
+    top: 36%;
+    text-align: center;
+    padding: 15px 30px;
+    min-width: 480px;
+    min-height: 145px;
+    z-index: 12;
+}
+.notification_pop_up > div {
+	width: 420px;
+	height: 30px;	
+}	
+.notification_pop_up > div:nth-child(1) { 
+	padding: 5px;
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 26px;
+    min-height: 35px;
+    width: 100%;
+}
+.notification_pop_up > div:nth-child(2) { 
+	padding: 5px;
+    min-height: 35px;
+    font-size: 14px;
+    width: 100%;
+}	
+.notification_pop_up > div:nth-child(2) { 
+	padding: 5px;
+    min-height: 40px;
+    width: 100%;
+}
+.notification_pop_up button {    
+	margin: 0 5px;
+	padding: 8px 16px;
+    border-radius: 6px;
+    line-height: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    border: 0;
+    box-shadow: none !important;
+    cursor: pointer;
+}
+.notification_pop_up button:focus { outline: none;}   
+.btn_cancel { color: #c2c2c2; background-color: #fff; }
+.btn_cancel:hover { color: #333; background-color: #F2F4F8;}
+.btn_danger { color: #fff; background-color: #d9534f; }
+.btn_danger:hover { background-color: #c9302c;}
+.btn_ok { color: #fff; background-color: #00C473; }
+.btn_ok:hover { background-color: #21D78C;}
+
+
+
+
+
+
+/*===================== 언급 팝업창 ======================*/
+.ic_mention {
+	margin: 3px;
+	cursor: pointer;
+    width: 30px;
+    height: 30px;
+    background-image: url("https://cdn-icons-png.flaticon.com/512/4663/4663086.png");
+    background-size: 100%;
+    filter: invert(78%) sepia(0%) saturate(4946%) hue-rotate(34deg) brightness(80%) contrast(96%);
+}
+.mention_pop_up {
+	position: absolute;
+	top: 35px;
+    left: 1px;
+	width: 250px;
+	height: 160px;
+	padding: 4px;
+	border: 1px solid #E5E5E5;
+    border-radius: 8px;
+    background-color: white;
+    color: #333;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, .08);
+    display: none;
+    z-index: 12;
+    cursor: pointer;
+}
+
+.mention_pop_up > div { width: 100%; height: 100%; overflow-y: scroll; }
+
+.mention_member_list {
+	display: flex;
+	width: 100%;
+	height: 50px;
+	border-radius: 6px;
+    cursor: pointer;
+}
+.mention_member_list:hover { background-color: #f5f5f5; }	
+.member_all > div:nth-child(1) { margin: 10px auto; }
+.member_all > div:nth-child(2) { margin: 14px 5px; }
+.mention_member_list > div:nth-child(1) {
+	position: relative;
+	height: 50px;
+    width: 50px;
+    padding: 6px;
+}
+.mention_member_list > div:nth-child(1) > .on_user {
+	top: 4px;
+    left: 4px;
+}
+/* .mention_member_list > div:nth-child(2) { } */
+.mention_member_list > div:nth-child(2) > div:nth-child(1) {
+	line-height: 25px;
+    height: 25px;
+}	
+.mention_member_list > div:nth-child(2) > div:nth-child(2) {
+    line-height: 18px;
+	font-size: 11px;
+}
+
+
+
+
 
 
 
