@@ -80,24 +80,23 @@ public class NamooServiceTalkDao {
 		conn.close();
 		return listRet;
 	}
-	//서비스톡방 : 매니저 톡 보여주기	
-	public ArrayList<ServiceTalkContentDto> serviceTalkShowLeftTalkWithPicAndName(int serviceTalkroomIdx, int serviceTalkIdx) throws Exception {
+	//서비스톡방 조회
+	public ArrayList<ServiceTalkContentDto> serviceTalkShoWTalkContent(int serviceTalkroomIdx) throws Exception {
 		ArrayList<ServiceTalkContentDto> listRet = new ArrayList<ServiceTalkContentDto>();
 		Connection conn = getConnection();
 		String sql = "SELECT m.member_idx, t.service_talkroom_idx, t.service_talk_idx, m.name, m.profile_pic_url, t.message, t.read" + 
 					" FROM member m INNER JOIN service_talk t" + 
 					" ON m.member_idx = t.member_idx" + 
-					" WHERE t.member_idx = 0" + 
-					" AND t.service_talkroom_idx = ?" + 
-					" AND t.service_talk_idx = ? ";
+					" WHERE service_talkroom_idx = ?" + 
+					" ORDER BY t.service_talk_idx ASC ";
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, serviceTalkroomIdx);
-		pstmt.setInt(2, serviceTalkIdx);
 		ResultSet rs = pstmt.executeQuery();
 		
 		while(rs.next()) {
 			int memberIdx = rs.getInt("member_idx");
+			int serviceTalkIdx = rs.getInt("service_talk_idx");
 			int read = rs.getInt("read");
 			String profilePicUrl = rs.getString("profile_pic_url");
 			String name = rs.getString("name");
@@ -111,38 +110,38 @@ public class NamooServiceTalkDao {
 		conn.close();
 		return listRet;
 	}
-	//서비스 톡방 : 회원 톡 보여주기
-	public ArrayList<ServiceTalkContentDto> serviceTalkShowRightTalkWithPicAndName(int serviceTalkroomIdx, int serviceTalkIdx) throws Exception {
-		ArrayList<ServiceTalkContentDto> listRet = new ArrayList<ServiceTalkContentDto>();
-		Connection conn = getConnection();
-		String sql = "SELECT m.member_idx, t.service_talkroom_idx, t.service_talk_idx, m.name, m.profile_pic_url, t.message, t.read" + 
-				" FROM member m INNER JOIN service_talk t" + 
-				" ON m.member_idx = t.member_idx" + 
-				" WHERE t.member_idx != 0" + 
-				" AND t.service_talkroom_idx = ?" + 
-				" AND t.service_talk_idx = ? ";
-		
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setInt(1, serviceTalkroomIdx);
-		pstmt.setInt(2, serviceTalkIdx);
-		ResultSet rs = pstmt.executeQuery();
-		
-		while(rs.next()) {
-			int memberIdx = rs.getInt("member_idx");
-			int read = rs.getInt("read");
-			String profilePicUrl = rs.getString("profile_pic_url");
-			String name = rs.getString("name");
-			String message = rs.getString("message");
-			
-			ServiceTalkContentDto dto = new ServiceTalkContentDto(memberIdx, serviceTalkroomIdx, serviceTalkIdx, profilePicUrl, name, null, message, read);
-			listRet.add(dto);
-		}
-	
-		rs.close();
-		pstmt.close();
-		conn.close();
-		return listRet;
-	}
+//	//서비스 톡방 : 회원 톡 보여주기
+//	public ArrayList<ServiceTalkContentDto> serviceTalkShowRightTalkWithPicAndName(int serviceTalkroomIdx) throws Exception {
+//		ArrayList<ServiceTalkContentDto> listRet = new ArrayList<ServiceTalkContentDto>();
+//		Connection conn = getConnection();
+//		String sql = "SELECT m.member_idx, t.service_talkroom_idx, t.service_talk_idx, m.name, m.profile_pic_url, t.message, t.read" + 
+//				" FROM member m INNER JOIN service_talk t" + 
+//				" ON m.member_idx = t.member_idx" + 
+//				" WHERE t.member_idx != 0" + 
+//				" AND t.service_talkroom_idx = ?" + 
+//				" ORDER BY t.service_talk_idx ASC ";
+//		
+//		PreparedStatement pstmt = conn.prepareStatement(sql);
+//		pstmt.setInt(1, serviceTalkroomIdx);
+//		ResultSet rs = pstmt.executeQuery();
+//		
+//		while(rs.next()) {
+//			int memberIdx = rs.getInt("member_idx");
+//			int serviceTalkIdx = rs.getInt("service_talk_idx");
+//			int read = rs.getInt("read");
+//			String profilePicUrl = rs.getString("profile_pic_url");
+//			String name = rs.getString("name");
+//			String message = rs.getString("message");
+//			
+//			ServiceTalkContentDto dto = new ServiceTalkContentDto(memberIdx, serviceTalkroomIdx, serviceTalkIdx, profilePicUrl, name, null, message, read);
+//			listRet.add(dto);
+//		}
+//	
+//		rs.close();
+//		pstmt.close();
+//		conn.close();
+//		return listRet;
+//	}
 	// 서비스 톡방 : 메시지 입력
 	public void serviceTalkSendMessage(int serviceTalkroomIdx, int memberIdx, String message) throws Exception{
 		Connection conn = getConnection();
@@ -212,6 +211,26 @@ public class NamooServiceTalkDao {
 		pstmt.executeUpdate();
 		pstmt.close();
 		conn.close();
+	}
+	public int countTalkroomByMemberIdx(int memberIdx) throws Exception{
+		Connection conn = getConnection();
+		String sql = "SELECT COUNT(*)FROM service_talkroom "
+					+ "WHERE member_idx=?";
+		
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, memberIdx);
+		
+		
+		ResultSet rs = pstmt.executeQuery();
+		int result = -1;
+		if(rs.next()){
+			result = rs.getInt(1);
+		}
+		rs.close();
+		pstmt.close();
+		conn.close();
+		
+		return result;
 	}
 }
 

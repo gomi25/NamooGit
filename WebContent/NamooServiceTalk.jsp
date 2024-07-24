@@ -10,16 +10,15 @@
 <%
 	int memberIdx = 1;   // 로그인 member_idx 가정. ----> 이후에는 (Integer)session.getAttribute("loginId") 등으로 변경해야 돼요~
 	//int loginMemberIdx = 5;
-%>
-    
-<%
 	int serviceTalkroomIdx = 1;
+	
 	if(request.getParameter("service_talkroom_idx") != null) {   // 이해 : 파라미터 'service_talkroom_idx'라는 게 있으면.
 		serviceTalkroomIdx = Integer.parseInt(request.getParameter("service_talkroom_idx"));
 	}
 	NamooServiceTalkDao nDao = new NamooServiceTalkDao();
-	ArrayList<ServiceTalkContentDto> serviceTalkContentDto = nDao.serviceTalkShowTalKroom(serviceTalkroomIdx);
-
+	ArrayList<ServiceTalkContentDto> serviceTalkListDto = nDao.serviceTalkShowTalKroom(serviceTalkroomIdx);
+	ArrayList<ServiceTalkContentDto> serviceTalkContentDto = nDao.serviceTalkShoWTalkContent(serviceTalkroomIdx);
+	
 	NamooMemberDao memberDao = new NamooMemberDao();
 	MemberImageDto miDto = null;
 	if(memberIdx == 0) {   // 관리자
@@ -55,7 +54,7 @@
 		<div id="service_talk_body">
 			<!-- 톡목록 : 목록 생겼을 때 -->			
 			<%
-				for(ServiceTalkContentDto sDto : serviceTalkContentDto) {
+				for(ServiceTalkContentDto sDto : serviceTalkListDto) {
 			%>
 			<div class="talk_room_area">
 				<!-- 톡목록 : 톡방 -->			
@@ -89,8 +88,8 @@
 	</div>
 	<%} %>
 	<!--__________________________톡 목록-멤버시점_________________________ -->
-	<% if(memberIdx != 0) { %>	
-	<div id="div_service_talk1_1" member_idx="<%=memberIdx%>">
+	<% if(memberIdx != 0 && nDao.countTalkroomByMemberIdx(memberIdx) > 1) { %>	
+	<div id="div_service_talk1_1">
 		<!-- 톡목록 헤더 -->
 		<div id="service_talk_header">
 			<div class="fl header_name">대화</div>
@@ -103,7 +102,7 @@
 			</div>
 		</div>
 		<!-- 새 문의하기 버튼 -->		
-		<div id="send_new_message" member_idx = "<%=memberIdx%>">
+		<div id="send_new_message" member_idx="<%= memberIdx%>">
 			<div class="fl">새 문의하기</div>
 			<div class="fl"><!-- 비행기 이미지 --></div>
 		</div>
@@ -113,10 +112,10 @@
 	<!--__________________________톡방____________________________ -->
 	<div id="div_service_talk2">
 		<!-- 서비스톡 헤더 -->
-		<div id="service_talk_header">
+		<div id="service_talk_header" member_idx="<%= memberIdx%>">
 			<div class="header_back fl"><!-- '<' : 채팅방 목록으로 되돌아가기--></div>
 			<div class="profile fl header_profile_pic" style="background: url(<%=miDto.getProfilePicUrl()%>) no-repeat center / cover;"></div>
-			<div class="fl header_name"><%=miDto.getName() %></div>
+			<div class="fl header_name"><%= miDto.getName() %></div>
 			<div class="fr header_quit"><!-- 채팅방 나가기 아이콘 --></div>
 			<div class="fr transparent_button"></div><!--서비스톡 닫을 때를 위한 투명 div  -->
 			<div id="quit_service_talk">
@@ -133,42 +132,63 @@
 					<div class="profile"></div>
 					<div>나무에게 문의하기</div>
 				</div>
-			<% } %>
-			<!-- 서비스톡 바디: 톡 -->
-			<div class="div_talk_time">오후 1:34 </div>
-			<div class="div_talk_left">
-				<div class="fl"><div class="profile"></div></div>
-				<div class="talk_area fl">
-					<div class="left_name">NAMOO🌳</div>
-					<div class="left_talk">
-						안녕하세요 협업툴 <b>나무</b> 입니다.🍀🍀 <br/>	
-						나무 사용 중 궁금한 점은 헬프 센터에서 빠르게 찾아보실 수 있습니다.
-						<div id="help_center_button"> 
-							<a href="NamooHelpMain.jsp">👉헬프센터 바로가기👈 </a>
+				<div class="div_talk_time">오후 1:34 </div>
+				<div class="div_talk_left">
+					<div class="fl"><div class="profile"></div></div>
+					<div class="talk_area fl">
+						<div class="left_name">NAMOO🌳</div>
+						<div class="left_talk">
+							안녕하세요 협업툴 <b>나무</b> 입니다.🍀🍀 <br/>	
+							나무 사용 중 궁금한 점은 헬프 센터에서 빠르게 찾아보실 수 있습니다.
+							<div id="help_center_button"> 
+								<a href="NamooHelpMain.jsp">👉헬프센터 바로가기👈 </a>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="div_talk_right">
-				<div class="talk_area fr">
-					<div class="right_talk fr">
-						왜 오류가 뜨는 거야~!!!!!!!!
+			<% } %>
+			<% for( ServiceTalkContentDto cDto : serviceTalkContentDto ) { %>
+				<!-- 서비스톡 바디: 왼쪽 톡 -->
+				<% if ( cDto.getMemberIdx() == 0 ) { %>
+					<div class="div_talk_time">오후 1:34 </div>
+					<div class="div_talk_left">
+						<!-- 프사 -->
+						<div class="fl"><div class="profile"></div></div>
+						<div class="talk_area fl">
+							<!-- 이름 -->
+							<div class="left_name">NAMOO🌳</div>
+							<!-- 내용 -->
+							<div class="left_talk">
+								<%=cDto.getMessage() %>
+							</div>
+						</div>
+					</div>
+				<% } %>
+				<!-- 서비스톡 바디: 오른쪽 톡 -->
+				<% if ( cDto.getMemberIdx() != 0 ) { %>
+				<div class="div_talk_right">
+					<div class="talk_area fr">
+						<div class="right_talk fr">
+							<%= cDto.getMessage() %>
+						</div>
 					</div>
 				</div>
+				<% } %>
+			<% } %>
+		</div>
+		<form action="">
+			<div id="service_talk_footer">
+				<div>
+					<input type="text" placeholder="메시지를 입력하세요...">
+					<input type="submit" name="send" id="send_massage">
+					<label for="send_massage">
+						<div></div>
+					</label>
+				</div>
 			</div>
+		</form>
 	  </div><!-- 바디 영역 끝 -->
 	<!-- 서비스톡 푸터: 입력칸 -->
-	<form action="">
-		<div id="service_talk_footer">
-			<div>
-				<input type="text" placeholder="메시지를 입력하세요...">
-				<input type="submit" name="send" id="send_massage">
-				<label for="send_massage">
-					<div></div>
-				</label>
-			</div>
-		</div>
-	</form>
 	</div><!-- 서비스 톡영역 끝 -->
 </body>
 </html>

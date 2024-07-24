@@ -276,6 +276,7 @@ a{ text-decoration-line: none; color: inherit;}
     padding: 10px 0;
 	cursor: pointer;
 	display: none;
+	background-color: #fff;
 }
 #quit_service_talk > div:nth-child(1){ /* 이미지 + '채팅방나가기' 영역*/
 	width: 100%;
@@ -346,7 +347,7 @@ a{ text-decoration-line: none; color: inherit;}
 .div_talk_left{ /* 톡 영역 */
 	width: 100%;
 	display: flex;
-	margin-bottom: 30px;
+	margin-bottom: 15px;
 }
 
 .div_talk_left > div:nth-child(1) { /* 매니저 프사 영역 */
@@ -358,13 +359,13 @@ a{ text-decoration-line: none; color: inherit;}
     position: absolute;
 	width: 30px;
 	height: 30px;
-	bottom: 0;
 	border: 0.5px solid #dddddd;
 	border-radius: 10px;
 }
 .talk_area{ /* 말풍선 영역 */
 	width: 332px;
 	max-height: 300px;
+	margin-bottom: 15px;
 }
 .left_name{ /* 매니저 이름 */
 	font-size: 12px;
@@ -381,7 +382,6 @@ a{ text-decoration-line: none; color: inherit;}
 }
 .div_talk_right{ /* 톡 영역 */
 	width: 100%;
-	margin-bottom: 30px;
 }
 .right_talk{ /* 멤버 톡 설정 (초록 말풍선) */
 	max-width: 286px;

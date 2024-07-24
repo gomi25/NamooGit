@@ -48,11 +48,20 @@ $(function(){
 		    }
 		});
 	});
-	
+	$(".header_back").click(function(){
+		alert("!");
+		let member_idx = $("#div_service_talk1_1").attr("member_idx");
+		if(member_idx === 0){
+			$("#div_service_talk2").hide();
+			$("#div_service_talk1").show();
+		} else {
+			$("#div_service_talk2").hide();
+		}
+	});
 });
 
 
-
+/*만약 톡이 시작 됐으면 '새문의하기'창이 안 뜨고 바로 톡방이 뜨게..*/
 
 
 
