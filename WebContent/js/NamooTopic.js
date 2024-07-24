@@ -584,14 +584,14 @@ $(document).ready(function() {
 /****************************** 토픽목록 ******************************/	
 	// 토픽 클릭 시 페이지 이동 
 	$(function(){
-		$(".topic_item > span").click(function () {
+		$("#div_topicroom_list_body .topic_item > span").click(function () {
 			let topicIdx = $(this).parent(".topic_item").attr("topic_idx");
 			// 페이지 이동 --> "Ex11Detail.jsp?bno=213"로 이동
 			// location.href = 새 주소(문자열);   ← 얘는 무조건 'GET방식'임
 			location.href = context_path + "/NamooTopic.jsp?topicIdx=" + topicIdx;
 		});
 	});	
-	
+
 /****************************** 프로젝트 목록 ******************************/	
 	// 프로젝트 클릭 시 페이지 이동 (예시)
 	$(function(){
@@ -604,9 +604,9 @@ $(document).ready(function() {
 /****************************** 채팅 목록 ******************************/	
 	// 채팅방 클릭 시 페이지 이동 
 	$(function(){
-		$(".topic_item > span").click(function () {
+		$("#div_chatroom_list_body > .topic_item > span").click(function () {
 			let chatroomIdx = $(this).parent(".topic_item").attr("chatroom_idx");
-			location.href = context_path + "/NamooTopic.jsp?chatroomIdx=" + chatroomIdx;
+			location.href = context_path + "/NamooChat.jsp?chatroomIdx=" + chatroomIdx;
 		});
 	});		
 
@@ -694,7 +694,7 @@ $(document).ready(function() {
 	                success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옴. 'res'는 응답받은 데이터.
 	                    alert("OFF->ON : " + res.result);   // "성공"
 						_this.removeClass("ic_bookmark_off").addClass("ic_bookmark_on");
-						$(".topic_item[topic_idx='"+params.topic_idx+"']").find("div:first-child").removeClass("ic_bookmark_off").addClass("ic_bookmark_on");
+						$(".topic_item[topic_idx='"+params.idx+"']").find("div:first-child").removeClass("ic_bookmark_off").addClass("ic_bookmark_on");
 	                },
 	                error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옴.
 	                    alert("통신 실패.")
@@ -704,14 +704,12 @@ $(document).ready(function() {
 //            $(this).toggleClass("ic_bookmark_on ic_bookmark_off");
         });
 
-		
-		
 		// 마우스 커서 올리면 채팅방 제목 및 설명 팝업 뜸
-		$(".ic_information").mouseover(function(){
+		$(document).on("mouseover", ".ic_information", function(){
 			$(".information_pop_up").css('display','block');
 		});
 		// 마우스 커서 벗어나면 채팅방 제목 및 설명 팝업 사라짐
-		$(".ic_information").mouseout(function(){
+		$(document).on("mouseout", ".ic_information", function(){
 			$(".information_pop_up").css('display','none');
 		});
 			
@@ -725,7 +723,7 @@ $(document).ready(function() {
 			$("#div_transparent_filter").css('display','none');
 		});
 	});	
-	
+
 	$(function() {			
 		// [참여멤버] ".profile_power"쪽에 마우스 커서 올리면  
 		// ".ic_exit_chatroom" 보이도록
@@ -805,7 +803,9 @@ $(document).ready(function() {
 			}
 		});
 	});	
+/* 여기까지 일단 완료 7.24(수) 11시 */	
 	
+/* 여기부터 이어서  */				
 	$(function() {				
 		// [알람이미지] 클릭 시 
 		$("#div_title > div:nth-child(2) > div:nth-child(3)").click(function(){
@@ -1712,15 +1712,15 @@ $(document).ready(function() {
 	// 토픽글 - [더보기]
 	$(function() {				
 		// 토픽글 마우스 커서 올리면(마우스오버) [더보기] 뜸	
-		$(".div_content_center").mouseover(function(){
+		$(document).on("mouseover", ".div_content_center", function(){
 			$(this).find(".more_menu_box").css('display','block');
 		});
-		$(".div_content_center").mouseout(function(){
+		$(document).on("mouseout", ".div_content_center", function(){
 			$(this).find(".more_menu_box").css('display','none');
 		});
 		
 		// 토픽글 [더보기] 클릭
-		$(".div_content_center .more_menu_box").click(function(){
+		$(document).on("click", ".div_content_center .more_menu_box", function(){
 			// 판단.  
 			let writer = $(this).parents(".content_board").attr("writer");
 			if(writer==$("#div_profile_box").attr("member_idx")) {
@@ -1730,11 +1730,27 @@ $(document).ready(function() {
 			}
 			$("#div_transparent_filter").css('display','block');
 		});
-		$("#div_transparent_filter").click(function() {
+		$(document).on("click", "#div_transparent_filter", function(){
 			$(".div_board_more_menu_mine").css('display','none');	// 내 토픽글의 [더보기]
 			$(".div_board_more_menu_other").css('display','none');	// 상대 토픽글의 [더보기]
 			$("#div_transparent_filter").css('display','none');
 		});
+		
+		/*$(".div_content_center .more_menu_box").click(function(){
+			// 판단.  
+			let writer = $(this).parents(".content_board").attr("writer");
+			if(writer==$("#div_profile_box").attr("member_idx")) {
+				$(this).next(".div_board_more_menu_mine").css('display','block');		  // 내 토픽글의 [더보기]
+			} else {
+				$(this).next().next(".div_board_more_menu_other").css('display','block'); // 상대 토픽글의 [더보기]
+			}
+			$("#div_transparent_filter").css('display','block');
+		});*/
+		/*$("#div_transparent_filter").click(function() {
+			$(".div_board_more_menu_mine").css('display','none');	// 내 토픽글의 [더보기]
+			$(".div_board_more_menu_other").css('display','none');	// 상대 토픽글의 [더보기]
+			$("#div_transparent_filter").css('display','none');
+		});*/
 	});	
 	
 	// 토픽글 - [더보기]
@@ -1899,14 +1915,41 @@ $(document).ready(function() {
 	// 토픽댓글 - [더보기]
 	$(function() {				
 		// 토픽댓글 마우스 커서 올리면(마우스오버) [더보기] 뜸	
-		$(".div_comment").mouseover(function(){
+		$(document).on("mouseover", ".div_comment", function(){
 			$(this).find(".more_menu_box").css('display','block');
 		});
-		$(".div_comment").mouseout(function(){
+		$(document).on("mouseout", ".div_comment", function(){
 			$(this).find(".more_menu_box").css('display','none');
 		});
 		
-		// 토픽댓글 [더보기] 클릭
+/*		$(".div_comment").mouseover(function(){
+			$(this).find(".more_menu_box").css('display','block');
+		});*/
+		// 토픽댓글 마우스 커서 벗어나면 [더보기] 사라짐
+/*		$(".div_comment").mouseout(function(){
+			$(this).find(".more_menu_box").css('display','none');
+		});*/
+		
+		
+		// 토픽글 [더보기] 클릭
+		$(document).on("click", ".div_comment .more_menu_box", function(){
+			// 판단.  
+			let writer = $(this).parents(".div_comment").attr("writer");
+			if(writer==$("#div_profile_box").attr("member_idx")) {
+				$(this).next(".div_comment_more_menu_mine").css('display','block');		  // 내 토픽글의 [더보기]
+			} else {
+				$(this).next().next(".div_comment_more_menu_other").css('display','block'); // 상대 토픽글의 [더보기]
+			}
+			$("#div_transparent_filter").css('display','block');
+
+		});
+		$(document).on("click", "#div_transparent_filter", function(){
+			$(".div_comment_more_menu_mine").css('display','none');		// 내 토픽글의 [더보기]
+			$(".div_comment_more_menu_other").css('display','none');	// 상대 토픽글의 [더보기]
+			$("#div_transparent_filter").css('display','none');
+		});
+		
+/*		// 토픽댓글 [더보기] 클릭
 		$(".div_comment .more_menu_box").click(function(){
 			// 판단.
 			let writer = $(this).parents(".div_comment").attr("writer");
@@ -1921,7 +1964,8 @@ $(document).ready(function() {
 			$(".div_comment_more_menu_mine").css('display','none');		// 내 토픽글의 [더보기]
 			$(".div_comment_more_menu_other").css('display','none');	// 상대 토픽글의 [더보기]
 			$("#div_transparent_filter").css('display','none');
-		});
+		});*/
+		
 	});	
 	
 	// 토픽댓글 - [더보기] - [수정]	

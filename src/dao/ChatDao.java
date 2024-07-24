@@ -27,13 +27,14 @@ public class ChatDao {
 		
 		return conn;
 	}
-	
+
+	/* 'PM HH:MI' <- 0 나오게 */
 	//	특정 채팅방의 채팅글 조회 
 	public ArrayList<ChatContentsDto> getChatContents(int teamIdx, int chatroomIdx, int memberIdx) throws Exception {
 		ArrayList<ChatContentsDto> listRet = new ArrayList<ChatContentsDto>(); 
 		
 		String sql = " SELECT  c.chat_idx, cr.chatroom_idx, NVL(m2.profile_pic_url, 'https://jandi-box.com/assets/ic-profile.png') profile_url, m2.member_idx," + 
-					"				    m2.name, tm2.state, c.content, c.file_idx, TO_CHAR(c.chat_date, 'PM HH:MI', 'NLS_DATE_LANGUAGE=AMERICAN') write_date," + 
+					"				    m2.name, tm2.state, c.content, c.file_idx, TO_CHAR(c.chat_date, 'AM FMHH:MI', 'NLS_DATE_LANGUAGE=AMERICAN') write_date," + 
 					"				    (SELECT COUNT(*) FROM chat_unread WHERE chat_idx = c.chat_idx) unread_cnt , c.modified " + 
 					" FROM team_member tm INNER JOIN member m on tm.member_idx = m.member_idx" + 
 					"    INNER JOIN chat_member cm ON m.member_idx = cm.member_idx" + 
@@ -45,7 +46,7 @@ public class ChatDao {
 					"    AND tm2.team_idx = ?" + 
 					"    AND cr.chatroom_idx = ?" + 
 					"    AND m.member_idx = ?" + 
-					" ORDER BY c.chat_date DESC";
+					" ORDER BY c.chat_date";
 		
 		Connection conn = getConnection();
 		
@@ -154,12 +155,12 @@ public class ChatDao {
 	// 	INSERT INTO chat (chat_idx, chatroom_idx, member_idx, content, chat_date, emoticon_idx, file_idx, modified) 
 	//	VALUES (chat_seq.nextval, '해당 채팅방idx', '작성자 idx', '작성 내용', sysdate, '이모티콘idx', file_seq.currval, 0);
 //	 *******채팅글 작성*******
-	public void writeChat(int chatroomIdx, int memberIdx, String content, Integer fileIdx, Integer emoticonIdx) throws Exception {
+	public int writeChat(int chatroomIdx, int memberIdx, String content, Integer fileIdx) throws Exception {
 		Connection conn = getConnection();
 		
-		String sql = "INSERT INTO chat (chat_idx, chatroom_idx, member_idx, content, chat_date, file_idx, emoticon_idx, modified)" +
-					 " VALUES (seq_chat.nextval, ?, ?, ?, sysdate, ?, ?, 0)";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
+		String sql = "INSERT INTO chat (chat_idx, chatroom_idx, member_idx, content, chat_date, file_idx, modified)" +
+					 " VALUES (seq_chat.nextval, ?, ?, ?, sysdate, ?, 0)";
+		PreparedStatement pstmt = conn.prepareStatement(sql, new String[] {"chat_idx"});
 //		pstmt.setInt(1, chatIdx);
 		pstmt.setInt(1, chatroomIdx);
 		pstmt.setInt(2, memberIdx);
@@ -167,17 +168,19 @@ public class ChatDao {
 		if(fileIdx==null){
 			pstmt.setNull(4, Types.INTEGER);	
 		} else {
-			pstmt.setInt(4,  fileIdx);
-		}
-		if(emoticonIdx==null) {
-			pstmt.setNull(5, Types.INTEGER);
-		} else {
-			pstmt.setInt(5, emoticonIdx);
+			pstmt.setInt(4, fileIdx);
 		}
 		pstmt.executeUpdate();
-		
+		ResultSet rs = pstmt.getGeneratedKeys();
+		int ret = 0;
+		if(rs.next()) {
+			ret = rs.getInt(1);
+		}
+		rs.close();
 		pstmt.close();
 		conn.close();
+		
+		return ret;
 	}
 	
 //	 *******채팅댓글 작성*******
@@ -377,32 +380,25 @@ public class ChatDao {
 	public ArrayList<ChatroomMemberDto> getChatroomMemberList(int teamIdx, int chatroomIdx) throws Exception {
 		Connection conn = getConnection();
 		ArrayList<ChatroomMemberDto> listRet = new ArrayList<ChatroomMemberDto>();
-		String sql = ""
-				+ ""
-				+ ""
-				+ ""
-				+ ""
-				+ ""
-				+ "	수정!!!!!!!"
-				+ ""
-				+ ""
-				+ ""
-				+ ""
-				+ ""
-				+ ""
-				+ "";
+		String sql = "SELECT c.chatroom_idx, cm.member_idx, NVL(m.profile_pic_url, 'https://jandi-box.com/assets/ic-profile.png') profile_url, " + 
+				"					        m.name, tm.department, tm.position, tm.power " + 
+				" FROM team_member tm INNER JOIN member m on tm.member_idx = m.member_idx " + 
+				"					 INNER JOIN chat_member cm on m.member_idx = cm.member_idx " + 
+				"					 INNER JOIN chatroom c on cm.chatroom_idx = c.chatroom_idx " + 
+				" WHERE tm.team_idx = ?" + 
+				" AND c.chatroom_idx = ?" + 
+				" ORDER BY m.name";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, teamIdx);
 		pstmt.setInt(2, chatroomIdx);
 		ResultSet rs = pstmt.executeQuery();
 		while(rs.next()) {
 			int memberIdx = rs.getInt("member_idx");
-			String profileUrl = rs.getString("profile_pic_url");
+			String profileUrl = rs.getString("profile_url");
 			String name = rs.getString("name");
 			String department = rs.getString("department");
 			String position = rs.getString("position");
 			String power = rs.getString("power");
-			int manager = rs.getInt("manager");
 			ChatroomMemberDto dto = new ChatroomMemberDto(chatroomIdx, memberIdx, profileUrl, name, department, position, power);
 			listRet.add(dto);
 		}
@@ -469,6 +465,7 @@ public class ChatDao {
 		conn.close();
 	}
 	
+
 //	 *******채팅방 정보 변경하는 기능 *******
 	public void updateChatroomInfo(int chatroomIdx, String chatName, String chatInfo) throws Exception {
 		Connection conn = getConnection();
@@ -565,7 +562,49 @@ public class ChatDao {
 		
 		return fileIdx;
 	}
-
 	
-	
+	//============================== 기타  ==============================
+	// 채팅방방이름 불러오는 메서드
+	// 파라미터: 채팅방idx
+	// 리턴: 채팅방이름
+		public String getChatroomNameFromChatroomIdx(int chatroomIdx) throws Exception {
+			String strRet = null;
+			
+			String sql = "SELECT name FROM chatroom WHERE chatroom_idx=?";
+			Connection conn = getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, chatroomIdx);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				strRet = rs.getString("name");
+			}
+			rs.close();
+			pstmt.close();
+			conn.close();
+			
+			return strRet;
+		}
+		
+	//  *******채팅방의 설명 조회 기능*******	
+		public String getChatroomInformation(int chatroomIdx) throws Exception {
+			Connection conn = getConnection();
+			String sql = "SELECT information FROM chatroom WHERE chatroom_idx = ?";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, chatroomIdx);
+			ResultSet rs = pstmt.executeQuery();
+			String result = "";
+			if(rs.next()) {
+				result = rs.getString(1);
+			}
+			
+			rs.close();
+			pstmt.close();
+			conn.close();
+			
+			return result;
+		}	
+			
 }
+
+
+

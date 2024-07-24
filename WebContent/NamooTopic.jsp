@@ -462,11 +462,11 @@
 		<div id="div_chatroom_list_body"> <!-- (6) -->
 	
 			<% 
-				for(ChatroomDto chatDto : listChatroom) { 
-					ArrayList<String> listImgUrls = sDao.getChatroomMembersImageUrl(chatDto.getChatroomIdx(), memberIdx);
+				for(ChatroomDto chatroomDto : listChatroom) { 
+					ArrayList<String> listImgUrls = sDao.getChatroomMembersImageUrl(chatroomDto.getChatroomIdx(), memberIdx);
 			%>
-				<div class="topic_item">
-					<div class='<%=(chatDto.isBookmarkYn() ? "ic_bookmark_on" : "ic_bookmark_off") %> fl'></div>
+				<div class="topic_item" chatroom_idx="<%=chatroomDto.getChatroomIdx()%>">
+					<div class='<%=(chatroomDto.isBookmarkYn() ? "ic_bookmark_on" : "ic_bookmark_off") %> fl'></div>
 					<div class="fl">
 <%-- 					<% { // 반복문을 돌려 : ProfileUrlColorDto의 리스트에 대해서. %> --%>
 						<% if(listImgUrls.size()==0) { %> <!-- 여기여기 -->
@@ -485,10 +485,10 @@
  -->						<% } %>
 <%-- 					<% } %> --%>
 					</div>
-					<span><%=chatDto.getChatroomName() %></span>
+					<span><%=chatroomDto.getChatroomName() %></span>
 					<%-- <div class="div_unread"><%=chatDto.getUnread() %></div> --%>
-					<div class='<%= (chatDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
-						<%= chatDto.getUnread() >=1 ? chatDto.getUnread() : "" %>
+					<div class='<%= (chatroomDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
+						<%= chatroomDto.getUnread() >=1 ? chatroomDto.getUnread() : "" %>
 					</div>
 					<div class="exit"></div>
 				</div>
@@ -712,7 +712,7 @@
 			</div>
 		</div> 
 
-<!---------- 멤버 초대하기 ---------->	
+	<!---------- 멤버 초대하기 ---------->	
 	<form id="form_invite_member" action="${pageContext.request.contextPath}/jsp/InviteTopicMember.jsp" method="get">
 		<div id="div_invite_member" class="border">
 			<div>
@@ -816,7 +816,7 @@
 	</form>
 
 
-<!------------ 토픽방 상단 상단바 - [더보기(메뉴)] - [공지등록] -------->
+	<!------------ 토픽방 상단 상단바 - [더보기(메뉴)] - [공지등록] -------->
 		<div id="div_notice_register" class="border"> 
 			<!-- 상단부 / div:nth-child(1) -->
 			<div>
@@ -877,7 +877,7 @@
 		
 
 		
-<!---------- 토픽방 상단 상단바 - [더보기(메뉴)] - [정보변경하기] ---------->		
+	<!---------- 토픽방 상단 상단바 - [더보기(메뉴)] - [정보변경하기] ---------->		
 		<div id="div_topic_update"> 
 			<!-- 상단부 / div:nth-child(1) -->
 			<div>
@@ -1264,83 +1264,6 @@
 			
 		</div><!-- "div_write_topic_board" 닫는 태그 -->
 	</form>
-	
-	
-<%--  원본 	<!---------- 토픽방 내부 하단의 게시글 등록 팝업창---------->	
-	<form action="${pageContext.request.contextPath}/jsp/WriteTopicBoard.jsp" method="get"> 
-		<div id="div_write_topic_board">
-			<!-- 상단부 / div:nth-child(1) -->
-			<div>
-				<span>신규 게시글 작성</span> 
-				<div class="exit fr"></div>
-			</div>
-			
-			<!-- 중앙부 / div:nth-child(2) -->
-			<div>
-				<!-- div:nth-child(2) > div:nth-child(1) -->
-				<div>
-	     			<label for="input_board_title" class="fl">제목</label><span class="fl">*</span><br/>
-	     			<input type="text" name="topic_board_title" id="input_board_title" placeholder="게시글 제목을 입력하세요" required />
-	     			<span class="text_max_value fr">/ 50</span>
-	     			<span class="text_current_value fr">0</span><br/><br/>
-				</div>
-				<!-- div:nth-child(2) > div:nth-child(2) -->
-				<div>
-		  			<label for="textarea_board_content" class="fl">게시글 본문</label><span class="fl">*</span><br/>
-					<textarea name="topic_board_content" id="textarea_board_content" placeholder="게시글 본문을 입력해주세요" rows="15"></textarea>
-					<div class="ic_mention_file_box">
-						<div class="ic_mention fl" data-toggle="tooltip" title="멘션"></div>
-							<div class="mention_pop_up">
-								<div class="scrollbar">
-									<div class="mention_member_list">
-										<div>
-											<div class="ic_mention"></div>
-										</div>
-										<div class="member_all">
-											<div class="fl">All</div>
-											<div class="fl">토픽 모든 멤버</div>
-										</div>
-									</div>
-								
-							<%
-								for(TopicMemberDto topicMemberDto : listTopicMember) {
-							%>
-									<div class="mention_member_list" member_idx="<%=topicMemberDto.getMemberIdx()%>">
-										<!-- .mention_member_list > div:nth-child(1) -->
-										<div>
-											<img class="profile_img" src="<%=topicMemberDto.getProfileUrl()%>"/>
-											<div class="on_user"></div>
-										</div>
-										<!-- .mention_member_list > div:nth-child(2) -->
-										<div>
-											<div class=" profile_name"><%=topicMemberDto.getName()%></div>
-											<div class=""><%=topicMemberDto.getDepartment()%> / <%=topicMemberDto.getPosition()%></div>
-										</div>
-									</div>
-							<%
-								}
-							%>		
-								</div>
-							</div>
-						<label class="ic_file_clip fl" for="upload_file_tboard" data-toggle="tooltip" title="파일 업로드"></label>
-						<input type="file" id="upload_file_tboard" style="clip:rect(0, 0, 0, 0); display:none;"/>
-					</div>
-					<span class="text_max_value fr">/ 5,000</span>
-					<span class="text_current_value fr">0</span><br/><br/>
-					
-				</div>
-			
-			</div>		
-			<!-- 하단부 / div:nth-child(3)						 -->
-			<div>
-				<button class="fr" type="submit" id="create_complete">생성하기</button>
-				<button class="fr" type="button" id="create_cancel">닫기</button>
-			</div>
-			
-		</div><!-- "div_write_topic_board" 닫는 태그 -->
-	</form> --%>
-	
-	
 	
 		<!---------- div_side2 - [게시글 수정] 팝업창---------->
 	<form action="${pageContext.request.contextPath}/jsp/UpdateTopicBoard.jsp" id="updateTopicBoardForm" method="get"> 
@@ -1987,7 +1910,6 @@
 								'> <%= topicMemberDto.getPower() %>
 								</div>
 <%-- 								<div class='<%= (topicDto.getUnread()>=1 ? "div_unread" : "" ) %>'> --%>
-								
 							</div>					
 							<div>
 								<div class="on_user"></div>
@@ -2245,20 +2167,6 @@
 			</div>
 		</div>
 	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	<!--------------------------------------- 기타 팝업창 --------------------------------------->	

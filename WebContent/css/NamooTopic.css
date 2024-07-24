@@ -8,6 +8,7 @@ body { margin: 0; overflow-y: hidden;
 	margin-top: 108px;   /* 2024-07-19 */ 
 }
 
+
 .scrollbar::-webkit-scrollbar {
     width: 7px;  
     height: 7px;
@@ -1527,22 +1528,22 @@ list_view_option > div > .check {
 }
 #div_title .ic_bookmark_on {
 /* 	display: none; */
-	margin: 3px 8px 4px 0px;
-	width: 16px;
-	height: 16px;
+	margin: 4px 0px;
+    width: 18px;
+    height: 18px;
 	background-image: url("https://cdn-icons-png.flaticon.com/512/1828/1828884.png");
 	background-size: 100%;
 }
 #div_title .ic_bookmark_off {
 /* 	display: none; */
-	margin: 3px 8px 4px 0px;
-	width: 16px;
-	height: 16px;
+	margin: 4px 0px;
+    width: 18px;
+    height: 18px;
 	background-image: url("https://cdn-icons-png.flaticon.com/512/1828/1828961.png");
 	background-size: 100%;
 	filter: invert(95%) sepia(0%) saturate(0%) hue-rotate(139deg) brightness(84%) contrast(87%);
 }
-#div_title > div:nth-child(1) > div:nth-child(4){
+#div_title > div:nth-child(1) > div:nth-child(3){
 	margin: 2px 8px;
     color: #505050;
     font-weight: 700;
@@ -2671,25 +2672,6 @@ list_view_option > div > .check {
     pointer-events: none;
     display: block; 
 }
-
-/* .div_comment_blank > textarea {
-	resize: none;	
-	border-radius: 7px;
-    padding: 12px 44px 12px 12px;
-	width: 100%;
-	height: 50px;
-    border: 1px solid rgb(229, 229, 229);
-}
-.div_comment_blank > textarea {
-	outline: none;
-}	 
-.div_comment_blank > textarea:focus::placeholder{
-    color:transparent;
-     마우스로 클릭하면 placeholder 글씨 투명하게 됨
-}
-.div_comment_blank > textarea::-webkit-scrollbar {
-	display: none;
-} */
 .div_comment_blank .ic_comment_enter {
 	position: absolute;
     height: 24px;
@@ -3710,9 +3692,6 @@ list_view_option > div > .check {
 
 
 
-
-
-
 /*============================알림창============================*/
 /* 토픽 삭제 시 뜨는 알림창*/
 .notification_pop_up {
@@ -3837,19 +3816,4 @@ list_view_option > div > .check {
 	font-size: 11px;
 }
 
-.scrollbar::-webkit-scrollbar {
-    width: 7px;  
-    height: 7px;
-    padding-right: 7px;
-    overflow: auto;
-}   
-.scrollbar::-webkit-scrollbar-thumb {
-    background: #a7a5a5; /* 스크롤바 색상 */
-    border-radius: 10px; /* 스크롤바 둥근 테두리 */
-}
-.scrollbar::-webkit-scrollbar-track {
-/*     background: rgb(229, 229, 229);  스크롤바 뒷 배경 색상 */
-    background: transparent;  /*스크롤바 뒷 배경 색상*/
-   	border-radius: 10px; /* 스크롤바 둥근 테두리 */
-}
 

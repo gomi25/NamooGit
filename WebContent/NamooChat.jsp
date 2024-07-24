@@ -57,9 +57,14 @@
 	for(ChatroomDto dto : listChatroom) {
 		cntChatTotalUnread += dto.getUnread();
 	}
-	
+
+//============================토픽전체멤버 조회==============================
+	ArrayList<ChatroomMemberDto> listChatroomMember = cDao.getChatroomMemberList(teamIdx, chatroomIdx);
+	String chatroomName = cDao.getChatroomNameFromChatroomIdx(chatroomIdx);
+	String chatroomInformation = cDao.getChatroomInformation(chatroomIdx);
+
 	//============================채팅글 조회==============================
-	ArrayList<ChatContentsDto> chatContentsDto = cDao.getChatContents(teamIdx, chatroomIdx, memberIdx);
+	ArrayList<ChatContentsDto> chatContentsDto = cDao.getChatContents(teamIdx, chatroomIdx, memberIdx); 
 	//============================토픽글 조회==============================
 // 		ArrayList<TopicBoardDto> listTopicBoard = tDao.getTopicBoardList(teamIdx, topicIdx, memberIdx);
 	//============================토픽댓글 조회==============================
@@ -385,11 +390,11 @@
 		<div id="div_chatroom_list_body"> <!-- (6) -->
 	
 			<% 
-				for(ChatroomDto chatDto : listChatroom) { 
-					ArrayList<String> listImgUrls = sDao.getChatroomMembersImageUrl(chatDto.getChatroomIdx(), memberIdx);
+				for(ChatroomDto chatroomDto : listChatroom) { 
+					ArrayList<String> listImgUrls = sDao.getChatroomMembersImageUrl(chatroomDto.getChatroomIdx(), memberIdx);
 			%>
-				<div class="topic_item">
-					<div class='<%=(chatDto.isBookmarkYn() ? "ic_bookmark_on" : "ic_bookmark_off") %> fl'></div>
+				<div class="topic_item" chatroom_idx="<%=chatroomDto.getChatroomIdx()%>">
+					<div class='<%=(chatroomDto.isBookmarkYn() ? "ic_bookmark_on" : "ic_bookmark_off") %> fl'></div>
 					<div class="fl">
 <%-- 					<% { // 반복문을 돌려 : ProfileUrlColorDto의 리스트에 대해서. %> --%>
 						<% if(listImgUrls.size()==0) { %> <!-- 여기여기 -->
@@ -408,10 +413,10 @@
  -->						<% } %>
 <%-- 					<% } %> --%>
 					</div>
-					<span><%=chatDto.getChatroomName() %></span>
+					<span><%=chatroomDto.getChatroomName() %></span>
 					<%-- <div class="div_unread"><%=chatDto.getUnread() %></div> --%>
-					<div class='<%= (chatDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
-						<%= chatDto.getUnread() >=1 ? chatDto.getUnread() : "" %>
+					<div class='<%= (chatroomDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
+						<%= chatroomDto.getUnread() >=1 ? chatroomDto.getUnread() : "" %>
 					</div>
 					<div class="exit"></div>
 				</div>
@@ -564,29 +569,299 @@
 	
 <!--------------------------------------- 채팅방 --------------------------------------->
 	<div id="div_side2" class="wide fl">
-	<!---------- 채팅방 상단 - 채팅방 이름 & 메뉴 ---------->	
-		<div id="div_title">
+<!---------- 채팅방 상단 - 채팅방 이름 & 메뉴 ---------->	
+		<div id="div_title" chatroom_idx="<%=chatroomIdx%>">
 			<!-- 상단(1) -->
 			<div class=" fl">
-				<div class=" fl"><img src="img/room.png"/></div>
-				<div class=" fl"><img class="chat_profile" src="img/chat_profile.png"/></div>
-				<div class=" fl"><img src="img/bookmarkgrey2.png"/></div>
-				<div class=" fl">먹는 것에 진심인 사람들</div>
+				<div class=" fl"><img src="${pageContext.request.contextPath}/img/room.png"/></div>
+<!-- 				<div class=" fl"><img class="chat_profile" src="img/chat_profile.png"/></div> -->
+				<div class='fl <%= (bDao.isBookmarkChatroom(memberIdx, chatroomIdx)==true ? "ic_bookmark_on" : "ic_bookmark_off") %>' chatroom_idx="<%=chatroomIdx%>"></div>
+				<div class=" fl"><%=chatroomName%></div>
+				<div class="ic_information fl"></div>
 			</div>
 			<!-- 상단(2) -->
 			<div class=" fr">
-				<div class=" fl" data-toggle="tooltip" title="참여 멤버"><img src="img/member.png"/></div>
-				<div class=" fl">5</div>
-				<div class=" fl" data-toggle="tooltip" title="채팅 시작하기"><img src="img/addmember.png"/></div>
-				<div class=" fl" data-toggle="tooltip" title="대화방 알림">
-					<img id="alarm_on" src="img/roomalarm.png"/>
-					<img id="alarm_off" src="img/roomalarmoff.png"/>
+				<div class=" fl" data-toggle="tooltip" title="참여 멤버">
+					<img src="${pageContext.request.contextPath}/img/member.png"/>
 				</div>
-				<div class=" fl" data-toggle="tooltip" title="더보기"><img src="img/threespot.png"/></div>
+				<div class=" fl"><%= listChatroomMember.size() %></div>
+				<div class=" fl" data-toggle="tooltip" title="채팅 시작하기">
+					<img src="${pageContext.request.contextPath}/img/addmember.png"/>
+				</div>
+				<div class=" fl" data-toggle="tooltip" title="대화방 알림">
+					<img id="alarm_on" src="${pageContext.request.contextPath}/img/roomalarm.png"/>
+					<img id="alarm_off" src="${pageContext.request.contextPath}/img/roomalarmoff.png"/>
+				</div>
+				<div class=" fl" data-toggle="tooltip" title="더보기"><img src="${pageContext.request.contextPath}/img/threespot.png"/></div>
 			</div>
-		</div>
+			
+			<!-- i에 커서 올리면 토픽방 설명 나옴 -->
+			<div class="information_pop_up">
+				<div><%= chatroomName %></div>
+				<div><%= chatroomInformation %></div>
+			</div>
+			
+			<!--------------------------------------- 채팅방 메뉴 팝업창 --------------------------------------->
+			<!---------- 채팅멤버 검색창 ---------->
+			<div class="div_participants">
+				<!-- 멤버검색(1) -->
+				<div>
+					<img src="${pageContext.request.contextPath}/img/searchMember.png"/>
+					<input type="search" name="member_search" placeholder="참여 멤버"/>
+				</div>
+				<!-- 멤버목록(2) -->
+				<div>
+					<!--타이틀 -->
+					<div>팀멤버</div>
+					<!--목록 -->
+					<div class="scrollbar">
+						<%
+							for(ChatroomMemberDto chatroomMemberDto : listChatroomMember) {
+						%>
+						<!-- 멤버 반복되는 부분 -->	
+						<div class="div_member_list" member_idx="<%= chatroomMemberDto.getMemberIdx() %>">
+							<div class="fl">
+								<img class="profile_img" src="<%= chatroomMemberDto.getProfileUrl() %>"/>
+							</div>
+							<div class="fl">
+								<div class="profile_name"><%= chatroomMemberDto.getName() %></div>
+							</div>
+							<div class="ic_exit_chatroom fr"></div>
+							<div class="fr">
+								<div class='profile_power
+									<% if( (chatroomMemberDto.getPower()).equals("정회원")){ %>
+										<%= " power_orange" %>
+									<% } else if ( (chatroomMemberDto.getPower()).equals("소유자")){ %>
+										<%= " power_blue" %>
+									<%  } else { %>
+										<%= " power_pupple" %>
+									<% } %>							
+									'> <%= chatroomMemberDto.getPower() %>
+								</div>
+							</div>					
+							<div>
+								<div class="on_user"></div>
+							</div>
+							<div style="clear:both;"></div>
+						</div>
+						<%
+							}
+						%>
+						<!-- <div class="div_member_list">
+							<div class="fl">
+								<img class="profile_img" src="https://jandi-box.com/files-profile/4065aa3b8f54d09d2c8d799718754681?size=80"/>
+							</div>
+							<div class="fl">
+								<div class="profile_name">김현지</div>
+							</div>
+							<div class="fr">
+								<div class="profile_power power_blue">소유자</div>
+							</div>					
+							<div style="clear:both;"></div>
+						</div> -->
+							<div class="div_not_exist">검색 결과가 없습니다.</div>
+							<div class="invite_member">+토픽에 멤버 초대하기</div>				
+					</div>
+					
+				</div>
+			</div>
+			
+			<!---------- 채팅 시작하기 ---------->		
+			<div id="div_chat_start" class="border">
+				<div>
+					<span>채팅 시작하기</span>
+					<div class="exit"></div>
+				</div>
+				<div>
+					<div class="fl">
+						<span class="span_chat_start">이름</span>
+						<div class="ic_search"></div>
+						<input type="text" placeholder="멤버 검색"/>
+						
+						<span class="span_chat_start">부서</span>
+		        		<select name="department">
+							<option value="전체">전체</option>
+							<option value="개발">개발</option>
+							<option value="인사">인사</option>
+							<option value="회계">회계</option>
+						</select>
+						
+						<span class="span_chat_start">직책</span>
+						<select name="position">
+							<option value="전체">전체</option>
+							<option value="대리">대리</option>
+							<option value="사원">사원</option>
+							<option value="인턴">인턴</option>
+							<option value="주임">주임</option>
+							<option value="팀장">팀장</option>
+						</select>
+						
+						<span class="span_chat_start">권한</span>
+		        		<select name="department">
+							<option value="전체">전체</option>
+							<option value="관리자">관리자</option>
+							<option value="소유자">소유자</option>
+							<option value="정회원">정회원</option>
+							<option value="준회원">준회원</option>
+						</select>
+						
+						<img id="icon_reset" src="img/reset.png"/>
+						<input type="reset" value="검색조건 초기화"/>
+					</div>
+					<div class="fl">
+						<span class="span_chat_start">팀멤버</span>
+						<div id="start_member" class="border">
+							
+							<div class="div_member_list2" member_idx="100">
+								<div class="fl">
+									<img class="profile_img" src="https://jandi-box.com/files-resource/characters/character_01.png"/>
+								</div>
+								<div class="fl">
+									<div class="profile_name">이두걸</div>
+									<div>
+										<span>7팀 / </span>
+										<span> 대표님</span>
+									</div>
+								</div>
+								<div class="fr">
+									<div class="profile_power power_orange">정회원</div>
+								</div>					
+								<div style="clear:both;"></div>
+							</div>
+							<div class="div_member_list2" member_idx="101">
+								<div class="fl">
+									<img class="profile_img" src="https://jandi-box.com/files-resource/characters/character_01.png"/>
+								</div>
+								<div class="fl">
+									<div class="profile_name">이세걸</div>
+									<div>
+										<span>7팀 / </span>
+										<span> 이사님</span>
+									</div>
+								</div>
+								<div class="fr">
+									<div class="profile_power power_orange">정회원</div>
+								</div>					
+								<div style="clear:both;"></div>
+							</div>							
+							<div class="div_member_list2" member_idx="102">
+								<div class="fl">
+									<img class="profile_img" src="https://jandi-box.com/files-resource/characters/character_01.png"/>
+								</div>
+								<div class="fl">
+									<div class="profile_name">이영걸</div>
+									<div>
+										<span>7팀 / </span>
+										<span> 전무님</span>
+									</div>
+								</div>
+								<div class="fr">
+									<div class="profile_power power_orange">정회원</div>
+								</div>					
+								<div style="clear:both;"></div>
+							</div>							
+							<div class="div_member_list2" member_idx="103">
+								<div class="fl">
+									<img class="profile_img" src="https://jandi-box.com/files-resource/characters/character_01.png"/>
+								</div>
+								<div class="fl">
+									<div class="profile_name">이한걸</div>
+									<div>
+										<span>7팀 / </span>
+										<span> 실장님</span>
+									</div>
+								</div>
+								<div class="fr">
+									<div class="profile_power power_orange">정회원</div>
+								</div>					
+								<div style="clear:both;"></div>
+							</div>							
+						</div>
+						
+						<span class="span_chat_start">선택된 멤버 <span class="count_memeber"> 5</span> </span>
+						<div id="start_choice">
+							<div class="fl" member_idx="15">
+								<img class="profile_img" src="https://jandi-box.com/files-profile/62932f86e7cb4a9d8b6dd39149b4c0d5"/>
+								<span>강하늘</span>						
+							</div>
+							<div class="fl" member_idx="14">
+								<img class="profile_img" src="https://jandi-box.com/files-profile/6a4eaf2b7a89126e44e9eb0cc81854d6?size=80"/>
+								<span>김민지</span>						
+							</div>
+							<div class="fl" member_idx="13">
+								<img class="profile_img" src="https://jandi-box.com/files-profile/4065aa3b8f54d09d2c8d799718754681?size=80"/>
+								<span>김현지</span>						
+							</div>
+							<div class="fl" member_idx="12">
+								<img class="profile_img" src="https://jandi-box.com/files-profile/b615e8e5e21064bc8a32231d8628a136?size=80"/>
+								<span>원혜경</span>						
+							</div>
+							<div class="fl" member_idx="11">
+								<img class="profile_img" src="https://jandi-box.com/files-profile/444fd3d25ade24bc2ec6480e11949dfa?size=80"/>
+								<span>이나무</span>						
+							</div>
+	<!-- 						<div class="choice_member fl">
+								<img class="profile_img" src="https://jandi-box.com/files-profile/444fd3d25ade24bc2ec6480e11949dfa?size=80"/>
+								<span>노멤버</span>						
+								<div></div>
+							</div> -->
+							<div style="clear:both;"></div>
+						</div>
+	
+						<span class="span_chat_start">동일한 멤버와 참여 중인 채팅방</span>
+						<div id="start_together" class="border">
+							<div>
+								<img class="chat_profile" src="img/chat_profile.png"/>
+								<span>프로젝트 채팅방</span>
+								<img src="img/arrowright.png"/>
+							</div>
+							<div>
+								<img class="chat_profile" src="img/chat_profile.png"/>
+								<span>테스트 채팅방</span>
+								<img src="img/arrowright.png"/>
+							</div>
+						</div>
+					</div>
+					<div style="clear:both;"></div>
+					
+					<div id="div_chat_warning">
+						<div class="fl">
+							<img src="img/info_grey.png"/>
+						</div>
+						<div class="fl">
+							<span>• 채팅은 최대 10명까지 참여할 수 있습니다. 더 많은 멤버의 참여가 필요한 경우 토픽을 생성하여 대화해 주세요.</span><br/>
+							<span>• 채팅은 추후 토픽으로 변경이 불가능합니다. 주제별 토픽을 생성하여 관리해 보세요.</span>
+						</div>
+					</div>
+					<div>
+						<button type="button" name="invite_member">초대하기</button>
+						<button type="button" name="close_window">닫기</button>
+					</div>
+				</div>
+			</div>
+			<!---------- 더보기 팝업창 ---------->		
+			<div id="div_chatroom_more_menu">
+				<div>
+					<div class="ic_notice_register"></div>
+					<span>공지등록</span>
+				</div>
+				<div>
+					<div class="ic_edit_info"></div>
+					<span>정보 변경하기</span>
+				</div>
+				<div>
+					<div class="ic_show_file"></div>
+					<span>파일 보기</span>
+				</div>
+				<div>
+					<div class="ic_exit_chatroom"></div>
+					<span>채팅방 나가기</span>
+				</div>
+			</div>	
+		</div><!-- div_title 닫는 태그 -->
 		
-		<!---------- 채팅방 중앙부  ---------->			
+		
+<!---------- 채팅방 중앙부  ---------->			
 		<div id="div_content" class="scrollbar">
 		
 			<!--------------------------------------- 공지 --------------------------------------->
@@ -626,24 +901,27 @@
 				<div></div>
 			</div>
 
-			<div class="chat_notice">
-				<span><strong>이나무</strong> 님이 비공개 토픽을 생성했습니다.<span class="time">PM 3:31</span></span>
-			</div>
-
-			<div class="chat_notice">
-				<span><strong>이나무</strong> 님이 채팅방 이름을 변경했습니다.<span class="time">PM 3:32</span></span>
-			</div>
-
 		<%
 			for(ChatContentsDto chatContents : chatContentsDto) {
+				if(chatContents.getMemberIdx() == -1){
 		%>		
-			<div class="chat_message" chat_idx="<%=chatContents.getChatIdx()%>">
+			<div class="chat_notice" chat_idx="<%=chatContents.getChatIdx()%>" writer="<%=chatContents.getMemberIdx()%>">
+<!-- 				<span><strong>이나무</strong> 님이 비공개 토픽을 생성했습니다.<span class="time">PM 3:31</span></span> -->
+				<span><%=chatContents.getContent()%><span class="time"><%=chatContents.getWriteDate()%></span></span>
+			</div>
+		<%
+				} else {
+		%>
+			<div class="chat_message" chat_idx="<%=chatContents.getChatIdx()%>" writer="<%=chatContents.getMemberIdx()%>">
 				<div class="fl">
 <!-- 					<img class="profile_img" src="https://jandi-box.com/files-profile/444fd3d25ade24bc2ec6480e11949dfa?size=80"/> -->
 					<img class="profile_img" src="<%=chatContents.getProfileUrl()%>"/>
 				</div>
 				<div class="fl">
-					<div class="profile_name"><%=chatContents.getName()%></div>
+					<div class="profile_name">
+						<%=chatContents.getName()%>
+						<span> - <%=chatContents.getState()%></span>
+					</div>
 					<div class="msg">
 						<%=chatContents.getContent()%>
 						<span class="unread"><%=chatContents.getUnreadCnt()%></span>
@@ -651,11 +929,66 @@
 					</div>
 				</div>
 				<div style="clear:both;"></div>
+					<!--  여기 테스트 중 // 채팅글 [더보기] -->
+					<div class="more_menu_box">
+						<div class="ic_more_menu"></div>
+					</div>	
+					<!-- 채팅글 [더보기] - [내 토픽글 더보기 창] -->
+					<div class="div_chat_more_menu_mine">
+					 	<div>
+						 	<div class="ic_comment fl"></div>
+							<span class="fl">댓글</span>
+					 	</div>
+					 	<div>
+						 	<div class="ic_notice_register fl"></div>
+							<span class="fl">공지등록</span>
+					 	</div>
+					 	<div>
+					 		<div class='fl <%= bDao.isBookmarkChat(chatContents.getMemberIdx(), chatContents.getChatIdx()) ? "ic_bookmark_on" : "ic_bookmark_off" %>'>
+					 		</div>
+							<span class="fl">즐겨찾기</span>
+					 	</div>
+					 	<div>
+					 		<div class="ic_copy fl"></div>
+							<span class="fl">복사</span>
+					 	</div>
+					 	<div>
+					 		<div class="ic_edit_info fl"></div>
+							<span class="fl">수정</span>
+					 	</div>
+					 	<div>
+					 		<div class="ic_delete fl"></div>
+							<span class="fl">삭제</span>
+					 	</div>
+					 </div> 
+					<!-- 채팅글 [더보기] - [상대 토픽글 더보기 창] -->
+					<div class="div_chat_more_menu_other">
+					 	<div>
+						 	<div class="ic_comment fl"></div>
+							<span class="fl">댓글</span>
+					 	</div>					
+					 	<div>
+						 	<div class="ic_notice_register fl"></div>
+							<span class="fl">공지등록</span>
+					 	</div>
+					 	<div>
+					 		<div class='fl <%= bDao.isBookmarkChat(memberIdx, chatContents.getChatIdx()) ? "ic_bookmark_on" : "ic_bookmark_off" %>'>
+					 		</div>
+							<span class="fl">즐겨찾기</span>
+					 	</div>
+					 	<div>
+					 		<div class="ic_copy fl"></div>
+							<span class="fl">복사</span>
+					 	</div>
+				 	</div> 
+				 	<!--  여기 테스트 중 -->
 			</div>
 		<%
+				}
 			}
 		%>			
-			<div class="chat_message">
+		
+<!-- 			<div class="chat_message">
 				<div class="fl">
 					<img class="profile_img" src="https://jandi-box.com/files-profile/444fd3d25ade24bc2ec6480e11949dfa?size=80"/>
 				</div>
@@ -695,7 +1028,7 @@
 			
 			<div class="chat_notice">
 				<span><strong>YG</strong> 님이 나갔습니다.<span class="time">PM 3:49</span></span>
-			</div>
+			</div> -->
 			
 			<div class="chat_message">
 				<div class="fl">
@@ -753,369 +1086,53 @@
 				<div style="clear:both;"></div>
 			</div>
 				
-			<div class="chat_message">
-				<div class="fl">
-					<img class="profile_img" src="https://jandi-box.com/files-profile/9836702f0b26c245a3bb3516afb6452d?size=80"/>
-				</div>
-				<div class="fl">
-					<div class="profile_name">김현지</div>
-					<div class="msg">
-						마라샹궈가 먹고 싶은데 다들 어떠신지?
-						<span class="unread">1</span>
-						<span class="time">AM 10:40</span>
-					</div>
-				</div>
-				<div style="clear:both;"></div>
-			</div>
-			
-			<div class="chat_message">
-				<div class="fl">
-					<img class="profile_img" src="https://jandi-box.com/files-profile/62932f86e7cb4a9d8b6dd39149b4c0d5"/>
-				</div>
-				<div class="fl">
-					<div class="profile_name">강하늘</div>
-					<div class="msg">
-						좋아요! 오늘은 마라샹궈 먹으러 갑시다~
-						<span class="unread">1</span>
-						<span class="time">AM 10:41</span>
-					</div>
-				</div>
-				<div style="clear:both;"></div>
-			</div>
-		</div>
+		
 
 		
-<!---------- 채팅방 하단 -채팅입력 ---------->			
-		<div id="div_bottom">
-			<!-- 채팅 입력창 -->
-			<div id="div_msg_input_body" class="wide">
-				<div id="div_msg_space">
-					<!-- 댓글 입력하는 부분 -->
-					<div id="div_msg_blank">
-						<textarea rows="1" name="comment" placeholder="댓글을 입력하세요..."></textarea>
-						<!-- <input type="text" name="comment" placeholder="댓글을 입력하세요..."/> -->
-						<div class="ic_comment_enter"></div>
-					</div>
-					<!-- 이모티콘, 언급, 파일 -->
-					<div id="div_msg_icon">
-						<div class="ic_mention fl"></div>
-						<label class="ic_file_clip fl" for="upload_file"></label>
-						<input type="file" id="upload_file" style="clip:rect(0, 0, 0, 0); display:none;"/>
-					</div>
+	</div><!-- div_content 닫는 태그 -->
+	
+	
+	<!---------- 채팅방 하단 -채팅입력 ---------->			
+	<div id="div_bottom">
+		<!-- 채팅 입력창 -->
+		<div id="div_msg_box" class="wide">
+			<div id="div_msg_space">
+				<!-- 댓글 입력하는 부분 -->
+				<div id="div_msg_blank"> <!-- 이거 -->
+					<div id="write_chat_content_space" contenteditable="true" data-placeholder="채팅을 입력하세요..." class="scrollbar"></div>
+					<input type="hidden" name="chat_content" id="hidden_chat_content">
+		 			<input type="hidden" name="chatroom_idx" value="<%=chatroomIdx%>">
+					<!-- <textarea rows="1" name="comment" placeholder="댓글을 입력하세요..."></textarea> -->
+					<!-- <input type="text" name="comment" placeholder="댓글을 입력하세요..."/> -->
+					<div class="ic_comment_enter"></div>
+				</div>
+				<!-- 이모티콘, 언급, 파일 -->
+				<div id="div_msg_icon"> <!-- 이거 -->
+					<div class="ic_mention fl"></div>
+					<label class="ic_file_clip fl" for="upload_file"></label>
+					<input type="file" id="upload_file" style="clip:rect(0, 0, 0, 0); display:none;"/>
 				</div>
 			</div>
 		</div>
-		
-<!--------------------------------------- 채팅방 메뉴 팝업창 --------------------------------------->
-<!---------- 채팅멤버 검색창 ---------->
-		<div class="div_participants">
-			<!-- 멤버검색(1) -->
-			<div>
-				<img src="img/searchMember.png"/>
-				<input type="search" name="member_search" placeholder="참여 멤버"/>
-			</div>
-			<!-- 멤버목록(2) -->
-			<div>
-				<!--타이틀 -->
-				<div>팀멤버</div>
-				<!--목록 -->
-				<div>
-					<div class="div_member_list">
-						<div class="fl">
-							<img class="profile_img" src="https://jandi-box.com/files-profile/8eee92ad3f2be9d8a67aa0b0839f10b2?size=80"/>
-						</div>
-						<div class="fl">
-							<div class="profile_name">원혜경</div>
-						</div>
-						<div class="fr">
-							<div class="profile_power power_orange">정회원</div>
-						</div>					
-						<div>
-							<div class="on_user"></div>
-						</div>
-						<div style="clear:both;"></div>
-					</div>
-					<div class="div_member_list">
-						<div class="fl">
-							<img class="profile_img" src="https://jandi-box.com/files-profile/4065aa3b8f54d09d2c8d799718754681?size=80"/>
-						</div>
-						<div class="fl">
-							<div class="profile_name">김현지</div>
-						</div>
-						<div class="fr">
-							<div class="profile_power power_blue">소유자</div>
-						</div>					
-						<div style="clear:both;"></div>
-					</div>
-					<div class="div_member_list">
-						<div class="fl">
-							<img class="profile_img" src="https://jandi-box.com/files-profile/62932f86e7cb4a9d8b6dd39149b4c0d5"/>
-						</div>
-						<div class="fl">
-							<div class="profile_name">강하늘</div>
-						</div>
-						<div class="fr">
-							<div class="profile_power power_orange">정회원</div>
-						</div>					
-						<div style="clear:both;"></div>
-					</div>
-					<div class="div_member_list">
-						<div class="fl">
-							<img class="profile_img" src="https://jandi-box.com/files-profile/6a4eaf2b7a89126e44e9eb0cc81854d6?size=80"/>
-						</div>
-						<div class="fl">
-							<div class="profile_name">김민지</div>
-						</div>
-						<div class="fr">
-							<div class="profile_power power_orange">정회원</div>
-						</div>					
-						<div style="clear:both;"></div>
-					</div>
-					<div class="div_member_list">
-						<div class="fl">
-							<img class="profile_img" src="https://jandi-box.com/files-profile/444fd3d25ade24bc2ec6480e11949dfa?size=80"/>
-						</div>
-						<div class="fl">
-							<div class="profile_name">이나무</div>
-						</div>
-						<div class="fr">
-							<div class="profile_power power_orange">정회원</div>
-						</div>					
-						<div style="clear:both;"></div>
-					</div>
-					<!-- <div class="div_member_list">
-						<div class="fl">
-							<img class="profile_img" src="https://jandi-box.com/files-resource/characters/character_01.png"/>
-						</div>
-						<div class="fl">
-							<div class="profile_name">이영걸</div>
-						</div>
-						<div class="fr">
-							<div class="profile_power power_orange">정회원</div>
-						</div>					
-						<div style="clear:both;"></div>
-					</div> -->
-				</div>
-				
-			</div>
-		</div>
-		
-<!---------- 채팅 시작하기 ---------->		
-		<div id="div_chat_start" class="border">
-			<div>
-				<span>채팅 시작하기</span>
-				<div class="exit"></div>
-			</div>
-			<div>
-				<div class="fl">
-					<span class="span_chat_start">이름</span>
-					<div class="ic_search"></div>
-					<input type="text" placeholder="멤버 검색"/>
-					
-					<span class="span_chat_start">부서</span>
-	        		<select name="department">
-						<option value="전체">전체</option>
-						<option value="개발">개발</option>
-						<option value="인사">인사</option>
-						<option value="회계">회계</option>
-					</select>
-					
-					<span class="span_chat_start">직책</span>
-					<select name="position">
-						<option value="전체">전체</option>
-						<option value="대리">대리</option>
-						<option value="사원">사원</option>
-						<option value="인턴">인턴</option>
-						<option value="주임">주임</option>
-						<option value="팀장">팀장</option>
-					</select>
-					
-					<span class="span_chat_start">권한</span>
-	        		<select name="department">
-						<option value="전체">전체</option>
-						<option value="관리자">관리자</option>
-						<option value="소유자">소유자</option>
-						<option value="정회원">정회원</option>
-						<option value="준회원">준회원</option>
-					</select>
-					
-					<img id="icon_reset" src="img/reset.png"/>
-					<input type="reset" value="검색조건 초기화"/>
-				</div>
-				<div class="fl">
-					<span class="span_chat_start">팀멤버</span>
-					<div id="start_member" class="border">
-						
-						<div class="div_member_list2" member_idx="100">
-							<div class="fl">
-								<img class="profile_img" src="https://jandi-box.com/files-resource/characters/character_01.png"/>
-							</div>
-							<div class="fl">
-								<div class="profile_name">이두걸</div>
-								<div>
-									<span>7팀 / </span>
-									<span> 대표님</span>
-								</div>
-							</div>
-							<div class="fr">
-								<div class="profile_power power_orange">정회원</div>
-							</div>					
-							<div style="clear:both;"></div>
-						</div>
-						<div class="div_member_list2" member_idx="101">
-							<div class="fl">
-								<img class="profile_img" src="https://jandi-box.com/files-resource/characters/character_01.png"/>
-							</div>
-							<div class="fl">
-								<div class="profile_name">이세걸</div>
-								<div>
-									<span>7팀 / </span>
-									<span> 이사님</span>
-								</div>
-							</div>
-							<div class="fr">
-								<div class="profile_power power_orange">정회원</div>
-							</div>					
-							<div style="clear:both;"></div>
-						</div>							
-						<div class="div_member_list2" member_idx="102">
-							<div class="fl">
-								<img class="profile_img" src="https://jandi-box.com/files-resource/characters/character_01.png"/>
-							</div>
-							<div class="fl">
-								<div class="profile_name">이영걸</div>
-								<div>
-									<span>7팀 / </span>
-									<span> 전무님</span>
-								</div>
-							</div>
-							<div class="fr">
-								<div class="profile_power power_orange">정회원</div>
-							</div>					
-							<div style="clear:both;"></div>
-						</div>							
-						<div class="div_member_list2" member_idx="103">
-							<div class="fl">
-								<img class="profile_img" src="https://jandi-box.com/files-resource/characters/character_01.png"/>
-							</div>
-							<div class="fl">
-								<div class="profile_name">이한걸</div>
-								<div>
-									<span>7팀 / </span>
-									<span> 실장님</span>
-								</div>
-							</div>
-							<div class="fr">
-								<div class="profile_power power_orange">정회원</div>
-							</div>					
-							<div style="clear:both;"></div>
-						</div>							
-					</div>
-					
-					<span class="span_chat_start">선택된 멤버 <span class="count_memeber"> 5</span> </span>
-					<div id="start_choice">
-						<div class="fl" member_idx="15">
-							<img class="profile_img" src="https://jandi-box.com/files-profile/62932f86e7cb4a9d8b6dd39149b4c0d5"/>
-							<span>강하늘</span>						
-						</div>
-						<div class="fl" member_idx="14">
-							<img class="profile_img" src="https://jandi-box.com/files-profile/6a4eaf2b7a89126e44e9eb0cc81854d6?size=80"/>
-							<span>김민지</span>						
-						</div>
-						<div class="fl" member_idx="13">
-							<img class="profile_img" src="https://jandi-box.com/files-profile/4065aa3b8f54d09d2c8d799718754681?size=80"/>
-							<span>김현지</span>						
-						</div>
-						<div class="fl" member_idx="12">
-							<img class="profile_img" src="https://jandi-box.com/files-profile/b615e8e5e21064bc8a32231d8628a136?size=80"/>
-							<span>원혜경</span>						
-						</div>
-						<div class="fl" member_idx="11">
-							<img class="profile_img" src="https://jandi-box.com/files-profile/444fd3d25ade24bc2ec6480e11949dfa?size=80"/>
-							<span>이나무</span>						
-						</div>
-<!-- 						<div class="choice_member fl">
-							<img class="profile_img" src="https://jandi-box.com/files-profile/444fd3d25ade24bc2ec6480e11949dfa?size=80"/>
-							<span>노멤버</span>						
-							<div></div>
-						</div> -->
-						<div style="clear:both;"></div>
-					</div>
-
-					<span class="span_chat_start">동일한 멤버와 참여 중인 채팅방</span>
-					<div id="start_together" class="border">
-						<div>
-							<img class="chat_profile" src="img/chat_profile.png"/>
-							<span>프로젝트 채팅방</span>
-							<img src="img/arrowright.png"/>
-						</div>
-						<div>
-							<img class="chat_profile" src="img/chat_profile.png"/>
-							<span>테스트 채팅방</span>
-							<img src="img/arrowright.png"/>
-						</div>
-					</div>
-				</div>
-				<div style="clear:both;"></div>
-				
-				<div id="div_chat_warning">
-					<div class="fl">
-						<img src="img/info_grey.png"/>
-					</div>
-					<div class="fl">
-						<span>• 채팅은 최대 10명까지 참여할 수 있습니다. 더 많은 멤버의 참여가 필요한 경우 토픽을 생성하여 대화해 주세요.</span><br/>
-						<span>• 채팅은 추후 토픽으로 변경이 불가능합니다. 주제별 토픽을 생성하여 관리해 보세요.</span>
-					</div>
-				</div>
-				<div>
-					<button type="button" name="invite_member">초대하기</button>
-					<button type="button" name="close_window">닫기</button>
-				</div>
-			</div>
-		</div>
-<!---------- 더보기 팝업창 ---------->		
-		<div id="div_chatroom_more_menu">
-			<div>
-				<div class="ic_notice_register"></div>
-				<span>공지등록</span>
-			</div>
-			<div>
-				<div class="ic_invite_to_topic"></div>
-				<span>멤버를 토픽으로 초대하기</span>
-			</div>
-			<div>
-				<div class="ic_edit_info"></div>
-				<span>정보 변경하기</span>
-			</div>
-			<div>
-				<div class="ic_show_file"></div>
-				<span>파일 보기</span>
-			</div>
-			<div>
-				<div class="ic_exit_chatroom"></div>
-				<span>채팅방 나가기</span>
-			</div>
-		</div>	
-		
 	</div>
+		
 	<div style="clear:both;"></div>
-
-
+	</div>	<!-- div_side2 닫는 태그 -->
 	
 <!-- ---------------NamooChatMessageWindow.html------------------ -->
 		<!-- 메시지창 전체 -->
 	<div id="div_side_message">
 		<!-- 메시지창(1) -->
 		<div id="div_side_msg_header">
-			<div>
-				<img src="img/arrowleft.png"/>
-				<span>메시지</span>
-				<img src="img/x.png"/>
-			</div>
+			<img src="img/arrowleft.png"/>
+			<span>메시지</span>
+<!-- 				<img src="img/x.png"/> -->
+			<div class="exit fr"></div>
 		</div>
 		<!-- 메시지창(2) -->
 		<div id="div_side_msg_body">
 			<!-- 메시지내용 -->
+			
 			<div id="div_side_content">
 				<div>
 					<div class="fl">
@@ -1133,10 +1150,13 @@
 					</span>
 				</div>
 			</div>
+			
 			<!-- 댓글수 -->
 			<div id="div_side_comment_count">
 				<span>댓글</span> 2
 			</div>
+			
+			
 			<!-- 댓글(1) -->
 			<div class="div_side_comments" class="user">
 				<div>
@@ -1180,11 +1200,15 @@
 		<!-- 메시지창(3) -->
 		<div id="div_side_msg_footer">
 			<!-- 채팅 입력창 -->
-			<div id="div_side_msg_input_body">
-				<div>
+			<div id="div_side_msg_box">
+<!-- 			<div id="div_side_msg_input_body"> css, js 바꾸기-->
+				<div id="div_side_msg_space">
 					<!-- 댓글 입력하는 부분 -->
 					<div id="div_side_msg_blank">
-						<textarea rows="1" placeholder="댓글을 입력하세요..."></textarea>
+						<div id="write_chat_comment_space" contenteditable="true" data-placeholder="댓글을 입력하세요..." class="scrollbar"></div>
+<!-- 						<input type="hidden" name="chat_conmment" id="hidden_chat_comment"> -->
+<%-- 			수정필요	<input type="hidden" name="chat_comment_idx" value="<%=chatContentsDto%>"> --%>
+<!-- 						<textarea rows="1" placeholder="댓글을 입력하세요..."></textarea> -->
 						<!-- <input type="text" name="comment" placeholder="댓글을 입력하세요..."/> -->
 						<div class="ic_comment_enter"></div>
 					</div>
@@ -1197,6 +1221,7 @@
 				</div>
 			</div>
 		</div>
+		
 		
 	</div>
 	
@@ -1367,13 +1392,32 @@
 		</div>
 	</div>
 		
-	
+
 	
 	<!--------------------------------------- 기타 팝업창 --------------------------------------->	
 	<!-- 투명판 -->
 	<div id="div_transparent_filter"></div>
 	<!-- 회색판 -->
 	<div id="div_grey_filter"></div>
+	
+	<!-- 채팅글 삭제 시 알림창 -->
+	<div id="delete_chat_content_pop_up" class="notification_pop_up">
+		<div>이 메시지를 삭제하시겠습니까?</div>
+		<div>삭제하시면 복구할 수 없습니다.</div>
+		<div>
+			<button type="button" class="btn btn_cancel">취소</button>
+			<button type="button" class="btn btn_danger">확인</button>
+		</div>
+	</div>
+	<!-- 채팅댓글 삭제 시 알림창 -->
+	<div id="delete_chat_comment_pop_up" class="notification_pop_up">
+		<div>이 댓글을 삭제하시겠습니까?</div>
+		<div>삭제하시면 복구할 수 없습니다.</div>
+		<div>
+			<button type="button" class="btn btn_cancel">취소</button>
+			<button type="button" class="btn btn_danger">확인</button>
+		</div>
+	</div>
 	
 	<!-- (토픽의 팝업창 예시) 여기서부터 -->
 	<div id="delete_topic_pop_up" class="notification_pop_up">
@@ -1427,24 +1471,8 @@
 			<button class="btn_ok">확인</button>
 		</div>
 	</div>
-	<!-- 토픽글 삭제 시 알림창 -->
-	<div id="delete_topic_board_pop_up" class="notification_pop_up">
-		<div>이 토픽글을 삭제하시겠습니까?</div>
-		<div>삭제하시면 복구할 수 없습니다.</div>
-		<div>
-			<button class="btn btn_cancel">취소</button>
-			<button class="btn btn_danger">확인</button>
-		</div>
-	</div>
-	<!-- 토픽댓글 삭제 시 알림창 -->
-	<div id="delete_topic_comment_pop_up" class="notification_pop_up">
-		<div>이 댓글을 삭제하시겠습니까?</div>
-		<div>삭제하시면 복구할 수 없습니다.</div>
-		<div>
-			<button type="button" class="btn btn_cancel">취소</button>
-			<button type="button" class="btn btn_danger">확인</button>
-		</div>
-	</div>
+
+
 	<!-- 토픽 예시 여기까지 -->	
 		
 </body>
