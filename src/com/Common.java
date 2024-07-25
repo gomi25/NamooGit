@@ -1,7 +1,8 @@
 package com;
 
 public class Common {
-//파일 외부공유용url생성 - 난수 발생 방법
+	// 파일 외부공유용url생성 - 난수 발생 방법
+	// 리턴: 외부공유용url
 	public String generateNewUrl() {
 		// 97-122
 		// 48-57
@@ -27,4 +28,57 @@ public class Common {
 	 * 
 	 * }
 	 */
+	
+	// 파일명의 확장자를 확인하여 파일유형에 따라 idx리턴
+	// 파라미터: 파일명
+	// 리턴: 파일타입idx
+	public int getFileTypeIdxFromFileName(String fileName) {
+		int fileTypeIdx = 1;
+		if(fileName != null) {
+			if(fileName.endsWith(".png") || 
+					fileName.endsWith(".jpg") ||
+					fileName.endsWith(".jpeg")) {
+				fileTypeIdx = 2;   // (이미지)
+				// 추가로 더 작성하기
+			} else if(fileName.endsWith(".pdf")) {
+				fileTypeIdx = 3;	// PDF
+			} else if(fileName.endsWith(".doc")  ||
+					  fileName.endsWith(".docm") || 
+					  fileName.endsWith(".docx") ||
+					  fileName.endsWith("dot")) {
+				fileTypeIdx = 4;	// 워드
+			} else if(fileName.endsWith(".pptx")) {
+				fileTypeIdx = 5;	// 파워포인트
+			} else if(fileName.endsWith(".hwp") ||
+				      fileName.endsWith(".hwpx")) {
+				fileTypeIdx = 6;	// 한글
+			} else if(fileName.endsWith(".xlsx")    ||
+					  fileName.endsWith(".xlsm")  ||
+				      fileName.endsWith(".xlsb") ||
+					  fileName.endsWith(".xls")) {
+				fileTypeIdx = 7;	// 엑셀
+			} else if(fileName.endsWith(".zip") ||
+					  fileName.endsWith(".7z")  ||
+				      fileName.endsWith(".alz") ||
+					  fileName.endsWith(".apk")) {
+				fileTypeIdx = 8;	// 압축 파일
+			} else if(fileName.endsWith(".mp3") ||
+					  fileName.endsWith(".mp4") ||
+				      fileName.endsWith(".avi") ||
+					  fileName.endsWith(".mov")) {
+				fileTypeIdx = 9;	// 오디오, 비디오
+			} else {
+				fileTypeIdx = 1;
+			}
+		}
+		return fileTypeIdx;
+	}
+	
+	// Common클래스. (common 패키지)
+	public static void main(String[] args) {
+		Common c = new Common();
+		String s = c.generateNewUrl();
+		System.out.println("strCode : " + s);
+		
+	}
 }

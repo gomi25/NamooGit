@@ -1,3 +1,4 @@
+<%@page import="com.Common"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="dao.*"%>
@@ -20,6 +21,7 @@
 	BookmarkDao bDao = new BookmarkDao();
 	ChatDao cDao = new ChatDao();
 	TopicDao tDao = new TopicDao();
+	Common common = new Common();
 	
 	//============================팀 전체 멤버 조회 테스트==============================
 	ArrayList<TeamMemberDto> teamMemberList = sDao.getTeamMemberList(teamIdx);	
@@ -99,29 +101,12 @@
 		let team_idx = <%=teamIdx%>;
 	</script>
 	<script src="${pageContext.request.contextPath}/js/NamooChat.js"></script>
+	<script>
+
+	</script>
 </head>
 <body>
 <!--------------------------------------- #div_header (화면 최상단) --------------------------------------->	
-<!-- *기존 	<div id="div_header">
-		<div id="div_logo" class="fl"><img src="https://jandi-box.com/teams/0/logo.png?timestamp=20190628"/></div>
-		<div id="div_select_team" class="fl">
-			<span>7팀</span>
-			<img src="img/img_icon_v.png"/>
-		</div>
-		<div id="div_menu3" class="fr"><img src="img/img_icon_menu3.png"/></div>
-		<div id="div_menu4" class="fr" data-toggle="tooltip" title="메뉴">
-			<img src="img/img_icon_menu4.png"/>
-			<img src="img/img_icon_v.png"/>
-		</div>
-		<div id="div_help" class="fr" data-toggle="tooltip" title="도움말">
-			<img src="img/img_icon_help.png"/>
-			<div class="on"></div>
-		</div>
-		<div id="div_search" class="fr" data-toggle="tooltip" title="검색"><img src="img/img_icon_search.png"/></div>
-		<div id="div_hierarchy" class="fr" data-toggle="tooltip" title="조직도"><img src="img/img_icon_hierarchy.png"/></div>
-		<div id="div_notice" class="fr" data-toggle="tooltip" title="알림 센터"><img src="img/img_icon_notice.png"/></div>
-	</div> -->
-
 	<div id="div_header">
 		<div id="div_header_left" class="fl">
 			<div id="div_logo" class="fl"><img src="https://jandi-box.com/teams/0/logo.png?timestamp=20190628"/></div>
@@ -139,10 +124,6 @@
 				<div class="ic_header_menu fl"></div>
 				<div class="ic_arrow_bottom fl"></div>
 			</div>
-<!-- 			<div class="fr" data-toggle="tooltip" title="도움말"> -->
-<!-- 				<div class="ic_header_question"></div> -->
-<!-- 				<div class="on"></div> -->
-<!-- 			</div> -->
 			<div class="fr" data-toggle="tooltip" title="검색">
 				<div class="ic_header_search"></div>
 			</div>
@@ -181,16 +162,6 @@
 		<div style="clear:both;"></div>
 	</div>	
 	
-	
-<!-- <div_side1 원본 >
-	<div id="div_side1" class="fl">
--------- 프로필 --------		
-		<div> (1) 프로필
-			<img src="https://jandi-box.com/files-profile/b615e8e5e21064bc8a32231d8628a136?size=80"/>
-			<div>혜교미</div>
-		</div> -->
-		
-		
 <!--------------------------------------- #div_total_side --------------------------------------->	
 <div id="div_total_side">
 <!--------------------------------------- #div_side1 --------------------------------------->	
@@ -503,8 +474,7 @@
 		</form>
 		
 		<!---------- 토픽 '+버튼' -> 참여 가능한 토픽 보기 ---------->	
-		<form>
-			<div id="div_topic_openlist">
+		<div id="div_topic_openlist">
 				<!-- 상단부 / div:nth-child(1) -->
 				<div>
 					<span>토픽 목록</span>
@@ -554,15 +524,8 @@
 					<div class="check fr"></div>
 				</div>
 			</div>
-			
-		</form>
-		
-		
-		
-		
-		
 	
-	</div> <!-- div_side1의 div닫는태그 -->
+		</div> <!-- div_side1의 div닫는태그 -->
 	
 	
 	
@@ -900,7 +863,6 @@
 				<div>2024년 4월 29일 월요일</div>
 				<div></div>
 			</div>
-
 		<%
 			for(ChatContentsDto chatContents : chatContentsDto) {
 				if(chatContents.getMemberIdx() == -1){
@@ -923,13 +885,27 @@
 						<span> - <%=chatContents.getState()%></span>
 					</div>
 					<div class="msg">
-						<%=chatContents.getContent()%>
+						<div>
+							<%=chatContents.getContent()%>
+						</div>
 						<span class="unread"><%=chatContents.getUnreadCnt()%></span>
 						<span class="time"><%=chatContents.getWriteDate()%></span>
+						<% if(chatContents.getFileIdx()!=null) { %>
+						<div class="file_space" fileTypeIdx="<%=common.getFileTypeIdxFromFileName(chatContents.getFileName())%>">
+<!-- 			수정필요				<div> -->
+<%-- 								<img src="upload/<%=chatContents.getFileName()%>" fileTypeIdx="<%=common.getFileTypeIdxFromFileName(chatContents.getFileName())%>"/> --%>
+<!-- 							</div> -->
+<%-- <%-- 							<img class="ic_pdf" fileTypeIdx="<%=common.getFileTypeIdxFromFileName(chatContents.getFileName())%>"/> --%> --%>
+<!-- 							<div class="not_img_file" > -->
+<%-- 								<div class="" fileTypeIdx="<%=common.getFileTypeIdxFromFileName(chatContents.getFileName())%>"></div> --%>
+<!-- 								<span></span> -->
+<!-- 							</div> -->
+						</div>
+						<% } %>
 					</div>
 				</div>
 				<div style="clear:both;"></div>
-					<!--  여기 테스트 중 // 채팅글 [더보기] -->
+					<!-- 채팅글 [더보기] 창 -->
 					<div class="more_menu_box">
 						<div class="ic_more_menu"></div>
 					</div>	
@@ -981,51 +957,12 @@
 							<span class="fl">복사</span>
 					 	</div>
 				 	</div> 
-				 	<!--  여기 테스트 중 -->
 			</div>
 		<%
 				}
 			}
 		%>			
 		
-<!-- 			<div class="chat_message">
-				<div class="fl">
-					<img class="profile_img" src="https://jandi-box.com/files-profile/444fd3d25ade24bc2ec6480e11949dfa?size=80"/>
-				</div>
-				<div class="fl">
-					<div class="profile_name">이나무</div>
-					<div class="msg">
-						아래 내용 참고해주세요!<br/>
-						<br/>
-						대표님 - 김치, 야채 불호<br/>
-						이사님 - 오이, 돼지국밥, 추어탕 불호
-						<span class="unread">1</span>
-						<span class="time">PM 3:36</span>
-					</div>
-				</div>
-				<div style="clear:both;"></div>
-			</div>
-			
-			<div class="chat_date">
-				<div>2024년 5월 28일 화요일</div>
-				<div></div>
-			</div>
-
-			<div class="chat_message">
-				<div class="fl">
-					<img class="profile_img" src="https://jandi-box.com/files-profile/6a4eaf2b7a89126e44e9eb0cc81854d6?size=80"/>
-				</div>
-				<div class="fl">
-					<div class="profile_name">김민지</div>
-					<div class="msg">
-						말을 해도 되나요
-						<span class="unread">1</span>
-						<span class="time">PM 2:43</span>
-					</div>
-				</div>
-				<div style="clear:both;"></div>
-			</div>
-			
 			<div class="chat_notice">
 				<span><strong>YG</strong> 님이 나갔습니다.<span class="time">PM 3:49</span></span>
 			</div> -->
@@ -1085,15 +1022,12 @@
 				</div>
 				<div style="clear:both;"></div>
 			</div>
-				
-		
-
 		
 	</div><!-- div_content 닫는 태그 -->
 	
 	
-	<!---------- 채팅방 하단 -채팅입력 ---------->			
-	<div id="div_bottom">
+	<!---------- 채팅방 하단 -채팅입력 ---------->	<!-- (기존) 7.24(수) -->		
+<%-- 	<div id="div_bottom">
 		<!-- 채팅 입력창 -->
 		<div id="div_msg_box" class="wide">
 			<div id="div_msg_space">
@@ -1104,6 +1038,7 @@
 		 			<input type="hidden" name="chatroom_idx" value="<%=chatroomIdx%>">
 					<!-- <textarea rows="1" name="comment" placeholder="댓글을 입력하세요..."></textarea> -->
 					<!-- <input type="text" name="comment" placeholder="댓글을 입력하세요..."/> -->
+					<div class="file_list_container"><img scr=""><img scr=""></div>
 					<div class="ic_comment_enter"></div>
 				</div>
 				<!-- 이모티콘, 언급, 파일 -->
@@ -1113,26 +1048,53 @@
 					<input type="file" id="upload_file" style="clip:rect(0, 0, 0, 0); display:none;"/>
 				</div>
 			</div>
-		</div>
-	</div>
+		</div> --%>
+
 		
-	<div style="clear:both;"></div>
-	</div>	<!-- div_side2 닫는 태그 -->
+<!---------- 채팅방 하단 -채팅입력 ---------->	<!-- (변경) 7.25(목)-->		
+	<form id="form_chat" action="ChatFileUploadServlet" method="post" enctype="multipart/form-data" >
+		<div id="div_bottom">
+			<!-- 채팅 입력창 -->
+			<div id="div_msg_box" class="wide">
+				<div id="div_msg_space" class="fl"> <%-- style="width:96%;" --%>
+					<!-- 댓글 입력하는 부분 -->
+					<div id="div_msg_blank"> <!-- 이거 -->
+						<div class="fl"> 
+							<img src="" style="width:50px; height:50px; display:none;"/>
+						</div>
+						<div id="write_chat_content_space" contenteditable="true" data-placeholder="채팅을 입력하세요..." class="scrollbar fl"></div>
+						<input type="hidden" name="chat_content" id="hidden_chat_content">
+			 			<input type="hidden" name="chatroom_idx" id="hidden_chatroom_idx" value="<%=chatroomIdx%>">
+						<div class="ic_comment_enter"></div>
+						<div style="clear:both;"></div>
+					</div>
+					<!-- 이모티콘, 언급, 파일 -->
+					<div id="div_msg_icon"> <!-- 이거 -->
+						<div class="ic_mention fl"></div>
+						<label class="ic_file_clip fl" for="upload_file_chat_content"></label>
+						<input type="file" id="upload_file_chat_content" name="file_upload" style="clip:rect(0, 0, 0, 0); display:none;"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
 	
+	</div>	<!-- div_side2 닫는 태그 -->
+</div> <!-- div_total_side 닫는 태그 -->	
+
+
 <!-- ---------------NamooChatMessageWindow.html------------------ -->
-		<!-- 메시지창 전체 -->
+	<!-- 메시지창 전체 -->
 	<div id="div_side_message">
 		<!-- 메시지창(1) -->
 		<div id="div_side_msg_header">
 			<img src="img/arrowleft.png"/>
 			<span>메시지</span>
-<!-- 				<img src="img/x.png"/> -->
 			<div class="exit fr"></div>
 		</div>
 		<!-- 메시지창(2) -->
 		<div id="div_side_msg_body">
 			<!-- 메시지내용 -->
-			
 			<div id="div_side_content">
 				<div>
 					<div class="fl">
@@ -1155,7 +1117,6 @@
 			<div id="div_side_comment_count">
 				<span>댓글</span> 2
 			</div>
-			
 			
 			<!-- 댓글(1) -->
 			<div class="div_side_comments" class="user">
@@ -1222,8 +1183,7 @@
 			</div>
 		</div>
 		
-		
-	</div>
+	</div><!-- div_side_message 닫는 태그 -->
 	
 	<!--------------------------------------- 즐겨찾기 창 --------------------------------------->	
 	<div id="div_side_bookmark">

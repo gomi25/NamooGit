@@ -35,13 +35,14 @@ public class ChatDao {
 		
 		String sql = " SELECT  c.chat_idx, cr.chatroom_idx, NVL(m2.profile_pic_url, 'https://jandi-box.com/assets/ic-profile.png') profile_url, m2.member_idx," + 
 					"				    m2.name, tm2.state, c.content, c.file_idx, TO_CHAR(c.chat_date, 'AM FMHH:MI', 'NLS_DATE_LANGUAGE=AMERICAN') write_date," + 
-					"				    (SELECT COUNT(*) FROM chat_unread WHERE chat_idx = c.chat_idx) unread_cnt , c.modified " + 
+					"				    (SELECT COUNT(*) FROM chat_unread WHERE chat_idx = c.chat_idx) unread_cnt , c.modified , fb.file_name " + 
 					" FROM team_member tm INNER JOIN member m on tm.member_idx = m.member_idx" + 
 					"    INNER JOIN chat_member cm ON m.member_idx = cm.member_idx" + 
 					"    INNER JOIN chatroom cr ON cm.chatroom_idx = cr.chatroom_idx" + 
 					"    INNER JOIN chat c ON cr.chatroom_idx = c.chatroom_idx" + 
 					"    INNER JOIN member m2 ON c.member_idx = m2.member_idx" + 
-					"    INNER JOIN team_member tm2 ON m2.member_idx = tm2.member_idx" + 
+					"    INNER JOIN team_member tm2 ON m2.member_idx = tm2.member_idx" +
+					"	 LEFT OUTER JOIN file_box fb ON c.file_idx = fb.file_idx" +
 					" WHERE tm.team_idx = ?" + 
 					"    AND tm2.team_idx = ?" + 
 					"    AND cr.chatroom_idx = ?" + 
@@ -68,11 +69,12 @@ public class ChatDao {
 	        if(rs.getInt("file_idx") == 0) {
 	        	fileIdx = null;
 	        }
+	        String fileName = rs.getString("file_name");
 	        String writeDate = rs.getString("write_date");
 	        int unreadCnt = rs.getInt("unread_cnt");
 			int modified = rs.getInt("modified");
 			
-			ChatContentsDto dto = new ChatContentsDto(chatIdx, chatroomIdx, writerMemberIdx, profileUrl, name, state, content, fileIdx, writeDate, unreadCnt, modified);
+			ChatContentsDto dto = new ChatContentsDto(chatIdx, chatroomIdx, writerMemberIdx, profileUrl, name, state, content, fileIdx, fileName, writeDate, unreadCnt, modified);
 			listRet.add(dto);
 		}
 		rs.close();
@@ -187,7 +189,7 @@ public class ChatDao {
 	public void writeChatComment(int chatIdx, int memberIdx, String comments, Integer fileIdx, Integer emoticonIdx) throws Exception {
 		Connection conn = getConnection();
 		String sql = "INSERT INTO chat_comment(chat_comment_idx, chat_idx, member_idx, comments, chat_date, file_idx, emoticon_idx, modified)" +	 
-					 " VALUES(seq_chat_comment, ?, ?, ?, sysdate, ?, ?, 0)";
+					 " VALUES(seq_chat_comment.nextval, ?, ?, ?, sysdate, ?, ?, 0)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 //		pstmt.setInt(1, chatCommentIdx);
 		pstmt.setInt(1, chatIdx);
@@ -497,12 +499,27 @@ public class ChatDao {
 
 	
 //	============================== 채팅 - 채팅 입력 ==============================	
+//	 *******이모티콘 조회하는 기능 *******
+	/*
+	 * public ArrayList<EmoticonDto> getEmoticonList() throws Exception { Connection
+	 * conn = getConnection();
+	 * 
+	 * ArrayList<EmoticonDto> list = new ArrayList<EmoticonDto>(); String sql =
+	 * "SELECT * FROM emoticon"; PreparedStatement pstmt =
+	 * conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery();
+	 * while(rs.next()) { int emoticonIdx = rs.getInt("emoticon_idx"); String
+	 * emoticonUrl = rs.getString("emoticon_url"); EmoticonDto dto = new
+	 * EmoticonDto(emoticonIdx, emoticonUrl); list.add(dto); } rs.close();
+	 * pstmt.close(); conn.close();
+	 * 
+	 * return list; }
+	 */
 	
 //	 *******멘션(언급)하기 위한 채팅방 멤버 조회하는 기능 *******
 	
 	
 	
-//	 *******파일 업로드 하는 기능 *******
+//	 *******파일 업로드 하는 기능 ******* /* 여기여기 */
 	/* 
 	(1)
 	file_box에 먼저 insert 하고

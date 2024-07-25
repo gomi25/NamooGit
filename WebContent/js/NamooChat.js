@@ -784,27 +784,61 @@ $(document).ready(function() {
 	    togglePlaceholder();
 	
 	    // #write_chat_content_space에서 input 이벤트가 발생할 때마다 togglePlaceholder 함수를 호출하여 placeholder 텍스트를 동적으로 관리
-	    $writeTopicCommentSpace.on('input', function() {
+	    $write_chat_content_space.on('input', function() {
 	        togglePlaceholder();
 	    });
 	});		
 	
-	$(function() {
-		
-	});
-	
-	
-	
 	// 채팅글 작성
 	$(function() {
+		// document에 이벤트 리스너를 설정하여 현재 존재하지 않는 요소에도 이벤트를 처리할 수 있게 함
 		$(document).on("keyup", "#write_chat_content_space", function(){
             if (event.shiftKey) {
-                document.execCommand('insertLineBreak');
+				// Shift 키가 눌린 상태에서 키를 뗀 경우, 현재 커서 위치에 줄 바꿈을 삽입
+                document.execCommand('insertLineBreak');	// document.execCommand 메서드를 사용하여 현재 커서 위치에 줄 바꿈을 삽입
             } 
 	    });
 		
-		// 채팅글 ".ic_comment_enter" 버튼 클릭 시
-		$(document).on("click", ".ic_comment_enter", function(){
+		// 파일 업로드 시
+		$("#upload_file_chat_content").on("change", function(e) {
+			let files = e.target.files;
+			let reader = new FileReader();
+			reader.readAsDataURL(files[0]);
+			reader.onload = function(e) {
+				$("#div_msg_blank > div:first-child > img").attr("src", e.target.result);
+				$("#div_msg_blank > div:first-child > img").css("display", "block");
+				$("#div_msg_blank > div:first-child > img").css("object-fit", "cover");
+				$("#div_msg_blank > div:first-child").css("display", "block");
+				$("#div_msg_blank > div:nth-child(2)").css("width", "96%");
+			}
+		});
+		// 전송버튼 클릭 시 
+		$(".ic_comment_enter").click(function() {
+			$("#form_chat").submit();
+		})
+		
+		// 채팅글 폼 제출될 때 "입력한 내용" & "채팅방idx" 값 제출 
+	    $("#form_chat").submit(function() {
+	        $("#hidden_chat_content").val($("#write_chat_content_space").text());
+	        $("#hidden_chatroom_idx").val();
+	    });		
+	// 채팅글 보이는 이미지 설정
+	$(function() {
+		// 1. img 태그의 fileTypeIdx 속성의 값이
+		// 2. 2이면 -> 이미지 그대로
+		// 3. 2가 아니면 -> 타입에 따라 이미지 넣어주기 
+//수정필요	let fileTypeIdx = $(".msg .file_space .img").attr('fileTypeIdx');
+//	ㄴ	alert(fileTypeIdx);
+//		if(fileTypeIdx != 2) {	// 이미지가 아니라면
+//			
+//		}
+		
+		
+	});	
+	
+		// ajax 방식 - 채팅글 ".ic_comment_enter" 버튼 클릭 시
+/*		$(document).on("click", ".ic_comment_enter", function(){
+			return;			
 			let chatroomIdx = $(this).parents("#div_bottom").siblings("#div_title").attr("chatroom_idx");
 			let chatContent = $(this).siblings("#write_chat_content_space").text(); 
 			let params = { 	chatroom_idx : chatroomIdx, 
@@ -844,7 +878,7 @@ $(document).ready(function() {
 							+ '  </div>'
 							+ '	 <div class="msg">'
 							+ 		chatContent
-							+ '		<span class="unread">' + unreadCnt + '</span>' /* 채팅방전체멤버수-1*/
+							+ '		<span class="unread">' + unreadCnt + '</span>' 
 							+ '		<span class="time">'+ formattedDate +'</span>'
 							+ '  </div>'
 							+ ' </div>'
@@ -905,7 +939,7 @@ $(document).ready(function() {
 								+ '  </div>'
 								+ '	 <div class="msg">'
 								+ 		chatContent
-								+ '		<span class="unread">' + unreadCnt + '</span>' /* 채팅방전체멤버수-1*/
+								+ '		<span class="unread">' + unreadCnt + '</span>' 
 								+ '		<span class="time">'+ formattedDate +'</span>'
 								+ '  </div>'
 								+ ' </div>'
@@ -922,21 +956,19 @@ $(document).ready(function() {
 				
 		    }
 			
-		});
-		
-	});			
-	
+		});*/
+
+
+
 
 //===================================== 채팅방 - 채팅글 - [더보기] =====================================	
 	// 채팅글 - 마우스오버 시
 	$(function() {				
 		// 토픽글 마우스 커서 올리면(마우스오버) [더보기] 뜸	
 		$(document).on("mouseover", ".chat_message", function(){
-//			$(this).parents(".chat_message").find(".more_menu_box").css('display','block');
 			$(this).find(".more_menu_box").css('display','block');
 		});
 		$(document).on("mouseout", ".chat_message", function(){
-//			$(this).parents(".chat_message").find(".more_menu_box").css('display','none');
 			$(this).find(".more_menu_box").css('display','none');
 		});
 		
@@ -1129,5 +1161,5 @@ $(document).ready(function() {
 	    });
 	});	
 	
-	
+		});	
 	
