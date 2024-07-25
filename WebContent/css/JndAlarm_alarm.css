@@ -1,0 +1,502 @@
+@charset "UTF-8";
+
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+* { box-sizing: border-box; font-family: Noto Sans KR, sans-serif; }
+.border { border: 1px solid #ddd; border-top: none; }
+.fl { float: left; }
+
+span {
+    margin: 0;
+    padding: 0;
+}
+
+div, p {
+    margin: 0;
+    padding: 0;
+}
+
+li, ol, ul {
+    text-decoration: none;
+}
+
+.ellip-1 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: normal;
+    word-break: break-all;
+}
+
+/* 첫 번째 div 요소들 */
+
+.panel {
+    min-width: 389px;
+    position: absolute;
+    top: 52px;
+    right: 0;
+    bottom: 0;
+/*     z-index: 300;
+ */} 
+
+.panel .shadow {
+    border-left: 1px solid #D2D2D2;
+}
+
+.non-selectable {
+    /* -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none; */
+    user-select: none;
+}
+
+/* 두 번째 div 요소 */
+.files {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    display: none;
+}
+
+/* 세 번째 div 요소 */
+.tool-wrapper {
+    position: static !important;
+}
+
+/* .tool-list {
+
+} */
+
+.tool-head {
+    height: 54px;
+    background-color: #FFF;
+    position: relative;
+    z-index: 11;
+    align-items: center;
+}
+
+.file-row-box {
+    display: flex;
+    flex-direction: row;
+}
+
+.is-alone {
+    margin: 0 50px 0 16px;
+}
+
+.tool-title {
+    display: flex;
+    font-size: 18px;
+    color: #333;
+    font-weight: 700;
+    line-height: 28px;
+    /* margin: 0 50px; */
+    text-align: left;
+}
+
+/* 차이 없으면 삭제 */
+.flex-rel {
+    flex: 1 1 auto;
+}
+
+.tool-title-block {
+    margin-right: 4px;
+}
+
+.icon-ic-close {
+    width: 28px;
+    height: 28px;
+    color: #A2A2A2;
+    border-radius: 6px;
+}
+
+.icon-ic-close:before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.btn-close {
+    top: 12px;
+    right: 15px;
+}
+
+.fn-20 {
+    font-size: 20px;
+}
+
+/* 차이 없으면 삭제 */
+.flex-fix {
+    flex: 0 0 auto;
+}
+
+.btn-setting {
+    position: absolute;
+    top: 12px;
+    right: 45px;
+}
+
+.icon-ic-setup {
+    width: 28px;
+    height: 28px;
+    color: #A2A2A2;
+    border-radius: 6px;
+}
+
+/* 여기서부터 tool-body */
+.tool-body {
+    position: absolute;
+    top: 54px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* border-top: 1px solid #e5e5e5; */
+    margin-top: -15px;
+}
+
+/* 멘션, 보드 탭 달라지는 거 없으면 삭제 */
+.tap-head {
+    position: static;
+}
+
+.nav {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #ddd;
+}
+
+.tab-head > .nav-tabs {
+    z-index: 10;
+    position: relative;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+}
+
+#mentionBox, #alarmBox {
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    min-height: 32px;
+    justify-content: center;
+    align-items: center;
+    box-sizing: content-box;
+    padding: 3px 0;
+    line-height: 20px;
+    border-radius: 0;
+    background-color: transparent;
+    margin-right: 0;
+    border: 0 !important;
+    position: static;
+    cursor: default;
+}
+
+.tool-inner-tab, .tool-inner-tab-mention {
+    text-align: center;
+    margin-bottom: 0;
+    flex: 1 1 0;
+    float: none;
+    padding: 5px 4px;
+    position: relative;
+}
+
+
+
+.files #alarmBox:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    left: 0;
+    background-color: #00C473;
+    bottom: 0;
+}
+
+.files #mentionBox:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    left: 0;
+    background-color: #ffffff;
+    bottom: 0;
+}
+
+/* 여기서부터 탭 밑... 알림 부분은 달라져야 함 */
+.tab-content {
+    position: absolute;
+    top: 62px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-content > .active {
+    display: block;
+}
+
+.tool-section {
+    background-color: #fff;
+    position: static;
+}
+
+.tool-result {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #F2F4F8;
+}
+
+.tool-result-scroll {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.tool-result-status {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: #F2F4F8;
+}
+
+.tool-date-divider {
+    background-color: #f2f4f8;
+    color: #333;
+    text-align: left;
+    line-height: 20px;
+    font-size: 14px;
+    padding: 16px;
+    border-left: 1px solid #ddd;
+}
+
+/* 여기서부터 알림 박스 */
+.tool-card .message-card,
+.tool-card .poll-card {
+    padding: 16px 16px 18px;
+}
+
+.tool-card {
+    border-bottom: 1px solid #E5E5E5;
+    cursor: pointer;
+    background-color: #fff;
+}
+
+.message-card {
+    position: relative;
+    padding: 12px 15px 12px 14px;
+    color: #333;
+    border-bottom: 1px solid #ebebeb;
+    border-left: 1px solid #ebebeb;
+}
+
+.tool-card .tool-card-header {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    margin-bottom: 4px;
+}
+
+.tool-card .tool-card-topic {
+    font-size: 13px;
+    line-height: 20px;
+    color: #00c474;
+    display: flex;
+    flex-grow: 1;
+}
+
+.ellip-1 span {
+    word-wrap: break-word;
+    word-break: keep-all;
+}
+
+.tool-card .message-card
+.topic-start:only-child {
+    max-width: 100%;
+}
+
+.tool-card .message-card
+.topic-start {
+    max-width: 60%;
+    flex-shrink: 0;
+}
+
+.tool-card .message-card
+.message-card-header {
+    display: flex;
+    align-items: center;
+}
+
+/* 사용자 프로필 컨테이너 */
+.message-thumb-box {
+    position: static;
+    margin: 0;
+    margin-right: 8px;
+    position: absolute;
+    margin-left: -2px;
+    margin-top: 1px;
+    align-self: flex-start;
+}
+
+/* 사용자 프로필 이미지 */
+.tool-card .message-card
+.user-profile-container {
+    width: 40px;
+    height: 40px;
+}
+
+.user-profile-container {
+    border-radius: 50%;
+    box-sizing: border-box;
+    cursor: pointer;
+    background-color: #FFF;
+    border: 1px solid #ddd;
+    position: relative;
+    width: 40px;
+    height: 40px;
+}
+
+.img-user-profile {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* 프로필 옆에 이름, 일시, 메시지 박스 등등 */
+.tool-card .message-card
+.message-meta {
+    padding-left: 0;
+    min-height: auto;
+    margin-right: 0;
+}
+
+.message-card .message-meta {
+    padding-left: 48px;
+    min-height: 30px;
+    margin-right: 60px;
+    min-width: 0;
+    width: 100%;
+}
+
+.message-card .message-meta
+.message-title {
+    display: flex;
+    align-items: center;
+}
+
+/* 작성자 이름 */
+.message-meta .fn-user-name {
+    display: inline-block;
+    padding-right: 2px;
+}
+
+.fn-user-name {
+    color: #333;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    word-wrap: normal;
+    word-break: break-all;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 700;
+    vertical-align: top;
+}
+
+/* 작성 일시 */
+.message-meta .message-date {
+    display: inline-block;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 16px;
+    color: #a2a2a2;
+    margin-left: 4px;
+    flex-shrink: 0;
+}
+
+/* 메시지 박스 */
+.tool-card .message-card
+.message-card-body {
+    padding-top: 0;
+    margin-top: 4px;
+}
+
+.message-card .message-card-body {
+    /* white-space: break-spaces; */
+    font-size: 14px;
+    line-height: 20px;
+    padding-top: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    /* -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical; */
+}
+
+.selectable, p {
+    user-select: text;
+}
+
+.keep {
+    white-space: pre-spaces;
+}
+
+.tool-card .message-card
+.message-card-body {
+    padding-top: 0;
+    margin-top: 4px;
+}
+
+/* .message-card .message-card-body
+.article-title {
+    display: block;
+} */
+
+.article-title {
+    font-weight: 700;
+    color: #303030;
+    line-height: 21px;
+}
+
+strong {
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+}
+
+.mention {
+    background: #D6F6E9;
+    color: #00C473;
+    font-weight: 700;
+    border-radius: 2px;
+    padding: 1px 3px;
+    text-decoration: none;
+    margin-right: 2px;
+    line-height: 24px;
+}
+
+.todo-comment-txt p {
+    font-size: 14px;
+}
