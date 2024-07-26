@@ -1,0 +1,445 @@
+@charset "UTF-8";
+
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+* { box-sizing: border-box; font-family: Noto Sans KR, sans-serif; }
+.border { border: 1px solid red; }
+.fl { float: left; }
+.fr { float: right; }
+a {
+    text-decoration: none;
+    color: black;
+}
+
+#agree-all {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #d8dbdf;
+    padding-bottom: 15px;
+}
+input[type=checkbox] {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    border: 1px solid #ced1d7;
+    border-radius: 3px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    position: relative;
+    margin-right: 10px;
+}
+
+input[type=checkbox]:checked {
+    background-color: #00c473;
+}
+
+input[type=checkbox]:checked::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 2px;
+    width: 4px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+.underLine {
+    text-decoration: underline;
+}
+
+
+#agree1, #agree2, #agree3 {
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.agree_checkbox_area {
+    display: flex;
+    align-items: center;
+}
+
+body { margin: 0; overflow-y: hidden; }
+
+/*-------------------헤더------------------*/
+#div_header1{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 66px;
+    z-index: 10; 
+    background-color: rgba(250, 250, 252, .95);
+    font-size: 14px;
+    line-height: 20px;
+    border-bottom: 1px solid #ddd;
+}
+#div_header1 > div:nth-child(1){ /*로고 +이름*/
+   position: relative;
+   width: 124px;
+   height: 30px;
+   margin-top: 10px; 
+   margin-left: 260px;
+   font: inherit;
+   font-size: 20px;
+   font-weight: 900;
+}
+#div_header1 > div:nth-child(1) > img {   /*로고*/
+   position: absolute;
+   width: auto; 
+   height: 40px;   
+   margin: 0px auto;
+   left: 0;
+}
+#div_header1 > div:nth-child(1) > span { /*나무이름*/
+   position: absolute;
+   margin-top: 10px;
+   right: 0;
+   letter-spacing: 1.5px;
+   
+}
+#div_header1 > div:nth-child(2){    /*고객사례*/
+   margin-top: 15px;
+   margin-left: 40px;
+   padding: 8px 14px;
+   height: 50px;
+   align-items: center;
+   font-weight: 600;
+   color: #333;
+}
+#div_header1 > div:nth-child(2):hover {
+   color: #7b7b7b;
+}   
+#div_header1 > div:nth-child(3){   /*도입문의*/
+   margin-top: 15px;
+   margin-left: 24px;
+   padding: 8px 14px;
+   height: 50px;
+   align-items: center;
+   font-weight: 600;
+   color: #333;
+}
+#div_header1 > div:nth-child(3):hover {
+   color: #7b7b7b;
+}   
+#div_header1 > div:nth-child(4){   /*헬프센터*/
+   position: relative;
+   margin-top: 15px;
+   margin-left: 24px;
+   padding: 8px 14px;
+   height: 50px;
+   align-items: center;
+   font-weight: 600;
+   color: #333;
+}
+#div_header1 > div:nth-child(4):hover {
+   color: #7b7b7b;
+}   
+#div_header1 > div:nth-child(5){   /*블로그*/
+   margin-top: 15px;
+   margin-left: 24px;
+   padding: 8px 14px;
+   height: 50px;
+   align-items: center;
+   font-weight: 600;
+   color: #333;
+}
+#div_header1 > div:nth-child(5):hover {
+   color: #7b7b7b;
+}   
+#div_header1 > div:nth-child(6){    /*로그인*/
+   font-weight: 500;
+   padding: 7px 14px;
+   background-color: #00c473;
+   color: #fff;
+   border-color: #00c473;
+      border-radius : 6px;
+    margin-right: 282px;
+    margin-top: 15px;
+}
+#div_header1 > div:nth-child(6):hover {
+   background: #00b76b;
+}
+#div_header1 > div:nth-child(7){ /*다운로드*/
+   padding: 7px 14px;
+   border: 1px solid #ddd;
+   font-weight: 500;
+   border-radius : 6px;
+   margin-top: 15px;
+   margin-right: 8px;
+}
+#div_header1 > div > a {
+    color: black;
+}
+#div_header1 > div:nth-child(6) a { /* 로그인 링크 */
+    color: white; /* 로그인 링크는 배경색과 조화를 이루도록 흰색으로 설정 */
+}
+
+#div_content {
+	width: 1920px;
+	height: 505px;
+    margin-top: 120px;
+}
+#div_content > h1 {
+	margin: 56px auto;
+    width: 404px;
+    color: #333;
+}
+#div_content > h4 {
+	margin: 56px auto;
+    margin-top: -14px;
+    width: 404px;
+    color: #000;
+    font-weight: 410;
+    font-size: 15.8px;
+    line-height: 26px;
+    margin-bottom: 12px;
+}
+#div_content > #div_content_box {
+	margin: 56px auto;
+    width: 404px;
+    height: 245px;
+	margin-top: 10px;
+    border: 1px solid #d8dbdf;
+    border-radius: 10px;
+    padding: 30px 25px 20px;
+}
+#div_content > #div_content_box > span {
+	padding: 22px 0 20px;
+	font-weight: 700;
+}
+#div_content > #div_content_box > span > span {
+	border-bottom: 1px solid #d8dbdf;
+	padding-bottom: 15px
+}
+#div_next {
+	border-radius: 6px;
+    color: #fff;
+    background-color: #99e7c7;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 30px;
+    width: 20.9%;
+    text-align: center;
+    padding: 10px 0;
+    margin-left: 762px;
+    margin-top: -39px;
+    border: none;
+}
+input[type=checkbox] {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    border: 1px solid #ced1d7;
+    border-radius: 3px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    position: relative;
+}
+
+input[type=checkbox]:checked {
+    background-color: #00c473;
+}
+
+input[type=checkbox]:checked::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 2px;
+    width: 4px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+input[type=checkbox] + label span {
+    margin-top: -5px;
+    display: inline-block;
+}
+
+#div_next {
+    border-radius: 6px;
+    color: #fff;
+    background-color: #99e7c7;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 30px;
+    width: 20.9%;
+    text-align: center;
+    padding: 10px 0;
+    margin-left: 762px;
+    margin-top: -39px;
+    border: none;
+    cursor: not-allowed;
+}
+
+#div_next:enabled {
+    cursor: pointer;
+}
+
+#div_already_login {
+    text-align: center;
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+}
+#div_already_login > a {
+	margin-left: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #000;
+}
+a {
+	color: #a2a2a2;	
+}
+a.SignupTerms {
+    text-decoration: underline; /* SignupTerms 클래스가 적용된 링크에 밑줄을 추가합니다 */
+}
+a.SignupTerms span {
+    text-decoration: underline;
+}
+
+/* 약관 보기 */
+.modalContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modalBox {
+    max-width: 910px;
+    min-height: 290px;
+    max-height: 620px;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.modalBox2 {
+    z-index: 10;
+    border-radius: 4px;
+    padding: 16px 24px;
+    overflow: hidden;
+    width: 700px;
+    min-width: 320px;
+    background-color: #fff;
+}
+
+.modalWrapper {
+    overflow: hidden;
+    height: 100%;
+}
+
+.modalHeader {
+    position: relative;
+    padding-bottom: 16px;
+}
+
+.modalHeader h3 {
+    font-size: 18px;
+    color: #333;
+    font-weight: 700;
+}
+
+.modalBody {
+    padding: 16px 0 0;
+    overflow-y: auto;
+}
+
+.service_jdContainer {
+    margin: initial;
+    padding: initial;
+    width: auto;
+    max-height: 480px;
+}
+
+.service_jdPopHead h1 {
+    margin: 0 0 24px;
+    border-bottom: 2px solid #00c473;
+    padding: 0 0 10px;
+    color: #00c473;
+    font-size: 20px;
+    line-height: 30px;
+}
+
+.service_jdContents {
+    font-size: 18px;
+    line-height: 26px;
+    color: #333;
+}
+
+.termsSectionWrapper .termsSectionModal {
+    width: 100%;
+    padding: 0 10px;
+    margin-top: 0;
+}
+
+.termsBlock {
+    margin-top: 0;
+}
+
+.termsBlock h3 {
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.modalFooter {
+    padding: 16px 0 0;
+}
+
+.footerBtn {
+    text-align: right;
+    margin-top: 180px;
+}
+
+.footerBtn button {
+    padding: 8px 16px;
+    border-radius: 6px;
+    color: #fff;
+    background-color: #00c473;
+    border: none;
+}
+
+.modalContainer {
+    display: none; /* 팝업 창 초기 상태를 숨김으로 설정 */
+    position: fixed;
+    z-index: 1001; /* 팝업 창이 오버레이보다 앞에 오도록 설정 */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #ddd;
+    width: 39%;
+}
+
+.modalHeader h3 {
+    margin: 0;
+}
+
+.modalFooter {
+    text-align: right;
+}
+
+.footerBtn button {
+    padding: 10px 20px;
+    background-color: #00c473;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.footerBtn button:hover {
+    background-color: #00a84c;
+}

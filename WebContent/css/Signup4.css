@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+* { box-sizing: border-box; font-family: Noto Sans KR, sans-serif; }
+.border { border: 1px solid red; }
+.fl { float: left; }
+.fr { float: right; }
+
+.emailBackground {
+    background-size: cover;
+    background-color: #f0f0f0;
+    min-width: 300px;
+    padding: 10px 0;
+    text-align: center;
+    padding: 0;
+    margin: 0 auto;
+}
