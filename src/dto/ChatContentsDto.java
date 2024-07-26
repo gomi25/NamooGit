@@ -7,7 +7,7 @@ public class ChatContentsDto {
 
 	private int chatIdx;		 // 채팅글idx
 	private int chatroomIdx;	 // 채팅방idx
-	private int memberIdx;		 // 작성자idx
+	private Integer memberIdx;	 // 작성자idx
 	private String profileUrl;	 // 프로필url
 	private String name;		 // 이름
 	private String state;		 // 상태
@@ -20,7 +20,7 @@ public class ChatContentsDto {
 	
 	
 	
-    public ChatContentsDto(int chatIdx, int chatroomIdx, int memberIdx, String profileUrl, String name, String state,
+    public ChatContentsDto(int chatIdx, int chatroomIdx, Integer memberIdx, String profileUrl, String name, String state,
 			String content, Integer fileIdx, String fileName, String writeDate, int unreadCnt, int modified) {
 		super();
 		this.chatIdx = chatIdx;
@@ -54,13 +54,13 @@ public class ChatContentsDto {
 		this.chatroomIdx = chatroomIdx;
 	}
 
-	public int getMemberIdx() {
+	public Integer getMemberIdx() {
 		return memberIdx;
 	}
 
 
 
-	public void setMemberIdx(int memberIdx) {
+	public void setMemberIdx(Integer memberIdx) {
 		this.memberIdx = memberIdx;
 	}
 

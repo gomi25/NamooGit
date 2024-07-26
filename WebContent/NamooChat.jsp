@@ -865,10 +865,9 @@
 			</div>
 		<%
 			for(ChatContentsDto chatContents : chatContentsDto) {
-				if(chatContents.getMemberIdx() == -1){
+				if(chatContents.getMemberIdx() == null){
 		%>		
 			<div class="chat_notice" chat_idx="<%=chatContents.getChatIdx()%>" writer="<%=chatContents.getMemberIdx()%>">
-<!-- 				<span><strong>이나무</strong> 님이 비공개 토픽을 생성했습니다.<span class="time">PM 3:31</span></span> -->
 				<span><%=chatContents.getContent()%><span class="time"><%=chatContents.getWriteDate()%></span></span>
 			</div>
 		<%
@@ -876,32 +875,36 @@
 		%>
 			<div class="chat_message" chat_idx="<%=chatContents.getChatIdx()%>" writer="<%=chatContents.getMemberIdx()%>">
 				<div class="fl">
-<!-- 					<img class="profile_img" src="https://jandi-box.com/files-profile/444fd3d25ade24bc2ec6480e11949dfa?size=80"/> -->
 					<img class="profile_img" src="<%=chatContents.getProfileUrl()%>"/>
 				</div>
 				<div class="fl">
 					<div class="profile_name">
 						<%=chatContents.getName()%>
-						<span> - <%=chatContents.getState()%></span>
+						<span><%=(chatContents.getState() == null) ? "" : (" - " + chatContents.getState()) %></span>
 					</div>
 					<div class="msg">
 						<div>
-							<%=chatContents.getContent()%>
+							<%=chatContents.getContent() == null ? "" : chatContents.getContent()%>
 						</div>
-						<span class="unread"><%=chatContents.getUnreadCnt()%></span>
+						<span class="unread"><%=(chatContents.getUnreadCnt() == 0) ? "" : chatContents.getUnreadCnt()%></span>
 						<span class="time"><%=chatContents.getWriteDate()%></span>
-						<% if(chatContents.getFileIdx()!=null) { %>
+					<% if(chatContents.getFileIdx()!=null) { 
+						if(common.getFileTypeIdxFromFileName(chatContents.getFileName())==2){	// 이미지일 때
+					%>
 						<div class="file_space" fileTypeIdx="<%=common.getFileTypeIdxFromFileName(chatContents.getFileName())%>">
-<!-- 			수정필요				<div> -->
-<%-- 								<img src="upload/<%=chatContents.getFileName()%>" fileTypeIdx="<%=common.getFileTypeIdxFromFileName(chatContents.getFileName())%>"/> --%>
-<!-- 							</div> -->
-<%-- <%-- 							<img class="ic_pdf" fileTypeIdx="<%=common.getFileTypeIdxFromFileName(chatContents.getFileName())%>"/> --%> --%>
-<!-- 							<div class="not_img_file" > -->
-<%-- 								<div class="" fileTypeIdx="<%=common.getFileTypeIdxFromFileName(chatContents.getFileName())%>"></div> --%>
-<!-- 								<span></span> -->
-<!-- 							</div> -->
+							<div>
+								<img src="upload/<%=chatContents.getFileName()%>" fileTypeIdx="<%=common.getFileTypeIdxFromFileName(chatContents.getFileName())%>"/>
+							</div>
 						</div>
-						<% } %>
+					<% } else { %>
+						<div class="file_space" fileTypeIdx="<%=common.getFileTypeIdxFromFileName(chatContents.getFileName())%>">
+							<div class="ic_file_img <%=common.getIconImgFromFileTypeIdx(chatContents.getFileIdx())%> fl" fileTypeIdx="<%=common.getFileTypeIdxFromFileName(chatContents.getFileName())%>"></div>
+							<span><%=chatContents.getFileName()%></span>
+						</div>
+						
+					<%  } 
+					  } %>
+						
 					</div>
 				</div>
 				<div style="clear:both;"></div>
@@ -965,7 +968,7 @@
 		
 			<div class="chat_notice">
 				<span><strong>YG</strong> 님이 나갔습니다.<span class="time">PM 3:49</span></span>
-			</div> -->
+			</div> 
 			
 			<div class="chat_message">
 				<div class="fl">

@@ -38,8 +38,7 @@ public class Common {
 			if(fileName.endsWith(".png") || 
 					fileName.endsWith(".jpg") ||
 					fileName.endsWith(".jpeg")) {
-				fileTypeIdx = 2;   // (이미지)
-				// 추가로 더 작성하기
+				fileTypeIdx = 2;   // img
 			} else if(fileName.endsWith(".pdf")) {
 				fileTypeIdx = 3;	// PDF
 			} else if(fileName.endsWith(".doc")  ||
@@ -72,6 +71,33 @@ public class Common {
 			}
 		}
 		return fileTypeIdx;
+	}
+	
+	// fileTypeIdx에 따라 문자열 리턴
+	// 파라미터: fileTypeIdx
+	// 리턴: IconImg
+	public String getIconImgFromFileTypeIdx(int fileTypeIdx) {
+		String IconImg = "all";
+		
+		if(fileTypeIdx==3) {
+			IconImg = "pdf";
+		} else if(fileTypeIdx==4) {
+			IconImg = "word";
+		} else if(fileTypeIdx==5) {
+			IconImg = "ppt";
+		} else if(fileTypeIdx==6) {
+			IconImg = "hwp";
+		} else if(fileTypeIdx==7) {
+			IconImg = "xls";
+		} else if(fileTypeIdx==8) {
+			IconImg = "zip";
+		} else if(fileTypeIdx==9) {
+			IconImg = "video";
+		} else {
+			IconImg = "all";
+		} 
+		
+		return IconImg;
 	}
 	
 	// Common클래스. (common 패키지)

@@ -54,6 +54,33 @@ body { margin: 0; overflow-y: hidden; }
     filter: invert(78%) sepia(0%) saturate(4946%) hue-rotate(34deg) brightness(80%) contrast(96%);
 	cursor: pointer;
 }
+/* 파일유형별 아이콘 이미지*/
+.ic_file_img { 
+	margin: 1px;
+	width: 40px;
+    height: 40px;
+    background-size: 100%;
+    cursor: pointer;
+}
+.pdf {background-image: url("https://cdn-icons-png.flaticon.com/512/4726/4726010.png");}
+.word {background-image: url("https://cdn-icons-png.flaticon.com/512/4725/4725970.png");} 
+.ppt {background-image: url("https://cdn-icons-png.flaticon.com/512/4726/4726016.png");}
+.hwp {
+    background-image: url("https://cdn-icons-png.flaticon.com/512/14422/14422348.png");
+}
+.xls {
+    background-image: url("https://cdn-icons-png.flaticon.com/512/4726/4726040.png");
+}
+.zip {
+    background-image: url("https://cdn-icons-png.flaticon.com/512/4726/4726042.png");
+}
+.video {
+    background-image: url("https://cdn-icons-png.flaticon.com/512/4726/4726007.png");
+}
+.all {
+    background-image: url("https://cdn-icons-png.flaticon.com/512/281/281760.png");
+}
+
 
 /*============================ #div_header(화면최상단) ============================*/
 #div_header { 
@@ -1666,7 +1693,8 @@ body { margin: 0; overflow-y: hidden; }
 }
 
 /* 상대방 */
-/* #div_content > div.chat_message .msg >  */.unread {
+/* #div_content > div.chat_message .msg >  */
+.unread {
 	position: absolute;
 	bottom: 20px;
 	right: -10px;
@@ -1674,22 +1702,25 @@ body { margin: 0; overflow-y: hidden; }
 	font-size: 10.4px;
 }
 .file_space {
+    margin: 4px 0px;
+    padding: 10px;
+    min-height: 50px;
+    min-width: 50px;
     max-width: 500px;
-	max-height: 500px;
+    max-height: 500px;
+    background-color: white;
+    border-radius: 6px;
 }
-.file_space > img{
+.file_space img {
 	max-width: 500px;
     max-height: 500px;
     object-fit: cover;
 }
-.ic_pdf {
-	cursor: pointer;
-	margin: 2px;
-    width: 40px;
-    height: 40px;
-    background-image: url("https://cdn-icons-png.flaticon.com/512/4726/4726010.png");
-    background-size: 100%;
-/*     filter: invert(78%) sepia(0%) saturate(4946%) hue-rotate(34deg) brightness(80%) contrast(96%); */
+.file_space span {
+	margin: 10px;
+    display: inline-block;
+    font-weight: 600;
+    cursor: pointer;
 }
 .time {
 	position: absolute;
