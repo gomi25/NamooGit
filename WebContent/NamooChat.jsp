@@ -1,3 +1,4 @@
+<%@page import="java.util.List"%>
 <%@page import="com.Common"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -888,21 +889,25 @@
 						</div>
 						<span class="unread"><%=(chatContents.getUnreadCnt() == 0) ? "" : chatContents.getUnreadCnt()%></span>
 						<span class="time"><%=chatContents.getWriteDate()%></span>
-					<% if(chatContents.getFileIdx()!=null) { 
-						if(common.getFileTypeIdxFromFileName(chatContents.getFileName())==2){	// 이미지일 때
+					<%
+						if(chatContents.getFileIdx() != null) { 
+							int fileIdx = chatContents.getFileIdx();
+							String fileName = chatContents.getFileName();
+							int fileTypeIdx = common.getFileTypeIdxFromFileName(fileName);
+							
+							if(common.getFileTypeIdxFromFileName(chatContents.getFileName())==2){	// 이미지일 때
 					%>
-						<div class="file_space" fileTypeIdx="<%=common.getFileTypeIdxFromFileName(chatContents.getFileName())%>">
+						<div class="file_space" fileTypeIdx="<%=fileTypeIdx%>">
 							<div>
-								<img src="upload/<%=chatContents.getFileName()%>" fileTypeIdx="<%=common.getFileTypeIdxFromFileName(chatContents.getFileName())%>"/>
+								<img src="upload/<%=chatContents.getFileName()%>" fileTypeIdx="<%=fileTypeIdx%>"/>
 							</div>
 						</div>
-					<% } else { %>
-						<div class="file_space" fileTypeIdx="<%=common.getFileTypeIdxFromFileName(chatContents.getFileName())%>">
-							<div class="ic_file_img <%=common.getIconImgFromFileTypeIdx(chatContents.getFileIdx())%> fl" fileTypeIdx="<%=common.getFileTypeIdxFromFileName(chatContents.getFileName())%>"></div>
-							<span><%=chatContents.getFileName()%></span>
+					<% 		} else { %>
+						<div class="file_space" fileTypeIdx="<%=fileTypeIdx%>">
+							<div class="ic_file_img <%=common.getIconImgFromFileTypeIdx(fileTypeIdx)%> fl" fileTypeIdx="<%=fileTypeIdx%>"></div>
+							<span><%=fileName%></span>
 						</div>
-						
-					<%  } 
+					<%  	} 
 					  } %>
 						
 					</div>
@@ -1065,10 +1070,11 @@
 						<div class="fl"> 
 							<img src="" style="width:50px; height:50px; display:none;"/>
 						</div>
-						<div id="write_chat_content_space" contenteditable="true" data-placeholder="채팅을 입력하세요..." class="scrollbar fl"></div>
+						<div id="write_chat_content_space" contenteditable="true" data-placeholder="채팅을 입력하세요..." class="scrollbar fl">
+							<div class="ic_comment_enter"></div>
+						</div>
 						<input type="hidden" name="chat_content" id="hidden_chat_content">
 			 			<input type="hidden" name="chatroom_idx" id="hidden_chatroom_idx" value="<%=chatroomIdx%>">
-						<div class="ic_comment_enter"></div>
 						<div style="clear:both;"></div>
 					</div>
 					<!-- 이모티콘, 언급, 파일 -->
@@ -1199,9 +1205,57 @@
 			<div id="file_content" class="">파일 형식</div>
 		</div>
 		<div id="bookmark_tab_content" class="scrollbar">
-			<div class="bookmark_text_item">
+		<%
+		List<BookmarkListDto> bookmarkList = bDao.getAllBookmarkList();
+		for(BookmarkListDto bList : bookmarkList) {
+			int bookmarkIdx = bList.getBookmarkIdx();
+			String type = bList.getType();
+			if(type.equals("file")){
+				type = "file";
+		%>
+			<div class="bookmark_file_item" bookmarkIdx="<%=bookmarkIdx%>" bookmarkType="<%=type%>">
 				<div class="bookmark_item_top">
-					<div class="fl">먹는 것에 진심인 사람들</div> <!-- 방 이름 -->
+					<div class="fl"><%=bList.getLocationName()%></div>
+					<div class="ic_bookmark_on fr"></div>
+					<div class="ic_more_menu fr"></div>
+				</div>
+				<div class="bookmark_file_item_bottom">
+					<div class="file_img"><img src=""></div><!-- 파일이미지 -->
+					<div>
+						<span class="profile_name"><%=bList.getContent()%></span>
+						<span><%=bList.getAuthorName() %></span>
+						<span><%=bList.getWriteDate() %></span>
+					</div>
+				</div>
+			</div>
+		<%			
+					
+			} else {
+				type = "text";
+		%>
+			<div class="bookmark_text_item" bookmarkIdx="<%=bookmarkIdx%>" bookmarkType="<%=type%>">
+				<div class="bookmark_item_top">
+					<div class="fl"><%=bList.getLocationName()%></div> 
+					<div class="ic_bookmark_on fr"></div>
+					<div class="ic_more_menu fr"></div>
+				</div>
+				<div class="bookmark_item_bottom">
+					<div class="profile_img"><img src=""></div>
+					<div>
+						<span class="profile_name"><%=bList.getAuthorName() %></span>
+						<span><%=bList.getWriteDate() %></span>
+						<span><%=bList.getContent() %></span>
+					</div>
+				</div>
+			</div>
+		<%
+			}
+		}	
+		%>	
+		
+			<!-- <div class="bookmark_text_item">
+				<div class="bookmark_item_top">
+					<div class="fl">먹는 것에 진심인 사람들</div> 방 이름
 					<div class="ic_bookmark_on fr"></div>
 					<div class="ic_more_menu fr"></div>
 				</div>
@@ -1216,7 +1270,7 @@
 			</div>
 			<div class="bookmark_text_item">
 				<div class="bookmark_item_top">
-					<div class="fl">먹는 것에 진심인 사람들</div> <!-- 방 이름 -->
+					<div class="fl">먹는 것에 진심인 사람들</div> 방 이름
 					<div class="ic_bookmark_on fr"></div>
 					<div class="ic_more_menu fr"></div>
 				</div>
@@ -1231,52 +1285,7 @@
 			</div>
 			<div class="bookmark_text_item">
 				<div class="bookmark_item_top">
-					<div class="fl">먹는 것에 진심인 사람들</div> <!-- 방 이름 -->
-					<div class="ic_bookmark_on fr"></div>
-					<div class="ic_more_menu fr"></div>
-				</div>
-				<div class="bookmark_item_bottom">
-					<div class="profile_img"><img src=""></div>
-					<div>
-						<span class="profile_name">원혜경</span>
-						<span>2024/05/08 PM 09:02</span>
-						<span>내용들... @김민지</span>
-					</div>
-				</div>
-			</div>
-			<div class="bookmark_text_item">
-				<div class="bookmark_item_top">
-					<div class="fl">먹는 것에 진심인 사람들</div> <!-- 방 이름 -->
-					<div class="ic_bookmark_on fr"></div>
-					<div class="ic_more_menu fr"></div>
-				</div>
-				<div class="bookmark_item_bottom">
-					<div class="profile_img"><img src=""></div>
-					<div>
-						<span class="profile_name">원혜경</span>
-						<span>2024/05/08 PM 09:02</span>
-						<span>내용들... @김민지</span>
-					</div>
-				</div>
-			</div>
-			<div class="bookmark_text_item">
-				<div class="bookmark_item_top">
-					<div class="fl">먹는 것에 진심인 사람들</div> <!-- 방 이름 -->
-					<div class="ic_bookmark_on fr"></div>
-					<div class="ic_more_menu fr"></div>
-				</div>
-				<div class="bookmark_item_bottom">
-					<div class="profile_img"><img src=""></div>
-					<div>
-						<span class="profile_name">원혜경</span>
-						<span>2024/05/08 PM 09:02</span>
-						<span>내용들... @김민지</span>
-					</div>
-				</div>
-			</div>
-			<div class="bookmark_text_item">
-				<div class="bookmark_item_top">
-					<div class="fl">먹는 것에 진심인 사람들</div> <!-- 방 이름 -->
+					<div class="fl">먹는 것에 진심인 사람들</div> 방 이름
 					<div class="ic_bookmark_on fr"></div>
 					<div class="ic_more_menu fr"></div>
 				</div>
@@ -1296,7 +1305,7 @@
 					<div class="ic_more_menu fr"></div>
 				</div>
 				<div class="bookmark_file_item_bottom">
-					<div class="file_img"><img src=""></div><!-- 파일이미지 -->
+					<div class="file_img"><img src=""></div>파일이미지
 					<div>
 						<span class="profile_name">테스트 메모.txt</span>
 						<span>원혜경</span>
@@ -1311,7 +1320,7 @@
 					<div class="ic_more_menu fr"></div>
 				</div>
 				<div class="bookmark_file_item_bottom">
-					<div class="file_img"><img src=""></div><!-- 파일이미지 -->
+					<div class="file_img"><img src=""></div>파일이미지
 					<div>
 						<span class="profile_name">테스트 메모.txt</span>
 						<span>원혜경</span>
@@ -1326,7 +1335,7 @@
 					<div class="ic_more_menu fr"></div>
 				</div>
 				<div class="bookmark_file_item_bottom">
-					<div class="file_img"><img src=""></div><!-- 파일이미지 -->
+					<div class="file_img"><img src=""></div>파일이미지
 					<div>
 						<span class="profile_name">테스트 메모.txt</span>
 						<span>원혜경</span>
@@ -1341,14 +1350,15 @@
 					<div class="ic_more_menu fr"></div>
 				</div>
 				<div class="bookmark_file_item_bottom">
-					<div class="file_img"><img src=""></div><!-- 파일이미지 -->
+					<div class="file_img"><img src=""></div>파일이미지
 					<div>
 						<span class="profile_name">테스트 메모.txt</span>
 						<span>원혜경</span>
 						<span>2024/05/08 PM 09:02</span>
 					</div>
 				</div>
-			</div>
+			</div> -->
+			
 			<div class="bookmark_ending_item">
 				<div class="ic_ending"></div>
 			</div>
@@ -1356,6 +1366,8 @@
 	</div>
 		
 
+	
+	
 	
 	<!--------------------------------------- 기타 팝업창 --------------------------------------->	
 	<!-- 투명판 -->

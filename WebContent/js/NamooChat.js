@@ -414,8 +414,6 @@ $(document).ready(function() {
 	$(function(){
 		$("#div_topicroom_list_body .topic_item > span").click(function () {
 			let topicIdx = $(this).parent(".topic_item").attr("topic_idx");
-			// 페이지 이동 --> "Ex11Detail.jsp?bno=213"로 이동
-			// location.href = 새 주소(문자열);   ← 얘는 무조건 'GET방식'임
 			location.href = context_path + "/NamooTopic.jsp?topicIdx=" + topicIdx;
 		});
 	});	
@@ -423,7 +421,7 @@ $(document).ready(function() {
 /****************************** 프로젝트 목록 ******************************/	
 	// 프로젝트 클릭 시 페이지 이동 (예시)
 	$(function(){
-		$(".topic_item > span").click(function () {
+		$("#div_project_list_body .topic_item > span").click(function () {
 			let projectIdx = $(this).parent(".topic_item").attr("project_idx");
 			location.href = context_path + "/NamooTopic.jsp?projectIdx=" + projectIdx;
 		});
@@ -812,30 +810,19 @@ $(document).ready(function() {
 				$("#div_msg_blank > div:nth-child(2)").css("width", "96%");
 			}
 		});
+		
 		// 전송버튼 클릭 시 
 		$(".ic_comment_enter").click(function() {
+			// 채팅글 폼 제출될 때 "입력한 내용" & "채팅방idx" 값 제출 
 			$("#form_chat").submit();
-		})
-		
-		// 채팅글 폼 제출될 때 "입력한 내용" & "채팅방idx" 값 제출 
-	    $("#form_chat").submit(function() {
-	        $("#hidden_chat_content").val($("#write_chat_content_space").text());
-	        $("#hidden_chatroom_idx").val();
+			$("#form_chat").submit(function() {
+		        $("#hidden_chat_content").val($("#write_chat_content_space").text());
+		        $("#hidden_chatroom_idx").val();
+			});	
 	    });		
-	// 채팅글 보이는 이미지 설정
-	$(function() {
-		// 1. img 태그의 fileTypeIdx 속성의 값이
-		// 2. 2이면 -> 이미지 그대로
-		// 3. 2가 아니면 -> 타입에 따라 이미지 넣어주기 
-//수정필요	let fileTypeIdx = $(".msg .file_space .img").attr('fileTypeIdx');
-//	ㄴ	alert(fileTypeIdx);
-//		if(fileTypeIdx != 2) {	// 이미지가 아니라면
-//			
-//		}
+
+    });
 		
-		
-	});	
-	
 		// ajax 방식 - 채팅글 ".ic_comment_enter" 버튼 클릭 시
 /*		$(document).on("click", ".ic_comment_enter", function(){
 			return;			
@@ -1161,5 +1148,39 @@ $(document).ready(function() {
 	    });
 	});	
 	
-		});	
+	
+	//===================================== 즐겨찾기창 =====================================				
+	$(function() {
+		// div_header [메뉴] - [즐겨찾기]
+		$("#pop_up_header_menu > div:nth-child(3)").click(function(){
+			$("#pop_up_header_menu").hide();
+			$("#div_transparent_filter").hide();
+			$("#div_side_bookmark").show();
+			$("#div_side2").removeClass("wide");
+		});
+		
+		// "x"를 클릭하면 즐겨찾기창 꺼짐  
+		$("#bookmark_header > .exit").click(function(){
+			$("#div_side_bookmark").hide();
+			$("#div_side2").addClass("wide");
+		}); 
+	});
+	
+	$(function() {
+		// "모든 형식" 클릭 시
+		$("#all_content").click(function(){
+			$("#all_content").addClass("select");
+			$("#file_content").removeClass("select");
+			$(".bookmark_text_item").show();
+		});
+		
+		// "파일 형식" 클릭 시
+		$("#file_content").click(function(){
+			$("#file_content").addClass("select");
+			$("#all_content").removeClass("select");
+			$(".bookmark_text_item").hide();
+		}); 
+	});
+	
+	
 	

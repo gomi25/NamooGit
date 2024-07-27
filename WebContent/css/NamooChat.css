@@ -30,7 +30,6 @@ body { margin: 0; overflow-y: hidden; }
     background-size: 100%;
     margin-right: 3px;
 }	
-/* 펼쳤을 때 */
 .ic_arrow_top {
     width: 10px;
     height: 10px;
@@ -46,6 +45,7 @@ body { margin: 0; overflow-y: hidden; }
     filter: invert(78%) sepia(0%) saturate(4946%) hue-rotate(34deg) brightness(80%) contrast(96%);
 	cursor: pointer;
 }
+/* 댓글 이미지 아이콘 */
 .ic_comment {
     width: 20px;
     height: 20px;
@@ -1578,12 +1578,9 @@ body { margin: 0; overflow-y: hidden; }
 #alarm_on {
 	display: block;
 }
-
 #alarm_off {
 	display: none;
 }
-
-
 #div_content {
 	position: relative;
 	width: 100%;
@@ -1592,12 +1589,9 @@ body { margin: 0; overflow-y: hidden; }
 	padding: 20px 0px;
 }
 .msg {
-	max-width: 550px;
-	max-height: 550px;
+	max-width: 560px;
+	max-height: 560px;
 }
-/* #div_content::-webkit-scrollbar {
-    display: none;
-} */
 #div_content > div.chat_date {
 	height:35px; 
 	margin: 10px 0px; 
@@ -1609,7 +1603,7 @@ body { margin: 0; overflow-y: hidden; }
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
-    z-index: 10;
+    z-index: 1;
     padding: 0 13px;
     font-size: 13px;
 	font-weight: 700;
@@ -1648,8 +1642,8 @@ body { margin: 0; overflow-y: hidden; }
 #div_content > div.chat_message {
 	position: relative;
     margin: 10px 0px;
-    max-width: 600px;
-    max-height: 600px;
+    max-width: 620px;
+    max-height: 620px;
 }
 #div_content > div.chat_message > div:nth-child(1) {
 	margin-left: 15px;
@@ -1661,22 +1655,6 @@ body { margin: 0; overflow-y: hidden; }
 	font-size: 11.84px;
 	line-height: 14px;
 }
-
-/* .comment_origin > div:nth-child(2) > span:nth-child(1) {
-	display: inline-block;
-	padding-top: 8px;
-	margin-right: 6px;
-	color: rgb(41, 41, 41);
-	font-size: 14px;
-	font-weight: 700;
-	line-height: 14px;
-}
-.comment_origin > div:nth-child(2) > span:nth-child(2) {
-	display: inline-block;
-	color: rgb(162, 162, 162);
-	font-size: 11.84px;
-	line-height: 14px;
-} */
 
 #div_content > div.chat_message .msg {
 	position: relative;
@@ -1706,8 +1684,8 @@ body { margin: 0; overflow-y: hidden; }
     padding: 10px;
     min-height: 50px;
     min-width: 50px;
-    max-width: 500px;
-    max-height: 500px;
+    max-width: 520px;
+    max-height: 520px;
     background-color: white;
     border-radius: 6px;
 }
@@ -2071,11 +2049,11 @@ body { margin: 0; overflow-y: hidden; }
     display: block; 
 }
 
-#div_msg_blank > .ic_comment_enter {
+#write_chat_content_space > .ic_comment_enter {
 	position: absolute;
     height: 22px;
     width: 22px;
-	right: 10px;
+	right: 15px;
     top: 12px;
     background-image:url("https://cdn-icons-png.flaticon.com/512/5264/5264505.png");
     background-size: 100%;
@@ -2682,12 +2660,11 @@ body { margin: 0; overflow-y: hidden; }
 	margin-top: 52px;
 	width: 442px;
 	height: 880px;
-	
+	z-index: 2;
 	position: fixed;
     top: 0;
     right: 0;
     background-color: white;
-    
     display: none;
 }
 #div_side_msg_header {
@@ -3087,7 +3064,7 @@ body { margin: 0; overflow-y: hidden; }
 }	
 #all_content {
     color: #a2a2a2;
-    border-left: 1px solid #E5E5E5;
+/*     border-left: 1px solid #E5E5E5; */
 }	
 #all_content.select {
     color: black;

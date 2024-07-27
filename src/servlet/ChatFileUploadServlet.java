@@ -62,7 +62,7 @@ public class ChatFileUploadServlet extends HttpServlet {
 				fileTypeIdx = com.getFileTypeIdxFromFileName(fileName);	// 파일타입idx 리턴
 				try {
 					// 파일 db추가 및 파일idx 리턴
-					fileIdx = dao.registerFile(fileName, fileSize+"Byte", memberIdx, fileTypeIdx, null, chatroomIdx, null, null);
+					fileIdx = com.registerFile(fileName, fileSize+"Byte", memberIdx, fileTypeIdx, null, chatroomIdx, null, null);
 					// 리턴받은 파일idx 넣어서 채팅글 db추가
 					dao.writeChat(chatroomIdx, memberIdx, chatContent, fileIdx);
 				} catch (Exception e) {

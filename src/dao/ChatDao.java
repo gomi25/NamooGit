@@ -29,114 +29,73 @@ public class ChatDao {
 	}
 
 	/* 'PM HH:MI' <- 0 나오게 */
-	//	특정 채팅방의 채팅글 조회 
+	//	특정 채팅방의 채팅글 조회 -> 원본
 	public ArrayList<ChatContentsDto> getChatContents(int teamIdx, int chatroomIdx, int memberIdx) throws Exception {
-		ArrayList<ChatContentsDto> listRet = new ArrayList<ChatContentsDto>(); 
-		
-		String sql = " SELECT  c.chat_idx, cr.chatroom_idx, NVL(m2.profile_pic_url, 'https://jandi-box.com/assets/ic-profile.png') profile_url, m2.member_idx," + 
-					"				    m2.name, tm2.state, c.content, c.file_idx, TO_CHAR(c.chat_date, 'AM FMHH:MI', 'NLS_DATE_LANGUAGE=AMERICAN') write_date," + 
-					"				    (SELECT COUNT(*) FROM chat_unread WHERE chat_idx = c.chat_idx) unread_cnt , c.modified , fb.file_name " + 
-					" FROM team_member tm INNER JOIN member m on tm.member_idx = m.member_idx" + 
-					"    INNER JOIN chat_member cm ON m.member_idx = cm.member_idx" + 
-					"    INNER JOIN chatroom cr ON cm.chatroom_idx = cr.chatroom_idx" + 
-					"    INNER JOIN chat c ON cr.chatroom_idx = c.chatroom_idx" + 
-					"    INNER JOIN member m2 ON c.member_idx = m2.member_idx" + 
-					"    INNER JOIN team_member tm2 ON m2.member_idx = tm2.member_idx" +
-					"	 LEFT OUTER JOIN file_box fb ON c.file_idx = fb.file_idx" +
-					" WHERE tm.team_idx = ?" + 
-					"    AND tm2.team_idx = ?" + 
-					"    AND cr.chatroom_idx = ?" + 
-					"    AND m.member_idx = ?" + 
-					" ORDER BY c.chat_date";
-		
-		Connection conn = getConnection();
-		
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setInt(1, teamIdx);
-		pstmt.setInt(2, teamIdx);
-		pstmt.setInt(3, chatroomIdx);
-		pstmt.setInt(4, memberIdx);
-		
-		ResultSet rs = pstmt.executeQuery();
-		while(rs.next()) {
-			int chatIdx = rs.getInt("chat_idx");
+	    ArrayList<ChatContentsDto> listRet = new ArrayList<ChatContentsDto>(); 
+
+	    String sql = " SELECT c.chat_idx, cr.chatroom_idx, " +
+	                 "NVL(m2.profile_pic_url, 'https://jandi-box.com/assets/ic-profile.png') profile_url, m2.member_idx, " +
+	                 "m2.name, tm2.state, c.content, c.file_idx, " +
+	                 "TO_CHAR(c.chat_date, 'AM FMHH:MI', 'NLS_DATE_LANGUAGE=AMERICAN') write_date, " +
+	                 "(SELECT COUNT(*) FROM chat_unread WHERE chat_idx = c.chat_idx) unread_cnt, c.modified, fb.file_name " +
+	                 "FROM team_member tm " +
+	                 "INNER JOIN member m ON tm.member_idx = m.member_idx " +
+	                 "LEFT JOIN chat_member cm ON m.member_idx = cm.member_idx " +
+	                 "LEFT JOIN chatroom cr ON cm.chatroom_idx = cr.chatroom_idx " +
+	                 "LEFT JOIN chat c ON cr.chatroom_idx = c.chatroom_idx " +
+	                 "LEFT JOIN member m2 ON c.member_idx = m2.member_idx " +
+	                 "LEFT JOIN team_member tm2 ON m2.member_idx = tm2.member_idx " +
+	                 "LEFT OUTER JOIN file_box fb ON c.file_idx = fb.file_idx " +
+	                 "WHERE tm.team_idx = ? " +
+	                 "AND (tm2.team_idx = ? OR tm2.team_idx IS NULL) " +
+	                 "AND cr.chatroom_idx = ? " +
+	                 "AND m.member_idx = ? " +
+	                 "ORDER BY c.chat_date";
+
+	    Connection conn = getConnection();
+	    PreparedStatement pstmt = conn.prepareStatement(sql);
+	    pstmt.setInt(1, teamIdx);
+	    pstmt.setInt(2, teamIdx);
+	    pstmt.setInt(3, chatroomIdx);
+	    pstmt.setInt(4, memberIdx);
+
+	    ResultSet rs = pstmt.executeQuery();
+	    while (rs.next()) {
+	        int chatIdx = rs.getInt("chat_idx");
 	        String profileUrl = rs.getString("profile_url");
-	        int writerMemberIdx = rs.getInt("member_idx");
+	        Integer writerMemberIdx = rs.getInt("member_idx");
+	        if (rs.wasNull()) {
+	            writerMemberIdx = null;
+	        }
 	        String name = rs.getString("name");
 	        String state = rs.getString("state");
 	        String content = rs.getString("content");
 	        Integer fileIdx = rs.getInt("file_idx");
-	        if(rs.getInt("file_idx") == 0) {
-	        	fileIdx = null;
+	        if (rs.wasNull()) {
+	            fileIdx = null;
 	        }
 	        String fileName = rs.getString("file_name");
 	        String writeDate = rs.getString("write_date");
 	        int unreadCnt = rs.getInt("unread_cnt");
-			int modified = rs.getInt("modified");
-			
-			ChatContentsDto dto = new ChatContentsDto(chatIdx, chatroomIdx, writerMemberIdx, profileUrl, name, state, content, fileIdx, fileName, writeDate, unreadCnt, modified);
-			listRet.add(dto);
-		}
-		rs.close();
-		pstmt.close();
-		conn.close();
-		
-		return listRet;
+	        int modified = rs.getInt("modified");
+
+	        ChatContentsDto dto = new ChatContentsDto(chatIdx, chatroomIdx, writerMemberIdx, profileUrl, name, state, content, fileIdx, fileName, writeDate, unreadCnt, modified);
+	        listRet.add(dto);
+	    }
+	    rs.close();
+	    pstmt.close();
+	    conn.close();
+
+	    return listRet;
 	}
-	
-	/* 원본
-	 * // 특정 채팅방의 채팅글 조회 ---> 콘솔에서 프로필부분이 여러번 나옴.. public ArrayList<ChatContentsDto>
-	 * getChatContents(int chatroomIdx) throws Exception {
-	 * ArrayList<ChatContentsDto> chatContents = new ArrayList<ChatContentsDto>();
-	 * ArrayList<ProfileUrlImgDto> profileUrlColor = new
-	 * ArrayList<ProfileUrlImgDto>();
-	 * 
-	 * String sql =
-	 * "	SELECT  c.chat_idx \"채팅글idx\", m.member_idx \"채팅멤버idx\", m.profile_pic_url profile_pic_url1,"
-	 * +
-	 * "    (SELECT img_url FROM profile_img WHERE profile_img_idx = m.profile_img_idx) profile_pic_url2,"
-	 * +
-	 * "    (SELECT color FROM color WHERE color_idx = m.color_idx) profile_color,"
-	 * +
-	 * "    m.name \"이름\", tm.state \"상태\", c.content \"내용\", c.file_idx \"파일\", c.emoticon_idx \"이모티콘\","
-	 * + "    TO_CHAR(c.chat_date, 'PM HH:MI') \"작성일시\"," +
-	 * "    (SELECT COUNT(*) FROM chat_unread WHERE chat_idx=c.chat_idx) \"안읽은사람수\", c.modified \"수정여부\""
-	 * + "	FROM team_member tm INNER JOIN member m on tm.member_idx = m.member_idx"
-	 * + "	INNER JOIN chat c on m.member_idx = c.member_idx" +
-	 * "	INNER JOIN chatroom cr on c.chatroom_idx = cr.chatroom_idx" +
-	 * "	WHERE c.chatroom_idx = ?" + "	ORDER BY c.chat_date";
-	 * 
-	 * Connection conn = getConnection();
-	 * 
-	 * PreparedStatement pstmt = conn.prepareStatement(sql); pstmt.setInt(1,
-	 * chatroomIdx);
-	 * 
-	 * ResultSet rs = pstmt.executeQuery(); while(rs.next()) { int chatIdx =
-	 * rs.getInt("채팅글idx"); int memberIdx = rs.getInt("채팅멤버idx"); String
-	 * profilePicUrl1 = rs.getString("profile_pic_url1"); int profilePicUrl2 =
-	 * rs.getInt("profile_pic_url2"); ProfileUrlImgDto dto = new
-	 * ProfileUrlImgDto(memberIdx, profilePicUrl1, profilePicUrl2);
-	 * profileUrlColor.add(dto); String name = rs.getString("이름"); Integer state =
-	 * rs.getInt("상태"); String content = rs.getString("내용"); Integer fileIdx =
-	 * rs.getInt("파일"); if(rs.getInt("파일") == 0) { fileIdx = null; } Integer
-	 * emoticonIdx = rs.getInt("이모티콘"); if(rs.getInt("이모티콘") == 0) { emoticonIdx =
-	 * null; } String writeDate = rs.getString("작성일시"); int unreadCnt =
-	 * rs.getInt("안읽은사람수"); int modified = rs.getInt("수정여부");
-	 * 
-	 * ChatContentsDto chatcontent = new ChatContentsDto(chatIdx, profileUrlColor,
-	 * name, state, content, fileIdx, emoticonIdx, writeDate, unreadCnt, modified);
-	 * chatContents.add(chatcontent); } rs.close(); pstmt.close(); conn.close();
-	 * 
-	 * return chatContents; }
-	 */	
 
 	
-//	============================== 채팅 - 채팅 내용 관련 기능(1/4) ==============================
-//	 *******채팅방 생성하는 기능*******
+	// ============================== 채팅 - 채팅 내용 관련 기능(1/4) ==============================
+	// *******채팅방 생성하는 기능*******
 	
 	
-	
-//	 *******채팅방에 멤버 추가*******
+	// *******채팅방에 멤버 추가*******
+	// 파라미터: 채팅방idx, 추가할멤버idx
 	public void addChatMember(int chatroomIdx, int[] memberIdx) throws Exception {
 		Connection conn = getConnection();
 		
@@ -152,18 +111,15 @@ public class ChatDao {
 		conn.close();
 	}
 	
-	// 파일idx 리턴하는 파일등록메서드를 먼저 수행 후 리턴 받은 파일idx를 파라미터로 받아서 채팅글 작성?
-	// 파일 있는 경우 
-	// 	INSERT INTO chat (chat_idx, chatroom_idx, member_idx, content, chat_date, emoticon_idx, file_idx, modified) 
-	//	VALUES (chat_seq.nextval, '해당 채팅방idx', '작성자 idx', '작성 내용', sysdate, '이모티콘idx', file_seq.currval, 0);
-//	 *******채팅글 작성*******
+	// *******채팅글 작성*******
+	// 파라미터: 채팅방idx,작성자 idx, 작성 내용, 파일idx
+	// 리턴 : 채팅글idx
 	public int writeChat(int chatroomIdx, int memberIdx, String content, Integer fileIdx) throws Exception {
 		Connection conn = getConnection();
 		
 		String sql = "INSERT INTO chat (chat_idx, chatroom_idx, member_idx, content, chat_date, file_idx, modified)" +
 					 " VALUES (seq_chat.nextval, ?, ?, ?, sysdate, ?, 0)";
 		PreparedStatement pstmt = conn.prepareStatement(sql, new String[] {"chat_idx"});
-//		pstmt.setInt(1, chatIdx);
 		pstmt.setInt(1, chatroomIdx);
 		pstmt.setInt(2, memberIdx);
 		pstmt.setString(3, content);
@@ -185,13 +141,13 @@ public class ChatDao {
 		return ret;
 	}
 	
-//	 *******채팅댓글 작성*******
-	public void writeChatComment(int chatIdx, int memberIdx, String comments, Integer fileIdx, Integer emoticonIdx) throws Exception {
+	// *******채팅댓글 작성*******
+	// 파라미터: 채팅글idx, 작성자 idx, 댓글내용, 파일idx
+	public void writeChatComment(int chatIdx, int memberIdx, String comments, Integer fileIdx) throws Exception {
 		Connection conn = getConnection();
-		String sql = "INSERT INTO chat_comment(chat_comment_idx, chat_idx, member_idx, comments, chat_date, file_idx, emoticon_idx, modified)" +	 
-					 " VALUES(seq_chat_comment.nextval, ?, ?, ?, sysdate, ?, ?, 0)";
+		String sql = "INSERT INTO chat_comment(chat_comment_idx, chat_idx, member_idx, comments, chat_date, file_idx, modified)" +	 
+					 " VALUES(seq_chat_comment.nextval, ?, ?, ?, sysdate, ?, 0)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
-//		pstmt.setInt(1, chatCommentIdx);
 		pstmt.setInt(1, chatIdx);
 		pstmt.setInt(2, memberIdx);
 		pstmt.setString(3, comments);
@@ -200,24 +156,18 @@ public class ChatDao {
 		} else {
 			pstmt.setInt(4, fileIdx);
 		}
-		if(emoticonIdx==null) {
-			pstmt.setNull(5, Types.INTEGER);
-		} else {
-			pstmt.setInt(5, emoticonIdx);
-		}
 		pstmt.executeUpdate();
 		
 		pstmt.close();
 		conn.close();
 	}
 	
-//	 *******채팅 읽으면 숫자 줄어드는 기능*******
+	// *******채팅 읽으면 숫자 줄어드는 기능*******
 	public void readChat(int chatIdx, int memberIdx) throws Exception {
 		Connection conn = getConnection();
 		String sql = "DELETE FROM chat_unread" + 
 						" WHERE chat_idx = ?" + 
 						" AND member_idx = ?";
-		
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, chatIdx);
 		pstmt.setInt(2, memberIdx);
@@ -227,21 +177,40 @@ public class ChatDao {
 		conn.close();
 	}
 	
-//	 *******채팅글 삭제*******
+	// *******채팅글 삭제*******
 	public void deleteChatContent(int chatIdx) throws Exception {
 		Connection conn = getConnection();
-		String sql = "DELETE FROM chat" + 
-					 " WHERE chat_idx = ?";
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setInt(1, chatIdx);
-		pstmt.executeUpdate();
-		
+		// 파일이 있는지 확인
+        String sql = "SELECT file_idx FROM chat WHERE chat_idx = ?";
+        pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1, chatIdx);
+        rs = pstmt.executeQuery();
+        
+        int fileIdx = 0;
+        if (rs.next()) {
+            fileIdx = rs.getInt(1);
+        }
+        if (fileIdx != 0) {
+            String sql2 = "DELETE FROM file_box WHERE file_idx = ?";
+            pstmt = conn.prepareStatement(sql2);
+            pstmt.setInt(1, fileIdx);
+            pstmt.executeUpdate();
+        }
+        
+        String sql3 = "DELETE FROM chat WHERE chat_idx = ?";
+        pstmt = conn.prepareStatement(sql3);
+        pstmt.setInt(1, chatIdx);
+        pstmt.executeUpdate();
+        
+        rs.close();
 		pstmt.close();
 		conn.close();
 	}
 	
-//	 *******채팅댓글 삭제*******
+	// *******채팅댓글 삭제*******
 	public void deleteChatComment(int chatCommentIdx) throws Exception {
 		Connection conn = getConnection();
 		String sql = "DELETE FROM chat_comment WHERE chat_comment_idx = ?";
@@ -517,68 +486,6 @@ public class ChatDao {
 	
 //	 *******멘션(언급)하기 위한 채팅방 멤버 조회하는 기능 *******
 	
-	
-	
-//	 *******파일 업로드 하는 기능 ******* /* 여기여기 */
-	/* 
-	(1)
-	file_box에 먼저 insert 하고
-	chat 에 insert
-
-	(2)
-	chat 에 insert ( 파일 null)  해놓고
-	file_box 에 insert
-	그 다음에 그 chat 내용에 파일idx update 
-	*/
-	
-	// 파일 등록 메서드 -> 파일idx를 리턴,,??? 외부 공유용url 생성
-	//	INSERT INTO file_box (file_idx, file_name, save_date, volume, member_idx, file_type_idx, project_idx, chatroom_idx, topic_idx, url) 
-	//	VALUES (seq_file.nextval, '등록할파일명', sysdate, '파일용량', 등록자idx, 파일유형idx, 프로젝트idx, 채팅방idx, 토픽idx, 외부공유용url);
-	public int registerFile(String fileName, String volume, int memberIdx, int fileTypeIdx, Integer projectIdx, Integer chatroomIdx, Integer topicIdx, String url) throws Exception {
-		Connection conn = getConnection();
-		
-//		String sql = "INSERT INTO file_box (file_idx, file_name, save_date, volume, member_idx, file_type_idx, project_idx, chatroom_idx, topic_idx, url)" + 
-//					 " VALUES (seq_file.nextval, ?, sysdate, ?, ?, ?, ?, ?, ?, ?)";
-		int fileIdx = 0;
-		String sql = "INSERT INTO file_box (file_idx, file_name, save_date, volume, member_idx, file_type_idx, project_idx, chatroom_idx, topic_idx, url)" + 
-				     " VALUES (seq_file.nextval, ?, sysdate, ?, ?, ?, ?, ?, ?, ?)";
-		
-		String[] arrStr = {"file_idx"};
-		PreparedStatement pstmt = conn.prepareStatement(sql, arrStr);
-//		pstmt.setInt(1, fileIdx);
-		pstmt.setString(1, fileName);
-		pstmt.setString(2, volume);
-		pstmt.setInt(3, memberIdx);
-		pstmt.setInt(4, fileTypeIdx);
-		if(projectIdx==null) {
-			pstmt.setNull(5, Types.INTEGER);
-		} else {
-			pstmt.setInt(5, projectIdx);
-		}
-		if(chatroomIdx==null) {
-			pstmt.setNull(6, Types.INTEGER);
-		} else {
-			pstmt.setInt(6, chatroomIdx);
-		}
-		if(topicIdx==null) {
-			pstmt.setNull(7, Types.INTEGER);
-		} else {
-			pstmt.setInt(7, topicIdx);
-		}
-		pstmt.setString(8, url);
-		pstmt.executeUpdate();
-		
-		ResultSet rs = pstmt.getGeneratedKeys();
-		if(rs.next()) {
-			fileIdx = rs.getInt(1);
-		}
-		
-		rs.close();
-		pstmt.close();
-		conn.close();
-		
-		return fileIdx;
-	}
 	
 	//============================== 기타  ==============================
 	// 채팅방방이름 불러오는 메서드
