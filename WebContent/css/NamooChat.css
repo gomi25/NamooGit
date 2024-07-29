@@ -2049,7 +2049,7 @@ body { margin: 0; overflow-y: hidden; }
     display: block; 
 }
 
-#write_chat_content_space > .ic_comment_enter {
+#div_msg_blank > .ic_comment_enter {
 	position: absolute;
     height: 22px;
     width: 22px;
@@ -2630,7 +2630,7 @@ body { margin: 0; overflow-y: hidden; }
 	display: inline-block;
 	width: 18px;
 	height: 18px;
-	background-image: url("https://www.flaticon.com/svg/vstatic/svg/10469/10469200.svg?token=exp=1718854806~hmac=0b27167074df0f7cc190e8c27c8333e6");
+	background-image: url("https://cdn-icons-png.flaticon.com/512/9166/9166482.png");
 	background-size: 100%;
 	filter: invert(78%) sepia(0%) saturate(4946%) hue-rotate(34deg) brightness(80%) contrast(96%);
 }	
@@ -3142,6 +3142,21 @@ body { margin: 0; overflow-y: hidden; }
 	line-height: 20px;
 	height: 20px;
 }	
+.bookmark_item_bottom > .profile_img, 
+.bookmark_file_item_bottom > .file_img {
+    border: none;
+}
+.bookmark_item_bottom > .profile_img > img { 
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+.bookmark_file_item_bottom > .file_img > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 .bookmark_item_bottom > div:nth-child(2) > span:nth-child(2) {
 	font-size: 12px;
     line-height: 16px;

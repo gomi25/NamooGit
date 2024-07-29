@@ -107,7 +107,7 @@
 	</script>
 </head>
 <body>
-<!--------------------------------------- #div_header (화면 최상단) --------------------------------------->	
+	<!--------------------------------------- #div_header (화면 최상단) --------------------------------------->	
 	<div id="div_header">
 		<div id="div_header_left" class="fl">
 			<div id="div_logo" class="fl"><img src="https://jandi-box.com/teams/0/logo.png?timestamp=20190628"/></div>
@@ -1059,20 +1059,19 @@
 		</div> --%>
 
 		
-<!---------- 채팅방 하단 -채팅입력 ---------->	<!-- (변경) 7.25(목)-->		
+	<!---------- 채팅방 하단 -채팅입력 ---------->	<!-- (변경) 7.25(목)-->		
 	<form id="form_chat" action="ChatFileUploadServlet" method="post" enctype="multipart/form-data" >
 		<div id="div_bottom">
 			<!-- 채팅 입력창 -->
 			<div id="div_msg_box" class="wide">
-				<div id="div_msg_space" class="fl"> <%-- style="width:96%;" --%>
+				<div id="div_msg_space" class="fl"> 
 					<!-- 댓글 입력하는 부분 -->
-					<div id="div_msg_blank"> <!-- 이거 -->
+					<div id="div_msg_blank">
 						<div class="fl"> 
 							<img src="" style="width:50px; height:50px; display:none;"/>
 						</div>
-						<div id="write_chat_content_space" contenteditable="true" data-placeholder="채팅을 입력하세요..." class="scrollbar fl">
-							<div class="ic_comment_enter"></div>
-						</div>
+						<div id="write_chat_content_space" contenteditable="true" data-placeholder="채팅을 입력하세요..." class="scrollbar fl"></div>
+						<div class="ic_comment_enter"></div>
 						<input type="hidden" name="chat_content" id="hidden_chat_content">
 			 			<input type="hidden" name="chatroom_idx" id="hidden_chatroom_idx" value="<%=chatroomIdx%>">
 						<div style="clear:both;"></div>
@@ -1102,71 +1101,90 @@
 			<div class="exit fr"></div>
 		</div>
 		<!-- 메시지창(2) -->
-		<div id="div_side_msg_body">
+		<div id="div_side_msg_body" chat_idx="">
+			<%
+			int chatIdx = 1;
+			for(ChatContentsDto chatContents : chatContentsDto) {
+				if(chatContents.getChatIdx() == chatIdx){
+					
+				ArrayList<ChatCommentDto> chatCommentDto = cDao.getChatCommentList(chatContents.getChatIdx(), teamIdx);
+			%>	
+			
 			<!-- 메시지내용 -->
-			<div id="div_side_content">
+			<div id="div_side_content" chat_idx="<%=chatContents.getChatIdx()%>" writer="<%=chatContents.getMemberIdx()%>">
 				<div>
 					<div class="fl">
 						<img src="https://jandi-box.com/files-profile/444fd3d25ade24bc2ec6480e11949dfa?size=80"/>
 					</div>
 					<div class="fl">
-						<span>이나무</span>
-						<span></span>
-						<span>2024/05/13 AM 02:27</span>
+						<span><%=chatContents.getName()%></span>
+						<span><%=chatContents.getState()%></span>
+						<span><%=chatContents.getWriteDate()%></span>
 					</div>
 				</div>
 				<div>
-					<span>
-						특정 재료에 알레르기가 있거나 선호하지 않는 음식이 있다면 말씀해주세요!
-					</span>
+					<span><%=chatContents.getContent()%></span>
 				</div>
-			</div>
+				
+			<%
+				if(chatContents.getFileIdx() != null) { 
+					int fileIdx = chatContents.getFileIdx();
+					String fileName = chatContents.getFileName();
+					int fileTypeIdx = common.getFileTypeIdxFromFileName(fileName);
+					
+					if(common.getFileTypeIdxFromFileName(chatContents.getFileName())==2){	// 이미지일 때
+			%>
+				<div class="file_space" fileTypeIdx="<%=fileTypeIdx%>">
+					<div>
+						<img src="upload/<%=chatContents.getFileName()%>" fileTypeIdx="<%=fileTypeIdx%>"/>
+					</div>
+				</div>
+			<% 		} else { %>
+				<div class="file_space" fileTypeIdx="<%=fileTypeIdx%>">
+					<div class="ic_file_img <%=common.getIconImgFromFileTypeIdx(fileTypeIdx)%> fl" fileTypeIdx="<%=fileTypeIdx%>"></div>
+					<span><%=fileName%></span>
+				</div>
+			<%  	} 
+				}
+			%>
+				
+			</div> <!-- div_side_content 닫는 태그 -->
 			
 			<!-- 댓글수 -->
-			<div id="div_side_comment_count">
-				<span>댓글</span> 2
+			<div id="div_side_comment_count" chat_idx="<%=chatContents.getChatIdx()%>" >
+				<span>댓글</span> 
+				<span><%=chatCommentDto.size()%></span>
 			</div>
 			
+			<%
+					for(ChatCommentDto chatComments : chatCommentDto){
+			%>
 			<!-- 댓글(1) -->
-			<div class="div_side_comments" class="user">
+			<div class="div_side_comments" class="user" chat_comment_idx="<%=chatComments.getChatCommentIdx()%>" writer="<%=chatComments.getMemberIdx()%>">
 				<div>
 					<div class="fl">
-						<img src="https://jandi-box.com/files-profile/b615e8e5e21064bc8a32231d8628a136?size=80"/>
+						<img src="<%=chatComments.getProfileUrl()%>"/>
 					</div>
 					<div class="fl">
-						<span>원혜경</span>
-						<span>- 회의중</span>
-						<span>2024/06/04 PM 2:30</span>
+						<span><%=chatComments.getName()%></span>
+						<span>- <%=chatComments.getState()%></span>
+						<span><%=chatComments.getWriteDate()%></span>
 					</div>
 					<div style="clear:both;"></div>
 				</div>
 				<div>
-					<span>
-						굴, 전복, 골뱅이 빼고는 대체로 다 좋아합니다~
-					</span>
+					<span><%=chatComments.getComments() %></span>
 				</div>
 			</div>
-			<!-- 댓글(2) -->
 			
-			<div class="div_side_comments">
-				<div>
-					<div class="fl">
-						<img src="https://jandi-box.com/files-profile/6a4eaf2b7a89126e44e9eb0cc81854d6?size=80"/>
-					</div>
-					<div class="fl">
-						<span>김민지</span>
-						<span>- 재택근무</span>
-						<span>2024/06/04 PM 2:35</span>
-					</div>
-					<div style="clear:both;"></div>
-				</div>
-				<div>
-					<span>
-						매운 것만 아니면 좋습니다!
-					</span>
-				</div>
-			</div>
-		</div>
+			<%
+					}
+				
+				} // if문 닫는 태그
+			}
+			%>
+			
+		</div> <!-- div_side_msg_body 닫는 태그 -->
 		<!-- 메시지창(3) -->
 		<div id="div_side_msg_footer">
 			<!-- 채팅 입력창 -->
@@ -1220,7 +1238,7 @@
 					<div class="ic_more_menu fr"></div>
 				</div>
 				<div class="bookmark_file_item_bottom">
-					<div class="file_img"><img src=""></div><!-- 파일이미지 -->
+					<div class="file_img"><img src="<%=bList.getProfileUrl()%>"></div><!-- 파일이미지 -->
 					<div>
 						<span class="profile_name"><%=bList.getContent()%></span>
 						<span><%=bList.getAuthorName() %></span>
@@ -1240,7 +1258,7 @@
 					<div class="ic_more_menu fr"></div>
 				</div>
 				<div class="bookmark_item_bottom">
-					<div class="profile_img"><img src=""></div>
+					<div class="profile_img"><img src="<%=bList.getProfileUrl()%>"></div>
 					<div>
 						<span class="profile_name"><%=bList.getAuthorName() %></span>
 						<span><%=bList.getWriteDate() %></span>
@@ -1253,117 +1271,12 @@
 		}	
 		%>	
 		
-			<!-- <div class="bookmark_text_item">
-				<div class="bookmark_item_top">
-					<div class="fl">먹는 것에 진심인 사람들</div> 방 이름
-					<div class="ic_bookmark_on fr"></div>
-					<div class="ic_more_menu fr"></div>
-				</div>
-				<div class="bookmark_item_bottom">
-					<div class="profile_img"><img src=""></div>
-					<div>
-						<span class="profile_name">원혜경</span>
-						<span>2024/05/08 PM 09:02</span>
-						<span>내용들... @김민지</span>
-					</div>
-				</div>
-			</div>
-			<div class="bookmark_text_item">
-				<div class="bookmark_item_top">
-					<div class="fl">먹는 것에 진심인 사람들</div> 방 이름
-					<div class="ic_bookmark_on fr"></div>
-					<div class="ic_more_menu fr"></div>
-				</div>
-				<div class="bookmark_item_bottom">
-					<div class="profile_img"><img src=""></div>
-					<div>
-						<span class="profile_name">원혜경</span>
-						<span>2024/05/08 PM 09:02</span>
-						<span>내용들... @김민지</span>
-					</div>
-				</div>
-			</div>
-			<div class="bookmark_text_item">
-				<div class="bookmark_item_top">
-					<div class="fl">먹는 것에 진심인 사람들</div> 방 이름
-					<div class="ic_bookmark_on fr"></div>
-					<div class="ic_more_menu fr"></div>
-				</div>
-				<div class="bookmark_item_bottom">
-					<div class="profile_img"><img src=""></div>
-					<div>
-						<span class="profile_name">원혜경</span>
-						<span>2024/05/08 PM 09:02</span>
-						<span>내용들... @김민지</span>
-					</div>
-				</div>
-			</div>
-			<div class="bookmark_file_item">
-				<div class="bookmark_item_top">
-					<div class="fl">먹는 것에 진심인 사람들</div>
-					<div class="ic_bookmark_on fr"></div>
-					<div class="ic_more_menu fr"></div>
-				</div>
-				<div class="bookmark_file_item_bottom">
-					<div class="file_img"><img src=""></div>파일이미지
-					<div>
-						<span class="profile_name">테스트 메모.txt</span>
-						<span>원혜경</span>
-						<span>2024/05/08 PM 09:02</span>
-					</div>
-				</div>
-			</div>
-			<div class="bookmark_file_item">
-				<div class="bookmark_item_top">
-					<div class="fl">먹는 것에 진심인 사람들</div>
-					<div class="ic_bookmark_on fr"></div>
-					<div class="ic_more_menu fr"></div>
-				</div>
-				<div class="bookmark_file_item_bottom">
-					<div class="file_img"><img src=""></div>파일이미지
-					<div>
-						<span class="profile_name">테스트 메모.txt</span>
-						<span>원혜경</span>
-						<span>2024/05/08 PM 09:02</span>
-					</div>
-				</div>
-			</div>
-			<div class="bookmark_file_item">
-				<div class="bookmark_item_top">
-					<div class="fl">먹는 것에 진심인 사람들</div>
-					<div class="ic_bookmark_on fr"></div>
-					<div class="ic_more_menu fr"></div>
-				</div>
-				<div class="bookmark_file_item_bottom">
-					<div class="file_img"><img src=""></div>파일이미지
-					<div>
-						<span class="profile_name">테스트 메모.txt</span>
-						<span>원혜경</span>
-						<span>2024/05/08 PM 09:02</span>
-					</div>
-				</div>
-			</div>
-			<div class="bookmark_file_item">
-				<div class="bookmark_item_top">
-					<div class="fl">먹는 것에 진심인 사람들</div>
-					<div class="ic_bookmark_on fr"></div>
-					<div class="ic_more_menu fr"></div>
-				</div>
-				<div class="bookmark_file_item_bottom">
-					<div class="file_img"><img src=""></div>파일이미지
-					<div>
-						<span class="profile_name">테스트 메모.txt</span>
-						<span>원혜경</span>
-						<span>2024/05/08 PM 09:02</span>
-					</div>
-				</div>
-			</div> -->
 			
 			<div class="bookmark_ending_item">
 				<div class="ic_ending"></div>
 			</div>
 		</div>
-	</div>
+	</div> <!-- div_side_bookmark 닫는 태그 -->
 		
 
 	

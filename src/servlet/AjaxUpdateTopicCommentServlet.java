@@ -26,11 +26,11 @@ public class AjaxUpdateTopicCommentServlet extends HttpServlet {
 //		int topicIdx = 1;  
 		int topicCommentIdx = Integer.parseInt(request.getParameter("topic_comment_idx"));
 		String comment = request.getParameter("topic_board_comment");
-		Integer fileIdx = request.getParameter("fileIdx") != null ? Integer.parseInt(request.getParameter("fileIdx")) : null;
+//		Integer fileIdx = request.getParameter("fileIdx") != null ? Integer.parseInt(request.getParameter("fileIdx")) : null;
 		
 		TopicDao tDao = new TopicDao();
 		try {
-	        tDao.updateTopicComment(topicCommentIdx, comment);
+	        tDao.updateTopicComment(topicCommentIdx, comment, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 

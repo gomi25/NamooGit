@@ -21,7 +21,7 @@
 //=====================================댓글 모두 보기 클릭=====================================			
 		$(function() {
 			// x 클릭 시 #div_side_message 사라지고 기존 화면대로 돌아감
-			$("#div_side_msg_header > div > img:nth-child(3)").click(function() {
+			$("#div_side_msg_header .exit").click(function() {
 				$("#div_side_message").css('display','none');
 				$("#div_side2").addClass('wide');
 				$("#div_msg_box").addClass('wide');
@@ -31,6 +31,8 @@
 				$("#div_side_message").css('display','block');
 				$("#div_side2").removeClass('wide');
 				$("#div_msg_box").removeClass('wide');
+				let chatIdx = $(this).parents(".chat_comment_message").attr("chat_idx");
+				$("#div_side_message").find("#div_side_content").attr('chat_idx', chatIdx);
 			});
 		});
 	
@@ -323,71 +325,70 @@
 		    resetForm();
 		});
 	});
-		
 
 
-/****************************** [토픽 정렬] 팝업창 ******************************/				
-// 토픽폴더 및 토픽 이름오름차순, 내림차순 하는 방법	
-$(document).ready(function() {
-    // list_view_option 클릭 이벤트 설정
-    $(".list_view_option").children(":nth-child(3)").click(function() {
-        // topic_folder 내림차순 정렬
-        var folders = $(".topic_folder").sort(function(a, b) {
-            var nameA = $(a).find("span.fl").first().text().toUpperCase();
-            var nameB = $(b).find("span.fl").first().text().toUpperCase();
-            return (nameA > nameB) ? -1 : (nameA < nameB) ? 1 : 0;
-        });
-
-        // 각 topic_folder 내의 topic_item 내림차순 정렬
-        $(".topic_folder").each(function() {
-            var topics = $(this).find(".topic_item").sort(function(a, b) {
-                var nameA = $(a).find("span").text().toUpperCase();
-                var nameB = $(b).find("span").text().toUpperCase();
-                return (nameA > nameB) ? -1 : (nameA < nameB) ? 1 : 0;
-            });
-            $(this).children("div").last().append(topics);
-        });
-
-        // topic_item 내림차순 정렬
-        var items = $("#div_topicroom_list_body .topic_item").sort(function(a, b) {
-            var nameA = $(a).find("span").text().toUpperCase();
-            var nameB = $(b).find("span").text().toUpperCase();
-            return (nameA > nameB) ? -1 : (nameA < nameB) ? 1 : 0;
-        });
-
-        // topic_folder를 먼저 추가하고 그 다음에 topic_item을 추가
-        $("#div_topicroom_list_body").empty().append(folders).append(items);
-    });
-
-    $(".list_view_option").children(":nth-child(2)").click(function() {
-        // topic_folder 오름차순 정렬
-        var folders = $(".topic_folder").sort(function(a, b) {
-            var nameA = $(a).find("span.fl").first().text().toUpperCase();
-            var nameB = $(b).find("span.fl").first().text().toUpperCase();
-            return (nameA < nameB) ? -1 : (nameA > nameB) ? 1 : 0;
-        });
-
-        // 각 topic_folder 내의 topic_item 오름차순 정렬
-        $(".topic_folder").each(function() {
-            var topics = $(this).find(".topic_item").sort(function(a, b) {
-                var nameA = $(a).find("span").text().toUpperCase();
-                var nameB = $(b).find("span").text().toUpperCase();
-                return (nameA < nameB) ? -1 : (nameA > nameB) ? 1 : 0;
-            });
-            $(this).children("div").last().append(topics);
-        });
-
-        // topic_item 오름차순 정렬
-        var items = $("#div_topicroom_list_body .topic_item").sort(function(a, b) {
-            var nameA = $(a).find("span").text().toUpperCase();
-            var nameB = $(b).find("span").text().toUpperCase();
-            return (nameA < nameB) ? -1 : (nameA > nameB) ? 1 : 0;
-        });
-
-        // topic_folder를 먼저 추가하고 그 다음에 topic_item을 추가
-        $("#div_topicroom_list_body").empty().append(folders).append(items);
-    });
-});
+	/****************************** [토픽 정렬] 팝업창 ******************************/				
+	// 토픽폴더 및 토픽 이름오름차순, 내림차순 하는 방법	
+	$(document).ready(function() {
+	    // list_view_option 클릭 이벤트 설정
+	    $(".list_view_option").children(":nth-child(3)").click(function() {
+	        // topic_folder 내림차순 정렬
+	        let folders = $(".topic_folder").sort(function(a, b) {
+	            let nameA = $(a).find("span.fl").first().text().toUpperCase();
+	            let nameB = $(b).find("span.fl").first().text().toUpperCase();
+	            return (nameA > nameB) ? -1 : (nameA < nameB) ? 1 : 0;
+	        });
+	
+	        // 각 topic_folder 내의 topic_item 내림차순 정렬
+	        $(".topic_folder").each(function() {
+	            let topics = $(this).find(".topic_item").sort(function(a, b) {
+	                let nameA = $(a).find("span").text().toUpperCase();
+	                let nameB = $(b).find("span").text().toUpperCase();
+	                return (nameA > nameB) ? -1 : (nameA < nameB) ? 1 : 0;
+	            });
+	            $(this).children("div").last().append(topics);
+	        });
+	
+	        // topic_item 내림차순 정렬
+	        let items = $("#div_topicroom_list_body .topic_item").sort(function(a, b) {
+	            let nameA = $(a).find("span").text().toUpperCase();
+	            let nameB = $(b).find("span").text().toUpperCase();
+	            return (nameA > nameB) ? -1 : (nameA < nameB) ? 1 : 0;
+	        });
+	
+	        // topic_folder를 먼저 추가하고 그 다음에 topic_item을 추가
+	        $("#div_topicroom_list_body").empty().append(folders).append(items);
+	    });
+	
+	    $(".list_view_option").children(":nth-child(2)").click(function() {
+	        // topic_folder 오름차순 정렬
+	        let folders = $(".topic_folder").sort(function(a, b) {
+	            let nameA = $(a).find("span.fl").first().text().toUpperCase();
+	            let nameB = $(b).find("span.fl").first().text().toUpperCase();
+	            return (nameA < nameB) ? -1 : (nameA > nameB) ? 1 : 0;
+	        });
+	
+	        // 각 topic_folder 내의 topic_item 오름차순 정렬
+	        $(".topic_folder").each(function() {
+	            let topics = $(this).find(".topic_item").sort(function(a, b) {
+	                let nameA = $(a).find("span").text().toUpperCase();
+	                let nameB = $(b).find("span").text().toUpperCase();
+	                return (nameA < nameB) ? -1 : (nameA > nameB) ? 1 : 0;
+	            });
+	            $(this).children("div").last().append(topics);
+	        });
+	
+	        // topic_item 오름차순 정렬
+	        let items = $("#div_topicroom_list_body .topic_item").sort(function(a, b) {
+	            let nameA = $(a).find("span").text().toUpperCase();
+	            let nameB = $(b).find("span").text().toUpperCase();
+	            return (nameA < nameB) ? -1 : (nameA > nameB) ? 1 : 0;
+	        });
+	
+	        // topic_folder를 먼저 추가하고 그 다음에 topic_item을 추가
+	        $("#div_topicroom_list_body").empty().append(folders).append(items);
+	    });
+	});
 
 
 	$(function() {				
@@ -409,7 +410,7 @@ $(document).ready(function() {
 	});
 
 
-/****************************** 토픽목록 ******************************/	
+	/****************************** 토픽목록 ******************************/	
 	// 토픽 클릭 시 페이지 이동 
 	$(function(){
 		$("#div_topicroom_list_body .topic_item > span").click(function () {
@@ -418,7 +419,7 @@ $(document).ready(function() {
 		});
 	});	
 
-/****************************** 프로젝트 목록 ******************************/	
+	/****************************** 프로젝트 목록 ******************************/	
 	// 프로젝트 클릭 시 페이지 이동 (예시)
 	$(function(){
 		$("#div_project_list_body .topic_item > span").click(function () {
@@ -797,7 +798,7 @@ $(document).ready(function() {
             } 
 	    });
 		
-		// 파일 업로드 시
+		// 파일 업로드 시 - 미리보기
 		$("#upload_file_chat_content").on("change", function(e) {
 			let files = e.target.files;
 			let reader = new FileReader();
@@ -808,20 +809,23 @@ $(document).ready(function() {
 				$("#div_msg_blank > div:first-child > img").css("object-fit", "cover");
 				$("#div_msg_blank > div:first-child").css("display", "block");
 				$("#div_msg_blank > div:nth-child(2)").css("width", "96%");
+				$("#div_msg_blank > .ic_comment_enter").css("right", "30px");
 			}
 		});
 		
+		// form 제출
+		$("#form_chat").submit(function(event) {
+	        $("#hidden_chat_content").val($("#write_chat_content_space").text().trim());
+	        // $("#hidden_chatroom_idx").val();
+		});	
+
 		// 전송버튼 클릭 시 
 		$(".ic_comment_enter").click(function() {
 			// 채팅글 폼 제출될 때 "입력한 내용" & "채팅방idx" 값 제출 
 			$("#form_chat").submit();
-			$("#form_chat").submit(function() {
-		        $("#hidden_chat_content").val($("#write_chat_content_space").text());
-		        $("#hidden_chatroom_idx").val();
-			});	
 	    });		
-
     });
+		
 		
 		// ajax 방식 - 채팅글 ".ic_comment_enter" 버튼 클릭 시
 /*		$(document).on("click", ".ic_comment_enter", function(){

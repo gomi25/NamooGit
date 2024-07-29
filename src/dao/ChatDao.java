@@ -9,10 +9,10 @@ import java.util.ArrayList;
 
 import com.Common;
 
+import dto.ChatCommentDto;
 import dto.ChatContentsDto;
 import dto.ChatroomMemberDto;
-import dto.ProfileUrlImgDto;
-import dto.TopicMemberDto;
+import dto.TopicCommentDto;
 
 public class ChatDao {
 	
@@ -88,7 +88,54 @@ public class ChatDao {
 
 	    return listRet;
 	}
-
+	
+	// *******채팅글의 채팅댓글 조회*******
+	// 파라미터: 채팅글idx, 팀idx 
+	// 리턴: 채팅댓글idx, 채팅글idx, 작성자idx, 작성자프로필이미지, 작성자이름, 상태, 댓글내용, 작성일시
+	public ArrayList<ChatCommentDto> getChatCommentList(int chatIdx, int teamIdx) throws Exception {
+		Connection conn = getConnection();
+		ArrayList<ChatCommentDto> listRet = new ArrayList<ChatCommentDto>();
+		String sql = "SELECT cc.chat_comment_idx,  " + 
+				"        cc.chat_idx,  " + 
+				"        NVL(m.profile_pic_url, 'https://jandi-box.com/assets/ic-profile.png') profile_pic_url,     " + 
+				"		m.member_idx,  " + 
+				"        m.name,  " + 
+				"        tm.state,  " + 
+				"        cc.comments,     " + 
+				"		TO_CHAR(cc.chat_date, 'YYYY-MM-DD PM HH:MI') write_date,  " + 
+				"        cc.file_idx     " + 
+				" FROM chat_comment cc INNER JOIN member m ON cc.member_idx = m.member_idx " + 
+				" INNER JOIN team_member tm ON m.member_idx = tm.member_idx " + 
+				" INNER JOIN team t ON t.team_idx = tm.team_idx " + 
+				" WHERE cc.chat_idx = ? " + 
+				" AND t.team_idx = ? " + 
+				" ORDER BY cc.chat_date";
+		
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, chatIdx);
+		pstmt.setInt(2, teamIdx);
+		ResultSet rs = pstmt.executeQuery();
+		while(rs.next()) {
+			int chatCommentIdx = rs.getInt("chat_comment_idx");
+			int memberIdx = rs.getInt("member_idx");
+			String profileUrl = rs.getString("profile_pic_url");
+			String name = rs.getString("name");
+			String state = rs.getString("state");
+			String comments = rs.getString("comments");
+			String writeDate = rs.getString("write_date");
+			Integer fileIdx = rs.getInt("file_idx");
+			if(rs.getInt("file_idx") == 0) {
+				fileIdx = null;
+			}
+			ChatCommentDto dto = new ChatCommentDto(chatCommentIdx, chatIdx, memberIdx, profileUrl, name, state, comments, writeDate, fileIdx);
+			listRet.add(dto);
+		}
+		rs.close();
+		pstmt.close();
+		conn.close();
+		
+		return listRet;
+	}	
 	
 	// ============================== 채팅 - 채팅 내용 관련 기능(1/4) ==============================
 	// *******채팅방 생성하는 기능*******
@@ -140,6 +187,7 @@ public class ChatDao {
 		
 		return ret;
 	}
+	
 	
 	// *******채팅댓글 작성*******
 	// 파라미터: 채팅글idx, 작성자 idx, 댓글내용, 파일idx
@@ -242,8 +290,8 @@ public class ChatDao {
 //	 *******채팅댓글 내용 수정*******
 	public void updateChatComment(String comments, int chatCommentIdx) throws Exception {
 		Connection conn = getConnection();
-		String sql = "SET comments = ?, modified = 1" + 
-					 " WHERE chat_comment_idx = ?";
+		String sql = "UPDATE chat_comment SET comments = ?, modified = 1" + 
+					 " WHERE chat_comment_idx = ? AND fil";
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, comments);

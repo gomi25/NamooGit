@@ -11,6 +11,7 @@ import java.util.List;
 
 import dto.TeamMemberDto;
 import dto.TopicBoardDto;
+import dto.TopicBoardFileDto;
 import dto.TopicCommentDto;
 import dto.TopicMemberDto;
 
@@ -31,51 +32,7 @@ public class TopicDao {
 //	※ SideDao 참고
 	
 //	============================== 토픽 - 토픽 관련 기능(1/3) ==============================
-//	*******대화방(토픽 및 채팅) 검색하는 기능 --> jQuery로 하기 *******	
-//	*******참여하지 않은 공개 토픽 목록 검색 기능 --> jQuery로 하기 *******
-	
-	
-
 //	*******참여하지 않은 공개 토픽 목록 조회하는 기능*******
-	
-	
-	
-	
-	
-	
-	
-	
-
-//  *******토픽 생성하는 기능(+만든사람을 토픽멤버로 추가하고 관리자 설정)*******	
-//	파라미터: 토픽이름, 토픽설명, 팀idx, 공개여부, 생성자idx
-//	public void createTopic(String name, String info, int teamIdx, int open, int memberIdx) throws Exception {
-//		int topicIdx = 0;    // pk값 : topic_idx
-//		Connection conn = getConnection();
-//		String sql1 = "INSERT INTO topic (topic_idx, name, information, team_idx, open, alarm)" 
-//					+ "	VALUES (seq_topic.nextval, ?, ?, ?, ?, 1)";
-//		PreparedStatement pstmt = conn.prepareStatement(sql1, new String[] {"topic_idx"});
-//		pstmt.setString(1, name);
-//		pstmt.setString(2,info);
-//		pstmt.setInt(3, teamIdx);
-//		pstmt.setInt(4, open);
-//		pstmt.executeUpdate();
-//		ResultSet rs = pstmt.getGeneratedKeys();
-//		if(rs.next()) {
-//			topicIdx = rs.getInt(1);
-//		}
-//		rs.close();
-//		pstmt.close();
-//
-//		String sql2 = "INSERT INTO topic_member (topic_idx, member_idx, manager)" 
-//					+ " VALUES (?, ?, 1)";
-//		pstmt = conn.prepareStatement(sql2);
-//		pstmt.setInt(1, topicIdx);
-//		pstmt.setInt(2, memberIdx);
-//		pstmt.executeUpdate();
-//		
-//		pstmt.close();
-//		conn.close();
-//	}
 
 //  *******토픽 생성하는 기능(+만든사람을 토픽멤버로 추가하고 관리자 설정)*******	
 //	파라미터: 토픽이름, 토픽설명, 팀idx, 공개여부, 생성자idx
@@ -110,11 +67,6 @@ public class TopicDao {
 
 	    return topicIdx;
 	}
-	
-	
-	
-	
-
 	
 //  *******폴더 조회 기능*******	
 //	SideDao.java 에 있음
@@ -205,6 +157,11 @@ public class TopicDao {
 		if(rs.next()) {
 			result = rs.getString(1);
 		}
+		
+		rs.close();
+		pstmt.close();
+		conn.close();
+		
 		return result;
 	}
 	
@@ -212,22 +169,74 @@ public class TopicDao {
 
 	
 	
-//	============================== 토픽 - 토픽 관련 기능(3/3) ==============================
-//  *******토픽글 작성하는 기능*******	 ---> 파일 제외
-	public void writeTopicBoard(int topicIdx, int memberIdx, String title, String content) throws Exception {
+	//	============================== 토픽 - 토픽 관련 기능(3/3) ==============================
+	// *******토픽글 작성하는 기능*******	 
+	// 파라미터: 토픽idx, 작성자idx, 제목, 내용
+	public int writeTopicBoard(int topicIdx, int memberIdx, String title, String content) throws Exception {
 		Connection conn = getConnection();
 		
 		String sql = "INSERT INTO topic_board (topic_board_idx, topic_idx, member_idx, title, content, write_date)" 
 					+ " VALUES (seq_topic_board.nextval, ?, ?, ?, ?, sysdate)";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
+		PreparedStatement pstmt = conn.prepareStatement(sql, new String[] {"topic_board_idx"});
 		pstmt.setInt(1, topicIdx);
 		pstmt.setInt(2, memberIdx);
 		pstmt.setString(3, title);
 		pstmt.setString(4, content);
 		pstmt.executeUpdate();
+		ResultSet rs = pstmt.getGeneratedKeys();
+		int ret = 0;
+		if(rs.next()) {
+			ret = rs.getInt(1);
+		}
+		rs.close();
+		pstmt.close();
+		conn.close();
+		
+		return ret;
+	}
+	
+	// *******토픽글 - 파일 추가하는 기능*******	 
+	// 파라미터: 토픽글idx, 파일idx
+	public void addFileToTopic(int topicBoardIdx, int fileIdx) throws Exception {
+		Connection conn = getConnection();
+		String sql = "INSERT INTO topic_file (topic_board_idx, file_idx)"
+					+ " VALUES (?, ?)";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, topicBoardIdx);
+		pstmt.setInt(2, fileIdx);
+		pstmt.executeUpdate();
 		
 		pstmt.close();
 		conn.close();
+	}
+	
+	// *******토픽글 - 파일 조회하는 기능*******	 
+	// 파라미터: 토픽글idx
+	// 리턴: 토픽글idx, 파일idx, 파일명
+	public TopicBoardFileDto getFileInfoFromTopicBoardIdx(int topicBoardIdx) throws Exception {
+		TopicBoardFileDto dto = null;
+        Connection conn = getConnection();
+	
+		String sql = "SELECT tf.topic_board_idx, fb.file_idx, fb.file_name " + 
+					" FROM topic_file tf  " + 
+					" INNER JOIN file_box fb ON tf.file_idx = fb.file_idx " + 
+					" WHERE tf.topic_board_idx = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, topicBoardIdx);
+		ResultSet rs = pstmt.executeQuery();
+		
+		if(rs.next()) {
+			dto = new TopicBoardFileDto();
+			dto.setTopicBoardIdx(rs.getInt("topic_board_idx"));
+            dto.setFileIdx(rs.getInt("file_idx"));
+            dto.setFileName(rs.getString("file_name"));
+		}
+		
+		rs.close();
+		pstmt.close();
+		conn.close();
+		
+		return dto;
 	}
 	
 //  *******토픽글 수정하는 기능*******	 ---> 파일 제외
@@ -252,17 +261,108 @@ public class TopicDao {
 		conn.close();
 	}
 	
-//  ******* 특정 토픽글 삭제하는 기능*******	
+//  ******* 특정 토픽글 삭제하는 기능 *******	
 //	파라미터: 토픽글idx
 	public void deleteTopicBoard(int topicBoardIdx) throws Exception {
-		Connection conn = getConnection();
-		String sql = "DELETE FROM topic_board WHERE topic_board_idx = ?";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setInt(1, topicBoardIdx);
-		pstmt.executeUpdate();
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		
-		pstmt.close();
-		conn.close();
+		try {
+			conn = getConnection();
+			
+			// 파일 유무 확인
+			String sql1 = "SELECT file_idx FROM topic_file WHERE topic_board_idx = ?";
+			pstmt = conn.prepareStatement(sql1);
+			pstmt.setInt(1, topicBoardIdx);
+			rs = pstmt.executeQuery(); 
+			
+			int fileIdx = 0;
+			if (rs.next()) {
+				fileIdx = rs.getInt(1);
+			}
+			rs.close();
+			pstmt.close();
+			
+			if (fileIdx > 0) {
+				String sql2 = "DELETE FROM topic_file WHERE file_idx = ?";
+				pstmt = conn.prepareStatement(sql2);
+				pstmt.setInt(1, fileIdx);
+				pstmt.executeUpdate();
+				pstmt.close();
+				
+				String sql3 = "DELETE FROM file_box WHERE file_idx = ?";
+				pstmt = conn.prepareStatement(sql3);
+				pstmt.setInt(1, fileIdx);
+				pstmt.executeUpdate();
+				pstmt.close();
+			}		
+			
+			// 댓글 유무 확인 및 댓글 삭제
+	        String sql4 = "SELECT topic_comment_idx FROM topic_comment WHERE topic_board_idx = ?";
+	        pstmt = conn.prepareStatement(sql4);
+	        pstmt.setInt(1, topicBoardIdx);
+	        rs = pstmt.executeQuery();
+	        
+	        while (rs.next()) {
+	            int commentIdx = rs.getInt("topic_comment_idx");
+	            
+	            // 댓글 즐겨찾기 등록 여부 확인 후  삭제
+	            String sql5 = "DELETE FROM bookmark WHERE topic_comment_idx = ?";
+	            PreparedStatement pstmt2 = conn.prepareStatement(sql5);
+	            pstmt2.setInt(1, commentIdx);
+	            pstmt2.executeUpdate();
+	            pstmt2.close();
+	        }
+	        rs.close();
+	        pstmt.close();
+	        
+	        // 댓글 삭제
+	        String sql6 = "DELETE FROM topic_comment WHERE topic_board_idx = ?";
+	        pstmt = conn.prepareStatement(sql6);
+	        pstmt.setInt(1, topicBoardIdx);
+	        pstmt.executeUpdate();
+	        pstmt.close();
+	        
+	        // 즐겨찾기에서 topic_board_idx로 등록된 데이터 삭제
+	        String sql7 = "DELETE FROM bookmark WHERE topic_board_idx = ?";
+	        pstmt = conn.prepareStatement(sql7);
+	        pstmt.setInt(1, topicBoardIdx);
+	        pstmt.executeUpdate();
+	        pstmt.close();
+			
+	        // topic_board 삭제
+			String sql8 = "DELETE FROM topic_board WHERE topic_board_idx = ?";
+			pstmt = conn.prepareStatement(sql8);
+			pstmt.setInt(1, topicBoardIdx);
+			pstmt.executeUpdate();
+			pstmt.close();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(rs!=null) {
+				try {
+					rs.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			if(pstmt!=null) {
+				try {
+					pstmt.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			if(conn!=null) {
+				try {
+					conn.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 //  ******* 토픽 내에 전체 토픽글 삭제하는 기능 *******		
@@ -450,26 +550,49 @@ public class TopicDao {
 		return ret;
 	}
 	
-//  *******댓글 수정하는 기능*******	
+//  *******토픽댓글 수정하는 기능*******	
 //	UPDATE topic_comment 
 //	SET comments = '변경할댓글내용'
 //	WHERE topic_comment_idx = 변경할토픽댓글idx; --> 파일 삭제
-	public void updateTopicComment(int topicCommemtIdx, String comments) throws Exception {
+	public void updateTopicComment(int topicCommemtIdx, String comments, Integer fileIdx) throws Exception {
 		Connection conn = getConnection();
 		String sql = "UPDATE topic_comment" + 
-				     "	SET comments = ?" + 
+				     "	SET comments = ?, file_idx = ?" + 
 					 "	WHERE topic_comment_idx = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, comments);
-		pstmt.setInt(2, topicCommemtIdx);
+		if(fileIdx==null){
+			pstmt.setNull(2, Types.INTEGER);	
+		} else {
+			pstmt.setInt(2,  fileIdx);
+		}
+		pstmt.setInt(3, topicCommemtIdx);
 		pstmt.executeUpdate();
 		
 		pstmt.close();
 		conn.close();
 	}	
 	
-//  ******특정 댓글 삭제하는 기능*******	
-//	파라미터: 삭제할토픽댓글idx
+	//  *******토픽댓글 수정하는 기능(파일만 ) *******	
+	//	UPDATE topic_comment 
+	//	SET comments = '변경할댓글내용'
+	//	WHERE topic_comment_idx = 변경할토픽댓글idx; --> 파일 삭제
+	public void updateTopicCommentFile(int topicCommemtIdx, Integer fileIdx) throws Exception {
+		Connection conn = getConnection();
+		String sql = "UPDATE topic_comment" + 
+					"	SET file_idx = ?" + 
+					"	WHERE topic_comment_idx = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, topicCommemtIdx);
+		pstmt.setInt(2, fileIdx);
+		pstmt.executeUpdate();
+		
+		pstmt.close();
+		conn.close();
+	}	
+	
+	//  ******특정 댓글 삭제하는 기능*******	
+	//	파라미터: 삭제할토픽댓글idx
 	public void deleteTopicComment(int topicCommentIdx) throws Exception {
 		Connection conn = getConnection();
 		String sql =  "DELETE FROM topic_comment" + 
@@ -487,7 +610,7 @@ public class TopicDao {
 	public void deleteAllTopicComment(int topicBoardIdx) throws Exception {
 		Connection conn = getConnection();
 		String sql =  "DELETE FROM topic_comment" + 
-				"	WHERE topic_board_idx = ?";
+					  "	WHERE topic_board_idx = ?";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, topicBoardIdx);
 		pstmt.executeUpdate();

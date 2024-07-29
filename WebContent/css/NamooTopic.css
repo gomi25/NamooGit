@@ -32,7 +32,6 @@ body { margin: 0; overflow-y: hidden;
     background-size: 100%;
     margin-right: 3px;
 }	
-/* 펼쳤을 때 */
 .ic_arrow_top {
     width: 10px;
     height: 10px;
@@ -40,6 +39,50 @@ body { margin: 0; overflow-y: hidden;
     background-size: 100%;
     margin-right: 3px;
 }
+.ic_file_clip {
+    width: 20px;
+    height: 20px;
+    background-size: 100%;
+    background-image: url("https://cdn-icons-png.flaticon.com/512/8300/8300057.png");
+    filter: invert(78%) sepia(0%) saturate(4946%) hue-rotate(34deg) brightness(80%) contrast(96%);
+	cursor: pointer;
+}
+/* 댓글 이미지 아이콘 */
+.ic_comment {
+    width: 20px;
+    height: 20px;
+    background-size: 100%;
+    background-image: url("https://cdn-icons-png.flaticon.com/512/11223/11223803.png");
+    filter: invert(78%) sepia(0%) saturate(4946%) hue-rotate(34deg) brightness(80%) contrast(96%);
+	cursor: pointer;
+}
+/* 파일유형별 아이콘 이미지*/
+.ic_file_img { 
+	margin: 1px;
+	width: 40px;
+    height: 40px;
+    background-size: 100%;
+    cursor: pointer;
+}
+.pdf {background-image: url("https://cdn-icons-png.flaticon.com/512/4726/4726010.png");}
+.word {background-image: url("https://cdn-icons-png.flaticon.com/512/4725/4725970.png");} 
+.ppt {background-image: url("https://cdn-icons-png.flaticon.com/512/4726/4726016.png");}
+.hwp {
+    background-image: url("https://cdn-icons-png.flaticon.com/512/14422/14422348.png");
+}
+.xls {
+    background-image: url("https://cdn-icons-png.flaticon.com/512/4726/4726040.png");
+}
+.zip {
+    background-image: url("https://cdn-icons-png.flaticon.com/512/4726/4726042.png");
+}
+.video {
+    background-image: url("https://cdn-icons-png.flaticon.com/512/4726/4726007.png");
+}
+.all {
+    background-image: url("https://cdn-icons-png.flaticon.com/512/281/281760.png");
+}
+
 
 /*============================ #div_header(화면최상단) ============================*/
 #div_header { 
@@ -2219,6 +2262,7 @@ list_view_option > div > .check {
    	font-size: 14px;
 	font-weight: 700;
 	color: #333;
+	overflow-y: auto;
 }
 #div_write_topic_board > div:nth-child(2) > div:nth-child(1), 
 #div_write_topic_board > div:nth-child(2) > div:nth-child(2),
@@ -2337,14 +2381,15 @@ list_view_option > div > .check {
 .upload_file_box {
 	display: none;
     width: 100%;
-    height: 130px;
+    height: 80px;
     min-height: 0px;
+/*     height: 130px; */
 /*     max-height: 210px; */
 	margin-bottom: 5px;
 }
 .upload_file_space {
 	width: 100%;
-	height: 110px;
+	height: 70px;
 	padding: 8px;
 	overflow-y: auto;
 }
@@ -2370,6 +2415,7 @@ list_view_option > div > .check {
 .upload_file_list > div:nth-child(1) > img {
 	width: 100%;
 	height: 100%;
+	border-radius: 6px;
 }
 .upload_file_list > div:nth-child(2){
 	padding: 6px;
@@ -2381,6 +2427,7 @@ list_view_option > div > .check {
 	width: 100%;
     height: 20px;
     padding: 0 8px;
+    display: none;
 }    
 
 
@@ -2407,14 +2454,6 @@ list_view_option > div > .check {
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
 /*     pointer-events: none; 마우스 이벤트를 차단 */
-}
-.ic_file_clip {
-    width: 20px;
-    height: 20px;
-    background-size: 100%;
-    background-image: url("https://cdn-icons-png.flaticon.com/512/8300/8300057.png");
-    filter: invert(78%) sepia(0%) saturate(4946%) hue-rotate(34deg) brightness(80%) contrast(96%);
-	cursor: pointer;
 }
 #div_write_topic_board .ic_mention_file_box > .ic_file_clip,
 #div_update_topic_board .ic_mention_file_box > .ic_file_clip { 
@@ -2444,8 +2483,8 @@ list_view_option > div > .check {
 #div_write_topic_board > div:nth-child(3),
 #div_update_topic_board > div:nth-child(3) {  /* 새로 작성*/
     width: 100%;
-    height: 50px;
-    padding: 6px;
+	height: 60px;
+    padding: 10px;
 }
 /* #div_update_topic_board > div:nth-child(3) {  새로 작성
 	padding: 16px;
@@ -2587,6 +2626,30 @@ list_view_option > div > .check {
 	max-width: 100%;
     max-height: 400px;
 }
+
+.article_file {
+    margin: 4px 0px;
+    padding: 10px;
+    min-height: 50px;
+    min-width: 50px;
+    max-width: 520px;
+    max-height: 520px;
+    background-color: white;
+    border-radius: 6px;
+}
+.article_file img {
+	max-width: 500px;
+    max-height: 500px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+.article_file span {
+	margin: 10px;
+    display: inline-block;
+    font-weight: 600;
+    cursor: pointer;
+}
+
 
 /* 댓글수 */
 .div_comment_count {
@@ -2844,16 +2907,18 @@ list_view_option > div > .check {
 	border-radius: 4px;
 }	
 .div_comment_more_menu_mine .ic_bookmark_on,
+.div_comment_more_menu_other .ic_bookmark_on {
+	margin: 2px;
+}
 .div_comment_more_menu_mine .ic_bookmark_off,
-.div_comment_more_menu_other .ic_bookmark_on,
 .div_comment_more_menu_other .ic_bookmark_off {
 	margin: 2px;
 	background-image: url("https://cdn-icons-png.flaticon.com/512/1828/1828961.png");
 	background-size: 100%;
 	filter: invert(95%) sepia(0%) saturate(0%) hue-rotate(139deg) brightness(84%) contrast(87%);
 }
-.div_comment_more_menu_mine .ic_bookmark_on,
-.div_comment_more_menu_other .ic_bookmark_on { display: none;}
+/* .div_comment_more_menu_mine .ic_bookmark_on, */
+/* .div_comment_more_menu_other .ic_bookmark_on { display: none;} */
 
 /*============================토픽방 상단메뉴바 팝업창============================*/
 #div_transparent_filter {
@@ -3257,7 +3322,7 @@ list_view_option > div > .check {
 	display: inline-block;
 	width: 18px;
 	height: 18px;
-	background-image: url("https://www.flaticon.com/svg/vstatic/svg/10469/10469200.svg?token=exp=1718854806~hmac=0b27167074df0f7cc190e8c27c8333e6");
+	background-image: url("https://cdn-icons-png.flaticon.com/512/9166/9166482.png");
 	background-size: 100%;
 	filter: invert(78%) sepia(0%) saturate(4946%) hue-rotate(34deg) brightness(80%) contrast(96%);
 }	
@@ -3665,6 +3730,21 @@ list_view_option > div > .check {
 	line-height: 20px;
 	height: 20px;
 }	
+.bookmark_item_bottom > .profile_img, 
+.bookmark_file_item_bottom > .file_img {
+    border: none;
+}
+.bookmark_item_bottom > .profile_img > img { 
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+.bookmark_file_item_bottom > .file_img > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 .bookmark_item_bottom > div:nth-child(2) > span:nth-child(2) {
 	font-size: 12px;
     line-height: 16px;

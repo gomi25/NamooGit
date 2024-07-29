@@ -134,13 +134,16 @@
 	        $("#selected_members").val(selectedMembers.join(","));
 			$(".count_memeber").text(selectedMembers.length);     
 		}	
-	    
-	    // "초대하기" 버튼 클릭 시 선택된 멤버 목록 설정 후 폼 제출
-	    $("#btn_invite_member").click(function() {
-			console.log("초대하기 버튼 클릭됨");
-	        updateSelectedMembers(); // 선택된 멤버 목록을 최신 상태로 업데이트.
-	        $("#form_invite_member").submit(); // 폼을 제출.
-	    });
+
+		$("#btn_invite_member").click(function(event) {
+		    if ($("[name='invite_member']").hasClass('green_light')) {
+		        updateSelectedMembers(); // 선택된 멤버 목록을 최신 상태로 업데이트.
+		        $("#form_invite_member").submit(); // 폼을 제출.
+		    } else {
+		        event.preventDefault(); // green_light 클래스가 없으면 폼 제출을 막음.
+		        alert("초대할 멤버를 선택해 주세요."); // 사용자에게 알림
+		    }
+		});
 	
 		 // 초기화 버튼 클릭 시 선택된 멤버 수 업데이트
 	    $("input[type='reset']").click(function() {
@@ -586,8 +589,6 @@ $(document).ready(function() {
 	$(function(){
 		$("#div_topicroom_list_body .topic_item > span").click(function () {
 			let topicIdx = $(this).parent(".topic_item").attr("topic_idx");
-			// 페이지 이동 --> "Ex11Detail.jsp?bno=213"로 이동
-			// location.href = 새 주소(문자열);   ← 얘는 무조건 'GET방식'임
 			location.href = context_path + "/NamooTopic.jsp?topicIdx=" + topicIdx;
 		});
 	});	
@@ -595,7 +596,7 @@ $(document).ready(function() {
 /****************************** 프로젝트 목록 ******************************/	
 	// 프로젝트 클릭 시 페이지 이동 (예시)
 	$(function(){
-		$(".topic_item > span").click(function () {
+		$("#div_project_list_body .topic_item > span").click(function () {
 			let projectIdx = $(this).parent(".topic_item").attr("project_idx");
 			location.href = context_path + "/NamooTopic.jsp?projectIdx=" + projectIdx;
 		});
@@ -913,6 +914,15 @@ $(document).ready(function() {
 			// 나열
 			$("#div_topic_update .div_topic_manager_checkbox > span").text(names);
 		});
+		
+		// [더보기] - [정보변경하기] - 토픽관리자 박스 클릭 시 팝업창 뜸
+		$(".div_topic_manager_checkbox").click(function(){
+			$("#div_manager_participants").show();
+		});
+		
+		$(document).on('click', '#div_manager_participants .btn_cancel', function() {
+		    $("#div_manager_participants").hide();
+		});
 			
 		// [더보기] - [정보변경하기] - 토픽 관리자에서 팀멤버 검색
 		$("#div_manager_participants input[name='member_search']").keyup(function(e) {
@@ -937,20 +947,13 @@ $(document).ready(function() {
 				$("#div_remove_participants").show();
 			} 
 		});
-		$("#div_remove_participants button").click(function(){
-			$("#div_remove_participants").hide();
+		
+		$(document).on('click', '#div_remove_participants .btn_cancel', function() {
+		    $("#div_remove_participants").hide();
 		});
 		
-		// [더보기] - [정보변경하기] - 토픽관리자 박스 클릭 시 팝업창 뜸
-		$(".div_topic_manager_checkbox").click(function(){
-			if($("#div_manager_participants").css('display') === 'none'){
-				$("#div_manager_participants").show();
-			} 
-		});
-		$("#div_manager_participants button").click(function(){
-			$("#div_manager_participants").hide();
-		});
 	});	
+	
 	
 	$(function() {		
 		// [더보기] - [토픽 삭제하기] 클릭 시
@@ -1079,7 +1082,7 @@ $(document).ready(function() {
 			
 	});	
 	
-/****************************** [게시글 작성] 팝업창 ******************************/	
+	/****************************** [게시글 작성] 팝업창 ******************************/	
 	// 토픽방 내부 하단의 게시글 등록 아이콘 클릭 시 [게시글 작성] 팝업창 띄우고 & 없애기
 	$(function() {				
 		$(".ic_write_board_box").click(function() {
@@ -1096,6 +1099,7 @@ $(document).ready(function() {
 		});			
 	});	
 	
+	// 토픽글 작성 - 포커스 설정 및 글자수 체크
 	$(function() {	
 		const $writeTopicBoardSpace = $('#write_topic_board_space');
 	
@@ -1130,8 +1134,6 @@ $(document).ready(function() {
 			
 			// 글자수 제한
 			if(title.length > 50) {
-//				$(this).val($(this).val().substring(0, 50));
-//				alert('제목은 50자까지 입력이 가능합니다.')
 				let truncatedContent = title.substring(0, 50);
                 $(this).val(truncatedContent);
                 alert('제목은 50자까지 입력이 가능합니다.');
@@ -1155,6 +1157,7 @@ $(document).ready(function() {
         $('#write_topic_board_space').on('blur', function() {
             $('#write_topic_board_box').css('border', '1px solid #ddd');
         });
+
 		// [게시글 작성] 토픽글 본문 글자수를 실시간으로 체크하고, 글자수가 5000자를 초과하지 않도록 제한
         $("#write_topic_board_space").on('keyup', function(){
             let content = $(this).text();
@@ -1183,7 +1186,25 @@ $(document).ready(function() {
             }
         });
 		
+		// 파일 업로드 시 - 미리보기
+		$("#upload_file_tboard").on("change", function(e) {
+			let files = e.target.files;
+			let reader = new FileReader();
+		    let fileName = files[0].name;
+			$(".upload_file_box").show();
+    		$(".upload_file_list > div:nth-child(2)").text(fileName);
+			
+			reader.readAsDataURL(files[0]);
+			reader.onload = function(e) {
+				$(".upload_file_list img").attr("src", e.target.result);
+				$(".upload_file_list img").css({
+		            "display": "block",
+		            "object-fit": "cover",
+		        });
+			}
+		});
 	});	
+	
 	
 	// [게시글 작성] 토픽글 제목+본문 모두 입력 시 [등록하기] 버튼 활성화
     $(document).ready(function() {
@@ -1200,10 +1221,18 @@ $(document).ready(function() {
 		$('#input_board_title').on('input', toggleCreateButton);	// input 이벤트를 사용하여 두 입력 필드에서 변경 사항을 감지하고, 
 		$('#write_topic_board_space').on('input', toggleCreateButton);	// toggleCreateButton 함수를 호출함
 
-	    // 폼 제출 시 div 내용을 hidden input에 동기화
-	    $('#writeTopicBoardForm').on('submit', function() {
-	        $('#hidden_board_content').val($('#write_topic_board_space').text());
-	    });
+		// form 제출
+		$("#form_board_write").submit(function(event) {
+	       $('#hidden_board_content').val($('#write_topic_board_space').text().trim());
+		   // $("#hidden_topic_idx").val();
+		});	
+
+		// 전송버튼 클릭 시 
+		$(".create_complete").click(function() {
+			// 토픽글 폼 제출될 때 "입력한 내용" & "채팅방idx" 값 제출 
+			$("#form_board_write").submit();
+	    });		
+		
     });
 		
 	// 토픽방 내부 하단의 위쪽 화살표 아이콘 클릭 시 토픽방 내부 상단으로 이동하기
@@ -1215,7 +1244,7 @@ $(document).ready(function() {
 	  });
 	});
 
-/****************************** [게시글 수정] 팝업창 ******************************/	
+	/****************************** [게시글 수정] 팝업창 ******************************/	
 	$(function() {		
 		let topicBoardIdx;		
 		// 사용자의 토픽글 - [더보기] - [수정] - [게시글 수정] 팝업창 띄우고 & 없애기
@@ -1236,7 +1265,7 @@ $(document).ready(function() {
 	        // hidden input에 topicBoardIdx 설정
 	        $("#hidden_topic_board_idx").val(topicBoardIdx);			
 		});
-	
+		
 		// [게시글 수정] 팝업창에 있는 "수정" 버튼 클릭 시 팝업창 띄우기
 		$("#div_update_topic_board #btn_update_topic_board").click(function() {
 			// form 제출
@@ -1389,6 +1418,7 @@ $(document).ready(function() {
 	    });
 	});		
 	
+	
 	$(function() {
 		let topicCommentCnt;
 		$(".ic_comment_enter").click(function() {
@@ -1407,15 +1437,11 @@ $(document).ready(function() {
 		            url : "AjaxWriteTopicCommentServlet",	
 	             	data : params,   
 	             	success : function(res){  
-						console.log(res);
-						//alert(res.result);
-						   
+						alert("성공!");
 						// 댓글수 span 요소
 						let cnt_span = _this.closest(".div_comment_box").siblings(".div_comment_count").find("span:nth-child(2)");
-//						let cnt_span = $(".div_comment[topic_comment_idx='" + topic_comment_idx + "']").siblings(".div_comment_count").find("span:nth-child(2)");
 						// 댓글수 +1
 						topicCommentCnt = parseInt(cnt_span.text().trim()) +1;
-						alert(topicCommentCnt);
 						// 댓글수 span 요소의 값 변경
 						cnt_span.text(topicCommentCnt);
 						
@@ -1484,7 +1510,14 @@ $(document).ready(function() {
 						_this.closest(".div_comment_box").before(str);
 						_this.siblings(".write_topic_comment_space").text('');
 						
-						
+						// form 제출
+						$("#form_update_file").submit(function(event) {
+					        $("#form_update_file input[name='topicIdx']").val();
+					        $("#form_update_file input[name='topic_comment_idx']").val(topic_comment_idx);
+						});	
+				        
+				        // 폼 제출
+				        $("#form_update_file").submit();
 					},
 	             	error : function(XMLHttpRequest, textStatus, errorThrown){ 
 	                	    		alert("통신 실패.")
@@ -1498,26 +1531,6 @@ $(document).ready(function() {
 		    // Enter 키가 눌렸는지 확인 && shift키가 동시에 놀리지 않았는지 확인 (줄바꿈으로 사용 가능)
 		    if (event.key === 'Enter' && !event.shiftKey) {
 		        event.preventDefault(); // 기본 Enter 동작(줄바꿈) 방지
-
-/*		원본		alert("전송됨");
-				let topicBoardIdx = $(this).parents(".content_board").attr("topic_board_idx");
-				let topicComment = $(this).text(); 
-				let params = { topic_board_idx : topicBoardIdx, 
-							   topic_board_comment : topicComment };
-				alert(params);
-//				let _this = $(this);
-				
-				$.ajax({
-			            type : "POST",            
-			            url : "AjaxWriteTopicCommentServlet",      		
-		             	data : params,            
-		             	success : function(res){  
-						                alert(res.result);  
-				        },
-		             	error : function(XMLHttpRequest, textStatus, errorThrown){ 
-		                	    		alert("통신 실패.")
-		             	}
-		     	});*/
 
 			let topicBoardIdx = $(this).parents(".content_board").attr("topic_board_idx");
 			let topicComment = $(this).text(); 
@@ -1549,9 +1562,21 @@ $(document).ready(function() {
 						let profileImgUrl = $("#div_profile_box > img").attr("src");
 						let name = $("#div_profile_box > div").text();
 						let date = new Date();
-						date = date.getFullYear() + "-" + (date.getMonth()<=9 ? "0" : "") + date.getMonth() + "-" + (date.getDate()<=9 ? "0" : "") 
-							+ date.getDate() + " " + (date.getHours()>12 ? "오후 " + date.getHours()-12 : "오전 " + date.getHours()) + ":" + date.getMinutes();
+						let year = date.getFullYear();
+						let month = date.getMonth() + 1; // getMonth()는 0부터 시작하므로 1을 더해야 합니다.
+						let day = date.getDate();
+						let hours = date.getHours();
+						let minutes = date.getMinutes();
+						let period = hours >= 12 ? "오후" : "오전";
+						hours = hours % 12 || 12; // 0을 12로 변환하고, 12시간 형식으로 변경합니다.
 						
+						month = month <= 9 ? "0" + month : month; // 두 자리 수로 만들기 위해 0을 추가합니다.
+						day = day <= 9 ? "0" + day : day;
+						minutes = minutes <= 9 ? "0" + minutes : minutes; // 두 자리 수로 만들기 위해 0을 추가합니다.
+						
+						let formattedDate = `${year}-${month}-${day} ${period} ${hours}:${minutes}`;
+
+
 						let str = '<div class="div_comment" topic_comment_idx="' + topic_comment_idx + '" writer="' + member_idx + '">' 
 							+ '<div class="div_profile">' 
 							+ '	<div class="fl">' 
@@ -1560,7 +1585,7 @@ $(document).ready(function() {
 							+ '	<div class="fl">' 
 							+ '		<span>' + name + '</span>' 
 							+ '		<span> - ' + state + '</span>' 
-							+ '		<span>' + date +'</span>' 
+							+ '		<span>' + formattedDate +'</span>' 
 							+ '	</div>' 
 							+ '</div>' 
 							+ '<div class="comment_item" contenteditable="false">' 
@@ -1620,6 +1645,11 @@ $(document).ready(function() {
 			
 		});
 	});			
+	
+	
+
+	
+	
 	
 
 
@@ -2046,10 +2076,10 @@ $(document).ready(function() {
 	        $('#div_grey_filter').hide();
 	
 			let param = { topic_comment_idx : topicCommentIdx };
-			//alert(param);
+			alert(param);
 			$.ajax({
 				type : "POST",           
-				url : "AjaxDeleteTopicCommentServlet",	
+				url : "/NamooPractice1/AjaxDeleteTopicCommentServlet",	// 절대경로
 				data : param,   
 				success : function(res){  
 					// 댓글수 span 요소
@@ -2062,6 +2092,7 @@ $(document).ready(function() {
 					_this.text(topicCommentCnt);
 				},
 				error : function(XMLHttpRequest, textStatus, errorThrown){ 
+					console.log("Error: " + textStatus + ", " + errorThrown);
 					alert("통신 실패.")
 				}
 	     	});
@@ -2173,13 +2204,13 @@ $(document).ready(function() {
 	  // (토픽글) 모든 .article_file 요소를 반복 처리
 	  $(".article_file").each(function() {
 	    // 현재 .article_file 요소의 텍스트 내용을 가져옴
-	    let fileIdx = $(this).text().trim();
+	    let fileIdx = $(this).fine(".img").attr();
 	    
 	    // 텍스트 내용이 비어 있으면 (null 또는 "")
 	    if (fileIdx === "") {
 	      // 현재 .article_file 요소를 display: none으로 숨김
 	      $(this).css("display", "none");
-	    }
+	    } 
 	  });
 
 	  // (토픽댓글) 모든 .comment_file 요소를 반복 처리
@@ -2201,7 +2232,7 @@ $(document).ready(function() {
 	
 	
 
-//===================================== 즐겨찾기창 =====================================				
+	//===================================== 즐겨찾기창 =====================================				
 	$(function() {
 		// div_header [메뉴] - [즐겨찾기]
 		$("#pop_up_header_menu > div:nth-child(3)").click(function(){

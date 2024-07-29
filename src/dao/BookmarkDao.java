@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 //import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,107 +25,231 @@ public class BookmarkDao {
 		return conn;
 	}
 
+	public List<BookmarkListDto> getAllBookmarkList() throws Exception {
+	    List<BookmarkListDto> bookmarkList = new ArrayList<>();
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    
+	    try {
+	        conn = getConnection();
+	        String sql = "SELECT  " + 
+	                "    b.bookmark_idx, " + 
+	                "    'chat' AS type, " + 
+	                "    c.chat_idx AS item_idx, " + 
+	                "    c.content AS content, " + 
+	                "    TO_CHAR(c.chat_date, 'YYYY/MM/DD PM HH:MI') AS time, " + 
+	                "    cr.name AS location_name, " + 
+	                "    m.name AS author_name, " + 
+	                "    m.profile_pic_url AS profile_pic_url " + // 추가된 부분
+	                "FROM bookmark b " + 
+	                "INNER JOIN chat c ON b.chat_idx = c.chat_idx " + 
+	                "INNER JOIN chatroom cr ON c.chatroom_idx = cr.chatroom_idx " + 
+	                "INNER JOIN member m ON c.member_idx = m.member_idx " + 
+	                "WHERE b.chat_idx IS NOT NULL " + 
+	                
+	                "UNION ALL " + 
+	                
+	                "SELECT  " + 
+	                "    b.bookmark_idx, " + 
+	                "    'chat_comment' AS type, " + 
+	                "    cc.chat_comment_idx AS item_idx, " + 
+	                "    cc.comments AS content, " + 
+	                "    TO_CHAR(cc.chat_date, 'YYYY/MM/DD PM HH:MI') AS time, " + 
+	                "    cr.name AS location_name, " + 
+	                "    m.name AS author_name, " + 
+	                "    m.profile_pic_url AS profile_pic_url " + // 추가된 부분
+	                "FROM bookmark b " + 
+	                "INNER JOIN chat_comment cc ON b.chat_comment_idx = cc.chat_comment_idx " + 
+	                "INNER JOIN chat c ON cc.chat_idx = c.chat_idx " + 
+	                "INNER JOIN chatroom cr ON c.chatroom_idx = cr.chatroom_idx " + 
+	                "INNER JOIN member m ON cc.member_idx = m.member_idx " + 
+	                "WHERE b.chat_comment_idx IS NOT NULL " + 
 
-    public List<BookmarkListDto> getAllBookmarkList() throws Exception {
-    	Connection conn = getConnection();
-        List<BookmarkListDto> bookmarkList = new ArrayList<>();
-        String sql = "SELECT  " + 
-        		"    b.bookmark_idx, " + 
-        		"    'chat' AS type, " + 
-        		"    c.chat_idx AS item_idx, " + 
-        		"    c.content AS content, " + 
-        		"    TO_CHAR(c.chat_date, 'YYYY/MM/DD PM HH:MI') AS time, " + 
-        		"    cr.name AS location_name, " + 
-        		"    m.name AS author_name " + 
-        		"FROM bookmark b " + 
-        		"INNER JOIN chat c ON b.chat_idx = c.chat_idx " + 
-        		"INNER JOIN chatroom cr ON c.chatroom_idx = cr.chatroom_idx " + 
-        		"INNER JOIN member m ON c.member_idx = m.member_idx " + 
-        		"WHERE b.chat_idx IS NOT NULL " + 
-        		
-        		"UNION ALL " + 
-        		
-        		"SELECT  " + 
-        		"    b.bookmark_idx, " + 
-        		"    'chat_comment' AS type, " + 
-        		"    cc.chat_comment_idx AS item_idx, " + 
-        		"    cc.comments AS content, " + 
-        		"    TO_CHAR(cc.chat_date, 'YYYY/MM/DD PM HH:MI') AS time, " + 
-        		"    cr.name AS location_name, " + 
-        		"    m.name AS author_name " + 
-        		"FROM bookmark b " + 
-        		"INNER JOIN chat_comment cc ON b.chat_comment_idx = cc.chat_comment_idx " + 
-        		"INNER JOIN chat c ON cc.chat_idx = c.chat_idx " + 
-        		"INNER JOIN chatroom cr ON c.chatroom_idx = cr.chatroom_idx " + 
-        		"INNER JOIN member m ON cc.member_idx = m.member_idx " + 
-        		"WHERE b.chat_comment_idx IS NOT NULL " + 
+	                "UNION ALL " + 
 
-        		"UNION ALL " + 
+	                "SELECT  " + 
+	                "    b.bookmark_idx, " + 
+	                "    'topic_board' AS type, " + 
+	                "    tb.topic_board_idx AS item_idx, " + 
+	                "    tb.title AS content, " + 
+	                "    TO_CHAR(tb.write_date, 'YYYY/MM/DD PM HH:MI') AS time, " + 
+	                "    t.name AS location_name, " + 
+	                "    m.name AS author_name, " + 
+	                "    m.profile_pic_url AS profile_pic_url " + // 추가된 부분
+	                "FROM bookmark b " + 
+	                "INNER JOIN topic_board tb ON b.topic_board_idx = tb.topic_board_idx " + 
+	                "INNER JOIN topic t ON tb.topic_idx = t.topic_idx " + 
+	                "INNER JOIN member m ON tb.member_idx = m.member_idx " + 
+	                "WHERE b.topic_board_idx IS NOT NULL " + 
 
-        		"SELECT  " + 
-        		"    b.bookmark_idx, " + 
-        		"    'topic_board' AS type, " + 
-        		"    tb.topic_board_idx AS item_idx, " + 
-        		"    tb.title AS content, " + 
-        		"    TO_CHAR(tb.write_date, 'YYYY/MM/DD PM HH:MI') AS time, " + 
-        		"    t.name AS location_name, " + 
-        		"    m.name AS author_name " + 
-        		"FROM bookmark b " + 
-        		"INNER JOIN topic_board tb ON b.topic_board_idx = tb.topic_board_idx " + 
-        		"INNER JOIN topic t ON tb.topic_idx = t.topic_idx " + 
-        		"INNER JOIN member m ON tb.member_idx = m.member_idx " + 
-        		"WHERE b.topic_board_idx IS NOT NULL " + 
+	                "UNION ALL " + 
 
-        		"UNION ALL " + 
+	                "SELECT  " + 
+	                "    b.bookmark_idx, " + 
+	                "    'topic_comment' AS type, " + 
+	                "    tc.topic_comment_idx AS item_idx, " + 
+	                "    tc.comments AS content, " + 
+	                "    TO_CHAR(tc.write_date, 'YYYY/MM/DD PM HH:MI') AS time, " + 
+	                "    t.name AS location_name, " + 
+	                "    m.name AS author_name, " + 
+	                "    m.profile_pic_url AS profile_pic_url " + // 추가된 부분
+	                "FROM bookmark b " + 
+	                "JOIN topic_comment tc ON b.topic_comment_idx = tc.topic_comment_idx " + 
+	                "JOIN topic_board tb ON tc.topic_board_idx = tb.topic_board_idx " + 
+	                "JOIN topic t ON tb.topic_idx = t.topic_idx " + 
+	                "JOIN member m ON tc.member_idx = m.member_idx " + 
+	                "WHERE b.topic_comment_idx IS NOT NULL " + 
 
-        		"SELECT  " + 
-        		"    b.bookmark_idx, " + 
-        		"    'topic_comment' AS type, " + 
-        		"    tc.topic_comment_idx AS item_idx, " + 
-        		"    tc.comments AS content, " + 
-        		"    TO_CHAR(tc.write_date, 'YYYY/MM/DD PM HH:MI') AS time, " + 
-        		"    t.name AS location_name, " + 
-        		"    m.name AS author_name " + 
-        		"FROM bookmark b " + 
-        		"JOIN topic_comment tc ON b.topic_comment_idx = tc.topic_comment_idx " + 
-        		"JOIN topic_board tb ON tc.topic_board_idx = tb.topic_board_idx " + 
-        		"JOIN topic t ON tb.topic_idx = t.topic_idx " + 
-        		"JOIN member m ON tc.member_idx = m.member_idx " + 
-        		"WHERE b.topic_comment_idx IS NOT NULL " + 
+	                "UNION ALL " + 
 
-        		"UNION ALL " + 
+	                "SELECT  " + 
+	                "    b.bookmark_idx, " + 
+	                "    'file' AS type, " + 
+	                "    f.file_idx AS item_idx, " + 
+	                "    f.file_name AS content, " + 
+	                "    TO_CHAR(f.save_date, 'YYYY/MM/DD PM HH:MI') AS time, " + 
+	                "    COALESCE(cr.name, t.name) AS location_name, " + 
+	                "    m.name AS author_name, " + 
+	                "    'https://cdn-icons-png.flaticon.com/512/281/281760.png' AS profile_pic_url " + // 추가된 부분
+	                "FROM bookmark b " + 
+	                "INNER JOIN file_box f ON b.file_idx = f.file_idx " + 
+	                "LEFT JOIN chatroom cr ON f.chatroom_idx = cr.chatroom_idx " + 
+	                "LEFT JOIN topic t ON f.topic_idx = t.topic_idx " + 
+	                "LEFT JOIN member m ON f.member_idx = m.member_idx " + 
+	                "WHERE b.file_idx IS NOT NULL " + 
+	                "ORDER BY bookmark_idx DESC";
 
-        		"SELECT  " + 
-        		"    b.bookmark_idx, " + 
-        		"    'file' AS type, " + 
-        		"    f.file_idx AS item_idx, " + 
-        		"    f.file_name AS content, " + 
-        		"    TO_CHAR(f.save_date, 'YYYY/MM/DD PM HH:MI') AS time, " + 
-        		"    COALESCE(cr.name, t.name) AS location_name, " + 
-        		"    m.name AS author_name " + 
-        		"FROM bookmark b " + 
-        		"INNER JOIN file_box f ON b.file_idx = f.file_idx " + 
-        		"LEFT JOIN chatroom cr ON f.chatroom_idx = cr.chatroom_idx " + 
-        		"LEFT JOIN topic t ON f.topic_idx = t.topic_idx " + 
-        		"LEFT JOIN member m ON f.member_idx = m.member_idx " + 
-        		"WHERE b.file_idx IS NOT NULL " + 
-        		"ORDER BY bookmark_idx";
-
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-    	ResultSet rs = pstmt.executeQuery();
-        while (rs.next()) {
-        	BookmarkListDto dto = new BookmarkListDto();
-        	dto.setBookmarkIdx(rs.getInt("bookmark_idx"));
-            dto.setType(rs.getString("type"));
-            dto.setItemIdx(rs.getInt("item_idx"));
-            dto.setContent(rs.getString("content"));
-            dto.setWriteDate(rs.getString("time"));
-            dto.setLocationName(rs.getString("location_name")); // 채팅방 또는 토픽방 이름
-            dto.setAuthorName(rs.getString("author_name"));
-            bookmarkList.add(dto);
-        }
-        return bookmarkList;
-    }
+	        pstmt = conn.prepareStatement(sql);
+	        rs = pstmt.executeQuery();
+	        while (rs.next()) {
+	            BookmarkListDto dto = new BookmarkListDto();
+	            dto.setBookmarkIdx(rs.getInt("bookmark_idx"));
+	            dto.setType(rs.getString("type"));
+	            dto.setItemIdx(rs.getInt("item_idx"));
+	            dto.setContent(rs.getString("content"));
+	            dto.setWriteDate(rs.getString("time"));
+	            dto.setLocationName(rs.getString("location_name")); // 채팅방 또는 토픽방 이름
+	            dto.setAuthorName(rs.getString("author_name"));
+	            dto.setProfileUrl(rs.getString("profile_pic_url")); // 추가된 부분
+	            bookmarkList.add(dto);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace(); // 예외 처리
+	        throw new Exception("Error retrieving bookmark list", e); // 예외를 호출한 곳으로 전달
+	    } finally {
+	        // 자원 정리
+	        try {
+	            if (rs != null) rs.close();
+	            if (pstmt != null) pstmt.close();
+	            if (conn != null) conn.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace(); // 자원 정리 중 발생한 예외 처리
+	        }
+	    }
+	    return bookmarkList;
+	}
+	
+//    public List<BookmarkListDto> getAllBookmarkList() throws Exception {
+//    	Connection conn = getConnection();
+//        List<BookmarkListDto> bookmarkList = new ArrayList<>();
+//        String sql = "SELECT  " + 
+//        		"    b.bookmark_idx, " + 
+//        		"    'chat' AS type, " + 
+//        		"    c.chat_idx AS item_idx, " + 
+//        		"    c.content AS content, " + 
+//        		"    TO_CHAR(c.chat_date, 'YYYY/MM/DD PM HH:MI') AS time, " + 
+//        		"    cr.name AS location_name, " + 
+//        		"    m.name AS author_name " + 
+//        		"FROM bookmark b " + 
+//        		"INNER JOIN chat c ON b.chat_idx = c.chat_idx " + 
+//        		"INNER JOIN chatroom cr ON c.chatroom_idx = cr.chatroom_idx " + 
+//        		"INNER JOIN member m ON c.member_idx = m.member_idx " + 
+//        		"WHERE b.chat_idx IS NOT NULL " + 
+//        		
+//        		"UNION ALL " + 
+//        		
+//        		"SELECT  " + 
+//        		"    b.bookmark_idx, " + 
+//        		"    'chat_comment' AS type, " + 
+//        		"    cc.chat_comment_idx AS item_idx, " + 
+//        		"    cc.comments AS content, " + 
+//        		"    TO_CHAR(cc.chat_date, 'YYYY/MM/DD PM HH:MI') AS time, " + 
+//        		"    cr.name AS location_name, " + 
+//        		"    m.name AS author_name " + 
+//        		"FROM bookmark b " + 
+//        		"INNER JOIN chat_comment cc ON b.chat_comment_idx = cc.chat_comment_idx " + 
+//        		"INNER JOIN chat c ON cc.chat_idx = c.chat_idx " + 
+//        		"INNER JOIN chatroom cr ON c.chatroom_idx = cr.chatroom_idx " + 
+//        		"INNER JOIN member m ON cc.member_idx = m.member_idx " + 
+//        		"WHERE b.chat_comment_idx IS NOT NULL " + 
+//
+//        		"UNION ALL " + 
+//
+//        		"SELECT  " + 
+//        		"    b.bookmark_idx, " + 
+//        		"    'topic_board' AS type, " + 
+//        		"    tb.topic_board_idx AS item_idx, " + 
+//        		"    tb.title AS content, " + 
+//        		"    TO_CHAR(tb.write_date, 'YYYY/MM/DD PM HH:MI') AS time, " + 
+//        		"    t.name AS location_name, " + 
+//        		"    m.name AS author_name " + 
+//        		"FROM bookmark b " + 
+//        		"INNER JOIN topic_board tb ON b.topic_board_idx = tb.topic_board_idx " + 
+//        		"INNER JOIN topic t ON tb.topic_idx = t.topic_idx " + 
+//        		"INNER JOIN member m ON tb.member_idx = m.member_idx " + 
+//        		"WHERE b.topic_board_idx IS NOT NULL " + 
+//
+//        		"UNION ALL " + 
+//
+//        		"SELECT  " + 
+//        		"    b.bookmark_idx, " + 
+//        		"    'topic_comment' AS type, " + 
+//        		"    tc.topic_comment_idx AS item_idx, " + 
+//        		"    tc.comments AS content, " + 
+//        		"    TO_CHAR(tc.write_date, 'YYYY/MM/DD PM HH:MI') AS time, " + 
+//        		"    t.name AS location_name, " + 
+//        		"    m.name AS author_name " + 
+//        		"FROM bookmark b " + 
+//        		"JOIN topic_comment tc ON b.topic_comment_idx = tc.topic_comment_idx " + 
+//        		"JOIN topic_board tb ON tc.topic_board_idx = tb.topic_board_idx " + 
+//        		"JOIN topic t ON tb.topic_idx = t.topic_idx " + 
+//        		"JOIN member m ON tc.member_idx = m.member_idx " + 
+//        		"WHERE b.topic_comment_idx IS NOT NULL " + 
+//
+//        		"UNION ALL " + 
+//
+//        		"SELECT  " + 
+//        		"    b.bookmark_idx, " + 
+//        		"    'file' AS type, " + 
+//        		"    f.file_idx AS item_idx, " + 
+//        		"    f.file_name AS content, " + 
+//        		"    TO_CHAR(f.save_date, 'YYYY/MM/DD PM HH:MI') AS time, " + 
+//        		"    COALESCE(cr.name, t.name) AS location_name, " + 
+//        		"    m.name AS author_name " + 
+//        		"FROM bookmark b " + 
+//        		"INNER JOIN file_box f ON b.file_idx = f.file_idx " + 
+//        		"LEFT JOIN chatroom cr ON f.chatroom_idx = cr.chatroom_idx " + 
+//        		"LEFT JOIN topic t ON f.topic_idx = t.topic_idx " + 
+//        		"LEFT JOIN member m ON f.member_idx = m.member_idx " + 
+//        		"WHERE b.file_idx IS NOT NULL " + 
+//        		"ORDER BY bookmark_idx";
+//
+//        PreparedStatement pstmt = conn.prepareStatement(sql);
+//    	ResultSet rs = pstmt.executeQuery();
+//        while (rs.next()) {
+//        	BookmarkListDto dto = new BookmarkListDto();
+//        	dto.setBookmarkIdx(rs.getInt("bookmark_idx"));
+//            dto.setType(rs.getString("type"));
+//            dto.setItemIdx(rs.getInt("item_idx"));
+//            dto.setContent(rs.getString("content"));
+//            dto.setWriteDate(rs.getString("time"));
+//            dto.setLocationName(rs.getString("location_name")); // 채팅방 또는 토픽방 이름
+//            dto.setAuthorName(rs.getString("author_name"));
+//            bookmarkList.add(dto);
+//        }
+//        return bookmarkList;
+//    }
 
 	
 	
