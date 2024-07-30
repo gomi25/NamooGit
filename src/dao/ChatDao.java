@@ -12,7 +12,7 @@ import com.Common;
 import dto.ChatCommentDto;
 import dto.ChatContentsDto;
 import dto.ChatroomMemberDto;
-import dto.TopicCommentDto;
+import dto.TeamMemberDto;
 
 public class ChatDao {
 	
@@ -429,9 +429,51 @@ public class ChatDao {
 		return listRet;
 	}
 	
+	//  ******* 해당 채팅에 소속되지 않은 팀 멤버 전체 조회 기능 *******		
+	//	파라미터 : 팀idx, 채팅idx
+	//	리턴 : 팀idx, 회원idx, 프로필, 이름, 부서, 직책, 권한
+	public ArrayList<TeamMemberDto> getTeamMemberListOutOfChatroom(int teamIdx, int chatroomIdx) throws Exception {
+	    Connection conn = getConnection();
+	    ArrayList<TeamMemberDto> listRet = new ArrayList<TeamMemberDto>();
 	
+	    String sql = "SELECT tm.team_idx, tm.member_idx, NVL(member.profile_pic_url, 'https://jandi-box.com/assets/ic-profile.png') profile_pic_url, member.name, tm.department, tm.position, tm.power" + 
+	                 " FROM team_member tm" + 
+	                 " LEFT JOIN (" + 
+	                 "     SELECT cm.member_idx" + 
+	                 "     FROM chat_member cm" + 
+	                 "     JOIN chatroom c ON cm.chatroom_idx = c.chatroom_idx" + 
+	                 "     JOIN team_member tm ON cm.member_idx = tm.member_idx" + 
+	                 "     WHERE c.chatroom_idx = ?" + 
+	                 " ) chat_members ON tm.member_idx = chat_members.member_idx" + 
+	                 " INNER JOIN member ON tm.member_idx = member.member_idx" + 
+	                 " WHERE tm.team_idx = ?" + 
+	                 " AND chat_members.member_idx IS NULL";
+	    
+	    PreparedStatement pstmt = conn.prepareStatement(sql);
+	    pstmt.setInt(1, chatroomIdx);
+	    pstmt.setInt(2, teamIdx);
+	    ResultSet rs = pstmt.executeQuery();
+	    
+	    while(rs.next()) {
+	        int memberIdx = rs.getInt("member_idx");
+	        String profileUrl = rs.getString("profile_pic_url");
+	        String name = rs.getString("name");
+	        String department = rs.getString("department");
+	        String position = rs.getString("position");
+	        String power = rs.getString("power");
+	        TeamMemberDto dto = new TeamMemberDto(teamIdx, memberIdx, profileUrl, name, department, position, power);
+	        listRet.add(dto);
+	    }
+	    
+	    rs.close();
+	    pstmt.close();
+	    conn.close();
+	    
+	    return listRet;
+	}
+
 	
-//	 *******채팅 참여 멤버 검색하는 기능*******
+
 	
 //	 *******채팅방에서 내보내기 기능(or나가기) *******
 	public void exitChatroom(int chatroomIdx, int memberIdx) throws Exception {

@@ -81,7 +81,8 @@
 
 	//============================채팅전체멤버 조회 테스트==============================
 //  	ArrayList<ChatroomDto> listChatroomMember = cDao.getChatroomMemberList(teamIdx, chatroomIdx);
-	
+	//============================채팅방에 없는 팀멤버 조회==============================
+		ArrayList<TeamMemberDto> teamMemberOutOfChatroom = cDao.getTeamMemberListOutOfChatroom(teamIdx, chatroomIdx);	
 %>
 <!DOCTYPE html>
 <html>
@@ -630,7 +631,11 @@
 				</div>
 			</div>
 			
-			<!---------- 채팅 시작하기 ---------->		
+			<!---------- 채팅 시작하기 (초대하기 버튼) ---------->		
+<!-- 			<form id="form_chat_start" action"" method=""></form> -->
+			
+
+
 			<div id="div_chat_start" class="border">
 				<div>
 					<span>채팅 시작하기</span>
@@ -675,24 +680,29 @@
 					<div class="fl">
 						<span class="span_chat_start">팀멤버</span>
 						<div id="start_member" class="border">
-							
-							<div class="div_member_list2" member_idx="100">
+					<%
+						for(TeamMemberDto memberOutOfChatroom : teamMemberOutOfChatroom){
+					%>							
+							<div class="div_member_list2" member_idx="<%=memberOutOfChatroom.getMemberIdx()%>">
 								<div class="fl">
-									<img class="profile_img" src="https://jandi-box.com/files-resource/characters/character_01.png"/>
+									<img class="profile_img" src="<%=memberOutOfChatroom.getProfileUrl() %>"/>
 								</div>
 								<div class="fl">
-									<div class="profile_name">이두걸</div>
+									<div class="profile_name"><%=memberOutOfChatroom.getName()%> </div>
 									<div>
-										<span>7팀 / </span>
-										<span> 대표님</span>
-									</div>
+										<span><%=memberOutOfChatroom.getDepartment()%> / </span>
+											<span> <%=memberOutOfChatroom.getPosition()%></span>
+										</div>
 								</div>
 								<div class="fr">
-									<div class="profile_power power_orange">정회원</div>
+									<div class="profile_power power_orange"><%=memberOutOfChatroom.getPower()%></div>
 								</div>					
 								<div style="clear:both;"></div>
-							</div>
-							<div class="div_member_list2" member_idx="101">
+								</div>
+					<%
+						}
+					%>
+							<!-- <div class="div_member_list2" member_idx="101">
 								<div class="fl">
 									<img class="profile_img" src="https://jandi-box.com/files-resource/characters/character_01.png"/>
 								</div>
@@ -739,15 +749,31 @@
 									<div class="profile_power power_orange">정회원</div>
 								</div>					
 								<div style="clear:both;"></div>
-							</div>							
-						</div>
+							</div>							 -->
+							
+							<div class="div_not_exist">
+									검색 결과가 없습니다<br/>
+									지금 바로 7팀에 새로운 멤버를 초대해보세요<br/>
+								</div>
+								<div class="invite_member">
+									팀에 멤버 초대하기
+								</div>
+						</div> <!-- start_member 닫는 태그 -->
 						
+						<!-- 여기여기 -->
 						<span class="span_chat_start">선택된 멤버 <span class="count_memeber"> 5</span> </span>
 						<div id="start_choice">
-							<div class="fl" member_idx="15">
-								<img class="profile_img" src="https://jandi-box.com/files-profile/62932f86e7cb4a9d8b6dd39149b4c0d5"/>
-								<span>강하늘</span>						
+						<%
+							for(ChatroomMemberDto chatroomMemberDto : listChatroomMember) {
+						%>
+							<div class="fl" member_idx="<%=chatroomMemberDto.getMemberIdx()%>">
+								<img class="profile_img" src="<%=chatroomMemberDto.getProfileUrl()%>"/>
+								<span><%=chatroomMemberDto.getName() %></span>						
 							</div>
+						<%
+							}
+						%>	
+						<!-- 
 							<div class="fl" member_idx="14">
 								<img class="profile_img" src="https://jandi-box.com/files-profile/6a4eaf2b7a89126e44e9eb0cc81854d6?size=80"/>
 								<span>김민지</span>						
@@ -764,11 +790,7 @@
 								<img class="profile_img" src="https://jandi-box.com/files-profile/444fd3d25ade24bc2ec6480e11949dfa?size=80"/>
 								<span>이나무</span>						
 							</div>
-	<!-- 						<div class="choice_member fl">
-								<img class="profile_img" src="https://jandi-box.com/files-profile/444fd3d25ade24bc2ec6480e11949dfa?size=80"/>
-								<span>노멤버</span>						
-								<div></div>
-							</div> -->
+							 -->
 							<div style="clear:both;"></div>
 						</div>
 	
