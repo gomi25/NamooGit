@@ -11,7 +11,7 @@ import java.util.List;
 
 import dto.BookmarkListDto;
 
-public class BookmarkDao { 
+public class BookmarkDao {
 	
 	private Connection getConnection() throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
@@ -150,7 +150,6 @@ public class BookmarkDao {
 	    return bookmarkList;
 	}
 	
-<<<<<<< HEAD
 //    public List<BookmarkListDto> getAllBookmarkList() throws Exception {
 //    	Connection conn = getConnection();
 //        List<BookmarkListDto> bookmarkList = new ArrayList<>();
@@ -259,63 +258,8 @@ public class BookmarkDao {
 	//	파라미터 : 사용자idx, 즐겨찾기 되어있는 대상
 	//	리턴: true 또는 false
 	public boolean isBookmarkChatroom(int memberIdxFrom, int chatroomIdx) throws Exception {
-=======
-//	******* 채팅 즐겨찾기 여부 *******	
-//	파라미터 : 사용자idx, 즐겨찾기 되어있는 대상
-//	리턴: true 또는 false
-	public boolean isBookmarkChatroom(int memberIdxFrom, int chatroomIdx) throws Exception {
 		Connection conn = getConnection();
 		String sql = "SELECT count(*) " + 
-					" FROM bookmark" + 
-					" WHERE member_idx_from = ?" + 
-					" AND chatroom_idx = ?";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setInt(1, memberIdxFrom);
-		pstmt.setInt(2, chatroomIdx);
-		ResultSet rs = pstmt.executeQuery();
-		boolean result = false;
-		if(rs.next()) {
-			result = rs.getInt(1)==1;	// 등록되어 있으면 1(true) 반환 아니면 0(false)
-		}
-		rs.close();
-		pstmt.close();
-		conn.close();
-		
-		return result;
-	}
-
-//	******* 채팅글 즐겨찾기 여부 *******	
-//	파라미터 : 사용자idx, 즐겨찾기 되어있는 대상
-//	리턴: true 또는 false
-	public boolean isBookmarkChat(int memberIdxFrom, int chatIdx) throws Exception {
-		Connection conn = getConnection();
-		String sql = "SELECT count(*) " + 
-				" FROM bookmark" + 
-				" WHERE member_idx_from = ?" + 
-				" AND chat_idx = ?";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setInt(1, memberIdxFrom);
-		pstmt.setInt(2, chatIdx);
-		ResultSet rs = pstmt.executeQuery();
-		boolean result = false;
-		if(rs.next()) {
-			result = rs.getInt(1)==1;	// 등록되어 있으면 1(true) 반환 아니면 0(false)
-		}
-		rs.close();
-		pstmt.close();
-		conn.close();
-		
-		return result;
-	}	
-	
-//	******* 토픽 즐겨찾기 여부 *******	
-//	파라미터 : 사용자idx, 즐겨찾기 되어있는 대상
-//	리턴: true 또는 false
-	public boolean isBookmarkTopic(int memberIdxFrom, int topicIdx) throws Exception {
->>>>>>> refs/heads/MJ
-		Connection conn = getConnection();
-		String sql = "SELECT count(*) " + 
-<<<<<<< HEAD
 					" FROM bookmark" + 
 					" WHERE member_idx_from = ?" + 
 					" AND chatroom_idx = ?";
@@ -364,8 +308,6 @@ public class BookmarkDao {
 	public boolean isBookmarkTopic(int memberIdxFrom, int topicIdx) throws Exception {
 		Connection conn = getConnection();
 		String sql = "SELECT count(*) " + 
-=======
->>>>>>> refs/heads/MJ
 				" FROM bookmark" + 
 				" WHERE member_idx_from = ?" + 
 				" AND topic_idx = ?";
