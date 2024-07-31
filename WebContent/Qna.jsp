@@ -9,7 +9,7 @@
 
 	int loginMemberIdx = 0;   
 	// 로그인 member_idx 가정. ----> 이후에는 (Integer)session.getAttribute("loginId") 등으로 변경해야 돼요~
-	//int memberIdx = (Integer)session.getAttribute("loginMemberIdx");a
+	//int memberIdx = (Integer)session.getAttribute("loginMemberIdx");
 
 	//int qna_idx = 37;
 	
