@@ -334,7 +334,7 @@ body { margin: 0; overflow-y: hidden; }
 .ic_search {
     width: 15px;
     height: 15px;
-    background-image: url(https://cdn-icons-png.flaticon.com/512/2089/2089805.png);
+    background-image: url("https://cdn-icons-png.flaticon.com/512/2089/2089805.png");
     background-size: 100%;
     filter: invert(94%) sepia(0%) saturate(0%) hue-rotate(157deg) brightness(46%) contrast(83%);
 }
@@ -554,6 +554,32 @@ body { margin: 0; overflow-y: hidden; }
 .topic_folder .ic_topic_folder_more_menu:hover {
 	background-color: #f2f2f2;
 }	
+.topic_folder_more_menu {
+	position: absolute;
+	right: 15px;
+    top: 20px;
+    width: 185px;
+    height:120px;
+    padding: 4px;
+    background: #fff;
+    display: none;
+    border: 1px solid #DDD;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, .08);
+    z-index: 12;
+}
+.topic_folder_more_menu > div {
+    color: #333;
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 6px;
+    padding: 8px 10px;
+    line-height: 20px;
+	cursor: pointer;
+}
+.topic_folder_more_menu > div:hover {
+	background: #f5f5f5;
+}
 .topic_folder > div > span:nth-child(3) {    
     margin : 5px 0;
     font-size: 14px;
@@ -2269,7 +2295,7 @@ body { margin: 0; overflow-y: hidden; }
 	position: absolute;
 	top: 70px;
     left: 22%;
-    transform: translate(-50%, -50%);
+/*     transform: translate(-50%, -50%); */
 	width: 700px;
 	height: 600px;
     min-height: 560px;
@@ -2378,7 +2404,7 @@ body { margin: 0; overflow-y: hidden; }
     top: 30px;
     width: 14px;
 	height: 14px;
-	background-image: url("https://www.flaticon.com/svg/vstatic/svg/3917/3917061.svg?token=exp=1718855429~hmac=b418eea04da18530444a234e656d47eb");
+	background-image: url("https://cdn-icons-png.flaticon.com/512/2089/2089805.png");
 	background-size: 100%;
     filter: invert(78%) sepia(0%) saturate(4946%) hue-rotate(34deg) brightness(80%) contrast(96%);
 }

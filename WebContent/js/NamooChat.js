@@ -137,7 +137,7 @@
 		});
 	});
 	
-/****************************** 토픽 [+] 팝업창 ******************************/					
+	/****************************** 토픽 [+] 팝업창 ******************************/					
 	$(function() {
 		// 토픽 '+버튼' 클릭 시 
 		$("#div_topicroom_list_header > div:nth-child(4)").click(function() {
@@ -155,21 +155,58 @@
 			$("#div_topic_openlist").css('display','block');
 			$("#div_grey_filter").css('display','block');
 		});
-//			$("#div_grey_filter").click(function() {
-//				$("#div_topic_openlist").css('display','none');
-//				$("#div_grey_filter").css('display','none');
-//			});	
+		
 		$("#div_topic_openlist .exit").click(function() {
 			$("#div_topic_openlist").css('display','none');
 			$("#div_grey_filter").css('display','none');
 		});	
 			
-		// 토픽 '+버튼' 클릭 -> 참여 가능한 토픽 보기 -> +새 토픽 생성 클릭 시 왜 화면이 꺼지는가?????????????????
+		// 토픽 '+버튼' 클릭 -> 참여 가능한 토픽 보기 
 		$("#div_topic_openlist > div:nth-child(4) button").click(function() {
 			$("#div_topic_openlist").css('display','none');
 			$("#div_topic_create").css('display','block');
 			$("#div_grey_filter").css('display','block');
 		});
+
+		// 토픽 '+버튼' 클릭 -> 폴더 생성하기
+		$(document).on("click", "#div_topic_plus > div:nth-child(2)", function(e){
+			$("#div_transparent_filter").hide();	
+			$("#div_topic_plus").hide();	
+			let teamIdx = team_idx;
+			let memberIdx = member_idx; 
+			let params = { team: teamIdx, member : memberIdx} 
+			
+			$.ajax({
+				type : "POST",
+				url : "AjaxCreateTopicFolderServlet",
+				data : params,
+				success : function(res) {
+					alert("성공!");
+					let str = 
+					  '<div class="topic_folder">'
+					+ '	<div class="div_folder_item" topicFolderIdx="' + res.topicFolderIdx +'">'  
+					+ '		<div class="ic_topic_folder_open fl"></div>'  
+					+ '		<div class="ic_topic_folder_close fl"></div>'  
+					+ '		<span class="span_folder_name fl" contenteditable="false">' + '새폴더' + '</span>'  
+					+ '		<span class="fl">' + '0' + '</span>'  
+					+ '		<div class="ic_topic_folder_more_menu fr"></div>'  
+					+ '		<div class="topic_folder_more_menu">'  
+					+ '			<div>이 폴더에 토픽 생성하기</div>'  
+					+ '			<div>폴더 이름 변경하기</div>'  
+					+ '			<div>폴더 삭제하기</div>'  
+					+ '		</div>'  
+					+ '	</div>'
+					+ '	<div>'
+					+ '	</div>'
+					+ '</div>';
+					
+					$("#div_topicroom_list_body").prepend(str);
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown){
+					alert("통신 실패.");
+				}
+			});
+		});		
 			
 		// 토픽 '+버튼' 클릭 -> 참여 가능한 토픽 보기 -> 정렬순서 클릭 시
 		$("#div_topic_openlist > div:nth-child(3) > span").click(function() {
@@ -179,9 +216,128 @@
 				$(".list_view_option").css('display','none');
 			}
 		});
-	});
+//	});
 	
-/****************************** [새 토픽 생성] 팝업창 ******************************/		
+//	$(function() {				
+	/********** 토픽 [+] 팝업창  - [더보기] 팝업창 **********/				
+		let isMenuOpen = false;		
+	
+		// 토픽폴더 [더보기] 클릭 
+		$(document).on("click", ".topic_folder .ic_topic_folder_more_menu", function(e){
+			e.stopPropagation();
+			isMenuOpen = true; // 메뉴가 열렸음을 표시
+			$("#div_transparent_filter").show();
+			$(this).next(".topic_folder_more_menu").show();
+		});	
+		
+		$(document).on("click", "#div_transparent_filter", function(e){		
+			$("#div_transparent_filter").hide();
+			$(".topic_folder_more_menu").hide();
+		});
+		
+		$(document).on("click", ".topic_folder_more_menu > div", function(e){		
+			$("#div_transparent_filter").hide();
+			$(".topic_folder_more_menu").hide();
+		});
+	
+		// 토픽 폴더 안의 토픽방 펼치기 및 접기
+		$(".topic_folder > div:first-child").click(function() {
+			// .topic_folder_more_menu가 열려 있으면 펼치기, 접기 실행 X
+			if ($(".topic_folder_more_menu").is(":visible")) {
+				return;
+			}	
+			if (isMenuOpen) {
+				isMenuOpen = false; // 플래그 초기화
+				return;
+			}
+			
+			let the_display = $(this).next().css('display');
+			if(the_display == 'none') {
+				if($(this).parents(".topic_folder").find(".topic_item").length==0) return;
+				$(this).next().slideDown();
+				$(this).find(".ic_topic_folder_open").css('display', 'block');
+				$(this).find(".ic_topic_folder_close").css('display', 'none');
+			} else {
+				if($(this).parents(".topic_folder").find(".topic_item").length==0) return;
+				$(this).next().slideUp();
+				$(this).find(".ic_topic_folder_open").css('display', 'none');
+				$(this).find(".ic_topic_folder_close").css('display', 'block');
+			}
+		});
+
+	    // '수정' 버튼 클릭 시 댓글 수정 활성화
+	    $(".topic_folder_more_menu > div:nth-child(2)").click(function() {
+			$(".topic_folder_more_menu").hide();		
+	        // '수정' 버튼이 클릭된 div_comment 내에서 comment_item 요소를 찾음
+	        let updateItem = $(this).closest('.div_folder_item').find('.span_folder_name');
+	        
+	        updateItem.attr('contenteditable', 'true');
+	        
+	        // 편집 가능한 스타일을 추가할 수 있음 (예: 테두리, 배경색 등)
+	        updateItem.css({
+	            'border': '1px solid #ccc',
+	            'border-radius': '6px',
+	            'outline': 'none',
+	            'padding': '5px',
+	            'background-color': '#f9f9f9',
+				'line-height': '12px'
+	        });
+	
+	        // focus를 줘서 바로 수정할 수 있도록 함
+	        updateItem.focus();
+	    });
+
+		// span_folder_name에서 Enter 키 입력 이벤트 처리
+	    $(".span_folder_name").on('keydown', function(event) {
+	        // Enter 키 눌렀을 때 동작
+	        if (event.key === 'Enter' && !event.shiftKey) {
+	            event.preventDefault(); // 기본 Enter 동작(줄바꿈) 방지
+	            
+	            // 수정된 댓글 내용 가져오기
+	            let topicFolderIdx = $(this).closest('.div_folder_item').attr('topicFolderIdx');
+	            let folderName = $(this).text().trim(); // 텍스트 내용 가져오기
+				let params = { 
+					topic_folder_idx : topicFolderIdx,  
+					folder_name : folderName
+				};
+				let _this = $(this);
+	            $.ajax({
+	                type: "POST",
+	                url: "AjaxUpdateTopicFolderServlet",
+	                data: params,
+	                success: function(res) {
+	                    alert(res.result); 
+						_this.attr('contenteditable', 'false').attr('style','');
+	                },
+	                error: function(XMLHttpRequest, textStatus, errorThrown) {
+	                    alert("통신 실패.");
+	                }
+	            });
+	        }
+	    });
+
+		// 토픽폴더 [더보기] - [폴더 삭제하기] 클릭 시 
+		$(document).on("click", ".topic_folder_more_menu > div:nth-child(3)", function(e){
+			let topicFolderIdx = $(this).closest('.topic_folder').find('div:first-child').attr('topicFolderIdx');
+			let _this = $(this).closest('.topic_folder');
+			let params = { topic_folder_idx: topicFolderIdx }; 
+			$.ajax({
+				type : "POST",
+				url : "AjaxDeleteTopicFolderServlet",
+				data : params,
+				success : function(res) {
+					_this.remove();
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown){
+					alert("통신 실패.");
+				}
+			});
+		});
+		
+	});	
+	
+	
+	/****************************** [새 토픽 생성] 팝업창 ******************************/		
 	$(function() {	
 		// 토픽 '+버튼' 클릭 -> 새로운 토픽 생성하기 클릭 시
 		$("#div_topic_plus > div:nth-child(1)").click(function() {
@@ -391,23 +547,7 @@
 	});
 
 
-	$(function() {				
-		// 토픽 폴더 안의 토픽방 펼치기 및 접기
-		$(".topic_folder > div:first-child").click(function() {
-			let the_display = $(this).next().css('display');
-			if(the_display == 'none') {
-				if($(this).parents(".topic_folder").find(".topic_item").length==0) return;
-				$(this).next().slideDown();
-				$(this).find(".ic_topic_folder_open").css('display', 'block');
-				$(this).find(".ic_topic_folder_close").css('display', 'none');
-			} else {
-				if($(this).parents(".topic_folder").find(".topic_item").length==0) return;
-				$(this).next().slideUp();
-				$(this).find(".ic_topic_folder_open").css('display', 'none');
-				$(this).find(".ic_topic_folder_close").css('display', 'block');
-			}
-		});
-	});
+
 
 
 	/****************************** 토픽목록 ******************************/	
