@@ -23,7 +23,7 @@ public class NamooServiceTalkDao {
 	 	return conn;
 	}
 	// 서비스톡 목록 : 프사, 이름, 읽음표시 같이 표시하기
-	public ArrayList<ServiceTalkContentDto> serviceTalkShowTalKroom(int serviceTalkroomIdx) throws Exception {
+	public ArrayList<ServiceTalkContentDto> serviceTalkShowTalKroom() throws Exception {
 		ArrayList<ServiceTalkContentDto> listRet = new ArrayList<ServiceTalkContentDto>();
 		Connection conn = getConnection();
 		String sql = "SELECT m.member_idx, t.service_talkroom_idx, t.service_talk_idx, m.name, m.profile_pic_url, t.message, t.read, t.talk_date" + 
@@ -42,6 +42,7 @@ public class NamooServiceTalkDao {
 			int memberIdx = rs.getInt("member_idx");
 			int read = rs.getInt("read");
 			int serviceTalkIdx = rs.getInt("service_talk_idx");
+			int serviceTalkroomIdx = rs.getInt("service_talkroom_idx");
 			String profilePicUrl = rs.getString("profile_pic_url");
 			String name = rs.getString("name");
 			String message = rs.getString("message");
@@ -200,17 +201,28 @@ public class NamooServiceTalkDao {
 		
 		return memberIdxRet;
 	}
-	public void createServiceTalkRoomByMemberIdx(int memberIdx) throws Exception {
+	// 1) 리턴타입을 int로.
+	// 2) 문자열 배열(arr) ---> pk컬럼의 이름.
+	// 3) conn.prepareStatement(sql, arr);
+	// 4) executeUpdate() 직후에 (executeQuery() 이게 아니고) getGeneratedKeys() 실행 (추가).
+	// 5) rs.next() ---> rs.getInt(1) 로 받으면 그 값이 바로 (이번에 새롭게 만들어진) PK 값이다.
+	public int createServiceTalkRoomByMemberIdx(int memberIdx) throws Exception {
 		System.out.println(memberIdx);
+		String[] arr = { "service_talkroom_idx" };
 		String sql = "INSERT INTO service_talkroom(service_talkroom_idx, member_idx)" 
 				 	+ "VALUES(SERVICE_TALKROOM_SEQ.nextval,?)";
 		Connection conn = getConnection();
-		
-		PreparedStatement pstmt = conn.prepareStatement(sql);
+		PreparedStatement pstmt = conn.prepareStatement(sql, arr);
 		pstmt.setInt(1, memberIdx);
 		pstmt.executeUpdate();
+		ResultSet rs = pstmt.getGeneratedKeys();
+		int ret = 0;
+		if(rs.next()) {
+			ret = rs.getInt(1);
+		}
 		pstmt.close();
 		conn.close();
+		return ret;
 	}
 	public int countTalkroomByMemberIdx(int memberIdx) throws Exception{
 		Connection conn = getConnection();

@@ -10,13 +10,13 @@
 <%
 	int memberIdx = 1;   // 로그인 member_idx 가정. ----> 이후에는 (Integer)session.getAttribute("loginId") 등으로 변경해야 돼요~
 	//int loginMemberIdx = 5;
-	int serviceTalkroomIdx = 1;
+	int serviceTalkroomIdx = 0;
 	
 	if(request.getParameter("service_talkroom_idx") != null) {   // 이해 : 파라미터 'service_talkroom_idx'라는 게 있으면.
 		serviceTalkroomIdx = Integer.parseInt(request.getParameter("service_talkroom_idx"));
 	}
 	NamooServiceTalkDao nDao = new NamooServiceTalkDao();
-	ArrayList<ServiceTalkContentDto> serviceTalkListDto = nDao.serviceTalkShowTalKroom(serviceTalkroomIdx);
+	ArrayList<ServiceTalkContentDto> serviceTalkListDto = nDao.serviceTalkShowTalKroom();
 	ArrayList<ServiceTalkContentDto> serviceTalkContentDto = nDao.serviceTalkShoWTalkContent(serviceTalkroomIdx);
 	
 	NamooMemberDao memberDao = new NamooMemberDao();
@@ -45,7 +45,7 @@
 
 	<!--------------------------- 1:1 톡 -------------------------------->
 	<!--_________________________톡 목록-관리자시점_______________________ -->
-	<% if(memberIdx == 0) { %>	
+	<% if(memberIdx == 0 && request.getParameter("service_talkroom_idx") == null) { %>	
 	<div id="div_service_talk1">
 		<!-- 톡목록 헤더 -->
 		<div id="service_talk_header">
@@ -56,12 +56,23 @@
 			<%
 				for(ServiceTalkContentDto sDto : serviceTalkListDto) {
 			%>
+					<script>alert("DB에서 온 sDto의 service_talkroom_idx : <%=sDto.getServiceTalkroomIdx()%>");</script>
+			<%
+					String strProfileImgUrl = sDto.getProfilePicUrl();
+					//파일 업로드로 업데이트 된 이미지의 경우를 위한 if문
+					if(strProfileImgUrl != null && 
+							(!strProfileImgUrl.startsWith("http://") && 
+							 !strProfileImgUrl.startsWith("https://"))) {
+						// DB에 있는 imgUrl이 filename 이라는 것!
+						strProfileImgUrl = "upload/" + strProfileImgUrl;
+					}
+			%>
 			<div class="talk_room_area">
 				<!-- 톡목록 : 톡방 -->			
 				<div class="talk_room">
-					<div id="div_talk_room">
+					<div class="div_talk_room" talkroom_idx="<%=sDto.getServiceTalkroomIdx() %>">
 						<div class="fl">
-							<div id="talk_room_profile" class="fl"><!-- 프사 --><img src="<%=sDto.getProfilePicUrl() %>"></div>
+							<div id="talk_room_profile" class="fl"><!-- 프사 --><img src="<%= strProfileImgUrl %>"></div>
 						</div>
 						<div id="first_row_profile_time" class="fl">
 							<div class="fl"><%=sDto.getName() %></div>
@@ -88,7 +99,7 @@
 	</div>
 	<%} %>
 	<!--__________________________톡 목록-멤버시점_________________________ -->
-	<% if(memberIdx != 0 && nDao.countTalkroomByMemberIdx(memberIdx) > 1) { %>	
+	<% if(memberIdx != 0 && request.getParameter("service_talkroom_idx")==null) { %>	
 	<div id="div_service_talk1_1">
 		<!-- 톡목록 헤더 -->
 		<div id="service_talk_header">
@@ -110,7 +121,8 @@
 	<% } %>
 
 	<!--__________________________톡방____________________________ -->
-	<div id="div_service_talk2">
+	<% if(request.getParameter("service_talkroom_idx") != null) { %>	
+		<div id="div_service_talk2">
 		<!-- 서비스톡 헤더 -->
 		<div id="service_talk_header" member_idx="<%= memberIdx%>">
 			<div class="header_back fl"><!-- '<' : 채팅방 목록으로 되돌아가기--></div>
@@ -119,9 +131,9 @@
 			<div class="fr header_quit"><!-- 채팅방 나가기 아이콘 --></div>
 			<div class="fr transparent_button"></div><!--서비스톡 닫을 때를 위한 투명 div  -->
 			<div id="quit_service_talk">
-				<div>
+				<div id="delete_talkroom" service_talkroom_idx="<%=request.getParameter("service_talkroom_idx") %>">
 					<div class="fl"></div>
-					<div class="fr">상담 나가기</div>
+					<div class="fr" talkroom_idx="service_talkroom_idx">상담 나가기</div>
 				</div>
 			</div>
 		</div>
@@ -147,32 +159,35 @@
 					</div>
 				</div>
 			<% } %>
-			<% for( ServiceTalkContentDto cDto : serviceTalkContentDto ) { %>
-				<!-- 서비스톡 바디: 왼쪽 톡 -->
-				<% if ( cDto.getMemberIdx() == 0 ) { %>
-					<div class="div_talk_time">오후 1:34 </div>
-					<div class="div_talk_left">
-						<!-- 프사 -->
-						<div class="fl"><div class="profile"></div></div>
-						<div class="talk_area fl">
-							<!-- 이름 -->
-							<div class="left_name">NAMOO🌳</div>
-							<!-- 내용 -->
-							<div class="left_talk">
-								<%=cDto.getMessage() %>
+			<script>alert("serviceTalkContentDto.size() : <%=serviceTalkContentDto.size()%>");</script>
+			<% if(request.getParameter("service_talkroom_idx") != null) { %>
+				<% for( ServiceTalkContentDto cDto : serviceTalkContentDto ) { %>
+					<!-- 서비스톡 바디: 왼쪽 톡 -->
+					<% if ( cDto.getMemberIdx() == 0 ) { %>
+						<div class="div_talk_time">오후 1:34 </div>
+						<div class="div_talk_left">
+							<!-- 프사 -->
+							<div class="fl"><div class="profile"></div></div>
+							<div class="talk_area fl">
+								<!-- 이름 -->
+								<div class="left_name">NAMOO🌳</div>
+								<!-- 내용 -->
+								<div class="left_talk">
+									<%=cDto.getMessage() %>
+								</div>
+							</div>
+						</div>
+					<% } %>
+					<!-- 서비스톡 바디: 오른쪽 톡 -->
+					<% if ( cDto.getMemberIdx() != 0 ) { %>
+					<div class="div_talk_right">
+						<div class="talk_area fr">
+							<div class="right_talk fr">
+								<%= cDto.getMessage() %>
 							</div>
 						</div>
 					</div>
-				<% } %>
-				<!-- 서비스톡 바디: 오른쪽 톡 -->
-				<% if ( cDto.getMemberIdx() != 0 ) { %>
-				<div class="div_talk_right">
-					<div class="talk_area fr">
-						<div class="right_talk fr">
-							<%= cDto.getMessage() %>
-						</div>
-					</div>
-				</div>
+					<% } %>
 				<% } %>
 			<% } %>
 		</div>
@@ -190,6 +205,7 @@
 	  </div><!-- 바디 영역 끝 -->
 	<!-- 서비스톡 푸터: 입력칸 -->
 	</div><!-- 서비스 톡영역 끝 -->
+	<% } %>
 </body>
 </html>
 

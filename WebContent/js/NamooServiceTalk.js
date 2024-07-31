@@ -31,7 +31,7 @@ $(function(){
 	$("#send_new_message").click(function() {
 		//파라미터 값으로 들어갈 인풋 경로 넣기
 		let member_idx = $(this).attr("member_idx");
-		alert("member_idx : " + member_idx);
+		//alert("member_idx : " + member_idx);
 		
 		$.ajax({
 			type: "post",
@@ -39,9 +39,11 @@ $(function(){
 		    data : {member_idx : member_idx},		// 받아놓은 파라미터
 		    success: function (data) {
 				//성공시 원하는 기능 넣기
-				alert("서비스톡 생성 되었습니다.");		
-				alert(data.result);  // 성공		
-				$("#div_service_talk2").css('display','block');
+				//alert("서비스톡 생성 되었습니다.");		
+				//alert(data.result);  // 성공		
+				let service_talkroom_idx = data.service_talkroom_idx;
+				location.href = "NamooServiceTalk.jsp?service_talkroom_idx=" + service_talkroom_idx;
+				//$("#div_service_talk2").css('display','block');
 		    },
 		    error: function (data, status, err) {
 				alert("error.");
@@ -49,6 +51,8 @@ $(function(){
 		});
 	});
 	$(".header_back").click(function(){
+		location.href = "NamooServiceTalk.jsp";
+		/*
 		alert("!");
 		let member_idx = $("#div_service_talk1_1").attr("member_idx");
 		if(member_idx === 0){
@@ -57,7 +61,18 @@ $(function(){
 		} else {
 			$("#div_service_talk2").hide();
 		}
+		*/
 	});
+	$("#delete_talkroom").click(function(){
+		location.href = "NamooServiceTalkDeleteAction.jsp?service_talkroom_idx=" + $(this).attr("service_talkroom_idx");
+	});
+	$(".div_talk_room").click(function(){
+		let talkroomIdx = $(this).attr("talkroom_idx");
+		//alert("talkroomIdx = " + talkroomIdx);
+		let url = "NamooServiceTalk.jsp?service_talkroom_idx=" + talkroomIdx;
+		location.href = url;
+	});
+	
 });
 
 

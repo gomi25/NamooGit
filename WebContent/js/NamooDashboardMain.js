@@ -50,22 +50,26 @@ $(function() {
 		}
 	});
 	 /*파일함 추가 팝업 */
-	$(".add_button").click(function() { 
+	$("#filebox_widget > div:nth-child(2) > div:nth-child(2)").click(function() { 
 		let the_parent = $(this).parent();
 		if(the_parent.attr("id")=="big_filebox_prime" ||the_parent.attr("id")=="small_filebox_prime") {
-			$("#popup_add_project").css('display', 'block');
+			$("#popup_add_filebox").css('display', 'block');
 			$("#grey_screen1").css('display', 'block');
 		}
 	});
 	 /* X누르면 프로젝트 팝업 꺼지게 */
-	$("#project_popup_header > div:nth-child(2)").click(function() { 
+	$(".project_popup_header > div:nth-child(2)").click(function() { 
 			$("#popup_add_project").css('display', 'none');
+			$("#popup_add_filebox").css('display', 'none');
 			$("#grey_screen1").css('display', 'none');
+			$(".project_popup_area").find("input[type='checkbox']").prop('checked', false);
 	});
 	 /* 취소버튼 누르면 프로젝트 팝업 꺼지게 */
-	$("#project_popup_button > div:nth-child(1)").click(function() { 
+	$(".project_popup_button > div:nth-child(1)").click(function() { 
 			$("#popup_add_project").css('display', 'none');
+			$("#popup_add_filebox").css('display', 'none');
 			$("#grey_screen1").css('display', 'none');
+			$(".project_popup_area").find("input[type='checkbox']").prop('checked', false);
 	});
 	 /* 위젯 설정  + 위젯 추가 팝업 */
 	$("#widget_setting_button").click(function() { 

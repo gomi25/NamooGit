@@ -7,9 +7,10 @@ public class DashboardProjectDto {
 	private int colorIdx;
 	private int writer;
 	private String registrationDate;
+	private String color;
 
 	public DashboardProjectDto(int projectIdx, int teamIdx, String projectName, int colorIdx, int writer,
-			String registrationDate) {
+			String registrationDate, String color) {
 		super();
 		this.projectIdx = projectIdx;
 		this.teamIdx = teamIdx;
@@ -17,42 +18,91 @@ public class DashboardProjectDto {
 		this.colorIdx = colorIdx;
 		this.writer = writer;
 		this.registrationDate = registrationDate;
+		this.color = color;
 	}
+
+
+
 	public int getProjectIdx() {
 		return projectIdx;
 	}
+
+
+
 	public void setProjectIdx(int projectIdx) {
 		this.projectIdx = projectIdx;
 	}
+
+
+
 	public int getTeamIdx() {
 		return teamIdx;
 	}
+
+
+
 	public void setTeamIdx(int teamIdx) {
 		this.teamIdx = teamIdx;
 	}
+
+
+
 	public String getProjectName() {
 		return projectName;
 	}
+
+
+
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
 	}
+
+
+
 	public int getColorIdx() {
 		return colorIdx;
 	}
+
+
+
 	public void setColorIdx(int colorIdx) {
 		this.colorIdx = colorIdx;
 	}
+
+
+
 	public int getWriter() {
 		return writer;
 	}
+
+
+
 	public void setWriter(int writer) {
 		this.writer = writer;
 	}
+
+
+
 	public String getRegistrationDate() {
 		return registrationDate;
 	}
+
+
+
 	public void setRegistrationDate(String registrationDate) {
 		this.registrationDate = registrationDate;
+	}
+
+
+
+	public String getColor() {
+		return color;
+	}
+
+
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 	@Override //참조변수를 String 타입으로 변하게 하는 거
@@ -64,6 +114,7 @@ public class DashboardProjectDto {
                 ", colorIdx = " + colorIdx  +
                 ", writer = " + writer  +
                 ", registration_date = " + registrationDate +
+                ", color = " + color +
                 '}';
     }
 

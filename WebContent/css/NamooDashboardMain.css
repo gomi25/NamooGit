@@ -33,6 +33,7 @@ a{ text-decoration-line: none; color: inherit;}
 	width: 1020px;
 	height: 80px;
 	font-size: 27px;
+	margin-bottom: 20px;
 }
 #div_dashboard_header > div:nth-child(1) { /* 헤더 인사  */
 	width: 800px;
@@ -142,6 +143,7 @@ a{ text-decoration-line: none; color: inherit;}
 }
 #div_widget{
 	width: 1020px;
+	max-height: 2500px;
 	padding: 20px 0 50px 0;
 }
 textarea{ /* 메모장 입력 영역 */
@@ -509,7 +511,7 @@ textarea{ /* 메모장 입력 영역 */
 .post_icon { /* 게시글 아이콘 */
 	width: 15px;
 	height: 15px;
-	background-image: url("https://www.flaticon.com/svg/vstatic/svg/9795/9795644.svg?token=exp=1718847852~hmac=f64ee7688e35e7f791df68335b5fe7b1");
+	background-image: url("https://cdn-icons-png.freepik.com/512/3838/3838380.png?ga=GA1.1.1731286933.1718783060");
 	background-size: 100%;
 	filter: invert(58%) sepia(91%) saturate(727%) hue-rotate(330deg) brightness(100%) contrast(99%);
 }
@@ -523,14 +525,14 @@ textarea{ /* 메모장 입력 영역 */
 .task_icon{ /* 업무 아이콘 */
 	width: 15px;
 	height: 15px;
-	background-image: url("https://www.flaticon.com/svg/vstatic/svg/15399/15399621.svg?token=exp=1718785228~hmac=ad11809aa9b1b0e7fd81c65fd8b51da8");
+	background-image: url("https://cdn-icons-png.freepik.com/512/10946/10946063.png?ga=GA1.1.1731286933.1718783060");
 	background-size: 100%;
 	filter: invert(70%) sepia(45%) saturate(4172%) hue-rotate(107deg) brightness(97%) contrast(80%);
 }
 .mention_icon{ /* 언급 아이콘 */
 	width: 15px;
 	height: 15px;
-	background-image: url("https://www.flaticon.com/svg/vstatic/svg/9821/9821728.svg?token=exp=1718784161~hmac=712f0f6bc344bacdc7fd0a3a1f92e514");
+	background-image: url("https://cdn-icons-png.freepik.com/512/12485/12485735.png?ga=GA1.1.1731286933.1718783060");
 	background-size: 100%;
 	filter: invert(69%) sepia(0%) saturate(4%) hue-rotate(141deg) brightness(100%) contrast(76%);
 }
@@ -664,15 +666,16 @@ li:not(:last-child) .list_border{ /* 마지막 알림에는 선 안뜨게 */
     z-index: 2;
     display: none;
 }
-#project_popup_header{ /* 프로젝트 팝업: 헤더 영역 */
+
+.project_popup_header{ /* 프로젝트 팝업: 헤더 영역 */
 	width: 100%;
 	height: 24px;
 }
-#project_popup_header > div:nth-child(1){ /* 헤더: '프로젝트 선택' */
+.project_popup_header > div:nth-child(1){ /* 헤더: '프로젝트 선택' */
 	font-size: 16px;
 	font-weight: 700;
 }
-#project_popup_header > div:nth-child(2){ /* X 표시 */
+.project_popup_header > div:nth-child(2){ /* X 표시 */
 	width: 24px;
 	height: 24px; 
 	background: url("https://cdn-icons-png.flaticon.com/512/3482/3482248.png");
@@ -681,26 +684,26 @@ li:not(:last-child) .list_border{ /* 마지막 알림에는 선 안뜨게 */
 	filter: invert(54%) sepia(12%) saturate(18%) hue-rotate(332deg) brightness(84%) contrast(91%);
 	cursor: pointer;
 }
-#project_popup_header > div:nth-child(2):hover{
+.project_popup_header > div:nth-child(2):hover{
 	filter: invert(70%) sepia(45%) saturate(4172%) hue-rotate(107deg) brightness(97%) contrast(80%);
 }
-#project_popup_search{ /* 프로젝트 팝업: 검색창 영역 */
+.project_popup_search{ /* 프로젝트 팝업: 검색창 영역 */
 	position: relative;
     margin: 10px 0;
     width: 100%;
     height: 40px;
 }
-#project_popup_search > input { /* 검색창: 인풋 */
+.project_popup_search > input { /* 검색창: 인풋 */
 	width: 100%;
 	height: 40px;
 	border: 1px solid #777777;
 	border-radius: 5px;
 	padding-left: 40px; 
 }
-#project_popup_search > input:focus{ /* 검색창 포커스  */
+.project_popup_search > input:focus{ /* 검색창 포커스  */
 	outline: none;
 }
-#project_popup_search > div:nth-child(2){ /* 검색창: 돋보기 */
+.project_popup_search > div:nth-child(2){ /* 검색창: 돋보기 */
 	position: absolute;
 	top: 13px;
 	left: 13px;
@@ -709,7 +712,7 @@ li:not(:last-child) .list_border{ /* 마지막 알림에는 선 안뜨게 */
 	background-image: url("https://flow.team/flow-renewal/assets/images/icon-search.png?v=738e3370d819d7d936c6bc34b934014e8282c2a9");
 	font-size: 13px;
 }
-#project_popup_area{ /* 프로젝트 팝업: 목록 영역 */
+.project_popup_area{ /* 프로젝트 팝업: 목록 영역 */
 	width: 100%;
 	height: 485px;
 	font-size: 14px;
@@ -719,7 +722,7 @@ li:not(:last-child) .list_border{ /* 마지막 알림에는 선 안뜨게 */
 	font-size: 14px;
 	text-overflow: ellipsis;
 }
-#project_popup_area::-webkit-scrollbar{ /* 프로젝트 목록 스크롤 */
+.project_popup_area::-webkit-scrollbar{ /* 프로젝트 목록 스크롤 */
 	display: none;
 }
 .project_popup{ /* 프로젝트 목록 */
@@ -753,8 +756,6 @@ li:not(:last-child) .list_border{ /* 마지막 알림에는 선 안뜨게 */
     width: 30px;
     height: 30px;
     border-radius: 6px;
-    background: #8b00ea;
-    border: solid 1px #8b00ea;
 }
 input[type='checkbox']{ /* 기존 체크박스 디자인 삭제 */
 	display: none;
@@ -774,12 +775,12 @@ input[type='checkbox']:checked + label{
 	background-size: 100%;
 	filter: invert(10%) sepia(20%) saturate(180%) hue-rotate(260deg) brightness(140%) contrast(91%);
 }
-#project_popup_button{ /* 프로젝트 팝업: 버튼 영역 */
+.project_popup_button{ /* 프로젝트 팝업: 버튼 영역 */
 	width: 100%;
 	height: 36px;
 	padding: 0 113px;
 }
-#project_popup_button > div:nth-child(1){ /* 취소버튼 */
+.project_popup_button > div:nth-child(1){ /* 취소버튼 */
 	width: 182px;
 	height: 36px;
 	font-size: 13px;
@@ -792,7 +793,7 @@ input[type='checkbox']:checked + label{
     background: #fff;
     cursor: pointer; 
 }
-#project_popup_button > div:nth-child(2) > input{ /* 확인버튼 */
+.project_popup_button > div:nth-child(2) > input{ /* 확인버튼 */
 	width: 182px;
 	height: 36px;
 	font-size: 13px;
@@ -804,6 +805,24 @@ input[type='checkbox']:checked + label{
     border: none;
     background: #1edc8b;
     cursor: pointer; 
+}
+/*____________________________파일함 팝업_____________________________ */
+#popup_add_filebox { /* 파일함 창 */
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);		
+    width: 674px;
+    min-height: 450px;
+    max-height: 670px;
+    padding: 20px 30px 20px 30px;
+    background: #fff;
+    border: 1px solid #999;
+    box-sizing: border-box;
+    box-shadow: 20px 20px 30px rgba(0, 0, 0, .2);
+    border-radius: 10px;
+    z-index: 2;
+    display: none;
 }
 /*____________________________위젯 팝업_____________________________ */
 #popup_add_widget{ /* 위젯 전체 영역 */
