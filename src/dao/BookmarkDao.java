@@ -11,7 +11,7 @@ import java.util.List;
 
 import dto.BookmarkListDto;
 
-public class BookmarkDao {
+public class BookmarkDao { 
 	
 	private Connection getConnection() throws Exception {
 		String driver = "oracle.jdbc.driver.OracleDriver";
