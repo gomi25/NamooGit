@@ -1,0 +1,113 @@
+@charset "UTF-8";
+/*--------------------------------메인 구조--------------------------------*/
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css); 
+.fl { float: left; }
+.fr { float: right; }
+.ab { position: absolute; }
+.re { position: relative; }
+* {
+	box-sizing: border-box;
+	font-family: Noto Sans KR, sans-serif !important;
+}
+.border { border: 1px solid red; }
+body { margin: 0; overflow-y: hidden; }
+a{ text-decoration-line: none; color: inherit;}
+
+/*----------------담당자 검색 부분------------------------*/
+#member_select {
+	margin: 0 auto;
+	width: 280px;
+	height: 360px;
+	border-radius: 4px;
+	border: 1px solid #ddd;
+	
+	background: white;
+	
+}
+#search1 {
+	height: 65px;
+}
+#search {
+	width: 250px;
+    height: 34px;
+    padding: 0 74px 0 38px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 13px;
+    font-weight: 500;
+    margin: 10px 0 0 14px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2);
+    
+}
+#search:focus {
+	outline: none;
+	border: 1px solid #cfebd3;
+}
+
+#search_icon {
+	margin: 18px 0 0 22px;
+}
+/*----------------멤버 전체------------------------*/
+#allmember {
+	height: 240px;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+#allmember::-webkit-scrollbar {
+    display: none;
+}
+
+/*----------------멤버 프로필 부분------------------------*/
+#member {
+	height: 60px;
+	border-bottom: 1px solid #ddd;
+}
+#member:hover {
+	background: #EBF5F1;
+}
+/*------멤버 프로필(선택이미지)---------*/
+#check {
+	width: 22px;
+	margin: 19px 10px 0 10px;
+	border-radius: 15px;
+}
+/*------멤버 프로필(프로필이미지)---------*/
+#profile {
+	width: 40px;
+	margin-top: 10px;
+	border-radius: 15px;
+}
+#name {
+	margin: 18px 0 0 15px;
+	font-weight: 700;
+    color: #555;
+}
+/*----------------bottom------------------------*/
+
+#bottom {
+	margin-top: 10px;
+	margin-left: 12px;
+}
+#alldelete, #select {
+	width: 125px;
+	height: 26px;
+}
+#select {
+	outline: none;
+	border: #00b01c;
+	background: #00b01c;
+	color: white;
+	border-radius: 5px;
+	font-weight: 500;
+}
+#alldelete {
+	
+	border: #DDDDDD;
+	font-weight: 500;
+	border-radius: 5px;
+	color: #9999A4;
+	background: #ddd;
+}

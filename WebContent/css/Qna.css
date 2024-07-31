@@ -43,118 +43,105 @@ hr.color_grey {
     border-bottom: none;
     margin: 0;
 }
-/*-------------------헤더------------------*/
-#div_header1{
-    position: fixed;
-    top: 0;
-	width: 100%;
+#div_header1 {
+	margin: auto;
+	padding: 22px 0 0 240px;
+	width: 1903px;
 	height: 66px;
-	z-index: 10; 
-	background-color: rgba(250, 250, 252, .95);
+	font-weight: 500;
 	font-size: 14px;
-    line-height: 20px;
-    border-bottom: 1px solid #ddd;
-    
+	background-color: rgba(250, 250, 252, .95);
+	position: fixed;
+	border-bottom: 1px solid rgb(221, 221, 221);
+	z-index: 1;
+
+		
 }
-#div_header1 > div:nth-child(1){ /*로고 +이름*/
-	position: relative;
-	width: 124px;
-	height: 30px;
-	margin-top: 10px; 
-	margin-left: 260px;
-	font: inherit;
+#div_header1 > div:nth-child(1) {
+	margin-top: -12px;
 	font-size: 20px;
-	font-weight: 900;
+	font-weight: bold;
+	display: flex;
 }
-#div_header1 > div:nth-child(1) > img {	/*로고*/
-	position: absolute;
-	width: auto; 
-	height: 40px;	
-	margin: 0px auto;
-	left: 0;
-}
-#div_header1 > div:nth-child(1) > span { /*나무이름*/
-	position: absolute;
-	margin-top: 10px;
-	right: 0;
-	letter-spacing: 1.5px;
-	
-}
-#div_header1 > div:nth-child(2){ 	/*고객사례*/
-	margin-top: 15px;
-	margin-left: 40px;
-	padding: 8px 14px;
-	height: 50px;
-	align-items: center;
-	font-weight: 600;
-	color: #333;
-}
-#div_header1 > div:nth-child(2):hover {
-	color: #7b7b7b;
-}	
-#div_header1 > div:nth-child(3){	/*도입문의*/
-	margin-top: 15px;
-	margin-left: 24px;
-	padding: 8px 14px;
-	height: 50px;
-	align-items: center;
-	font-weight: 600;
-	color: #333;
-}
-#div_header1 > div:nth-child(3):hover {
-	color: #7b7b7b;
-}	
-#div_header1 > div:nth-child(4){	/*헬프센터*/
-	position: relative;
-	margin-top: 15px;
-	margin-left: 24px;
-	padding: 8px 14px;
-	height: 50px;
-	align-items: center;
-	font-weight: 600;
-	color: #333;
-}
-#div_header1 > div:nth-child(4):hover {
-	color: #7b7b7b;
-}	
-#div_header1 > div:nth-child(5){	/*블로그*/
-	margin-top: 15px;
-	margin-left: 24px;
-	padding: 8px 14px;
-	height: 50px;
-	align-items: center;
-	font-weight: 600;
-	color: #333;
-}
-#div_header1 > div:nth-child(5):hover {
-	color: #7b7b7b;
-}	
-#div_header1 > div:nth-child(6){ 	/*로그인*/
-	font-weight: 500;
-	padding: 7px 14px;
-	background-color: #00c473;
-	color: #fff;
-	border-color: #00c473;
-   	border-radius : 6px;
- 	margin-right: 282px;
-    margin-top: 15px;
-}
-#div_header1 > div:nth-child(6):hover {
-	background: #00b76b;
-}
-#div_header1 > div:nth-child(7){ /*다운로드*/
-	padding: 7px 14px;
-	border: 1px solid #ddd;
-	font-weight: 500;
-	border-radius : 6px;
-	margin-top: 15px;
-	margin-right: 8px;
-}
-#div_header1 > div:nth-child(7):hover {
-	background: #dddddd40;
+#div_header1 > div:nth-child(1) > p {
+	margin-top: 6px;
+	margin-left: 5px;
+	letter-spacing: 3px;
 }
 
-/*-------------------배경------------------*/
+#div_header1 > div:nth-child(1) > img {
+	height: 41px;
+	margin-left: 20px;
+	cursor: pointer;
+}
+#div_header1 > div:nth-child(2) {
+	position: relative;
+	margin-left: 200px;
+	cursor: pointer;
+	
+	
+}
+
+#div_header1  a {
+	text-decoration: none;
+	color: #333333;
+}
+#div_header1  a  > span {
+	color: white;
+}
+
+#div_header1 > div:nth-child(2) > div {
+	
+	margin-right: 55px;
+}
+#div_header1 > div:nth-child(2) > div:hover {
+	color: #8f8f8f;
+}
+
+#div_header1 > div:nth-child(2) > div:nth-child(3) {
+	margin-right: 2px;
+}
+
+#div_header1 > div:nth-child(2) > div:nth-child(4) {
+	margin-top: 2px;
+}
+
+	
+#div_header1 > div:nth-child(3) > div:nth-child(1) {
+	margin-top: -16px;
+	margin-right: 270px;
+	padding: 14px;
+	width: auto;
+	height: 36px;
+	display : flex;
+	align-items : center;
+	border-radius: 6px;
+	color: white;
+	background-color: #00c473;
+	cursor: pointer;
+		
+}
+#div_header1 > div:nth-child(3) > div:nth-child(1):hover {
+	background : #079158;
+}
+#div_header1 > div:nth-child(3) > div:nth-child(2) {
+	margin-top: -16px;
+	margin-right: 10px;
+	padding: 15px;
+    width: auto;
+	height: 36px;
+	display : flex;
+	align-items : center;
+
+	border-radius: 6px;
+	border: 1px solid rgb(221, 221, 221);
+	cursor: pointer;
+		
+}
+#div_header1 > div:nth-child(3) > div:nth-child(2):hover {
+	background : #ddd;
+}
+/*배경*/
 #div_content1  {
 	background-color: #F3F3F3;
 	min-height: 2500px;

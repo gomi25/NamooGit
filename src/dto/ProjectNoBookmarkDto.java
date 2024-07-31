@@ -1,19 +1,27 @@
 package dto;
 
 public class ProjectNoBookmarkDto {
+	private int projectIdx;
 	private String projectName;
 	private String color;
 	private int teamIdx;
 	private int memberIdxFrom;
 	private int projectMemberCount;
-	public ProjectNoBookmarkDto(String projectName, String color, int teamIdx, int memberIdxFrom,
+	public ProjectNoBookmarkDto(int projectIdx, String projectName, String color, int teamIdx, int memberIdxFrom,
 			int projectMemberCount) {
 		super();
+		this.projectIdx = projectIdx;
 		this.projectName = projectName;
 		this.color = color;
 		this.teamIdx = teamIdx;
 		this.memberIdxFrom = memberIdxFrom;
 		this.projectMemberCount = projectMemberCount;
+	}
+	public int getProjectIdx() {
+		return projectIdx;
+	}
+	public void setProjectIdx(int projectIdx) {
+		this.projectIdx = projectIdx;
 	}
 	public String getProjectName() {
 		return projectName;
@@ -45,6 +53,7 @@ public class ProjectNoBookmarkDto {
 	public void setProjectMemberCount(int projectMemberCount) {
 		this.projectMemberCount = projectMemberCount;
 	}
+
 	
 	
 	
