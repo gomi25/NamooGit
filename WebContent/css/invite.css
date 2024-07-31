@@ -1,0 +1,266 @@
+@charset "UTF-8";
+/*--------------------------------메인 구조--------------------------------*/
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css); 
+.fl { float: left; }
+.fr { float: right; }
+.ab { position: absolute; }
+.re { position: relative; }
+* {
+	box-sizing: border-box;
+	font-family: Noto Sans KR, sans-serif !important;
+}
+.border { border: 1px solid red; }
+body { margin: 0; overflow-y: hidden; }
+a{ text-decoration-line: none; color: inherit;}
+
+
+#invite {
+	width: 648px;
+	height: 650px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+}
+/*-----------------header 부분------------------*/
+#invite_header {
+	width: 648px;
+	height: 64px;
+	
+}
+.invite_header_name {
+	margin-left: 20px;
+}
+.invite_header_img {
+	width: 14px;
+	margin: 25px 20px 0 0;
+}
+
+/*-------------------body 부분----------------------*/
+
+.invite_body {
+	width: 648px;
+	height: 510px;
+}
+
+.invite_left {
+	width: 387px;
+	height: 510px;
+	border-top: 1px solid #ddd;
+}
+.invite_right {
+	width: 258px;
+	height: 510px;
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	display: none;
+}
+.invite_right2 {
+	width: 258px;
+	height: 510px;
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	padding: 10px;
+	
+}
+
+
+/*-------------------body left 부분----------------------*/
+
+.invite_search {
+	width: 387px;
+	height: 71px;
+	padding: 15px 0 0 20px;
+}
+
+#search {
+	padding-left: 40px;
+	width: 340px;
+	height: 40px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	
+}
+#search_icon {
+	margin: 10px 0 0 10px;
+}
+#search:focus {
+	outline: none;
+	border: 1px solid #ddd;
+}
+/*----------------멤버리스트-------------------*/
+input[type='checkbox']{ /* 기존 체크박스 디자인 삭제 */
+   display: none;
+}
+input[type='checkbox'] + label{
+   width: 24px;
+   height: 24px;
+   display: block;
+   cursor: pointer;
+   background-image: url('https://flow.team/flow-renewal/assets/images/icons/icon_check.png?v=172ef888989427787e9d9eb0efba4ad9dbe6e289');
+   background-repeat: no-repeat;
+   background-size: 100%;
+   margin-top: 7px;
+}
+input[type='checkbox']:checked + label{
+    background-image: url('https://flow.team/flow-renewal/assets/images/icons/icon_check_on.png?v=514e4a85f7dd28f6a931c194a18e2a7621c507df');
+    background-repeat: no-repeat;
+   background-size: 100%;
+   
+   filter: invert(10%) sepia(20%) saturate(180%) hue-rotate(260deg) brightness(140%) contrast(91%);
+}
+
+
+.member_list:hover {
+	background: #EBF5F1;
+}
+#project_checkbox> input:focus div{
+	
+	background: #EBF5F1;
+}
+.member_list:focus {
+}
+.member_list{
+	height: 60px;
+	border-bottom: 1px solid #d3d3d3;
+	display: flex;
+	padding: 10px 0 10px 30px;;
+}
+.invite_member_list img {
+	width: 40px;
+	height: 40px;
+	border-radius: 16px;
+	margin: 0 15px 0 10px;
+}
+.member_name {
+	font-size: 13px;
+	font-weight: 700;
+	color: #555;
+	margin-top: 10px;
+}
+
+/*-------------------body right 부분----------------------*/
+
+.invite_right_txt {
+	font-size: 14px;
+	font-weight: 600;
+	color: #999;
+	text-align: center;
+	padding-top: 230px;
+	display: none;
+}
+
+/*-----------body right 부분(멤버 선택 했을 때)------------------*/
+
+.right_header {
+	
+	height: 50px;
+	padding: 5px;
+	border-bottom: 1px solid #d3d3d3;
+}
+.right_delete {
+	all: unset;
+	cursor: pointer;
+	outline: none;
+	border: none;
+	
+	font-size: 14px;
+	font-weight: 600;
+	color: #00b01c;
+	margin-left: 160px;
+	
+}
+
+/*---------------------선택된 멤버-----------------------------*/
+
+#select_member {
+	width: 237px;
+	height: 450px;
+	
+	
+	
+	
+}
+
+#box {
+	width: 95px;
+	height: 30px;
+	border-radius: 5px;
+	background: #EBF5F1;
+	margin: 10px 15px 5px 5px;
+	
+	
+	
+	
+}
+#box:hover {
+	border: 1px solid #00b01c;
+}
+#mini_profile {
+	width: 26px;
+	border-radius: 5px 0 0 5px;
+	margin-top: 2px;
+}
+#x_img {
+	width: 20px;
+    height: 20px;
+	background: url("https://flow.team/flow-renewal/assets/images/sprite-project-detail.png?v=72e3932a585aea3cb30fd85bdbddeb5c65a4c9d1")
+	no-repeat -190px -75px / 844px auto;
+	vertical-align: middle;
+	margin-left: 70px;
+	margin-top: -28px;
+	outline: none;
+	border: none;
+	
+}
+#x_img:hover  {
+	 
+	  filter: invert(70%) sepia(45%) saturate(4172%) hue-rotate(107deg) brightness(97%) contrast(80%);
+}
+#mini_profile_name {
+	font-size: 14px;
+	margin-left: 2px;
+	margin-top: 4px;
+	color: #555555;
+	font-weight: 500;
+}
+
+/*------------------------bottom-----------------------*/
+
+#invite_bottom {
+	width: 648px;
+	height: 70px;
+	padding-top: 15px;
+	border-top: 1px solid #d3d3d3;
+	display: flex;
+	
+}
+.invite_delete_btn {
+	width: 182px;
+	height: 36px;
+	border: 1px solid #ddd;
+	color: #999;
+	background: white;
+	border-radius: 4px;
+}
+.invite_delete_btn:hover {
+	border: 1px solid #00b01c;
+	color: #00b01c;
+}
+
+.invite_invite_btn {
+	width: 182px;
+	height: 36px;
+	margin-left: 10px;
+	background: #00b01c;
+	color: white;
+	outline: none;
+	border: none;
+	border-radius: 4px;
+}
+.invite_invite_btn:hover {
+	background: #1b631b;
+}
+.invite_bottom_in {
+	margin-left: 110px;
+}
+
+

@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
+import dto.GanttkCommentLikeDto;
 import dto.QnaAllQuestionDto;
 import dto.QnaAnswerDto;
 import dto.QnaDto;
@@ -108,6 +108,21 @@ public class QnaDao {
    } 
 	
 	
+	public void updateQnaAnswerNoCondition(int qnaIdx) throws Exception { 
+		Connection conn = getConnection();
+		String sql = "UPDATE qna"  
+               + " SET reply_condition = 0" 
+               + " WHERE qna_idx = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		
+		pstmt.setInt(1, qnaIdx);
+		pstmt.executeUpdate();
+      
+		pstmt.close();
+		conn.close();
+   }
+	
+	
 	
 	
 //-----------------------INSERT----------------------------------------
@@ -174,7 +189,7 @@ public class QnaDao {
 	// output : 답변 내용, 답변 날짜
 	 public QnaAnswerDto getQnaAnswer(int qnaIdx) throws Exception {
 		 	QnaAnswerDto dtoRet = null;
-		 	String sql = "SELECT qa.content, qa.answer_date" 
+		 	String sql = "SELECT qa.answer_idx, qa.qna_idx, qa.content, qa.answer_date" 
 		 			+ " FROM qna_answer qa" 
 		 			+ " WHERE qna_idx =?"; 
 		 	Connection conn = getConnection();
@@ -184,9 +199,10 @@ public class QnaDao {
 		 	ResultSet rs = pstmt.executeQuery();
 
 		 	if(rs.next()) {
+		 		int answerIdx = rs.getInt("answer_idx");
 		 		String content = rs.getString("content");
-		 		String answer_date = rs.getString("answer_date");
-		 		dtoRet = new QnaAnswerDto(content, answer_date);
+		 		String answerDate = rs.getString("answer_date");
+		 		dtoRet = new QnaAnswerDto(answerIdx, qnaIdx, content, answerDate);
 		 	}
 		 	rs.close();
 		 	pstmt.close();
@@ -260,25 +276,49 @@ public class QnaDao {
 		 	conn.close();
 
 		 	return listRet;
-	 }
+	}
 	 
-	   public int getLastPageNumber() throws Exception {
-		   String sql = "SELECT COUNT(*) FROM qna";
-		   Connection conn = getConnection();
-		   PreparedStatement pstmt = conn.prepareStatement(sql);
-		   ResultSet rs = pstmt.executeQuery();
-		   int countRet = -1;
-		   if(rs.next()) {
-			   countRet = rs.getInt(1);
-		   }
-		   rs.close();
-		   pstmt.close();
-		   conn.close();
-		   return countRet/10 + (countRet % 10 > 0 ? 1 : 0);
-		   
-		   
+	public int getLastPageNumber() throws Exception {
+	   String sql = "SELECT COUNT(*) FROM qna";
+	   Connection conn = getConnection();
+	   PreparedStatement pstmt = conn.prepareStatement(sql);
+	   ResultSet rs = pstmt.executeQuery();
+	   int countRet = -1;
+	   if(rs.next()) {
+		   countRet = rs.getInt(1);
 	   }
-	
-	
-	
+	   rs.close();
+	   pstmt.close();
+	   conn.close();
+	   return countRet/10 + (countRet % 10 > 0 ? 1 : 0);
+	}
+
+	public void changeToUnrepliedByAnswerIdx(int answerIdx) throws Exception {
+		String sql = "SELECT qna_idx FROM qna_answer WHERE answer_idx=?";
+		Connection conn = getConnection();
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, answerIdx);
+		ResultSet rs = pstmt.executeQuery();
+		int qnaIdx = 0;
+		if(rs.next()) {
+			qnaIdx = rs.getInt("qna_idx");
+		}
+		rs.close();
+		pstmt.close();
+		// --------------------------------------------------------------
+		// 이렇게, 하나의 메서드 안에서 SQL문 2개를 실행할 때에는
+		// rs와 pstmt를 닫아줘야 해요(306,307행). 주로 실수하는 게... pstmt를 안 닫아요. 둘 다 닫아야 함!
+		sql = "UPDATE qna "
+				+ " SET reply_condition = 0"
+				+ " WHERE qna_idx=?";
+		pstmt = conn.prepareStatement(sql);
+		
+		pstmt.setInt(1, qnaIdx);
+		pstmt.executeUpdate();
+      
+		rs.close();
+		pstmt.close();
+		conn.close();
+		
+	}
 }

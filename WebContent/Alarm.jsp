@@ -1,5 +1,24 @@
+<%@page import="dto.AlarmGanttNoticeDto"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="dao.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%
+	String previousDate = "";
+	int teamIdx = 2; 
+	//int teamIdx =(Integer)session.getAttribute("teamIdx");
+	
+	AlarmDao aDao = new AlarmDao();
+	ArrayList<AlarmGanttNoticeDto> ganttAlarm = null;
+	
+	try {
+		ganttAlarm = aDao.getAlarmGanttNotice(teamIdx);
+	} catch (Exception e) {
+        e.printStackTrace();
+    }
+	
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -256,14 +275,23 @@
                                     <div class="tool-result-status">
                                         <!-- 여기서부터 반복 -->
                                         <div class="scroll-loading-list mention-list">
+                                        <% for( AlarmGanttNoticeDto aDto : ganttAlarm ) {%>
                                             <div class="mention-item">
+                                           <% 
+									            String currentDate = aDto.getAlarmDate().split(" ")[0]; // 날짜만 추출
+									            if (!currentDate.equals(previousDate)) {
+									        %>
                                                 <div class="tool-date-divider">
-                                                    <time>2024년 6월 12일 수요일</time>
+                                                    <time><%=currentDate  %></time>
                                                 </div> <!--알림 박스-->
+                                                <% 
+										            previousDate = currentDate; 
+										        }
+										        %>
                                                 <div class="blur-effect tool-card message-card" message-date="mention">
                                                     <div class="too-card-header">
                                                         <div class="tool-card-topic ellip-1">
-                                                            <span class="belong-to topic-start ellip-1">간트 프로젝트 이름</span>
+                                                            <%-- <span class="belong-to topic-start ellip-1"><%=aDto.getTxtName() %></span> --%>
                                                         </div>
                                                     </div>
                                                     <div class="message-card-header">
@@ -271,28 +299,28 @@
                                                             <!--사용자 프로필 컨테이너-->
                                                              <div class="user-profile-container">
                                                                 <!-- 사용자 프로필 이미지 -->
-                                                                <img class="img-user-profile" src="	https://jandi-box.com/files-profile/6a4eaf2b7a89126e44e9eb0cc81854d6?size=80">
+                                                                <img class="img-user-profile" src="<%=aDto.getProfilePicUrl()%>">
                                                              </div>
                                                         </div>
                                                         <!-- 프로필 옆에 이름, 일시, 메시지 박스 등등 -->
                                                         <div class="message-meta">
                                                             <div class="message-title">
-                                                                <span class="message-writer fn-user-name">강하늘</span>
-                                                                <span class="message-date">2024/06/12 PM 05:23</span>
+                                                                <span class="message-writer fn-user-name"><%=aDto.getMemberName() %></span>
+                                                                <span class="message-date"><%=aDto.getAlarmDate() %></span>
                                                             </div>
                                                             <!-- 메시지 박스 -->
                                                              <div class="message-card-body keep selectable">
-                                                                <strong class="article-title">투두리스트 제목</strong>
-                                                                <br/>😊 강하늘 님이 댓글을 좋아합니다.
-                                                                <!-- <a class="mention">@all</a> -->
+                                                                <strong class="article-title"><%=aDto.getTxtName() %></strong>
+                                                                <br/><%=aDto.getMemberName() %><%=aDto.getAlarmTxt() %>
                                                             </div>
-                                                            <div class="todo-comment-txt">
+                                                            <!-- <div class="todo-comment-txt">
                                                                 <p style="color:blue;">할 일 완료했습니다~</p>
-                                                            </div>
+                                                            </div> -->
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <% } %>
                                         </div>
 </body>
 </html>

@@ -1,0 +1,525 @@
+@charset "UTF-8";
+/*--------------------------------메인 구조--------------------------------*/
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css); 
+.fl { float: left; }
+.fr { float: right; }
+.ab { position: absolute; }
+.re { position: relative; }
+* {
+	box-sizing: border-box;
+	font-family: Noto Sans KR, sans-serif !important;
+}
+.border { border: 1px solid red; }
+body { margin: 0; overflow-y: hidden; }
+a{ text-decoration-line: none; color: inherit;}
+
+#div_transparent_filter {
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   display: none;
+   background-color: rgba(1,1,1,0);
+   z-index: 11;
+}
+#div_transparent_filter2 {
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   display: none;
+   background-color: rgba(1,1,1,0);
+   z-index: 13;
+}
+#add_work {
+	margin: 0 auto;
+	width: 672px;
+	height: 835px;
+	border-radius: 10px;
+	background: white;
+	margin-top: -65px;
+    margin-left: 385px;
+	z-index: 10;
+}
+#addwork_header {
+	width: 100%;
+	height: 60px;
+	padding: 20px 20px;
+}
+.writework {
+	font-size: 16px;
+	font-weight: 700;
+    color: #333;
+}
+#addwork_thin {
+	margin: 5px 0 0 10px;
+	width: 3px;
+    height: 14px;
+	border-right : thin solid #ddd;;
+}
+#addwork_color {
+	margin: 5px 10px 0 10px;
+	width: 14px;
+	height: 14px;
+	background: #dddddd;
+	
+	border-radius: 3px;
+}
+.addwork_name {
+	width: 100px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    color: #555;
+    font-size: 15px;
+}
+#addwork_body {
+	padding: 0 20px 0 20px;
+	height: 700px;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+#addwork_body::-webkit-scrollbar {
+    display: none;
+}
+#work_name {
+	text-align: center;
+}
+#work_name > input {
+	font-size: 18px;
+	font-weight: 700;
+	width: 605px;
+	height: 62px;
+	border: solid #DCDCDC;
+  	border-width: 0 0 1px 0; 
+}
+#work_name > input:focus {
+	outline: none;
+	
+	border: solid #DCDCDC;
+  	border-width: 0 0 0.5px 0; 
+}
+.x_button {
+	margin-left: 10px;
+	cursor: pointer;
+}
+._button {
+	cursor: pointer;
+}
+/*----------------- 상태 입력,선택 부분 -------------------*/
+#work_state {
+	margin-top: 20px;
+	margin-left: 15px;
+	height: 46px;
+	margin-bottom: -10px;
+}
+#work_state img {
+	margin-top: 5px;
+	margin-right: 10px;
+}
+
+.state {
+	width: 84px;
+    height: 32px;
+    font-weight: 700;
+    font-size: 14px;
+    margin-left: 10px;
+	outline: none;
+	border: none;
+	border-radius: 15px;
+	text-align: center;
+    
+}
+.state_div {
+	margin-top: 5px;
+	
+}
+#request { background: #ddd; color: #777; cursor: pointer; }
+#progress { background: #ddd; color: #777; cursor: pointer; }
+#feedback { background: #ddd; color: #777; cursor: pointer; }
+#finish { background: #ddd; color: #777; cursor: pointer; }
+#defer { background: #ddd; color: #777; cursor: pointer; }
+
+.tr{
+	border-collapse: separate;
+   	border-spacing: 15px 25px ;
+}
+#work_member_input {
+	width: 115px;
+	height: 30px;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	font-weight: 700;
+	font-color: #ddd;
+}
+#work_member_input:focus {
+	outline: none;
+	border: 1px solid #ddd;
+}
+.td_txt {
+	color: #999;
+	font-size: 16px;
+	font-weight: 600;
+	cursor: pointer;
+	
+}
+.td_txt:hover {
+	color: #009b17;
+}
+.addwork_body_img {
+	padding-top: 3px;
+}
+/*----------- 우선순위추가----------------*/
+.low { cursor: pointer; }
+.normal { cursor: pointer; }
+.hight { cursor: pointer; }
+.emergency { cursor: pointer; }
+
+.add_img {
+	width: 18px;
+	margin-right: 5px;
+}
+
+.add_font {
+	font-size: 15px;
+	margin-right: 5px;
+}
+.add_x_img {
+	width: 12px;
+	margin-left: 5px;
+	
+	
+	
+}
+.add_x_img:hover {
+	    filter: invert(70%) sepia(45%) saturate(4172%) hue-rotate(107deg) brightness(97%) contrast(80%);
+}
+.add_nomal_img {
+	padding-top: 6px;
+}
+.add_low_x_img {
+	padding-top: 3px;
+}
+
+
+.add_low {
+	
+	display: none;
+}
+.add_normal {
+	
+	display: none;
+}
+.add_hight {
+	margin-left: -138px;
+	display: none;
+}
+.add_emergency {
+	margin-left: -145px;
+	display: none;
+}
+textarea {
+	outline: none;
+	border:none;
+	border-top: 1px solid #ddd;
+	font-size: 15px;
+	color: black;
+	padding-top: 10px;
+	resize: none;
+}
+#subwork {
+	font-size: 14px;
+	font-weight: 600;
+	color: #666666;
+}
+
+#subwork_button {
+	width:55px;
+	height: 30px;
+	margin-top: 10px;
+	background: white;
+	outline: none;
+	border: 1px solid #5C5C5C;
+	border-radius: 3px;
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: 600;
+	padding: 3px 0 0 6px;
+	
+}
+#subwork_button:hover {
+	color: #00b01c;
+	border: 1px solid #00b01c;
+}
+
+.select_nogroup {
+	margin-left: -130px;
+}
+
+
+/*---------------하위업무 입력------------------------*/
+#mini_subwork {
+	margin: 0 auto;
+	margin-top: 10px;
+	width: 605px;
+	height: 48px;
+	border: 0.5px solid #555555;
+	border-radius: 3px;
+	padding: 10px 10px 0 10px;
+	z-index: 12;
+	display: none;
+}
+.subwork_state {
+	margin-right: 10px;
+	
+}
+.subwork_state > div {
+	width: 64px;
+	height: 26px;
+	color: white;
+	border-radius: 15px;
+	outline: none;
+	border: none;
+	font-weight: 700;
+	font-size: 12px;
+    text-align: center;
+    padding-top: 4px;
+}
+.subwork_request { background:#00B2FF; border-radius: 15px;}
+.subwork_progress { background:#00B01C; border-radius: 15px;}
+.subwork_feedback { background:#FD7900; border-radius: 15px;}
+.subwork_finish { background:#402A9D; border-radius: 15px;}
+.subwork_defer { background:#777777; border-radius: 15px;}
+
+#subwork_name {
+	width: 313px;
+	border: none;
+}
+#subwork_name:focus {
+	outline: none;
+	border: none;
+}
+.mini_subwork_img_div {
+	border: 1px solid #a8a8a8;
+	width: 30px;
+	height: 30px;
+	margin-left: 10px;
+	border-radius: 15px;
+	background: #eeeeee;
+	
+	
+}
+.mini_subwork_img_div:hover {
+	border: 1px solid #00b01c;
+	
+}
+.mini_subwork_img_div:hover .mini_subwork_img, .mini_subwork_img_div:hover .mini_subwork_img2{
+	filter: invert(55%) sepia(87%) saturate(4470%) hue-rotate(105deg) brightness(97%) contrast(102%);
+	
+}
+.mini_subwork_img {
+	width: 14px;
+	margin: 7px 0 0 7px;
+	
+}
+.mini_subwork_img2 {
+	margin: 4px 0 0 4px;
+}
+.mini_subwork_icon {
+	margin-top: -25px;
+}
+
+/*-------------------bottom---------------------*/
+#addwork_bottom {
+	margin-right: 25px;
+	margin-top: 20px;
+}
+#registration {
+	width:110px;
+	height: 35px;
+	outline: none;
+	border: none;
+	border-radius: 3px;
+	background: #00b01c;
+	color: white;
+}
+#registration:hover {
+	background: #009b17;
+}
+#save {
+	width:70px;
+	height: 35px;
+	margin-right: 10px;
+	outline: none;
+	border-radius: 3px;
+	border: none;
+}
+#addwork_body {
+	border-bottom: 1px solid #ddd;
+}
+
+/*-----------------우선순위 박스------------------------*/
+
+#prioritize {
+	width: 64px;
+	height: 112px;
+	border: 1px solid #555555;
+	border-radius: 5px;
+	background: white;
+	margin: -82px 0 0px 51px;
+	display: none;
+	z-index: 12;
+}
+.img {
+	width:13px;
+	margin-right: 6px;
+}
+
+.prioritize_font {
+	margin: 8px 0 0 8px;
+	font-size: 12px;
+	font-weight: 500;
+	color: #555555;
+}
+.mini_img {
+	margin-left: 7px;
+	width: 22px;
+}
+
+/*----------------------그룹추가 박스---------------------------*/
+#addgroup {
+	width: 250px;
+	height: 190px;
+	border: 1px solid #555555;
+	border-radius: 5px;
+	background: white;
+	z-index: 12;
+	margin: 275px 0 0 50px;
+	display: none;
+	
+}
+.groupname_box {
+	margin-left: 5px;
+	width: 250px;
+	height: 34px;
+}
+.groupname_font {
+	display: inline-block;
+    color: #555;
+    font-size: 14px;
+    margin: 10px 0 0 10px;
+    
+}
+.groupname_font:hover {
+	color: #009b17;
+}
+
+
+
+
+/*----------------- 하위업무 담당자  -------------------*/
+#member_select {
+	margin: -413px 0 0 575px;
+	width: 280px;
+	height: 360px;
+	border-radius: 4px;
+	border: 1px solid #ddd;
+	background: white;
+	z-index: 13;
+	display: none;
+	
+}
+#search1 {
+	height: 65px;
+}
+#search {
+	width: 250px;
+    height: 34px;
+    padding: 0 74px 0 38px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 13px;
+    font-weight: 500;
+    margin: 10px 0 0 14px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2);
+    
+}
+#search:focus {
+	outline: none;
+	border: 1px solid #cfebd3;
+}
+
+#search_icon {
+	margin: 18px 0 0 -242px;
+}
+/*----------------멤버 전체------------------------*/
+#allmember {
+	height: 240px;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+#allmember::-webkit-scrollbar {
+    display: none;
+}
+
+/*----------------멤버 프로필 부분------------------------*/
+#member {
+	height: 60px;
+	border-bottom: 1px solid #ddd;
+}
+#member:hover {
+	background: #EBF5F1;
+}
+/*------멤버 프로필(선택이미지)---------*/
+#check {
+	width: 22px;
+	margin: 19px 10px 0 10px;
+	border-radius: 15px;
+}
+/*------멤버 프로필(프로필이미지)---------*/
+#profile {
+	width: 40px;
+	margin-top: 10px;
+	border-radius: 15px;
+}
+#name {
+	margin: 18px 0 0 15px;
+	font-weight: 700;
+    color: #555;
+}
+
+/*------/*------하위업무 (상태)---------*/---------*/
+
+
+
+
+/*----------------bottom------------------------*/
+
+#member_bottom {
+	margin-top: 10px;
+	margin-left: 12px;
+}
+#alldelete, #select {
+	width: 125px;
+	height: 26px;
+}
+#select {
+	outline: none;
+	border: #00b01c;
+	background: #00b01c;
+	color: white;
+	border-radius: 5px;
+	font-weight: 500;
+}
+#alldelete {
+	
+	border: #DDDDDD;
+	font-weight: 500;
+	border-radius: 5px;
+	color: #9999A4;
+	background: #ddd;
+}

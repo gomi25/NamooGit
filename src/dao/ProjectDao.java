@@ -12,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-
+import dto.GanttkCommentLikeDto;
 import dto.ProjectBookmarkDto;
 import dto.ProjectDto;
 import dto.ProjectNoBookmarkDto;
@@ -191,7 +191,7 @@ public class ProjectDao {
 	 // getProjectBookmark : 즐겨찾기 된 프로젝트(팀별)
 	 public ArrayList<ProjectBookmarkDto> getProjectBookmark(int teamIdx, int memberIdxFrom) throws Exception {
 		 ArrayList<ProjectBookmarkDto> listRet = new ArrayList<ProjectBookmarkDto>();
-		 	String sql = "SELECT c.color, p.project_name, " 
+		 	String sql = "SELECT p.project_idx, c.color, p.project_name, " 
 		               + " (SELECT count(*) FROM project_member pm WHERE pm.project_idx = p.project_idx) AS member_count"
 		               + " FROM project p" 
 		               + " INNER JOIN color c ON p.color_idx = c.color_idx"
@@ -208,12 +208,12 @@ public class ProjectDao {
 		 	
 			ResultSet rs = pstmt.executeQuery();
 		 	while(rs.next()) {
+		 		int projectIdx = rs.getInt("project_idx");
 		 		String projectName = rs.getString("project_name");
 		 		String color = rs.getString("color");
 		 		int memberCount = rs.getInt("member_count");
 		 	
-		 	
-		 		ProjectBookmarkDto dto = new ProjectBookmarkDto(projectName, color, memberIdxFrom, teamIdx, memberCount);
+		 		ProjectBookmarkDto dto = new ProjectBookmarkDto(projectIdx, projectName, color, memberIdxFrom, teamIdx, memberCount);
 			 	listRet.add(dto);
 		 	}
 		 	rs.close();
@@ -225,7 +225,7 @@ public class ProjectDao {
 	 // 즐겨찾기 제외 전체 프로젝트
 	 public ArrayList<ProjectNoBookmarkDto> getAllProjectNoBookmark(int memberIdxFrom, int teamIdx) throws Exception {
 		    ArrayList<ProjectNoBookmarkDto> listRet = new ArrayList<ProjectNoBookmarkDto>();
-		 	String sql = "SELECT c.color AS color, p.project_name AS project_name, " 
+		 	String sql = "SELECT p.project_idx, c.color AS color, p.project_name AS project_name, " 
 		               + "    (SELECT count(*) FROM project_member pm WHERE pm.project_idx = p.project_idx) AS project_member_count "  
 		               + " FROM project p" 
 		               + " INNER JOIN color c ON p.color_idx = c.color_idx"
@@ -244,12 +244,12 @@ public class ProjectDao {
 		 	
 			ResultSet rs = pstmt.executeQuery();
 		 	while(rs.next()) {
+		 		int projectIdx = rs.getInt("project_idx");
 		        String projectName = rs.getString("project_name");
 		        String color = rs.getString("color");
 		        int projectMemberCount = rs.getInt("project_member_count");
-
-		 	
-		        ProjectNoBookmarkDto dto = new ProjectNoBookmarkDto(projectName, color, teamIdx, memberIdxFrom, projectMemberCount);			 	listRet.add(dto);
+		        ProjectNoBookmarkDto dto = new ProjectNoBookmarkDto(projectIdx, projectName, color, teamIdx, memberIdxFrom, projectMemberCount);
+		        listRet.add(dto);
 		 	}
 		 	rs.close();
 		 	pstmt.close();
@@ -278,11 +278,31 @@ public class ProjectDao {
 		conn.close();
 		
 		return result;
-	}
+	 }
 	 
-
+	 
+	 public void bookmarkOnProject(int memberIdx, int projectIdx) throws Exception {
+		 String sql = "INSERT INTO bookmark(bookmark_idx, member_idx_from, project_idx) " + 
+				 	"VALUES (seq_bookmark_project.nextval, ?, ?)";
+		 Connection conn = getConnection();
+		 PreparedStatement pstmt = conn.prepareStatement(sql);
+		 pstmt.setInt(1, memberIdx);
+		 pstmt.setInt(2, projectIdx);
+		 pstmt.executeUpdate();
+		 pstmt.close();
+		 conn.close();
+	 }
 	
-	
+	 public void bookmarkOffProject(int memberIdx, int projectIdx) throws Exception {
+		 String sql = "DELETE FROM bookmark WHERE member_idx_from=? AND project_idx=?";
+		 Connection conn = getConnection();
+		 PreparedStatement pstmt = conn.prepareStatement(sql);
+		 pstmt.setInt(1, memberIdx);
+		 pstmt.setInt(2, projectIdx);
+		 pstmt.executeUpdate();
+		 pstmt.close();
+		 conn.close();
+	 }
 	
 	
 	

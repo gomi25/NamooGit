@@ -1,0 +1,69 @@
+@charset "UTF-8";
+/*--------------------------------메인 구조--------------------------------*/
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css); 
+.fl { float: left; }
+.fr { float: right; }
+.ab { position: absolute; }
+.re { position: relative; }
+* {
+	box-sizing: border-box;
+	font-family: Noto Sans KR, sans-serif !important;
+}
+.border { border: 1px solid red; }
+body { margin: 0; overflow-y: hidden; }
+a{ text-decoration-line: none; color: inherit;}
+
+
+#mini_state {
+	margin: 0 auto;
+	width: 92px;
+	height: 174px;
+	border-radius: 5px;
+	border: 1px solid #ddd;
+	text-align: center;
+	z-index: 14;
+	display: none;
+	background-color: white;
+}
+#div_transparent_filter {
+	z-index: 1;
+	background-color: rgba(1,1,1,0);
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+.box_state {
+	width: 64px;
+	height: 26px;
+	border-radius: 15px;
+	margin-top: 7px;
+	border: none;
+	outline: none;
+	font-size: 12px;
+	font-weight: 600;
+	color: white;
+	text-align: center;
+	margin-left: 13px;
+	padding-top: 3px;
+	
+}
+
+.box_request {
+	background: #00b2ff;
+}
+.box_progress {
+	background: #00B01C;
+}
+.box_feedback {
+	background: #FD7900;
+}
+.box_finish {
+	background: #402A9D;
+}
+.box_defer {
+	background: #777777;
+}
+
+

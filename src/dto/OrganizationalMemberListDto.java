@@ -1,37 +1,29 @@
 package dto;
-public class MemberProfileDto {
-	private int memberIdx;
+
+public class OrganizationalMemberListDto {
 	private String profilePicUrl;
 	private String memberName;
 	private String teamName;
 	private String position;
 	private String state;
 	private String stateMessage;
-	private String power;
-	private String birth;
-	private String phoneNumber;
-	private String email;
-	
-	public MemberProfileDto(int memberIdx, String profilePicUrl, String memberName, String teamName, String position,
-			String state, String stateMessage, String power, String birth, String phoneNumber, String email) {
-		this.memberIdx = memberIdx;
+	private int teamIdx;
+	private int memberIdx;
+	private String bookmarkMember;
+	private int memberIdxFrom;
+	public OrganizationalMemberListDto(String profilePicUrl, String memberName, String teamName, String position,
+			String state, String stateMessage, int teamIdx, int memberIdx, String bookmarkMember, int memberIdxFrom) {
+		super();
 		this.profilePicUrl = profilePicUrl;
 		this.memberName = memberName;
 		this.teamName = teamName;
 		this.position = position;
 		this.state = state;
 		this.stateMessage = stateMessage;
-		this.power = power;
-		this.birth = birth;
-		this.phoneNumber = phoneNumber;
-		this.email = email;
-	}
-	
-	public int getMemberIdx() {
-		return memberIdx;
-	}
-	public void setMemberIdx(int memberIdx) {
+		this.teamIdx = teamIdx;
 		this.memberIdx = memberIdx;
+		this.bookmarkMember = bookmarkMember;
+		this.memberIdxFrom = memberIdxFrom;
 	}
 	public String getProfilePicUrl() {
 		return profilePicUrl;
@@ -69,34 +61,32 @@ public class MemberProfileDto {
 	public void setStateMessage(String stateMessage) {
 		this.stateMessage = stateMessage;
 	}
-	public String getPower() {
-		return power;
+	public int getTeamIdx() {
+		return teamIdx;
 	}
-	public void setPower(String power) {
-		this.power = power;
+	public void setTeamIdx(int teamIdx) {
+		this.teamIdx = teamIdx;
 	}
-	public String getBirth() {
-		return birth;
+	public int getMemberIdx() {
+		return memberIdx;
 	}
-	public void setBirth(String birth) {
-		this.birth = birth;
+	public void setMemberIdx(int memberIdx) {
+		this.memberIdx = memberIdx;
 	}
-	public String getPhoneNumber() {
-		return phoneNumber;
+	public String getBookmarkMember() {
+		return bookmarkMember;
 	}
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+	public void setBookmarkMember(String bookmarkMember) {
+		this.bookmarkMember = bookmarkMember;
 	}
-	public String getEmail() {
-		return email;
+	public int getMemberIdxFrom() {
+		return memberIdxFrom;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setMemberIdxFrom(int memberIdxFrom) {
+		this.memberIdxFrom = memberIdxFrom;
 	}
-	
-	
 	
 
 	
-	
+
 }

@@ -1,0 +1,869 @@
+@charset "UTF-8";
+/*--------------------------------메인 구조--------------------------------*/
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css); 
+.fl { float: left; }
+.fr { float: right; }
+.ab { position: absolute; }
+.re { position: relative; }
+* {
+	box-sizing: border-box;
+	font-family: Noto Sans KR, sans-serif !important;
+}
+.border { border: 1px solid red; }
+body { margin: 0; overflow-y: hidden; }
+a{ text-decoration-line: none; color: inherit;}
+
+#div_transparent_filter {
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   display: none;
+   background-color: rgba(1,1,1,0);
+   z-index: 11;
+}
+
+#div_header { 
+	width: 100%;
+	height: 53px;
+	border-bottom: 1px solid #E5E5E5;
+}
+#div_header > #div_logo {
+	width: 32px;
+	height: 32px;
+	background-color: #FFF !important;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, .12);
+    margin-left: 17px;
+  	margin-top: 11px;
+}
+#div_header > #div_logo > img {
+	height: 30px;
+}
+#div_header > #div_select_team {
+	height: 32px;
+	margin-left: 10px;
+  	margin-top: 13px;
+}
+#div_header > #div_select_team > span {
+	font-size: 18px;
+	font-weight: 700;
+	color: rgb(51,51,51);
+}
+#div_header > #div_select_team > img {
+	margin-top: -5px;
+}
+#div_menu3, #div_menu4, #div_help, #div_search, #div_hierarchy, #div_notice {
+	margin-top: 13px;
+	margin-right: 21px;	
+}
+#div_header > #div_menu4 {
+	position: relative;
+	width: 44px;
+	height: 32px;
+}
+#div_header > #div_menu4 > img:nth-child(1) {
+	position: absolute;
+	left: 0;	
+}
+#div_header > #div_menu4 > img:nth-child(2) {
+	position: absolute;
+	right: 6px;
+	top: -8px;
+}
+#div_header > #div_help {
+	position: relative;	
+	height: 32px;
+	width: 24px;
+}
+#div_header > #div_help > img {
+	position: absolute;	
+	left: 0;
+}
+#div_header > #div_help > div.on {
+	position: absolute;
+	top: -2px;
+	right: -2px;
+	background-color: rgb(255,92,72);
+	width: 6px;
+	height: 6px;
+	border-radius: 3px;
+}
+
+
+#div_side1 {
+	width: 263px;
+	min-height: 900px;
+	border-right: 1px solid #E5E5E5;
+	background-color: #EBF5F1;
+}
+.gantt_left_name {
+	padding-top: 15px;
+	padding: 20px 20px 11px 27px;
+	color: #333;
+	font-weight: 700;
+	font-size: 14px;
+	cursor: pointer;
+}
+
+.gantt_left {
+	padding: 3px 23px;
+	font-size: 13px;
+}
+
+#gantt_left_state {
+	margin: 6px 8px 0 8px;
+	width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: flex;
+}
+.request {
+	background: #00b2ff;
+}
+.progress {
+	background: #00B01C;
+}
+.feedback {
+	background: #FD7900;
+}
+.finish {
+	background: #402A9D;
+}
+.defer {
+	background: #777777;
+}
+.state_checkbox {
+	margin-top: 4px;
+}
+.priority_checkbox {
+	margin-top: 4px;
+}
+.priority {
+	width: 14px;
+	height: 14px;
+	margin: 3px 7px 0 7px;
+}
+.priority_none {
+	margin-left: 10px;
+}
+.margin {
+	margin-top: -1px;
+}
+#div_gantt_side2 {
+	background-color: rgb(250, 249, 249);
+	width: 1657px;
+    overflow-y: auto;
+    max-height: 812px;
+}
+#header_projectname {
+	width: 100%;
+	height: 80px;
+	padding: 0 30px;
+	display: flex;
+    align-items: center;
+}
+
+#header_color {
+	display: block;
+    width: 50px;
+    height: 50px;
+    background: #00b01c;
+    border: solid 1px #00b01c;
+    border-radius: 10px;
+    cursor: pointer;
+    
+   
+}
+ #header_bookmark {
+
+ 	width: 24px;
+    height: 24px;
+    margin: 4px 0 0 20px;
+    cursor: pointer;
+ }
+#header_projectname span {
+	display: inline-block;
+    max-width: 600px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+    margin-left: 30px;
+}
+#header_projectname {
+	border: solid #DCDCDC;
+  	border-width: 0 0 0.5px 0; 
+}
+#invite {
+	float: right;
+	width: 95px;
+    height: 32px;
+    border-radius: 4px;
+    background: #ddd;
+    border: #ddd;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-left: 1280px;
+}
+#invite img {
+	margin-left: 6px;
+}
+#invite i {
+	
+	font-weight: 500;
+    font-size: 12px;
+    font-style: normal;
+    text-decoration: none;
+    color: #555;
+}
+#project_name {
+	margin: 4px 0 0 5px;
+}
+
+#div_work_side2 {
+	width: 670px;
+	border-left: 1px solid #ddd;
+	z-index: 10;
+	margin-left: 940px;
+    margin-top: -90px;
+}
+/*--------------------업무 자세히보기----------------------*/
+#project_work {
+	background-color: white;
+	max-height: 835px;
+}
+#div_transparent_filter {
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   display: none;
+   background-color: rgba(1,1,1,0);
+   z-index: 11;
+}
+
+#work {
+	position: fixed;
+	background-color: white;
+	width: 670px;
+	height: 60px;
+	padding: 20px 20px;
+	border-bottom: 1px solid #ddd;
+	z-index: 1;
+}
+
+#work_color {
+	margin: 5px 10px 0 10px;
+	width: 14px;
+	height: 14px;
+	background: #dddddd;
+	border-radius: 3px;
+}
+.work_name {
+	width: 100px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    color: #555;
+    font-size: 15px;
+}
+.x_button {
+	margin-left: 10px;
+	cursor: pointer;
+}
+#writermember {
+	background-color: white;
+	height: 69px;
+	padding: 14.5px 30px;
+	margin-top: 60px;
+}
+#writermember img {
+	width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    margin-right: 10px;
+    object-fit: cover;
+}
+.writermember_img {
+	width: 40px;
+	border-radius: 16px;
+	margin-right: 10px;
+	filter: invert(80%) sepia(44%) saturate(62%) hue-rotate(80deg) brightness(269%) contrast(92%);
+}
+.writermembernametime {
+	margin-top: 8px;
+}
+.writermembername {
+	margin-right: 10px;
+	color: #555;
+	font-weight: 700;
+	font-size: 16px;
+}
+.writermembertime {
+	color: #aaa;
+	font-size: 14px;
+	font-weight: 500;
+	margin-top: 2px;
+}
+#body_work_title {
+	background-color: white;
+	height: 47px;
+	padding: 10px 30px;
+}
+.body_work_name {
+	border-bottom: 1px solid #ddd;
+	font-size: 18px;
+    font-weight: 700;
+    padding-bottom: 10px;
+}
+
+
+#work_addwork_body {
+	background-color: white;
+	padding: 10px;	
+}
+/*----------------- 상태 입력,선택 부분 -------------------*/
+#work_state {
+	margin-top: 20px;
+	margin-left: 15px;
+	height: 46px;
+	margin-bottom: -10px;
+}
+#work_state img {
+	margin-top: 5px;
+	margin-right: 10px;
+}
+
+.state {
+	width: 84px;
+    height: 32px;
+    font-weight: 700;
+    font-size: 14px;
+    margin-left: 10px;
+	outline: none;
+	border: none;
+	border-radius: 15px;
+	text-align: center;
+    
+}
+.state_div {
+	margin-top: 5px;
+	
+}
+#work_request { background: #ddd; color: #777; cursor: pointer; }
+#work_progress { background: #ddd; color: #777; cursor: pointer; }
+#work_feedback { background: #ddd; color: #777; cursor: pointer; }
+#work_finish { background: #ddd; color: #777; cursor: pointer; }
+#work_defer { background: #ddd; color: #777; cursor: pointer; }
+
+.tr{
+	border-collapse: separate;
+   	border-spacing: 15px 25px ;
+}
+#work_member_input {
+	width: 115px;
+	height: 30px;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	font-weight: 700;
+	font-color: #ddd;
+}
+#work_member_input:focus {
+	outline: none;
+	border: 1px solid #ddd;
+}
+.td_txt {
+	color: #999;
+	font-size: 16px;
+	font-weight: 600;
+	cursor: pointer;
+	
+	
+}
+.td_txt:hover {
+	color: #009b17;
+}
+.addwork_body_img {
+	padding-top: 3px;
+}
+/*----------- 우선순위추가----------------*/
+
+.add_img {
+	width: 18px;
+	margin-right: 5px;
+}
+
+.add_font {
+	font-size: 15px;
+	margin-right: 5px;
+}
+.add_x_img {
+	width: 12px;
+	margin-left: 5px;
+	
+	
+	
+}
+.add_x_img:hover {
+	    filter: invert(70%) sepia(45%) saturate(4172%) hue-rotate(107deg) brightness(97%) contrast(80%);
+}
+.add_nomal_img {
+	padding-top: 6px;
+}
+.add_low_x_img {
+	padding-top: 3px;
+}
+
+
+.add_low {
+	display: none;
+}
+.add_normal {
+	margin-left: -95px;
+	display: none;
+}
+.add_hight {
+	margin-left: -105px;
+	display: none;
+}
+.add_emergency {
+	margin-left: -115px;
+	display: none;
+}
+
+#subwork {
+	font-size: 14px;
+	font-weight: 600;
+	color: #333;
+	margin-left: 10px;
+}
+
+#subwork_button {
+	width: 95px;
+	height: 30px;
+	margin-top: 10px;
+	margin-left: 10px;
+	background: white;
+	outline: none;
+	border: 1px solid #333;
+	color: #333;
+	border-radius: 3px;
+	cursor: pointer;
+	font-size: 12px;
+	font-weight: 600;
+	padding: 5px 0 0 6px;
+	
+}
+#subwork_button:hover {
+	color: #00b01c;
+	border: 1px solid #00b01c;
+}
+
+/*-----------------우선순위 박스------------------------*/
+
+#prioritize {
+	width: 64px;
+	height: 112px;
+	border: 1px solid #555555;
+	border-radius: 5px;
+	background: white;
+	margin: 220px 0 0px 51px;
+	display: none;
+	z-index: 12;
+}
+.img {
+	width:13px;
+	margin-right: 6px;
+}
+
+.prioritize_font {
+	margin: 8px 0 0 8px;
+	font-size: 12px;
+	font-weight: 500;
+	color: #555555;
+}
+
+/*----------------------그룹추가 박스---------------------------*/
+#addgroup {
+	width: 250px;
+	height: 190px;
+	border: 1px solid #555555;
+	border-radius: 5px;
+	background: white;
+	z-index: 12;
+	margin: 275px 0 0 50px;
+	display: none;
+	
+}
+.groupname_box {
+	margin-left: 5px;
+	width: 250px;
+	height: 34px;
+}
+.groupname_font {
+	display: inline-block;
+    color: #555;
+    font-size: 14px;
+    margin: 10px 0 0 10px;
+    
+}
+.groupname_font:hover {
+	color: #009b17;
+}
+
+.select_nogroup {
+	margin-left: -110px;
+}
+/*----------------- 하위업무 담당자  -------------------*/
+#member_select {
+	margin: -413px 0 0 344px;
+	width: 280px;
+	height: 360px;
+	border-radius: 4px;
+	border: 1px solid #ddd;
+	
+	background: white;
+	z-index: 12;
+	display: none;
+	
+}
+#search1 {
+	height: 65px;
+}
+#search {
+	width: 250px;
+    height: 34px;
+    padding: 0 74px 0 38px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 13px;
+    font-weight: 500;
+    margin: 10px 0 0 14px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2);
+    
+}
+#search:focus {
+	outline: none;
+	border: 1px solid #cfebd3;
+}
+
+#search_icon {
+	margin: 18px 0 0 -242px;
+}
+/*----------------멤버 전체------------------------*/
+#allmember {
+	height: 240px;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+#allmember::-webkit-scrollbar {
+    display: none;
+}
+
+/*----------------멤버 프로필 부분------------------------*/
+#member {
+	height: 60px;
+	border-bottom: 1px solid #ddd;
+}
+#member:hover {
+	background: #EBF5F1;
+}
+/*------멤버 프로필(선택이미지)---------*/
+#check {
+	width: 22px;
+	margin: 19px 10px 0 10px;
+	border-radius: 15px;
+}
+/*------멤버 프로필(프로필이미지)---------*/
+#profile {
+	width: 40px;
+	margin-top: 10px;
+	border-radius: 15px;
+}
+#name {
+	margin: 18px 0 0 15px;
+	font-weight: 700;
+    color: #555;
+}
+
+
+/*---------------하위업무 입력------------------------*/
+#mini_subwork {
+	margin: 0 auto;
+	margin-top: 10px;
+	width: 605px;
+	height: 48px;
+	border: 0.5px solid #555555;
+	border-radius: 3px;
+	padding: 10px 10px 0 10px;
+	z-index: 12;
+	display: none;
+}
+#subwork_state {
+	margin-right: 10px;
+	
+}
+#subwork_state > button {
+	width: 64px;
+	height: 26px;
+	color: white;
+	border-radius: 15px;
+	outline: none;
+	border: none;
+	background:#00B2FF;
+	font-weight: 700;
+}
+#subwork_name {
+	width: 313px;
+	border: none;
+}
+#subwork_name:focus {
+	outline: none;
+	border: none;
+}
+.mini_subwork_img_div {
+	border: 1px solid #a8a8a8;
+	width: 30px;
+	height: 30px;
+	margin-left: 10px;
+	border-radius: 15px;
+	background: #eeeeee;
+	
+	
+}
+.mini_subwork_img_div:hover {
+	border: 1px solid #00b01c;
+	
+}
+.mini_subwork_img_div:hover .mini_subwork_img, .mini_subwork_img_div:hover .mini_subwork_img2{
+	filter: invert(55%) sepia(87%) saturate(4470%) hue-rotate(105deg) brightness(97%) contrast(102%);
+	
+}
+.mini_subwork_img {
+	width: 14px;
+	margin: 7px 0 0 7px;
+	
+}
+.mini_subwork_img2 {
+	margin: 4px 0 0 4px;
+}
+.mini_subwork_icon {
+	margin-top: -25px;
+}
+/*-------------좋아요, 북마크, 댓글, 읽음----------------*/
+#like_bookmark {
+	padding: 25px 0 0 0;
+	font-size: 13px;
+	font-weight: 500;
+	color: #555;
+	
+}
+#like_img {
+	margin: 5px 5px 0 15px;
+	
+	content: "";
+	width: 14px;
+    height: 14px;
+	background-image: url(https://flow.team/flow-renewal/assets/images/sprite-project-detail.png?v=57c1c2fc1f340dd1d0245fc4060b36bf239d9f09);
+	background-size: 844px auto;
+	background-position: -300px -75px;
+}
+#bookmark_img {
+	margin: 5px 5px 0 10px;
+	content: "";
+	width: 10px;
+    height: 14px;
+    background-image: url(https://flow.team/flow-renewal/assets/images/sprite-project-detail.png?v=57c1c2fc1f340dd1d0245fc4060b36bf239d9f09);
+    background-position: -334px -75px;
+    background-size: 844px auto;
+}
+
+
+#comment_read {
+	padding: 0 10px 25px 0;
+	font-size: 14px;
+	font-weight: 400;
+	color: #999;
+}
+.comment {
+	font-weight: 700;
+	margin: 0 8px 0 3px;
+}
+.read {
+	font-weight: 700;
+	margin: 0 5px 0 3px;
+}
+
+/*-----------댓글 부분-------------*/
+#addwork_body2 {
+	background: #f9f9f9;
+}
+#content {
+	border-bottom: 1px solid #eee;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	
+}
+#profile {
+	margin-left: 20px;
+	margin-right: 15px;
+}
+.second {
+	padding: 5px 0 5px 0;
+}
+.content_name {
+	font-size: 14px;
+    color: #555;
+    font-weight: 700;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.content_date {
+	
+	font-size: 14px;
+    color: #999;
+}
+.delete {
+	margin-top: -24px;
+	margin-right: 60px;
+	font-size: 14px;
+    color: #999;
+    cursor: pointer;
+}
+.change {
+	margin-top: -24px;
+	margin-right: 20px;
+	font-size: 14px;
+    color: #999;
+    cursor: pointer;
+}
+.second {
+	color: #555;
+	font-size: 14px;
+}
+.content_like {
+	background-image: url(https://flow.team/flow-renewal/assets/images/icons/icon_comment_like.svg?v=9336102f91263d1b10e6a354e7264169a433fe0e);
+	background-repeat: no-repeat;
+    content: "";
+    width: 15px;
+    height: 15px;
+ 
+}
+.content_like2 {
+	cursor: pointer;
+    font-weight: 500;
+    color: #777;
+    font-size: 13px;
+}
+/*----------------bottom-----------------------*/
+#div_side2 #bottom {
+	position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 670px;
+	height: 80px;
+	background: #faf9f9;
+	box-shadow: 0 -2px 6px rgba(0, 0, 0, .06);
+	verflow: hidden;
+    padding: 14px 30px;
+    z-index: 1;
+    border-left: 1px solid #ddd;
+    padding-top: 20px;
+}
+#comment_bottom {
+	width: 651px;
+	/*height: 80px;*/
+	background: #faf9f9;
+}
+
+#content_profile01 {
+	width: 40px;
+	height: 40px;
+	
+}
+.writermember_img01 {
+	width: 40px;
+	height: 40px;
+	border-radius: 5px;
+}
+.content_text input {
+	margin-left: 20px;
+	width: 540px;
+    height: 40px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+.content_text input:focus {
+	outline: none;
+    border: 1px solid black;
+}
+
+/*----------------하위업무 상태--------------------------*/
+
+#mini_state {
+	margin: 0 auto;
+	width: 92px;
+	height: 174px;
+	border-radius: 5px;
+	border: 1px solid #ddd;
+	text-align: center;
+	z-index: 14;
+	display: none;
+	background-color: white;
+}
+/*#transparent_screen {
+	z-index: 1;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}*/
+.box_state {
+	width: 64px;
+	height: 26px;
+	border-radius: 15px;
+	margin-top: 7px;
+	border: none;
+	outline: none;
+	font-size: 12px;
+	font-weight: 600;
+	color: white;
+	text-align: center;
+	margin-left: 13px;
+	padding-top: 3px;
+	
+}
+
+.box_request {
+	background: #00b2ff;
+}
+.box_progress {
+	background: #00B01C;
+}
+.box_feedback {
+	background: #FD7900;
+}
+.box_finish {
+	background: #402A9D;
+}
+.box_defer {
+	background: #777777;
+}
+
+
+
+
+
+
+
+
+
+
+
+

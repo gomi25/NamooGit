@@ -7,18 +7,18 @@
 <%
 	
 
-	int loginMemberIdx = 1;   
+	int loginMemberIdx = 0;   
 	// 로그인 member_idx 가정. ----> 이후에는 (Integer)session.getAttribute("loginId") 등으로 변경해야 돼요~
-	//int memberIdx = (Integer)session.getAttribute("loginMemberIdx");
+	//int memberIdx = (Integer)session.getAttribute("loginMemberIdx");a
 
-
-	int qna_idx = 37;
-
-
+	//int qna_idx = 37;
+	
+	//페이징처리
 	int pageNum = 1;
+	
 	try {
 		pageNum = Integer.parseInt(request.getParameter("page"));
-	} catch(Exception e) { }
+	} catch(Exception e) { e.printStackTrace(); }
 	int startNum, endNum;
 	int lastPageNum;
 	
@@ -49,44 +49,50 @@
 	<title>namoo</title>
 	<link href="https://intercom.help/jandi/assets/favicon" rel="icon">
 	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="css/Qna.css"/>
+	<link rel="stylesheet" href="../css/Qna.css"/>
 	<script src="${pageContext.request.contextPath}/js/Qna.js"></script>
 	<script>
 
 	</script>
 </head>
 <body>
-	<!-- 헤더 -->
-	<div id="div_header1">
-		<div class="fl">
-			<img src="https://jandi-box.com/teams/0/logo.png?timestamp=20190628">
-			<span><a href="NamooMain.jsp">NAMOO</a></span>
+	<div id="div_header1" >
+		<div class="fl"><img alt="잔디로고" src="https://jandi-box.com/teams/0/logo.png?timestamp=20190628"/><p>NAMOO</p></div>
+		<div>
+			<div class="fl"> <a href="https://www.naver.com">고객사례 </a></div> 
+			<div class="fl"><a href="https://www.naver.com">도입문의</a></div>
+			<div class="fl"><a href="https://www.naver.com">리소스</a></div>
+			<div class="fl"><a href="https://www.naver.com"><img src="https://cdn.jandi.com/landing/_next/static/media/arrow_mini_down.ad231965c95d19a3510b2e6c538470fe.svg/"></a></div>
+			<div class="fl"><a href="https://www.naver.com">블로그</a></div>
+			
 		</div>
-		<div class="fl"><a href="hsttps://www.jandi.com/landing/kr/industry">고객사례</a></div>
-		<div class="fl"><a href="Qna.jsp">도입문의</a></div>
-		<div class="fl"><a href="NamooHelpMain.jsp">헬프센터</a></div>
-		<div class="fl"><a href="https://blog.jandi.com/ko/">블로그</a></div>
-		<div class="fr"><a href="NamooLogin.jsp"><strong>로그인</strong></a></div>
-		<div class="fr"><a href="https://www.jandi.com/landing/kr/download"><strong>다운로드</strong></a></div>
+		<div class="center" >
+			<div class="fr"><a href="https://www.naver.com"><span>로그인</span></a></div>
+			<div class="border fr"><a href="https://www.naver.com">다운로드</a></div>
+		</div>
+		
+		
+
 	</div>
 	<hr class="color_grey"/>
-	<!-- 바디 -->	
+	
 	<div id="div_content1">
+		
 		<div> 
 		<h1>도입문의</h1>
 		<span>협업툴 전문 컨설턴트가 빠르게 안내드립니다.</span>
 		</div>
 		<div> 
-		<img src="img/lotte.png"/>
-		<img src="img/onnuri.png"/>
-		<img src="img/nexen.png"/>
-		<img src="img/hanssem.png"/>
+		<img src="../img/lotte.png"/>
+		<img src="../img/onnuri.png"/>
+		<img src="../img/nexen.png"/>
+		<img src="../img/hanssem.png"/>
 		</div>
 		<div> 
-		<img src="img/yanadoo.png"/>
-		<img src="img/daks.png"/>
-		<img src="img/amore.png"/>
-		<img src="img/hankookdoro.png"/>
+		<img src="../img/yanadoo.png"/>
+		<img src="../img/daks.png"/>
+		<img src="../img/amore.png"/>
+		<img src="../img/hankookdoro.png"/>
 		</div>
 		
 <!-- 신청자 정보 -->
@@ -166,29 +172,13 @@
 					</span>
 					</label>
 				</div>
-				<!-- <div class="secret_text">
-					<input type="checkbox" id="check2">
-					<label for="check2">
-					<span>
-						비밀 글
-					</span>
-					</label>
-				</div>
-				<div class="password_input">
-					<input type="text" id="check3" placeholder="[필수]비밀번호를 입력하세요">
-					<label for="check3">
-					</label>
-				</div>
-				 -->
 				<div>
 				<button>컨설팅 신청하기</button>
 				</div>
-				
 			</div>
-			
 		</div>
 	</form>
-		<!-- QnA부분 -->
+<!-- QnA부분 -->
 		<div id="div_QnA">
 			<div>
 				컨설팅 Q&A
@@ -201,29 +191,17 @@
 						<th class="head">작성자</th>
 						<th class="head">작성일</th>
 					</tr>
-<%--
-					<tr class="qna">
-						<td>답변완료</td>
-						<td>안녕하세요.</td>
-						<td>Hello</td>
-						<td>2024.05.28</td>
-					</tr>
-					<tr class="qna_answer">
-						<td></td>
-						<td><div class="answer"><p>답변<p></div>안녕하세요.답변입니다.</td>
-						<td>판매자</td>
-						<td>2024.05.29</td>
-					</tr>
---%>
 					<% for(QnaAllQuestionDto qDto : listQna) { %>
 					    <tr class="qna" qna_idx="<%=qDto.getQnaIdx() %>">
 					        <td><div class="reply_status"><%=qDto.getReplyCondition() == 1 ? "답변완료" : "미답변" %></div></td>
 					        <td>
 					            <div class="fl qna_content"><%=qDto.getContent() %></div>
-					            <% if(qDto.getReplyCondition() == 0) { %>
+					        <% if(qDto.getReplyCondition() == 0) { %>
 					        <% if(loginMemberIdx == 0) { %> 
-							<button class="fr qna_button" onclick="showAnswerForm('<%=qDto.getQnaIdx() %>')">답글달기</button>					            <% } %>
-					        <%} %>
+<%-- 							<button class="fr qna_button" onclick="showAnswerForm('<%=qDto.getQnaIdx() %>')">답글달기</button>					            
+ --%>							<button class="fr qna_button">답글달기</button>					            
+							<% } %>
+					        <% } %>
 					        </td>
 					        <td><%=qDto.getName() %></td>
 					        <td><%=qDto.getQuestionDate().split(" ")[0].replace("-",".") %></td>
@@ -247,21 +225,23 @@
 					    </tr>
 					    <% QnaAnswerDto aDto = qDao.getQnaAnswer(qDto.getQnaIdx());
 					    if(aDto != null) { %>
-					    <tr class="qna_answer" qna_idx="<%=qDto.getQnaIdx() %>">
+					    <tr class="qna_answer" method="post" qna_idx="<%=aDto.getQnaIdx() %>" answer_idx="<%=aDto.getAnswerIdx() %>">
+					    	<div>
 					        <td></td>
 					        <td>
 					            <br/>
-					            <div class="answer"><p>답변<p></div>
+					            <div class="answer" ><p>답변<p></div>
 					            <span><%=aDto.getContent() %></span>
 					            <% if(loginMemberIdx == 0) { %> 
 					            <div class="fr answer_button">
 					            	<button class="answer_update" >수정</button>
-					            	<button>삭제</button>
+					            	<button type="button" class="answer_delete">삭제</button>
 					            </div>
 					            <% } %>
 					        </td>
 					        <td>관리자</td>
-					        <td><%=aDto.getAnswer_date().split(" ")[0].replace("-",".") %></td>
+					        <td><%=aDto.getAnswerDate().split(" ")[0].replace("-",".") %></td>
+					    	</div>
 					    </tr>
 					    <% } %>
 					<% } %>
@@ -269,26 +249,21 @@
 				</table>
 				<div id="pagination">
 					<% if(startNum > 1) { %>
-						<a id="prev" href="Qna.jsp?page=<%=startNum-5%>">&lt; </a> 
+						<a id="prev" class="page_link" href="Qna.jsp?page=<%=startNum-5%>">&lt; </a> 
 					<% } %>
 					<% for(int i=startNum; i<=endNum; i++) { %>
 						<% if(i != pageNum) { %>
-							<a href="Qna.jsp?page=<%=i%>"><%=i%></a> 
+							<a class="page_link" href="Qna.jsp?page=<%=i%>"><%=i%></a> 
 						<% } else { %>
 						<span><%=i%></span>
 						<% } %>
 					<% } %>
 					<% if(lastPageNum > endNum) { %>
-					<a href="Qna.jsp?page=<%=startNum+1%>">&gt; </a> 
+					<a class="page_link" href="Qna.jsp?page=<%=startNum+1%>">&gt; </a> 
 					<% } %>
 				</div>
-				
-				
-				
 			</div>
-			
 		</div>
-		
 	</div>
 	
 	<!-- footer 부분 -->
@@ -298,12 +273,12 @@
 			<div id=footer_left class="fl">
 				<div><img src="https://jandi-box.com/teams/0/logo.png?timestamp=20190628"><p>NAMOO</p></div>
 					<ul>
-						<li><img src="img/facebook.png"><a href="https://www.facebook.com/JANDI.SKorea"><span>Facebook</span></a></li>
-						<li><img src="img/instagram.png"><a href="https://www.instagram.com/jandi.korea">Instagram</a></li>
-						<li><img src="img/youtube.png"><a href="https://www.youtube.com/channel/UCtEhu2u_lDa58OAJg121flQ">YouTube</a></li>
-						<li><img src="img/blog.png"><a href="https://blog.naver.com/jandi-korea">Blog</a></li>
-						<li><img src="img/linkedin.png"><a href="https://www.linkedin.com/showcase/jandi-korea">LinkedIn</a></li>
-						<li><img src="img/newsletter.png"><a href="https://page.stibee.com/subscriptions/86645?groupIds=226036">Newsletter</a></li>
+						<li><img src="../img/facebook.png"><a href="https://www.facebook.com/JANDI.SKorea"><span>Facebook</span></a></li>
+						<li><img src="../img/instagram.png"><a href="https://www.instagram.com/jandi.korea">Instagram</a></li>
+						<li><img src="../img/youtube.png"><a href="https://www.youtube.com/channel/UCtEhu2u_lDa58OAJg121flQ">YouTube</a></li>
+						<li><img src="../img/blog.png"><a href="https://blog.naver.com/jandi-korea">Blog</a></li>
+						<li><img src="../img/linkedin.png"><a href="https://www.linkedin.com/showcase/jandi-korea">LinkedIn</a></li>
+						<li><img src="../img/newsletter.png"><a href="https://page.stibee.com/subscriptions/86645?groupIds=226036">Newsletter</a></li>
 					</ul>
 			</div>
 			<!-- 오른쪽 부분  -->
@@ -335,7 +310,6 @@
 						<li><a href="https://www.jandi.com/landing/kr/company">채용</a></li>
 						<li><a href="https://blog.jandi.com/ko/">잔디 블로그</a></li>
 						<li><a href="https://www.jandi.com/landing/kr/partner/aws">파트너</a></li>
-
 					</ul>
 				</div>
 				</div>
@@ -349,11 +323,9 @@
 					</div>
 				</div>
 				<div id="footer_bottom_info2">
-			
 					<span>(주)토스랩  | 대표이사: 이영걸 | 서울특별시 강남구 봉은사로 524(인터컨티넨탈 서울 코엑스), 스파크플러스 코엑스점 지하1층 L226 | 이메일:support@tosslab.com </span>
 					<br>
 					<span>사업자등록번호: 220-88-81740 | 통신판매업신고번호: 2016-서울강남-00237 | © 2014-2024 Toss Lab, Inc.</span>
-					
 				</div>
 			</div>
 		</div>

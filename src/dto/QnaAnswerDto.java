@@ -1,12 +1,29 @@
 package dto;
 
 public class QnaAnswerDto {
+	private int answerIdx;
+	private int qnaIdx;
 	private String content;
-	private String answer_date;
-	public QnaAnswerDto(String content, String answer_date) {
-		super();
+	private String answerDate;
+	
+	public QnaAnswerDto(int answerIdx, int qnaIdx, String content, String answerDate) {
+		this.answerIdx = answerIdx;
+		this.qnaIdx = qnaIdx;
 		this.content = content;
-		this.answer_date = answer_date;
+		this.answerDate = answerDate;
+	}
+	
+	public int getAnswerIdx() {
+		return answerIdx;
+	}
+	public void setAnswerIdx(int answerIdx) {
+		this.answerIdx = answerIdx;
+	}
+	public int getQnaIdx() {
+		return qnaIdx;
+	}
+	public void setQnaIdx(int qnaIdx) {
+		this.qnaIdx = qnaIdx;
 	}
 	public String getContent() {
 		return content;
@@ -14,17 +31,13 @@ public class QnaAnswerDto {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getAnswer_date() {
-		return answer_date;
+	public String getAnswerDate() {
+		return answerDate;
 	}
-	public void setAnswer_date(String answer_date) {
-		this.answer_date = answer_date;
+	public void setAnswerDate(String answerDate) {
+		this.answerDate = answerDate;
 	}
-	@Override
-	public String toString() {
-		return "content: " + content + "\n"
-				+ "answer_date: " + answer_date;
-	}
+	
 	
 
 }
