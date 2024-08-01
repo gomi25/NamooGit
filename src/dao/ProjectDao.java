@@ -73,14 +73,15 @@ public class ProjectDao {
 	// createProject : 프로젝트 추가
 	// projectIdx :프로젝트idx , teamIdx : 팀 idx, projectName: 프로젝트 이름, colorIdx: 프로젝트 컬러
 	// 리턴 값 : 생성된 프로젝트의 project_idx 값.
-	public int createProject(String projectName, int teamIdx, int colorIdx) throws Exception {
+	public int createProject(String projectName, int teamIdx, int colorIdx, int writer) throws Exception {
 		Connection conn = getConnection();
-		String sql ="INSERT INTO PROJECT(PROJECT_IDX, TEAM_IDX, PROJECT_NAME, COLOR_IDX) VALUES(SEQ_NEW_PROJECT.nextval, ?, ?, ?)";
+		String sql ="INSERT INTO PROJECT(project_idx, team_idx, project_name, color_idx, writer, registration_date) VALUES(SEQ_NEW_PROJECT.nextval, ?, ?, ?, ?, sysdate)";
 		String[] arrPk = {"project_idx"};
 		PreparedStatement pstmt = conn.prepareStatement(sql, arrPk);
 		pstmt.setInt(1, teamIdx); 
 		pstmt.setString(2, projectName); 
 		pstmt.setInt(3, colorIdx); 
+		pstmt.setInt(4, writer); 
 		   
 		pstmt.executeUpdate();
 		ResultSet rs = pstmt.getGeneratedKeys();
