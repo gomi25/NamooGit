@@ -72,10 +72,10 @@
          <span>NAMOO</span>
       </div>
       <div class="fl"><a href="hsttps://www.jandi.com/landing/kr/industry">고객사례</a></div>
-      <div class="fl"><a href="https://www.jandi.com/landing/kr/consult">도입문의</a></div>
-      <div class="fl"><a href="https://support.jandi.com/ko/">헬프센터</a></div>
+      <div class="fl"><a href="Qna.jsp">도입문의</a></div>
+      <div class="fl"><a href="NamooHelpMain.jsp">헬프센터</a></div>
       <div class="fl"><a href="https://blog.jandi.com/ko/">블로그</a></div>
-      <div class="fr"><a href="http://localhost:9090/WebProject1/nammo_login.html"><strong>로그인</strong></a></div>
+      <div class="fr"><a href="NamooLogin.jsp"><strong>로그인</strong></a></div>
       <div class="fr"><a href="https://www.jandi.com/landing/kr/download"><strong>다운로드</strong></a></div>
    </div>
 
@@ -120,7 +120,7 @@
 			<button type="submit" disabled id="div_next">다음</button>
 			<div id="div_already_login">
 				<p>이미 가입하셨나요?</p>
-				<a href="Signup2.html">로그인</a>
+				<a href="NamooLogin.jsp">로그인</a>
 			</div>
 		</div>
 	</form>

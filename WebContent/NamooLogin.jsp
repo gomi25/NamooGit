@@ -97,7 +97,7 @@
 			<div id="div_signup">
 				<div>
 					<div class="fl">나무가 처음이신가요?</div>
-					<div class="fl"><a href="https://www.jandi.com/landing/kr/signup">회원가입</a></div>
+					<div class="fl"><a href="Signup1.jsp">회원가입</a></div>
 				</div>
 			</div>
 		</div>
