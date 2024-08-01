@@ -293,12 +293,17 @@
 					ArrayList<TopicDto> listSubTopic = sDao.getTopicListFromFolderIdx(memberIdx, folderDto.getTopicFolderIdx());
 			%>
 			<div class="topic_folder"> 
-				<div>
+				<div class="div_folder_item" topicFolderIdx="<%=folderDto.getTopicFolderIdx()%>" >
 					<div class="ic_topic_folder_open fl"></div>
 					<div class="ic_topic_folder_close fl"></div>
-					<span class="fl"><%=folderDto.getName() %></span>
+					<span class="span_folder_name fl" contenteditable="false"><%=folderDto.getName() %></span>
 					<span class="fl"><%=listSubTopic.size() %></span>
 					<div class="ic_topic_folder_more_menu fr"></div>
+					<div class="topic_folder_more_menu">
+						<div>이 폴더에 토픽 생성하기</div>
+						<div>폴더 이름 변경하기</div>
+						<div>폴더 삭제하기</div>
+					</div>
 				</div>
 				<div>
 					<%
@@ -309,7 +314,6 @@
 						<div class='<%=(topicDto.isBookmark() ? "ic_bookmark_on" : "ic_bookmark_off") %>'></div>
 						<span><%=topicDto.getName()%></span>
 						<div class="ic_alarm_off"></div>
-						<%-- <div class="div_unread"><%=topicDto.getUnread()%></div> --%>
 						<div class='<%= (topicDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
 							<%= topicDto.getUnread() >=1 ? topicDto.getUnread() : "" %>
 						</div>
@@ -325,8 +329,6 @@
 			
 			<%
 				for(TopicDto topicDto : listTopic){
-// 					System.out.println("370행, topicDto.isBookmark() = " + topicDto.isBookmark());
-
 			%>
 			<div class="topic_item" topic_idx="<%=topicDto.getTopicIdx()%>">
 				<div class='<%=(topicDto.isBookmark() ? "ic_bookmark_on" : "ic_bookmark_off") %>'></div>
@@ -340,7 +342,7 @@
 				}
 			%>
 
-		</div>
+		</div><!-- div_topicroom_list_body 닫는 태그 -->
 
 
 <!---------- 프로젝트 목록 ---------->	

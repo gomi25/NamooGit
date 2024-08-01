@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,22 +77,26 @@ public class TopicDao {
 //	============================== 토픽 - 토픽 관련 기능(2/3) ==============================
 //  *******폴더 생성하는 기능*******
 //	INSERT INTO folder_box (topic_folder_idx, member_idx, team_idx, name) 
-//	VALUES (토픽폴더idx, 토픽폴더사용자idx, 소속팀idx,  '토픽폴더이름');
-	public void createTopicFolder(int memberIdx, int teamIdx, String name) throws Exception {
+//	VALUES (토픽폴더idx, 토픽폴더사용자idx, 소속팀idx, '토픽폴더이름');
+	public int createTopicFolder(int memberIdx, int teamIdx) throws Exception {
 		Connection conn = getConnection();
-		
 		String sql = "INSERT INTO folder_box (topic_folder_idx, member_idx, team_idx, name)" 
-				    + " VALUES (seq_topic_folder.nextval, ?, ?, ?)";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
+				    + " VALUES (seq_topic_folder.nextval, ?, ?, '새폴더')";
+		PreparedStatement pstmt = conn.prepareStatement(sql, new String[] {"topic_folder_idx"});
 		pstmt.setInt(1, memberIdx);
 		pstmt.setInt(2, teamIdx);
-		pstmt.setString(3, name);
 		pstmt.executeUpdate();
-		
+		ResultSet rs = pstmt.getGeneratedKeys();
+		int ret = 0;
+		if(rs.next()) {
+			ret = rs.getInt(1);
+		}
+		rs.close();		
 		pstmt.close();
 		conn.close();
+		
+		return ret;
 	}
-	
 	
 //  *******폴더 이름 변경(수정)하는 기능*******	
 //	UPDATE folder_box
@@ -431,9 +436,65 @@ public class TopicDao {
 		return listRet;
 	}
 	
-//  *******토픽글의 댓글수 조회*******	
-//  파라미터: 토픽글idx 
-//	리턴: 토픽댓글수	
+	//  *******토픽글의 안 읽은 사람수 조회*******	
+	//  파라미터: 토픽글idx, 작성자 제외 안 읽은 사람들의 idx 
+	public void addUnreadMember(int topicBoardIdx, int[] memberIdxArray) throws Exception {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			String sql = "INSERT INTO topic_unread(topic_board_idx, member_idx)"
+						+ " VALUES(?, ?)";
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, topicBoardIdx);
+			for(int memberIdx : memberIdxArray) {
+				pstmt.setInt(2, memberIdx);
+				pstmt.addBatch(); // Batch 추가
+			}
+			pstmt.executeBatch();
+		} catch (Exception e) {
+			 e.printStackTrace();
+		} finally {
+			if (pstmt != null) pstmt.close();
+	        if (conn != null) conn.close();
+		}
+	}
+	
+	/* 내용 추가 테스트 중 */
+	public List<Integer> getTopicMembersExceptAuthor(int topicIdx, int authorIdx) throws Exception {
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    List<Integer> memberIdxList = new ArrayList<>();
+
+	    try {
+	        String sql = "SELECT member_idx FROM topic_member WHERE topic_idx = ? AND member_idx != ?";
+	        conn = getConnection();
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, topicIdx);
+	        pstmt.setInt(2, authorIdx);
+	        rs = pstmt.executeQuery();
+
+	        while (rs.next()) {
+	            memberIdxList.add(rs.getInt("member_idx"));
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        if (rs != null) rs.close();
+	        if (pstmt != null) pstmt.close();
+	        if (conn != null) conn.close();
+	    }
+
+	    return memberIdxList;
+	}
+
+	
+	//  *******토픽글의 댓글수 조회*******	
+	//  파라미터: 토픽글idx 
+	//	리턴: 토픽댓글수	
 	public int getTopicCommentCnt(int topicBoardIdx) throws Exception {
 		Connection conn = getConnection();
 		String sql = "SELECT count(*) FROM topic_comment WHERE topic_board_idx = ?";
@@ -492,36 +553,6 @@ public class TopicDao {
 		return listRet;
 	}
 
-	/* 7월19일(금) 여기여기
-	 * // YGYGYGYG public TopicCommentDto getTopicCommentDto(int topicBoardIdx, int
-	 * teamIdx, int topicCommentIdx) throws Exception { Connection conn =
-	 * getConnection(); ArrayList<TopicCommentDto> listRet = new
-	 * ArrayList<TopicCommentDto>(); String sql =
-	 * "SELECT tc.topic_comment_idx, tc.topic_board_idx, NVL(m.profile_pic_url, 'https://jandi-box.com/assets/ic-profile.png') profile_pic_url,"
-	 * + "        m.member_idx, m.name, tm.state, tc.comments," +
-	 * "        TO_CHAR(tc.write_date, 'YYYY-MM-DD PM HH:MI') write_date, tc.file_idx"
-	 * +
-	 * " FROM topic_comment tc INNER JOIN member m on tc.member_idx = m.member_idx"
-	 * + " INNER JOIN team_member tm on m.member_idx = tm.member_idx" +
-	 * " INNER JOIN team t on t.team_idx = tm.team_idx" +
-	 * " WHERE tc.topic_board_idx = ?" + " AND t.team_idx = ?" +
-	 * " ORDER BY tc.write_date"; PreparedStatement pstmt =
-	 * conn.prepareStatement(sql); pstmt.setInt(1, topicBoardIdx); pstmt.setInt(2,
-	 * teamIdx); ResultSet rs = pstmt.executeQuery(); while(rs.next()) { int
-	 * topicCommentIdx = rs.getInt("topic_comment_idx"); int memberIdx =
-	 * rs.getInt("member_idx"); String profileUrl = rs.getString("profile_pic_url");
-	 * String name = rs.getString("name"); String state = rs.getString("state");
-	 * String comments = rs.getString("comments"); String writeDate =
-	 * rs.getString("write_date"); Integer fileIdx = rs.getInt("file_idx");
-	 * if(rs.getInt("file_idx") == 0) { fileIdx = null; } TopicCommentDto dto = new
-	 * TopicCommentDto(topicCommentIdx, topicBoardIdx, memberIdx, profileUrl, name,
-	 * state, comments, writeDate, fileIdx); listRet.add(dto); } rs.close();
-	 * pstmt.close(); conn.close();
-	 * 
-	 * return listRet; }
-	 */
-
-	
 //  *******댓글 작성하는 기능*******	
 //	파라미터: 토픽글idx, 작성자idx, 댓글내용, 파일idx
 	public int writeTopicComment(int topicBoardIdx, int memberIdx, String comments, Integer fileIdx) throws Exception {
@@ -806,9 +837,16 @@ public class TopicDao {
 	
 	
 
-//  *******토픽 멤버 전체 조회 기능토픽 알림 켜기/끄기 기능*******		
+//  *******토픽 알림 켜기/끄기 조회 기능*******		
+	public int getAlarm(int topicIdx, int memberIdx) throws Exception {
+//		Connection conn = getConnection();
+		int result = 1;
+		
+		
+		return result;
+	}
 	
-	
+//  *******토픽 알림 켜기/끄기 기능*******		
 	
 	
 //	============================== 토픽 - 상단바(2/3) ==============================

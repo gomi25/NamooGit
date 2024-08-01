@@ -290,12 +290,17 @@
 						ArrayList<TopicDto> listSubTopic = sDao.getTopicListFromFolderIdx(memberIdx, folderDto.getTopicFolderIdx());
 				%>
 				<div class="topic_folder"> 
-					<div>
+					<div class="div_folder_item" topicFolderIdx="<%=folderDto.getTopicFolderIdx()%>" >
 						<div class="ic_topic_folder_open fl"></div>
 						<div class="ic_topic_folder_close fl"></div>
-						<span class="fl"><%=folderDto.getName() %></span>
+						<span class="span_folder_name fl" contenteditable="false"><%=folderDto.getName() %></span>
 						<span class="fl"><%=listSubTopic.size() %></span>
 						<div class="ic_topic_folder_more_menu fr"></div>
+						<div class="topic_folder_more_menu">
+							<div>이 폴더에 토픽 생성하기</div>
+							<div>폴더 이름 변경하기</div>
+							<div>폴더 삭제하기</div>
+						</div>
 					</div>
 					<div>
 						<%
@@ -382,16 +387,13 @@
 				</div>
 			<%	} %>
 			</div>
-	
-		<!-- 여기까지 일단 완료 7.22(월) 17시 -->	
-		<!-- 여기서부터 이어서 !! -->	
 				
 		<!--------------------------------------- div_side1 - 팝업창 --------------------------------------->
 			<!---------- 토픽 '+버튼' 클릭 시 팝업창 ---------->			
 			<div id="div_topic_plus">
 				<div>새로운 토픽 생성하기</div>
-				<div>참여 가능한 토픽 보기</div>
 				<div>폴더 생성하기</div>
+				<div>참여 가능한 토픽 보기</div>
 			</div>
 			<!---------- 토픽 '+버튼' -> 새로운 토픽 생성 생성하기 ---------->	
 			<form action="${pageContext.request.contextPath}/jsp/CreateNewTopic.jsp" method="get">
@@ -539,6 +541,17 @@
 		
 		</div> <!-- div_side1 닫는 태그 -->
 	
+		
+		<!-- #div_new_chat_start 팝업창  ~ -->
+		
+		
+	
+		<!-- ~ #div_new_chat_start 팝업창  -->
+
+
+		
+
+	
 		<!--------------------------------------- div_side2 --------------------------------------->		
 		<!--------------------------------------- 토픽방 --------------------------------------->
 		<div id="div_side2" class="fr wide">
@@ -576,6 +589,7 @@
 		
 			<!---------- 멤버 초대하기 팝업창 ---------->	
 			<form id="form_invite_member" action="${pageContext.request.contextPath}/jsp/InviteTopicMember.jsp" method="get">
+				<input type="hidden" name="input_topic_idx" value="<%=topicIdx%>"/>
 				<div id="div_invite_member" class="border">
 					<div>
 						<span class="fl">멤버 초대하기</span>
@@ -960,7 +974,7 @@
 			</div> <!-- div_topic_update 닫는 태그 -->		
 		
 			<!----------  [토픽글 작성] 토픽방 내부 하단의 게시글 등록 클릭 시 팝업창---------->	
-<%-- 			<form action="${pageContext.request.contextPath}/jsp/WriteTopicBoard.jsp" id="writeTopicBoardForm" method="get">  --%>
+<%-- 		<form action="${pageContext.request.contextPath}/jsp/WriteTopicBoard.jsp" id="writeTopicBoardForm" method="get">  --%>
 			<form id="form_board_write" action="TopicFileUploadServlet" method="post" enctype="multipart/form-data" >
 				<div id="div_write_topic_board">
 					<!-- 상단부 / div:nth-child(1) -->
@@ -968,6 +982,7 @@
 						<span>신규 게시글 작성</span> 
 						<div class="exit fr"></div>
 					</div>
+					
 					<!-- 중앙부 / div:nth-child(2) -->
 					<div class="scrollbar"> 
 						<!-- div:nth-child(2) > div:nth-child(1) -->
@@ -999,24 +1014,6 @@
 								 				<div class="ic_delete"></div>
 								 			</div>
 								 		</div>
-								 		<!-- <div class="upload_file_list">
-								 			<div>
-								 				<img src="https://jandi-box.com/files-thumb/31792038/1721185886012758fc45d3f6eb711c437f8cf178a88bd?size=80"/>
-								 			</div>
-								 			<div>download.png</div>
-								 			<div>
-								 				<div class="ic_delete"></div>
-								 			</div>
-								 		</div>
-								 		<div class="upload_file_list">
-								 			<div>
-								 				<img src="https://jandi-box.com/files-thumb/31792038/1721185886012758fc45d3f6eb711c437f8cf178a88bd?size=80"/>
-								 			</div>
-								 			<div>download.png</div>
-								 			<div>
-								 				<div class="ic_delete"></div>
-								 			</div>
-								 		</div> -->
 								 	</div>
 								 	<div class="upload_file_count">
 									 	<span class="text_max_value fr"> 30</span>
