@@ -206,5 +206,80 @@ public class OrganizationalChartDao {
 	 	return listRet;
  }
 	
+	// 로그인한 멤버 상태 변경
+	public void updateLoginMemberState(String state, int memberIdx) throws Exception {
+		Connection conn = getConnection();
+		String sql = "UPDATE team_member" 
+				+ " SET state = ?" 
+				+ " WHERE member_idx = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, state);
+		pstmt.setInt(2, memberIdx);
+		pstmt.executeUpdate();
+		
+		pstmt.close();
+		conn.close();
+	}
+	
+	// 로그인한 멤버 상태메세지 변경
+	public void updateLoginMemberStateTxt(String stateTxt, int memberIdx) throws Exception {
+		Connection conn = getConnection();
+		String sql = "UPDATE team_member" 
+				+ " SET state_txt = ?" 
+				+ " WHERE member_idx = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, stateTxt);
+		pstmt.setInt(2, memberIdx);
+		pstmt.executeUpdate();
+		
+		pstmt.close();
+		conn.close();
+	}
+	
+	// 로그인한 멤버 직책 변경
+	public void updateLoginMemberPosition(String position, int memberIdx) throws Exception {
+		Connection conn = getConnection();
+		String sql = "UPDATE team_member" 
+				+ " SET position = ?" 
+				+ " WHERE member_idx = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, position);
+		pstmt.setInt(2, memberIdx);
+		pstmt.executeUpdate();
+		
+		pstmt.close();
+		conn.close();
+	}
+	
+	// 로그인한 멤버 핸드폰 번호 변경
+	public void updateLoginMemberPhoneNumber(String phoneNumber, int memberIdx) throws Exception {
+		Connection conn = getConnection();
+		String sql = "UPDATE team_member" 
+				+ " SET phone_number = ?" 
+				+ " WHERE member_idx = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, phoneNumber);
+		pstmt.setInt(2, memberIdx);
+		pstmt.executeUpdate();
+		
+		pstmt.close();
+		conn.close();
+	}
+	
+	// 로그인한 멤버 생년월일 변경
+	public void updateLoginMemberBirth(String birth, int memberIdx) throws Exception {
+		Connection conn = getConnection();
+		String sql = "UPDATE team_member" 
+				+ " SET birth = ?" 
+				+ " WHERE member_idx = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, birth);
+		pstmt.setInt(2, memberIdx);
+		pstmt.executeUpdate();
+		
+		pstmt.close();
+		conn.close();
+	}
+	
 
 }

@@ -79,27 +79,51 @@ $(function(){
         //});
 		profileContainer.show();
 	});
-
 	
 	$("#div_transparent_filter").click(function() {
 		$("#div_transparent_filter").css('display','none');
 		$(".member_profile_container").hide();
      });
 	
+	// 로그인한 멤버 프로필 띄우기
+	$(".member1").on("click", function() {
+		$("#div_transparent_filter").css('display','block');
+        
+        // 클릭된 멤버의 member_idx
+        let memberIdx = $(this).attr("member_idx");
+		
+        // 클릭된 요소의 위치를 기준으로 위치 설정
+    	if ($("#loginmember_profile_container").attr("member_idx") == memberIdx) {
+            $("#loginmember_profile_container").show();
+        } else {
+            $("#loginmember_profile_container").hide(); // 기본적으로 숨기기
+        }
+	});
+	
+	$("#div_transparent_filter").click(function() {
+		$("#div_transparent_filter").css('display','none');
+		$("#loginmember_profile_container").hide();
+     });
+	
+
+
+	
+	
+	
 	//멤버 즐겨찾기 
 	$(document).on("click", ".nobookmark_img", function() {
 		$(this).css('display','none');
 		$(this).prev().css('display', 'block');
+		$(".member_profile_container").css('display','none');
 		let _this = $(this);
 		let member_idx = $(this).parent().attr("member_idx");
 		$.ajax({
 			type: 'get',
-			url: '../AjaxMemberBookmarkOnServlet',
+			url: 'AjaxMemberBookmarkOnServlet',
 			data: { idx: member_idx, something: "member_idx_to"},
 			success: function(response){
-				alert("!");
+				//alert("즐겨찾기 성공");
 				//alert(response.result);   // success/
-				//_this.replaceWith('<img class="fr bookmark_img" src="https://flow.team/flow-renewal/assets/images/icons/icon_star_on.png?v=ca949083bd3e2d74e7125167485cff818959483a" alt="Bookmark" style="width:21px, height:21px;"/>');
 				let clone_object = _this.parent().clone();
 				$("#bookmark_memberlist").append(clone_object);  // 마지막 자식으로
 				let cnt = $("#bookmark_memberlist > .member1").length;
@@ -115,16 +139,19 @@ $(function(){
 	$(document).on("click", ".bookmark_img", function() {
 		$(this).css('display','none');
 		$(this).next().css('display', 'block');
+		$(".member_profile_container").css('display','none');
 		let _this = $(this);
 		let member_idx = $(this).parent().attr("member_idx");
 		$.ajax({
 			type: 'get',
-			url: '../AjaxMemberBookmarkOffServlet',
+			url: 'AjaxMemberBookmarkOffServlet',
 			data: { idx: member_idx, something: "member_idx_to"},
 			success: function(response){
-				alert("즐겨찾기 해제");
+				//alert("즐겨찾기 해제");
 				// 클론한 객체를 즐겨찾기 목록에서 제거
-				_this.parent().remove();
+				_this.remove();
+				$("#bookmark_memberlist .member1[member_idx='" + member_idx + "']").remove();
+
 				let cnt = $("#bookmark_memberlist > .member1").length;
            		$("#bookmark_member > button > div:nth-child(2)").text(cnt);
 			},
@@ -133,7 +160,80 @@ $(function(){
 			}
 		});
 	});
+	
+	// 로그인한 멤버 상태 변경(처음에 입력할 때)
+	$(".status_input").on('keyup', function(event) {
+		 // span_folder_name에서 Enter 키 입력 이벤트 처리
+        // Enter 키 눌렀을 때 동작
+		if (event.key === 'Enter' && !event.shiftKey) {
+			event.preventDefault(); // 기본 Enter 동작(줄바꿈) 방지
+     
+			$(".member_inner1_state").hide(); 
+			let state = $(this).val(); 
+        	let memberIdx = $(this).parent().parent().attr('member_idx');
 
+			let _this = $(this);  
+			let params = { 
+				state : state,
+				member_idx : memberIdx
+			};
+			$.ajax({
+				type: 'get',
+				url: 'AjaxLoginMemberProfileStateServlet',
+				data: params,
+				success: function(response){
+					alert("상태변경");
+					$(".status_input").css('display','none');
+					$(".member_inner1_state").css('display','block'); 
+					$(".inner1_state_x_img").show(); 
+					$(".member_inner1_state").text(state);
+				},
+				error: function(){
+					alert('ajax 통신 실패');		
+				}
+			});
+		}
+	});
 	
 	
+	// 로그인한 멤버 상태 변경(수정할 때)
+	$(".inner1_state_x_img").click(function() {
+		$(".member_inner1_state").hide(); 
+		$(".status_input").show(); 
+		
+		
+		$(".status_input").on('keyup', function(event) {
+		 	// span_folder_name에서 Enter 키 입력 이벤트 처리
+        	// Enter 키 눌렀을 때 동작
+			if (event.key === 'Enter' && !event.shiftKey) {
+				event.preventDefault(); // 기본 Enter 동작(줄바꿈) 방지
+				let state = $(this).val(); 
+	        	let memberIdx = $(this).parent().parent().attr('member_idx');
+				let _this = $(this);  
+				let params = { 
+					state : state,
+					member_idx : memberIdx
+				};
+				$.ajax({
+					type: 'get',
+					url: 'AjaxLoginMemberProfileStateServlet',
+					data: params,
+					success: function(response){
+						alert("상태변경");
+						$(".status_input").css('display','none');
+						$(".member_inner1_state").css('display','block'); 
+						$(".inner1_state_x_img").show(); 
+						$(".member_inner1_state").text(state);
+					},
+					error: function(){
+						alert('ajax 통신 실패');		
+					}
+				});
+			}
+		});
+	});
+
+
+
+		
 });

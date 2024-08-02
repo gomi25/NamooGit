@@ -49,7 +49,7 @@
 	<title>namoo</title>
 	<link href="https://intercom.help/jandi/assets/favicon" rel="icon">
 	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="../css/Qna.css"/>
+	<link rel="stylesheet" href="css/Qna.css"/>
 	<script src="${pageContext.request.contextPath}/js/Qna.js"></script>
 	<script>
 
@@ -83,16 +83,16 @@
 		<span>협업툴 전문 컨설턴트가 빠르게 안내드립니다.</span>
 		</div>
 		<div> 
-		<img src="../img/lotte.png"/>
-		<img src="../img/onnuri.png"/>
-		<img src="../img/nexen.png"/>
-		<img src="../img/hanssem.png"/>
+		<img src="img/lotte.png"/>
+		<img src="img/onnuri.png"/>
+		<img src="img/nexen.png"/>
+		<img src="img/hanssem.png"/>
 		</div>
 		<div> 
-		<img src="../img/yanadoo.png"/>
-		<img src="../img/daks.png"/>
-		<img src="../img/amore.png"/>
-		<img src="../img/hankookdoro.png"/>
+		<img src="img/yanadoo.png"/>
+		<img src="img/daks.png"/>
+		<img src="img/amore.png"/>
+		<img src="img/hankookdoro.png"/>
 		</div>
 		
 <!-- 신청자 정보 -->
@@ -273,12 +273,12 @@
 			<div id=footer_left class="fl">
 				<div><img src="https://jandi-box.com/teams/0/logo.png?timestamp=20190628"><p>NAMOO</p></div>
 					<ul>
-						<li><img src="../img/facebook.png"><a href="https://www.facebook.com/JANDI.SKorea"><span>Facebook</span></a></li>
-						<li><img src="../img/instagram.png"><a href="https://www.instagram.com/jandi.korea">Instagram</a></li>
-						<li><img src="../img/youtube.png"><a href="https://www.youtube.com/channel/UCtEhu2u_lDa58OAJg121flQ">YouTube</a></li>
-						<li><img src="../img/blog.png"><a href="https://blog.naver.com/jandi-korea">Blog</a></li>
-						<li><img src="../img/linkedin.png"><a href="https://www.linkedin.com/showcase/jandi-korea">LinkedIn</a></li>
-						<li><img src="../img/newsletter.png"><a href="https://page.stibee.com/subscriptions/86645?groupIds=226036">Newsletter</a></li>
+						<li><img src="img/facebook.png"><a href="https://www.facebook.com/JANDI.SKorea"><span>Facebook</span></a></li>
+						<li><img src="img/instagram.png"><a href="https://www.instagram.com/jandi.korea">Instagram</a></li>
+						<li><img src="img/youtube.png"><a href="https://www.youtube.com/channel/UCtEhu2u_lDa58OAJg121flQ">YouTube</a></li>
+						<li><img src="img/blog.png"><a href="https://blog.naver.com/jandi-korea">Blog</a></li>
+						<li><img src="img/linkedin.png"><a href="https://www.linkedin.com/showcase/jandi-korea">LinkedIn</a></li>
+						<li><img src="img/newsletter.png"><a href="https://page.stibee.com/subscriptions/86645?groupIds=226036">Newsletter</a></li>
 					</ul>
 			</div>
 			<!-- 오른쪽 부분  -->
