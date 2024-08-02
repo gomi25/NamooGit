@@ -60,9 +60,9 @@
 	<meta charset="UTF-8">
 	
 	<title>Insert title here</title>
-	<link rel="stylesheet" href="../css/OrganizationalChart.css"/>
-	<link rel="stylesheet" href="../css/profile_1.css"/>
-	<link rel="stylesheet" href="../css/profile_2.css"/>
+	<link rel="stylesheet" href="css/OrganizationalChart.css"/>
+	<link rel="stylesheet" href="css/profile_1.css"/>
+	<link rel="stylesheet" href="css/profile_2.css"/>
 	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 	<script src="${pageContext.request.contextPath}/js/OrganizationalChart.js"></script>
 	<script>
@@ -75,20 +75,20 @@
 		<div id="div_logo" class="fl"><img src="https://jandi-box.com/teams/0/logo.png?timestamp=20190628"/></div>
 		<div id="div_select_team" class="fl">
 			<span>7팀</span>
-			<img src="../img/img_icon_v.png"/>
+			<img src="img/img_icon_v.png"/>
 		</div>
-		<div id="div_menu3" class="fr"><img src="../img/img_icon_menu3.png"/></div>
+		<div id="div_menu3" class="fr"><img src="img/img_icon_menu3.png"/></div>
 		<div id="div_menu4" class="fr">
-			<img src="../img/img_icon_menu4.png"/>
-			<img src="../img/img_icon_v.png"/>
+			<img src="img/img_icon_menu4.png"/>
+			<img src="img/img_icon_v.png"/>
 		</div>
 		<div id="div_help" class="fr">
-			<img src="../img/img_icon_help.png"/>
+			<img src="img/img_icon_help.png"/>
 			<div class="on"></div>
 		</div>
-		<div id="div_search" class="fr"><img src="../img/img_icon_search.png"/></div>
-		<div id="div_hierarchy" class="fr"><img src="../img/img_icon_hierarchy_green.png"/></div>
-		<div id="div_notice" class="fr"><img src="../img/img_icon_notice.png"/></div>
+		<div id="div_search" class="fr"><img src="img/img_icon_search.png"/></div>
+		<div id="div_hierarchy" class="fr"><img src="img/img_icon_hierarchy_green.png"/></div>
+		<div id="div_notice" class="fr"><img src="img/img_icon_notice.png"/></div>
 	</div>
 	<div id="div_side1" class="fl">
 		<div>
@@ -97,22 +97,22 @@
 		</div>
 		<div>
 			<div>
-				<img src="../img/img_icon_search_bg_grey.png"/>
+				<img src="img/img_icon_search_bg_grey.png"/>
 				<span>대화방 검색</span>
 				<span>Ctrl+J</span>
 			</div>
 		</div>
 		<div>
-			<div><img src="../img/img_icon_v.png"/></div>
+			<div><img src="img/img_icon_v.png"/></div>
 			<div>토픽</div>
 			<div>8</div>
-			<div><img src="../img/img_icon_plus.png"/></div>
+			<div><img src="img/img_icon_plus.png"/></div>
 		</div>
 		<div>이름 순</div>
 		<div>
-			<div><img src="../img/img_icon_v.png"/></div>
+			<div><img src="img/img_icon_v.png"/></div>
 			<div>채팅</div>
-			<div><img src="../img/img_icon_plus.png"/></div>
+			<div><img src="img/img_icon_plus.png"/></div>
 		</div>
 		<div>김현지</div>
 		<div>앱</div>
@@ -126,11 +126,11 @@
 			<div id="list">
 				<div class="fl organizational_chart_name">조직도</div>
 				<div class="fl total_number">총 <%=memberCount%>명</div>
-				<div class="fr delete"><img src="../img/x_button.png"/></div>
+				<div class="fr delete"><img src="img/x_button.png"/></div>
 			</div>
 			<div id="search">
 				<div id="search_parents" class="fl re"><input id="search_input" name="member_search" type="text" placeholder="멤버 검색" ></div>
-					<div class="ab"><img id="search_icon" src="../img/img_icon_search.png"/></div>
+					<div class="ab"><img id="search_icon" src="img/img_icon_search.png"/></div>
 			</div>
 			<div id="select">
 				<div id="teamlist"><button>팀</button></div>
@@ -142,7 +142,7 @@
 					<button>
 						<div class="fl">즐겨찾기 멤버</div>
 						<div class="fr"><%=bookmarkMemberCount%></div>
-						<div class="fr"><img src="../img/people.png"/></div>
+						<div class="fr"><img src="img/people.png"/></div>
 					</button>	
 				</div>
 				<!--부서 (팀) -->
@@ -150,7 +150,7 @@
 					<button>
 						<div class="fl"><%=teamName%></div>
 						<div class="fr"><%=memberCount%></div>
-						<div class="fr"><img src="../img/people.png"/></div>
+						<div class="fr"><img src="img/people.png"/></div>
 					</button>
 				</div>
 			</div>
@@ -162,7 +162,7 @@
 					<img class="fl" src="<%=bmDto.getProfilePicUrl()%>"/>
 					<div class="fl member1_detail member_name">
 						<div id="name" class="fl"><%=bmDto.getMemberName()%></div> 
-						<div id="state"><%=bmDto.getState()==null ? " " : "&nbsp-" + bmDto.getState()%></div>
+						<div id="state"><%= bmDto.getState() == null ? "" : "-" + bmDto.getState() %></div>
 					</div>
 					<div class="fr bookmark_img"><img src="https://flow.team/flow-renewal/assets/images/icons/icon_star_on.png?v=ca949083bd3e2d74e7125167485cff818959483a"></div>
 					<div class="fl member1_detail">
@@ -181,7 +181,7 @@
 					<img class="fl" src="<%=omDto.getProfilePicUrl()%>"/>
 					<div class="fl member1_detail member_name">
 						<div id="name" class="fl"><%=omDto.getMemberName()%></div> 
-						<div id="state"><%=omDto.getState()==null ? " " : "&nbsp-" + omDto.getState()%></div>
+						<div id="state"><%=omDto.getState()== null ? " " : "&nbsp-" + omDto.getState()%></div>
 					</div>
 					<% if (omDto.getMemberIdx() != loginMemberIdx ) { %> 
 					
@@ -214,11 +214,11 @@
 		<div id="list">
 			<div class="fl organizational_chart_name">조직도</div>
 			<div class="fl total_number">총 <%=memberCount%>명</div>
-			<div class="fr delete"><img src="../img/x_button.png"/></div>
+			<div class="fr delete"><img src="img/x_button.png"/></div>
 		</div>
 		<div id="search">
 			<div id="search_parents" class="fl re"><input id="search_input" name="member_search" type="text" placeholder="멤버 검색" ></div>
-			<div class="ab"><img id="search_icon" src="../img/img_icon_search.png"/></div>
+			<div class="ab"><img id="search_icon" src="img/img_icon_search.png"/></div>
 		</div>
 		 <div id="select">
 			<div id="select_teamlist"><button>팀</button></div>
@@ -228,7 +228,7 @@
 			<button>
 				<div class="fl">전체 멤버</div>
 				<div class="fr"><%=memberCount%></div>
-				<div class="fr"><img src="../img/people.png"/></div>
+				<div class="fr"><img src="img/people.png"/></div>
 			</button>	
 		</div>
 		
@@ -276,7 +276,7 @@
 			<div id="profileinner3">
 				<table>
 					<tr>
-						<td><img src="../img/organizational.png"  class="inner3_img"></td>
+						<td><img src="img/organizational.png"  class="inner3_img"></td>
 						<td><div class="inner3_td1"><%=mpDto.getTeamName() %></div></td>
 					</tr>
 					<tr>
@@ -284,15 +284,15 @@
 						<td><div class="inner3_td1"><%=mpDto.getPosition() %></div></td>
 					</tr>
 					<tr>
-						<td><img src="../img/gift_grey.png" class="inner3_img"></td>
+						<td><img src="img/gift_grey.png" class="inner3_img"></td>
 						<td><div class="inner3_td2"><%=mpDto.getBirth().split(" ")[0].replace("-",".") %></div></td>
 					</tr>
 					<tr>
-						<td><img src="../img/phone_grey.png" class="inner3_img"></td>
+						<td><img src="img/phone_grey.png" class="inner3_img"></td>
 						<td><div class="inner3_td2"><%=mpDto.getPhoneNumber() %></div></td>
 					</tr>
 					<tr>
-						<td><img src="../img/email_grey.png" class="inner3_img"></td>
+						<td><img src="img/email_grey.png" class="inner3_img"></td>
 						<td><div class="inner3_td1"><%=mpDto.getEmail() %></div></td>
 					</tr>
 				</table>
@@ -316,12 +316,12 @@
 				
 				<div id="inner1">
 					<%if(mpDto.getState()!=null) { %>
-					<div class="member_inner1_state"><%=mpDto.getState() %><img class="fr inner1_state_x_img" src="../img/x.png"></div>
+					<div class="member_inner1_state"><%=mpDto.getState() %><img class="fr inner1_state_x_img" src="img/x.png"></div>
 					<% } %> 
 					<%if(mpDto.getState() == null) { %>
 					<input class="status_input" type="text" name="상태설정" placeholder="상태설정" /> 
 					<% } %> 
-					<div class="member_inner1_message"><%=mpDto.getStateMessage()==null ? " " : mpDto.getStateMessage() %><img class="fr inner1_message_x_img" src="../img/x.png"></div>
+					<div class="member_inner1_message"><%=mpDto.getStateMessage()==null ? " " : mpDto.getStateMessage() %><img class="fr inner1_message_x_img" src="img/x.png"></div>
 					<input style="display:none;" type="text" name="상태메세지" placeholder="상태 메세지" />
 				</div>
 				<div id="inner2">
@@ -331,28 +331,28 @@
 				<div id="inner3">
 					<table>
 						<tr>
-							<td><img src="../img/organizational.png"  class="inner3_img"></td>
+							<td><img src="img/organizational.png"  class="inner3_img"></td>
 							<td>
 								<div class="inner3_font"><%=mpDto.getPosition() %></div>
 								<input style="display:none;" class="inner3_td_box" type="text" name="직책" placeholder="직책" />
 							</td>
 						</tr>
 						<tr>
-							<td><img src="../img/gift_grey.png" class="inner3_img"></td>
+							<td><img src="img/gift_grey.png" class="inner3_img"></td>
 							<td>
 								<div class="inner3_font"><%=mpDto.getBirth().split(" ")[0].replace("-",".") %></div>
 								<input style="display:none;" class="inner3_td_box" type="text" name="생년월일" placeholder="생년월일" />
 							</td>
 						</tr>
 						<tr>
-							<td><img src="../img/phone_grey.png" class="inner3_img"></td>
+							<td><img src="img/phone_grey.png" class="inner3_img"></td>
 							<td>
 								<div class="inner3_font"><%=mpDto.getPhoneNumber() %></div>
 								<input style="display:none;" class="inner3_td_box" type="text" name="휴대전화" placeholder="휴대전화" />
 							</td>
 						</tr>
 						<tr>
-							<td><img src="../img/email_grey.png" class="inner3_img"></td>
+							<td><img src="img/email_grey.png" class="inner3_img"></td>
 							<td><div class="inner3_td_email">k97328aa@gmail.com</div></td>
 						</tr>
 					</table>

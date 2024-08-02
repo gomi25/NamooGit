@@ -19,7 +19,7 @@ public class AjaxMemberBookmarkOffServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");   // POST 방식에서 한글깨짐 방지. (request 사용 전에)
 		System.out.println("해제하고싶다.");
 		
