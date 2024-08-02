@@ -27,8 +27,9 @@ public class AjaxServiceTalkCreateServiceTalkroomServlet extends HttpServlet {
 		
 		
 		NamooServiceTalkDao talkroomDao = new NamooServiceTalkDao();
+		int talkroomIdx = 0;
 		try {
-			talkroomDao.createServiceTalkRoomByMemberIdx(loginMemberIdx);
+			talkroomIdx = talkroomDao.createServiceTalkRoomByMemberIdx(loginMemberIdx);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -36,6 +37,7 @@ public class AjaxServiceTalkCreateServiceTalkroomServlet extends HttpServlet {
 		PrintWriter writer = response.getWriter();
 		JSONObject jsonObj = new JSONObject();
 		jsonObj.put("result", "성공"); // 여러개 쓸 수 있음
+		jsonObj.put("service_talkroom_idx", talkroomIdx);
 		writer.print(jsonObj);
 	}
 }
