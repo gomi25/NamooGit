@@ -87,15 +87,16 @@ a{ text-decoration-line: none; color: inherit;}
 	border-right: 1px solid #E5E5E5;
 	background-color: #ffffff;
 }
-#div_side2 {	
+#project_div_side2 {	
 	width: 1657px;
 	height: 900px;
 	background-color: #ffffff;
 	overflow: hidden;
     overflow-y: scroll;
+    z-index: 10;
 }
 
-#div_side2::-webkit-scrollbar {
+#project_div_side2::-webkit-scrollbar {
     display: none;
 }
 #side2_header {
@@ -114,12 +115,12 @@ a{ text-decoration-line: none; color: inherit;}
 	width: 1686px;
 	padding: 0 30px;
 }
-#bookmark {
+#project_bookmark {
 	width: 1180px;
 	height: 200px;
 	margin: 0 auto;
 }
-#bookmark > div:nth-child(1) {
+#project_bookmark > div:nth-child(1) {
 	margin: 0 0 10px 10px;
     font-weight: 700;
     font-size: 16px;
