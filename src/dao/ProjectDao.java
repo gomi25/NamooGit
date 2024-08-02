@@ -304,6 +304,33 @@ public class ProjectDao {
 		 pstmt.close();
 		 conn.close();
 	 }
+	 
+	 public ArrayList<ProjectBookmarkDto> checkProjectName(int teamIdx) throws Exception {
+		    ArrayList<ProjectBookmarkDto> listRet = new ArrayList<>();
+		    String sql = "SELECT project_name"
+		                + " FROM project"
+		                + " WHERE team_idx = ?";
+
+		    Connection conn = getConnection();
+		    PreparedStatement pstmt = conn.prepareStatement(sql);
+		    pstmt.setInt(1, teamIdx);
+
+		    ResultSet rs = pstmt.executeQuery();
+		    while (rs.next()) {
+		        int projectIdx = rs.getInt("project_idx");
+		        String projectName = rs.getString("project_name");
+		        String color = rs.getString("color");
+		        int memberIdxFrom = rs.getInt("member_idx_from");
+		        int memberCount = rs.getInt("member_count");
+
+		        ProjectBookmarkDto dto = new ProjectBookmarkDto(projectIdx, projectName, color, memberIdxFrom, teamIdx, memberCount);
+		        listRet.add(dto);
+		    }
+		    rs.close();
+		    pstmt.close();
+		    conn.close();
+		    return listRet;
+		}
 	
 	
 	

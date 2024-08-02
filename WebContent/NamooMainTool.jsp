@@ -58,8 +58,11 @@
 	}
 	
 	// 프로젝트 리스트 가지고오기
-	ProjectDao projectDao = new ProjectDao();
-    ArrayList<ProjectNoBookmarkDto> projectNoBookmarkDto = projectDao.getAllProjectNoBookmark(memberIdx, teamIdx);
+	/* ProjectDao projectDao = new ProjectDao();
+	ArrayList<ProjectBookmarkDto> projectList = projectDao.checkProjectName(teamIdx); */
+	
+
+
 
 
 %>
@@ -330,14 +333,14 @@
 			<div>프로젝트</div>
 			<div class="ic_plus"></div>
 		</div>
-		<% for (ProjectNoBookmarkDto pDto : projectNoBookmarkDto) {	%>
-		<div id="div_project_list_body" project_idx="<%=pDto.getProjectIdx()%>">
+		<%-- <% for (ProjectBookmarkDto pbDto : projectList) {	%>
+		<div id="div_project_list_body" project_idx="<%=pbDto.getProjectIdx()%>">
 			<div class="main_tool_project_list">
 				<div class="ic_project_list fl"></div> 
-				<div class="ic_project_list_name"><%= pDto.getProjectName() %></div>
+				<div class="ic_project_list_name"><%= pbDto.getProjectName() %></div>
 			</div>
 		</div>
-		<% } %>
+		<% } %> --%>
 
 		
 		<!---------- 채팅방 목록 ---------->	
