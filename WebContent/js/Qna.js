@@ -77,7 +77,7 @@ $(function() {
 		//alert("qna_idx : " + qna_idx);
 		
 		$.ajax({
-		    url: '../UpdateQnaAnswerServlet', // 만들어둔 서블릿 파일 이름 적기
+		    url: 'UpdateQnaAnswerServlet', // 만들어둔 서블릿 파일 이름 적기
 		    data : {content : content, qna_idx : qna_idx},		// 받아놓은 파라미터
 			contentType: 'application/json; charset=utf-8',
 
@@ -97,7 +97,7 @@ $(function() {
 		let _this = $(this);
 		$.ajax({
 		    type: 'post',
-		    url: '../QnaAnswerDeleteServlet',
+		    url: 'QnaAnswerDeleteServlet',
 		    data: { answer_idx: answer_idx },
 		    success: function(response){
 			// [정리] $.ajax()의 success함수 안에서 $(this)를 못써!

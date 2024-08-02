@@ -364,7 +364,8 @@ body { margin: 0; overflow-y: hidden; }
 
 /* 토픽목록 및 채팅 목록 블럭*/
 #div_side1 > #div_topicroom_list_header,
-#div_side1 > #div_chatroom_list_header { 
+#div_side1 > #div_chatroom_list_header, 
+#div_side1 > #div_project_list_header{ 
 	height: 40px; 
 	position: relative; 
 	cursor: pointer;
@@ -372,7 +373,8 @@ body { margin: 0; overflow-y: hidden; }
 
 /* 토픽목록 및 채팅 목록 아래 화살표 ↓ */
 #div_side1 > #div_topicroom_list_header > div:nth-child(1),
-#div_side1 > #div_chatroom_list_header > div:nth-child(1) { 
+#div_side1 > #div_chatroom_list_header > div:nth-child(1),
+#div_side1 > #div_project_list_header > div:nth-child(1) { 
 	position: absolute; 
 	top: 16px;
     left: 13px;
@@ -384,7 +386,8 @@ body { margin: 0; overflow-y: hidden; }
 }
 
 #div_side1 > #div_topicroom_list_header > div:nth-child(2),
-#div_side1 > #div_chatroom_list_header > div:nth-child(2) { 
+#div_side1 > #div_chatroom_list_header > div:nth-child(2),
+#div_side1 > #div_project_list_header > div:nth-child(2) { 
 	position: absolute; 
 	top: 7px;
 	left: 28px;
@@ -438,7 +441,8 @@ body { margin: 0; overflow-y: hidden; }
 	cursor: pointer;
 }
 #div_side1 > #div_topicroom_list_header > .ic_plus,
-#div_side1 > #div_chatroom_list_header > .ic_plus { 
+#div_side1 > #div_chatroom_list_header > .ic_plus,
+#div_side1 > #div_project_list_header > .ic_plus { 
 	position: absolute; 
 	top: 10px;
     right: 15px;
@@ -540,6 +544,7 @@ body { margin: 0; overflow-y: hidden; }
 	background-size: 100%;
 	filter: invert(65%) sepia(6%) saturate(9%) hue-rotate(314deg) brightness(102%) contrast(82%);	
 }
+
 .ic_topic_folder_close {
 	margin: 7px;
 	width: 15px;
@@ -686,10 +691,29 @@ body { margin: 0; overflow-y: hidden; }
     margin-bottom: 2px;
     height: 190px;
     width: 262px;
+    padding: 4px;
     overflow-y: scroll;
 }
 #div_side1 > #div_project_list_body::-webkit-scrollbar {
     display: none;
+}
+.main_tool_project_list {
+	padding: 4px 0;
+}
+.ic_project_list {
+	margin: 7px;
+	width: 15px;
+	height: 15px;
+	background-image: url("https://cdn-icons-png.flaticon.com/512/3832/3832401.png");
+	background-size: 100%;
+	filter: invert(65%) sepia(6%) saturate(9%) hue-rotate(314deg) brightness(102%) contrast(82%);
+}
+.ic_project_list_name {
+    color: #333;
+    max-width: 133px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 

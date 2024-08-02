@@ -10,16 +10,18 @@
 <body>
 	<%
 	int teamIdx = 1;   	// 테스트 
-	int loginMemberIdx = 2;	  	// 테스트 
 	
     String project_name = request.getParameter("project_name");
-	int color_select = Integer.parseInt(request.getParameter("color_select"));
+	int colorSelect = Integer.parseInt(request.getParameter("color_select"));
+	//int loginMemberIdx = Integer.parseInt(request.getParameter("writer"));
+	
+	int loginMemberIdx = 2;	  	// 테스트 
 
     
     
     try {
         ProjectDao pDao = new ProjectDao();
-        int projectIdx = pDao.createProject( project_name, teamIdx, color_select );
+        int projectIdx = pDao.createProject( project_name, teamIdx, colorSelect, loginMemberIdx );
         pDao.addProjectMember(loginMemberIdx, projectIdx);
         
        /*request.setAttribute("memberIdx", memberIdx);
