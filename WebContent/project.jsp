@@ -4,6 +4,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
+
+
+
 	// 즐겨찾기 프로젝트
 	/*int memberIdxFrom = 2; // 테스트
 	int teamIdx = 1; // 테스트

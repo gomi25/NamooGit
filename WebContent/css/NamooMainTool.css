@@ -373,8 +373,7 @@ body { margin: 0; overflow-y: hidden; }
 
 /* 토픽목록 및 채팅 목록 아래 화살표 ↓ */
 #div_side1 > #div_topicroom_list_header > div:nth-child(1),
-#div_side1 > #div_chatroom_list_header > div:nth-child(1),
-#div_side1 > #div_project_list_header > div:nth-child(1) { 
+#div_side1 > #div_chatroom_list_header > div:nth-child(1) { 
 	position: absolute; 
 	top: 16px;
     left: 13px;
