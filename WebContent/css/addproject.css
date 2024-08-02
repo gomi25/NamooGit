@@ -100,15 +100,16 @@ body {
 #div_side1 > div:not(:first-child) { border-top: 1px solid #E5E5E5; }
 	
 
-
-
-
-
 #addproject {
 	width: 594px;
 	margin-left: 90px;
 	margin-top: 180px;
-	
+}
+#addproject > div:nth-child(1) {
+	font-size: 22px;
+    font-weight: 700;
+    margin-left: 3px;
+    margin-bottom: 12px;
 }
 
 #project_name > input {
