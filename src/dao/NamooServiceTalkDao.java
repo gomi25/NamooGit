@@ -144,10 +144,12 @@ public class NamooServiceTalkDao {
 //		return listRet;
 //	}
 	// 서비스 톡방 : 메시지 입력
+	// memberIdx 파라미터 : 0 이면 관리자가 말한 거.
+	// memberIdx 파라미터 : 1 이면 고갱이 말한 거고.
 	public void serviceTalkSendMessage(int serviceTalkroomIdx, int memberIdx, String message) throws Exception{
 		Connection conn = getConnection();
 		String sql = "INSERT INTO service_talk(service_talk_idx, service_talkroom_idx, member_idx, message, talk_date, read)" + 
-					"VALUES(service_talk_seq.nextval, ?, ?, ?, sysdate, 1)";
+					" VALUES(seq_service_talk.nextval, ?, ?, ?, sysdate, 1)";
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, serviceTalkroomIdx);
 		pstmt.setInt(2, memberIdx);
@@ -166,7 +168,7 @@ public class NamooServiceTalkDao {
 //		
 //		
 //	}
-// 서비스톡방 : 방 나가기	
+	// 서비스톡방 : 방 나가기	
 	public void deleteServiceTalkRoom(int serviceTalkroomIdx) throws Exception{
 		Connection conn = getConnection();
 		String sql = "DELETE FROM service_talkroom" + 
@@ -210,7 +212,7 @@ public class NamooServiceTalkDao {
 		System.out.println(memberIdx);
 		String[] arr = { "service_talkroom_idx" };
 		String sql = "INSERT INTO service_talkroom(service_talkroom_idx, member_idx)" 
-				 	+ "VALUES(SERVICE_TALKROOM_SEQ.nextval,?)";
+				 	+ "VALUES(SEQ_SERVICE_TALKROOM.nextval,?)";
 		Connection conn = getConnection();
 		PreparedStatement pstmt = conn.prepareStatement(sql, arr);
 		pstmt.setInt(1, memberIdx);
@@ -223,26 +225,6 @@ public class NamooServiceTalkDao {
 		pstmt.close();
 		conn.close();
 		return ret;
-	}
-	public int countTalkroomByMemberIdx(int memberIdx) throws Exception{
-		Connection conn = getConnection();
-		String sql = "SELECT COUNT(*)FROM service_talkroom "
-					+ "WHERE member_idx=?";
-		
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setInt(1, memberIdx);
-		
-		
-		ResultSet rs = pstmt.executeQuery();
-		int result = -1;
-		if(rs.next()){
-			result = rs.getInt(1);
-		}
-		rs.close();
-		pstmt.close();
-		conn.close();
-		
-		return result;
 	}
 }
 

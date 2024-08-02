@@ -12,12 +12,18 @@
 	//int loginMemberIdx = 5;
 	int serviceTalkroomIdx = 0;
 	
+String paramMidx = request.getParameter("midx");
+if(paramMidx != null) {
+	memberIdx = Integer.parseInt(paramMidx);
+}
+	
 	if(request.getParameter("service_talkroom_idx") != null) {   // 이해 : 파라미터 'service_talkroom_idx'라는 게 있으면.
 		serviceTalkroomIdx = Integer.parseInt(request.getParameter("service_talkroom_idx"));
 	}
 	NamooServiceTalkDao nDao = new NamooServiceTalkDao();
 	ArrayList<ServiceTalkContentDto> serviceTalkListDto = nDao.serviceTalkShowTalKroom();
 	ArrayList<ServiceTalkContentDto> serviceTalkContentDto = nDao.serviceTalkShoWTalkContent(serviceTalkroomIdx);
+	int gogangMemberIdx = nDao.getMemberIdxByServiceTalkroomIdx(serviceTalkroomIdx);
 	
 	NamooMemberDao memberDao = new NamooMemberDao();
 	MemberImageDto miDto = null;
@@ -39,6 +45,115 @@
 	<link rel="stylesheet" href="css/NamooServiceTalk.css"/>
 	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 	<script src="${pageContext.request.contextPath}/js/NamooServiceTalk.js"></script>
+	<script>
+		function func_on_message(e){
+			//$("#div_message").append("<p class='chat'>" + e.data + "</p>");
+			//alert("도착한 메시지 : " + e.data);
+
+			let raw_msg = e.data;   // chat||5||1||0||나무에게
+			if(!raw_msg.startsWith('chat')) {
+				return;
+			}
+			let msg_talkroom_idx = raw_msg.split("///")[1];
+			if(msg_talkroom_idx != <%=serviceTalkroomIdx%>) {
+				return;
+			}
+			let msg_from = raw_msg.split("///")[2];
+			let msg_to = raw_msg.split("///")[3];
+			let msg_msg = raw_msg.split("///")[4];
+			//alert("내가 받은 나한테 온 메시지 : " + msg_msg);
+			
+			let left_msg = '<div class="div_talk_time">오후 1:34 </div>'
+						+ '<div class="div_talk_left">'
+						+ '	<!-- 프사 -->'
+						+ '	<div class="fl"><div class="profile"></div></div>'
+						+ '	<div class="talk_area fl">'
+						+ '		<!-- 이름 -->'
+						+ '		<div class="left_name">NAMOO🌳</div>'
+						+ '		<!-- 내용 -->'
+						+ '		<div class="left_talk">'
+						+ 			msg_msg
+						+ '		</div>'
+						+ '	</div>'
+						+ '</div>';
+			let right_msg = '<div class="div_talk_right">'
+						+ '	<div class="talk_area fr">'
+						+ '		<div class="right_talk fr">'
+						+ 			msg_msg
+						+ '		</div>'
+						+ '	</div>'
+						+ '</div>';
+
+			// #service_talk_body 에 append 해.
+			if(msg_from==0)
+				$("#service_talk_body").append(left_msg);
+			else
+				$("#service_talk_body").append(right_msg);
+
+			//$("#service_talk_body").scrollBottom(); (X)
+			$("#service_talk_body").animate({ scrollTop: $('#service_talk_body').prop("scrollHeight")}, 1000);
+			
+		}
+		function func_on_open(e){
+			//$("#div_message").append("<p class='chat'> 채팅에 참여하였습니다.</p>");
+			alert("웹소켓 접속함.");
+		}
+		function func_on_error(e){
+			alert("Error!");
+		}
+		let webSocket = new WebSocket("ws://localhost:9092/NamooGit2/broadcasting");
+		webSocket.onmessage = func_on_message;
+		webSocket.onopen = func_on_open;
+		webSocket.onerror = func_on_error;
+	
+		$(function() {
+			$("label[for='send_massage'] > div").click(function() {
+				//누가 받아야 하는지
+				let from = <%=memberIdx%>;
+				let to = <%=(memberIdx==0 ? gogangMemberIdx : 0)%>;
+				let msg = $(this).parent().prev().prev().val();
+				let talkroom_idx = <%=serviceTalkroomIdx%>;
+				let str = "chat///" + talkroom_idx + "///" + from + "///" + to + "///" + msg;
+				webSocket.send(str);  // "talkroom_idx||from||to||msg"의 형식으로 보내기로.
+				$(this).parent().prev().prev().val("");
+
+				let left_msg = '<div class="div_talk_time">오후 1:34 </div>'
+							+ '<div class="div_talk_left">'
+							+ '	<!-- 프사 -->'
+							+ '	<div class="fl"><div class="profile"></div></div>'
+							+ '	<div class="talk_area fl">'
+							+ '		<!-- 이름 -->'
+							+ '		<div class="left_name">NAMOO🌳</div>'
+							+ '		<!-- 내용 -->'
+							+ '		<div class="left_talk">'
+							+ 			msg
+							+ '		</div>'
+							+ '	</div>'
+							+ '</div>';
+				let right_msg = '<div class="div_talk_right">'
+							+ '	<div class="talk_area fr">'
+							+ '		<div class="right_talk fr">'
+							+ 			msg
+							+ '		</div>'
+							+ '	</div>'
+							+ '</div>';
+				// #service_talk_body 에 append 해.
+				if(from==0)
+					$("#service_talk_body").append(left_msg);
+				else
+					$("#service_talk_body").append(right_msg);
+
+				//$("#service_talk_body").scrollBottom(); (X)
+				$("#service_talk_body").animate({ scrollTop: $('#service_talk_body').prop("scrollHeight")}, 1000);
+				
+			});
+			$("input[type='text']").keyup(function(e){
+				if(e.keyCode==13) {
+					$("label[for='send_massage'] > div").trigger('click');
+				}
+			});
+		});
+	</script>
 </head>
 <body>
 <h1> 로그인 memberIdx=<%=memberIdx %> 인 상태.</h1>
@@ -159,7 +274,7 @@
 					</div>
 				</div>
 			<% } %>
-			<script>alert("serviceTalkContentDto.size() : <%=serviceTalkContentDto.size()%>");</script>
+			<%-- <script>alert("serviceTalkContentDto.size() : <%=serviceTalkContentDto.size()%>");</script> --%>
 			<% if(request.getParameter("service_talkroom_idx") != null) { %>
 				<% for( ServiceTalkContentDto cDto : serviceTalkContentDto ) { %>
 					<!-- 서비스톡 바디: 왼쪽 톡 -->
@@ -191,17 +306,15 @@
 				<% } %>
 			<% } %>
 		</div>
-		<form action="">
-			<div id="service_talk_footer">
-				<div>
-					<input type="text" placeholder="메시지를 입력하세요...">
-					<input type="submit" name="send" id="send_massage">
-					<label for="send_massage">
-						<div></div>
-					</label>
-				</div>
+		<div id="service_talk_footer">
+			<div>
+				<input type="text" placeholder="메시지를 입력하세요...">
+				<input type="submit" name="send" id="send_massage">
+				<label for="send_massage">
+					<div></div>
+				</label>
 			</div>
-		</form>
+		</div>
 	  </div><!-- 바디 영역 끝 -->
 	<!-- 서비스톡 푸터: 입력칸 -->
 	</div><!-- 서비스 톡영역 끝 -->
