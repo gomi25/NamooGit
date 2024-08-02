@@ -162,7 +162,7 @@
 					<img class="fl" src="<%=bmDto.getProfilePicUrl()%>"/>
 					<div class="fl member1_detail member_name">
 						<div id="name" class="fl"><%=bmDto.getMemberName()%></div> 
-						<div id="state"><%=bmDto.getState()==null ? " " : bmDto.getState()%></div>
+						<div id="state"><%=bmDto.getState()==null ? " " : "&nbsp-" + bmDto.getState()%></div>
 					</div>
 					<div class="fr bookmark_img"><img src="https://flow.team/flow-renewal/assets/images/icons/icon_star_on.png?v=ca949083bd3e2d74e7125167485cff818959483a"></div>
 					<div class="fl member1_detail">
@@ -181,7 +181,7 @@
 					<img class="fl" src="<%=omDto.getProfilePicUrl()%>"/>
 					<div class="fl member1_detail member_name">
 						<div id="name" class="fl"><%=omDto.getMemberName()%></div> 
-						<div id="state"><%=omDto.getState()==null ? " " : omDto.getState()%></div>
+						<div id="state"><%=omDto.getState()==null ? " " : "&nbsp-" + omDto.getState()%></div>
 					</div>
 					<% if (omDto.getMemberIdx() != loginMemberIdx ) { %> 
 					
@@ -203,6 +203,7 @@
 					<div id="message" class="fl member1_detail"><%=omDto.getStateMessage()==null ? " " : omDto.getStateMessage()%></div>
 				</div>
 				<% } %>
+				
 			</div>
 		</div>
 		
@@ -237,7 +238,7 @@
 				<img class="fl" src="<%=omDto.getProfilePicUrl()%>"/>
 				<div class="fl member1_detail member_name">
 					<div id="name" class="fl"><%=omDto.getMemberName()%></div> 
-					<div id="state"><%=omDto.getState()==null ? " " : omDto.getState()%></div>
+					<div id="state"><%=omDto.getState()==null ? " " : "&nbsp-" + omDto.getState()%></div>
 				</div>
 				<% if (omDto.getMemberIdx() != loginMemberIdx ) { %>
 	        	<% if ("Y".equals(omDto.getBookmarkMember())) { %>
@@ -306,16 +307,22 @@
 		<!-- 로그인 멤버 상세 프로필 -->
 	 	<% for (MemberProfileDto mpDto : memberProfile) { %>
 		<% if (mpDto.getMemberIdx() == loginMemberIdx ) { %> 
-			<div id="loginmember_profile_container" class="border ab" >
+			<div id="loginmember_profile_container" class="ab" member_idx="<%=loginMemberIdx%>" style="display: none;">
 				<div id="profile_image" class="re">
-					<img src="../img/character_1.png">
+					<img src="<%=mpDto.getProfilePicUrl()%>">
 					<div id="member_positon" class="ab"><em><%=mpDto.getPower() %></em></div>
 					<div id="member_name" class="ab"><p><%=mpDto.getMemberName() %></p></div>
 				</div>
 				
 				<div id="inner1">
-					<input type="text" name="상태설정" placeholder="상태설정" />
-					<input type="text" name="상태메세지" placeholder="상태 메세지" />
+					<%if(mpDto.getState()!=null) { %>
+					<div class="member_inner1_state"><%=mpDto.getState() %><img class="fr inner1_state_x_img" src="../img/x.png"></div>
+					<% } %> 
+					<%if(mpDto.getState() == null) { %>
+					<input class="status_input" type="text" name="상태설정" placeholder="상태설정" /> 
+					<% } %> 
+					<div class="member_inner1_message"><%=mpDto.getStateMessage()==null ? " " : mpDto.getStateMessage() %><img class="fr inner1_message_x_img" src="../img/x.png"></div>
+					<input style="display:none;" type="text" name="상태메세지" placeholder="상태 메세지" />
 				</div>
 				<div id="inner2">
 					<button class="inner2_button"><div>@멘션 확인하기</div></button>
@@ -325,15 +332,24 @@
 					<table>
 						<tr>
 							<td><img src="../img/organizational.png"  class="inner3_img"></td>
-							<td><input class="inner3_td_box" type="text" name="직책" placeholder="직책" /></td>
+							<td>
+								<div class="inner3_font"><%=mpDto.getPosition() %></div>
+								<input style="display:none;" class="inner3_td_box" type="text" name="직책" placeholder="직책" />
+							</td>
 						</tr>
 						<tr>
 							<td><img src="../img/gift_grey.png" class="inner3_img"></td>
-							<td><input class="inner3_td_box" type="text" name="생년월일" placeholder="생년월일" /></td>
+							<td>
+								<div class="inner3_font"><%=mpDto.getBirth().split(" ")[0].replace("-",".") %></div>
+								<input style="display:none;" class="inner3_td_box" type="text" name="생년월일" placeholder="생년월일" />
+							</td>
 						</tr>
 						<tr>
 							<td><img src="../img/phone_grey.png" class="inner3_img"></td>
-							<td><input class="inner3_td_box" type="text" name="휴대전화" placeholder="휴대전화" /></td>
+							<td>
+								<div class="inner3_font"><%=mpDto.getPhoneNumber() %></div>
+								<input style="display:none;" class="inner3_td_box" type="text" name="휴대전화" placeholder="휴대전화" />
+							</td>
 						</tr>
 						<tr>
 							<td><img src="../img/email_grey.png" class="inner3_img"></td>
