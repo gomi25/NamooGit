@@ -79,7 +79,7 @@ $(function(){
         //});
 		profileContainer.show();
 	});
-	
+	// 프로필 숨기기
 	$("#div_transparent_filter").click(function() {
 		$("#div_transparent_filter").css('display','none');
 		$(".member_profile_container").hide();
