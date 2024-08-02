@@ -97,7 +97,6 @@ public class SideDao {
 	}
 	
 	
-	
 
 //	-- 1. 특정 member_idx의 '폴더' 리스트:
 //		-- INPUT : member_idx, team_idx

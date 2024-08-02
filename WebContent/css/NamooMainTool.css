@@ -7,6 +7,15 @@
 .fr { float: right; }
 body { margin: 0; overflow-y: hidden; }
 
+
+.div_side2_container {
+/* 	display: none; */
+    background: url(https://cdn.jandi.com/app/assets/images/sticker/c768526b.odaeri_entry.png);
+    width: 570px;
+    height: 500px;
+    margin: 180px auto;
+}
+
 .scrollbar::-webkit-scrollbar {
     width: 7px;  
     height: 7px;

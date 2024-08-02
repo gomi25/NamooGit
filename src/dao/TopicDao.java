@@ -436,7 +436,7 @@ public class TopicDao {
 		return listRet;
 	}
 	
-	//  *******토픽글의 안 읽은 사람수 조회*******	
+	//  *******토픽글의 안 읽은 사람수 데이터 추가*******	
 	//  파라미터: 토픽글idx, 작성자 제외 안 읽은 사람들의 idx 
 	public void addUnreadMember(int topicBoardIdx, int[] memberIdxArray) throws Exception {
 		Connection conn = null;
@@ -462,7 +462,8 @@ public class TopicDao {
 		}
 	}
 	
-	/* 내용 추가 테스트 중 */
+	//  *******토픽글의 안 읽은 사람수 조회*******	
+	//  파라미터: 토픽글idx, 작성자 제외 안 읽은 사람들의 idx 
 	public List<Integer> getTopicMembersExceptAuthor(int topicIdx, int authorIdx) throws Exception {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;

@@ -1,4 +1,14 @@
 
+	//===================================== div_header =====================================			
+	$(function() {
+		$("#div_logo").click(function() {
+			location.href = context_path + "/NamooMainTool.jsp";
+		});
+		$("#pop_up_header_setting > div:nth-child(4)").click(function() {
+			location.href = context_path + "/NamooMainTool.jsp";
+		});
+	});		
+	
 	$(function() {
 		// [멤버 초대하기] '클릭' 시 팝업창 뜨도록
 		$("#div_title > div:nth-child(2) > div:nth-child(2)").click(function() {
@@ -131,7 +141,7 @@
 	            selectedMembers.push($(this).attr("member_idx"));
 	        });
 			console.log("현재 선택된 멤버: ", selectedMembers);
-	        $("#selected_members").val(selectledMembers.join(","));
+	        $("#selected_members").val(selectedMembers.join(","));
 			$(".count_memeber").text(selectedMembers.length);     
 		}	
 
@@ -156,33 +166,6 @@
 	    updateSelectedMembers();
 	});
 
-//let count = 0;
-//$(document).ready(function(){
-//    count = $("#start_choice .choice_member").length;
-//    $(".count_memeber").text(count);
-//});
-
-
-
-//	function insert_here(insert_name) {
-//		let idx_found = -1;
-//		$(".div_member_list2").each(function(idx, item) {
-//			let name = $(item).find(".profile_name").text().trim();  // hoxy : trim()
-//			if(insert_name > name) {
-//				console.log(insert_name+ "이(가) " + name + "보다 큼. 히히.")
-//				idx_found = idx;
-//			}
-//		});
-//		if(idx_found==-1)
-//			return null;
-//		return $(".div_member_list2").eq(idx_found);
-//	}
-	
-
-	
-
-	
-	
 	
 //=====================================댓글 모두 보기 클릭=====================================			
 	$(function() {
@@ -317,10 +300,7 @@
 			$("#div_topic_openlist").css('display','block');
 			$("#div_grey_filter").css('display','block');
 		});
-//			$("#div_grey_filter").click(function() {
-//				$("#div_topic_openlist").css('display','none');
-//				$("#div_grey_filter").css('display','none');
-//			});	
+		
 		$("#div_topic_openlist .exit").click(function() {
 			$("#div_topic_openlist").css('display','none');
 			$("#div_grey_filter").css('display','none');
@@ -626,7 +606,6 @@
 		        $('#new_topic_create').removeClass('green_light');
 		    }
 		}
-		
 		$('#input_new_topic_name').on('input', toggleCreateTopicButton);
 		$('input[name="topic_open"]').on('change', toggleCreateTopicButton);	
 
@@ -745,11 +724,84 @@
 	});		
 	
 	// 채팅목록의 '+' 버튼 클릭 시 "채팅 시작하기" 팝업창 뜸
-	$(function(){
-		$("#div_chatroom_list_header > .ic_plus").click(function(){
-			$("#div_new_chat_start").show();
-		});
+	$(function() {				
+			// 채팅 시작하기(채팅방 생성) '클릭' 시 팝업창 뜨도록
+			$("#div_chatroom_list_header > .ic_plus").click(function() {
+				$("#div_create_chatroom").css('display','block');
+				$("#div_grey_filter").css('display', 'block');
+			});
+			// 채팅 시작하기(채팅방 생성) 'x'클릭 시 팝업창 꺼지도록 
+			$("#div_create_chatroom > div:nth-child(1) > .exit").click(function(){
+				$("#div_create_chatroom").css('display', 'none');
+				$("#div_grey_filter").css('display', 'none');
+			});
+			$("#div_create_chatroom > div:nth-child(3) > button:nth-child(2)").click(function() {
+				$("#div_create_chatroom").css('display', 'none');
+				$("#div_grey_filter").css('display', 'none');
+			});
 	});	
+	
+	$(function() {			
+		// [채팅방 생성] 채팅방 이름 입력 시 글자수 체크 및 글자수 제한
+		$("#div_create_chatroom input[name='name']").keyup(function() {
+		    let name = $(this).val();
+		
+		    // 글자수 세기
+		    if (name.length == 0 || name == '') {
+		        $("#div_create_chatroom > div:nth-child(2) > div:nth-child(1) > .text_current_value").text('0');
+		    } else {
+		        $("#div_create_chatroom > div:nth-child(2) > div:nth-child(1) > .text_current_value").text(name.length);
+		    }
+		
+		    // 글자수 제한
+		    if (name.length > 60) {
+		        $(this).val($(this).val().substring(0, 60));
+		        alert('이름은 60자까지 입력이 가능합니다.');
+		    }
+		});
+		
+		// [채팅방 생성] 채팅방 설명 입력 시 글자수 체크 및 글자수 제한
+		$("#div_create_chatroom textarea[name='info']").keyup(function() {
+		    let info = $(this).val();
+		
+		    // 글자수 세기
+		    if (info.length == 0 || info == '') {
+		        $("#div_create_chatroom > div:nth-child(2) > div:nth-child(2) > .text_current_value").text('0');
+		    } else {
+		        $("#div_create_chatroom > div:nth-child(2) > div:nth-child(2) > .text_current_value").text(info.length);
+		    }
+		
+		    // 글자수 제한
+		    if (info.length > 300) {
+		        $(this).val($(this).val().substring(0, 300));
+		        alert('설명은 300자까지 입력이 가능합니다.');
+		    }
+		});
+		
+		// [채팅방 생성] 채팅방 이름, 설명 입력 시 [생성하기] 버튼 활성화
+		function toggleCreateChatroomButton() {
+		    const chatroomName = $('#div_create_chatroom #input_name').val().trim();
+		    const chatroomInfo = $('#div_create_chatroom #textarea_info').val().trim();
+		
+		    if (chatroomName.length > 0 && chatroomInfo.length > 0) {
+				console.log("Button enabled");
+		        $('#btn_create_chatroom').addClass('green_light');
+		    } else {
+				console.log("Button disabled");
+		        $('#btn_create_chatroom').removeClass('green_light');
+		    }
+		}
+		$('#div_create_chatroom #input_name').on('input', toggleCreateChatroomButton);
+		$('#div_create_chatroom #textarea_info').on('input', toggleCreateChatroomButton);
+	});		
+	
+	
+	
+	
+	
+	
+	
+	
 
 /****************************** 목록의 즐겨찾기 ******************************/		
 	// 토픽 목록에 [즐겨찾기] 아이콘 클릭 시 즐겨찾기 등록 및 해제

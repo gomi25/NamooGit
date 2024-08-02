@@ -1,28 +1,3 @@
-	//		$(".div_member_list2").each(function(idx, item) {
-	//			alert(idx + " : " + $(item).find(".profile_name").text());
-	//		});			
-	//		let doo = $(".div_member_list2").eq(0).find(".profile_name").text();
-	//		let se = $(".div_member_list2").eq(1).find(".profile_name").text();
-	//		alert(doo + " , " + se);
-
-		
-	//=====================================댓글 모두 보기 클릭=====================================			
-		$(function() {
-			// x 클릭 시 #div_side_message 사라지고 기존 화면대로 돌아감
-			$("#div_side_msg_header .exit").click(function() {
-				$("#div_side_message").css('display','none');
-				$("#div_side2").addClass('wide');
-				$("#div_msg_box").addClass('wide');
-			});
-			// 댓글 모두 보기 클릭 시 사이드에 메시지창 생김
-			$(".comment_count span").click(function() {
-				$("#div_side_message").css('display','block');
-				$("#div_side2").removeClass('wide');
-				$("#div_msg_box").removeClass('wide');
-				let chatIdx = $(this).parents(".chat_comment_message").attr("chat_idx");
-				$("#div_side_message").find("#div_side_content").attr('chat_idx', chatIdx);
-			});
-		});
 	
 	//===================================== div_header =====================================			
 	$(function() {
@@ -32,7 +7,6 @@
 		$("#pop_up_header_setting > div:nth-child(4)").click(function() {
 			location.href = context_path + "/NamooMainTool.jsp";
 		});
-		
 	});		
 	
 	$(function() {		
@@ -146,7 +120,7 @@
 			$("#div_topic_plus").css('display','none');
 			$("#div_transparent_filter").css('display','none');
 		});	
-		
+			
 		// 토픽 '+버튼' 클릭 -> 참여 가능한 토픽 보기 클릭 시
 		$("#div_topic_plus > div:nth-child(3)").click(function() {
 			$("#div_topic_plus").css('display','none');
@@ -179,6 +153,7 @@
 				url : "AjaxCreateTopicFolderServlet",
 				data : params,
 				success : function(res) {
+					alert("성공!");
 					let str = 
 					  '<div class="topic_folder">'
 					+ '	<div class="div_folder_item" topicFolderIdx="' + res.topicFolderIdx +'">'  
