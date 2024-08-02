@@ -24,20 +24,42 @@
 			});
 			/* 확인버튼 눌렀을 때 이메일 발송창 뜨게 */
 			$("#div_find_password_body > div:nth-child(3) > div:nth-child(1)").click(function() { 
-				let user_email = $("user_email").val;
+				let user_email = $("#user_email").val();
+				//alert(user_email);
 				if(user_email.length < 2){
 					$("#user_email").css('border','1px solid red');
 					return false;
 				}
-				return true;		
 				$("#user_email").css('border','1px solid #e0e4ed');
 				$("#div_find_password").css('display', 'none');
 				$("#div_send_email").css('display', 'block');
+				
+				let params = {
+					emailTo: user_email,
+					nameTo: '고객님',
+					subject: '나무 비밀번호 안내메일 제목'
+				};
+				
+				$.ajax({
+					type: "post",
+				    url: 'AjaxSendEmailServlet', // 만들어둔 서블릿 파일 이름 적기
+				    data : params,		// 받아놓은 파라미터
+				    success: function (data) {
+				    	alert("메일이 발송되었습니다.");
+				    },
+				    error: function (data, status, err) {
+						alert("error.");
+				    }
+				});
+
+				
+				return true;		
 			});
 			/* 확인버튼 눌렀을 때 모든 창 꺼지기 */
 			$("#div_send_email > div:nth-child(2) input").click(function() { 
 				$("#div_send_email").css('display', 'none');
 				$("#grey_screen").css('display', 'none');
+				
 			});
 			
 			$("#user_email").keyup(function() {
@@ -97,7 +119,7 @@
 			<div id="div_signup">
 				<div>
 					<div class="fl">나무가 처음이신가요?</div>
-					<div class="fl"><a href="Signup1.jsp">회원가입</a></div>
+					<div class="fl"><a href="Signup1.html">회원가입</a></div>
 				</div>
 			</div>
 		</div>

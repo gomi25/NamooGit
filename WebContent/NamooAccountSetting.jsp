@@ -5,6 +5,14 @@
 <% 
 	NamooMemberDao memberDao = new NamooMemberDao();
 	int memberIdx = 3;   // TODO : 나중에 세션에서 읽어오는 걸로 변경해야.
+	//파일 올리기 앞 뒤 주소창 붙이기
+	String strProfileImgUrl = memberDao.showProfilePic(memberIdx);
+	if(strProfileImgUrl != null && 
+			(!strProfileImgUrl.startsWith("http://") && 
+			 !strProfileImgUrl.startsWith("https://"))) {
+		// DB에 있는 imgUrl이 filename 이라는 것!
+		strProfileImgUrl = "upload/" + strProfileImgUrl;
+	}
 %>
 <!DOCTYPE html>
 <html>
@@ -15,6 +23,13 @@
 	<link rel="stylesheet" href="css/NamooAccountSetting.css"/>
 	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 	<script src="${pageContext.request.contextPath}/js/NamooAccountSetting.js"></script>
+	<script>
+		$(function() {
+			$("#pic_file").change(function() {
+				$("#form_upload").submit();
+			});
+		});
+	</script>
 </head>
 <body>
 	<div id="transparent_screen"></div>
@@ -32,8 +47,8 @@
 		</div>
 		<!-- 회원명 -->
 		<div id="div_member_name" class="fr">
-			<img src="https://jandi-box.com/assets/ic-profile.png">
-			<div>김현지</div>
+			<img src="<%=strProfileImgUrl%>">	
+			<div><%=memberDao.showName(memberIdx)%></div>
 		</div>
 	</div>
 	<!-------------------------- 바디  -------------------------->
@@ -47,24 +62,26 @@
 			<!----------------------- 세팅박스 영역 ----------------------->
 			<div id="div_setting_box2" member_idx="<%=memberIdx%>">
 				<!-- 프사 영역 -->			
-				<div id="div_profile_pic" >
-					<div class="fl">프로필 사진</div>
-					<div id="profile_pic" class="fl"><img src="<%=memberDao.showProfilePic(memberIdx)%>"></div>
-					<div id="select_pic" class="fl">
-						<div>
-							<label for="pic_file">
-								<div class="pic-upload">사진 올리기</div>
-							</label>
-							<input type="file" name="pic_file" id="pic_file">
-						</div>
-						<div>
-							<label for="resetImage">
-								<div class="default_profile">기본 이미지로 변경</div>
-							</label>
-							<input type="button" id="resetImage">
+				<form id="form_upload" action="AccountSettingUploadServlet" method="post" enctype="multipart/form-data">
+					<div id="div_profile_pic" >
+						<div class="fl">프로필 사진</div>
+						<div id="profile_pic" class="fl"><img src="<%=strProfileImgUrl%>"></div>
+						<div id="select_pic" class="fl">
+							<div>
+								<label for="pic_file">
+									<div class="pic-upload">사진 올리기</div>
+								</label>
+								<input type="file" name="pic_file" id="pic_file">
+							</div>
+							<div>
+								<label for="resetImage">
+									<div class="default_profile">기본 이미지로 변경</div>
+								</label>
+								<input type="button" id="resetImage">
+							</div>
 						</div>
 					</div>
-				</div>
+				</form>
 				<!-- 이름 영역 -->				
 				<div id="div_profile_name">
 					<div class="fl">이름</div>
@@ -115,7 +132,7 @@
 							<input type="password" name="check_password" required>
 						</div>
 						<div class="fl">취소</div>
-						<div class="fl chagepw" ><input type="button" value="확인" id="change_pw"></div>
+						<div class="fl" ><input type="button" value="확인" id="change_pw"></div>
 					</div>
 				</div>
 				<!-- 계정삭제 영역  -->				

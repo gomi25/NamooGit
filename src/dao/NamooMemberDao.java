@@ -62,7 +62,6 @@ public class NamooMemberDao {
 		int result = 0;
 		if(rs.next()) {
 			result = rs.getInt(1);
-			
 		}
 		
 		rs.close();
@@ -70,6 +69,24 @@ public class NamooMemberDao {
 		conn.close();
 		
 		return result == 1;
+	}
+	
+	public String getPwFromEmail(String email) throws Exception {
+		String sql = "SELECT pw FROM member WHERE email=?";
+		Connection conn = getConnection();
+		
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, email);
+		ResultSet rs = pstmt.executeQuery();
+		String ret = "";
+		if(rs.next()) {
+			ret = rs.getString("pw");
+		}
+		rs.close();
+		pstmt.close();
+		conn.close();
+		
+		return ret;
 	}
 /* ================================계정설정==================================== */
 /*_________________________________계정 표시____________________________________*/	
@@ -171,8 +188,8 @@ public class NamooMemberDao {
 	 // 파라미터 memberIdx : member_idx, profilePicUrl
 	public void accountSettingChangeProfilePic(int memberIdx, String profilePicUrl) throws Exception {
 		Connection conn = getConnection();
-		String sql = "Update member" + 
-				" profile_pic_url = ?" + 
+		String sql = "UPDATE member" + 
+				" SET profile_pic_url = ?" + 
 				" WHERE member_idx = ?"; 
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, profilePicUrl);
@@ -217,7 +234,7 @@ public class NamooMemberDao {
 	// 17. 비밀번호 변경 
 	// accountSettingChangePassword(String, int, String) : newPw, name, memberIdx 값을 받아서  이름 변경
 	// 파라미터 memberIdx : newPw, memberIdx, pw
-	public void accountSettingChangePassword(String newPw, int memberIdx, String pw) throws Exception {
+	public int accountSettingChangePassword(String newPw, int memberIdx, String pw) throws Exception {
 		Connection conn = getConnection();
 		String sql = "Update member" + 
 					" SET pw = ?" + 
@@ -227,10 +244,12 @@ public class NamooMemberDao {
 		pstmt.setString(1, newPw);
 		pstmt.setInt(2, memberIdx);
 		pstmt.setString(3, pw);
-		pstmt.executeUpdate();
+		int ret = pstmt.executeUpdate();	// 영향받은 행의 개수를 리턴함.
 		
 		pstmt.close();
 		conn.close();
+		
+		return ret;   // 1 : 성공, 0 : 실패
 	}
 
 	// 18. 계정 삭제 

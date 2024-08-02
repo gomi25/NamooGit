@@ -89,7 +89,7 @@ $(function(){
     	$("input[name='new_password']").val('');
     	$("input[name='check_password']").val('');
 	});
-	/* 비밀번호: 취소버튼 클릭시 원상복귀*/
+	/* 비밀번호: 취소버튼 클릭시 원상복귀 */
 	$("#div_change_password > div:nth-child(8)").click(function() { 
 		$("#div_change_password").css('display', 'none');
 		$("#div_password >div:nth-child(2)").css('display', 'block');
@@ -98,44 +98,53 @@ $(function(){
     	$("input[name='new_password']").val('');
     	$("input[name='check_password']").val('');
 	});
-	/*비밀번호가 일치하는지.*/
-	$(document).ready(function() {
-	    $('#change_pw').on('click', function() {
-	        let newPassword = $("input[name='new_password']").val();
-	        let checkPassword = $("input[name='check_password']").val();
 	
-	        if (newPassword !== checkPassword) {
-	            $("input[name='new_password']").css('border', '1px solid #e03703');
-	            $("input[name='check_password']").css('border', '1px solid #e03703');
-	            $("input[name='check_password']").val('');
-	            $("input[name='check_password']").attr('placeholder', '비밀번호가 일치하지 않습니다.');
-	        } else {
-				// 입력필드 초기화
-				$("input[name='current_password']").val('');
-            	$("input[name='new_password']").val('');
-            	$("input[name='check_password']").val('');
-				$("#div_change_password").css('display', 'none');
-				$("#div_password >div:nth-child(2)").css('display', 'block');
-				$("#div_password").height('70px');
-	            // 여기에 비밀번호가 일치하는 경우의 처리 로직을 추가
-	        }
-	    });
-	});
-	/* 비밀번호 :확인 버튼 클릭시 */
-	$(".chagepw").click(function() {
+	// input type text 에서 엔터키를 눌렀는지(keyup 관련) 확인 ---> #change_pw에 click 이벤트를 발생시켜요(trigger).
+    
+	$('#change_pw').on('click', function() {
+		/*비밀번호가 일치하는지.*/
+        let newPassword = $("input[name='new_password']").val();
+        let checkPassword = $("input[name='check_password']").val();
+
+        if (newPassword !== checkPassword) {
+            $("input[name='new_password']").css('border', '1px solid #e03703');
+            $("input[name='check_password']").css('border', '1px solid #e03703');
+            $("input[name='check_password']").val('');
+			$("input[name='new_password']").val('');
+            $("input[name='check_password']").attr('placeholder', '비밀번호가 일치하지 않습니다.');
+			return;
+        } 
+
+		/* 비밀번호 :확인 버튼 클릭시 비밀번호 변경*/
 		let current_pw = $(this).closest("#div_change_password").find("input[name='current_password']").val();
-		//alert("new_name : " + new_name);
+		alert("current_pw : " + current_pw);
 		let new_pw = $(this).closest("#div_change_password").find("input[name='new_password']").val();
-		//alert("new_name : " + new_name);
+		alert("new_pw : " + new_pw);
 		let member_idx = $(this).closest("#div_setting_box2").attr("member_idx");
 		//alert("member_idx : " + member_idx);
-		
+
+		// 입력필드 초기화
+		$("input[name='current_password']").val('');
+    	$("input[name='new_password']").val('');
+    	$("input[name='check_password']").val('');
+		$("#div_change_password").css('display', 'none');
+		$("#div_password >div:nth-child(2)").css('display', 'block');
+		$("#div_password").height('70px');
+        // 여기에 비밀번호가 일치하는 경우의 처리 로직을 추가
+
 		$.ajax({
+			type: 'get',
 		    url: 'AjaxAccountSettingPwServlet',
 		    data : {current_pw : current_pw, new_pw : new_pw, member_idx : member_idx},
 		    success: function (data) {
-				alert("SUCCESS!");
-				alert(data.result);  // 성공						
+				if(data.result==1) {
+					alert("SUCCESS!");
+					alert("변경된 pw = " + data.pw);  // 성공						
+				} else {
+					alert("변경실패!!!!!!!!!!!!!!!");
+				}
+				//console.log(data);
+				//alert(data.pw);
 		    },
 		    error: function (data, status, err) {
 				alert("error.");
