@@ -1,7 +1,9 @@
 @charset "UTF-8";
 
-
-* { box-sizing: border-box; }
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css); 
+* { 
+	box-sizing: border-box; 
+	font-family: Noto Sans KR, sans-serif !important;}
 .border { border: 1px solid red; }
 .fl { float: left; }
 .fr { float: right; }
