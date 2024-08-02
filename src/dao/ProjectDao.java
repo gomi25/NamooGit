@@ -119,7 +119,7 @@ public class ProjectDao {
 	// addProjectBookmark : 프로젝트 즐겨찾기(어떤 멤버가 즐겨찾기 했는지)
 	public void addProjectBookmark(int memberIdxFrom, int projectIdx) throws Exception {
 		Connection conn = getConnection();
-		String sql = "INSERT INTO BOOKMARK(bookmark_idx, member_idx_from, project_idx) VALUES(seq_bookmark_project.nextval, ?, ?)";
+		String sql = "INSERT INTO BOOKMARK(bookmark_idx, member_idx_from, project_idx) VALUES(seq_bookmark.nextval, ?, ?)";
 		   
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, memberIdxFrom);
@@ -284,7 +284,7 @@ public class ProjectDao {
 	 
 	 public void bookmarkOnProject(int memberIdx, int projectIdx) throws Exception {
 		 String sql = "INSERT INTO bookmark(bookmark_idx, member_idx_from, project_idx) " + 
-				 	"VALUES (seq_bookmark_project.nextval, ?, ?)";
+				 	"VALUES (seq_bookmark.nextval, ?, ?)";
 		 Connection conn = getConnection();
 		 PreparedStatement pstmt = conn.prepareStatement(sql);
 		 pstmt.setInt(1, memberIdx);

@@ -30,7 +30,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
-	<link rel="stylesheet" href="../css/Project.css"/>
+	<link rel="stylesheet" href="css/Project.css"/>
 	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 	<script>
 		let member_idx_from = <%=memberIdxFrom%>;
@@ -42,20 +42,20 @@
 		<div id="div_logo" class="fl"><img src="https://jandi-box.com/teams/0/logo.png?timestamp=20190628"/></div>
 		<div id="div_select_team" class="fl">
 			<span>7팀</span>
-			<img src="../img/img_icon_v.png"/>
+			<img src="img/img_icon_v.png"/>
 		</div>
-		<div id="div_menu3" class="fr"><img src="../img/img_icon_menu3.png"/></div>
+		<div id="div_menu3" class="fr"><img src="img/img_icon_menu3.png"/></div>
 		<div id="div_menu4" class="fr">
-			<img src="../img/img_icon_menu4.png"/>
-			<img src="../img/img_icon_v.png"/>
+			<img src="img/img_icon_menu4.png"/>
+			<img src="img/img_icon_v.png"/>
 		</div>
 		<div id="div_help" class="fr">
-			<img src="../img/img_icon_help.png"/>
+			<img src="img/img_icon_help.png"/>
 			<div class="on"></div>
 		</div>
-		<div id="div_search" class="fr"><img src="../img/img_icon_search.png"/></div>
-		<div id="div_hierarchy" class="fr"><img src="../img/img_icon_hierarchy.png"/></div>
-		<div id="div_notice" class="fr"><img src="../img/img_icon_notice.png"/></div>
+		<div id="div_search" class="fr"><img src="img/img_icon_search.png"/></div>
+		<div id="div_hierarchy" class="fr"><img src="img/img_icon_hierarchy.png"/></div>
+		<div id="div_notice" class="fr"><img src="img/img_icon_notice.png"/></div>
 	</div>
 	<div id="div_side1" class="fl">
 		
@@ -75,7 +75,7 @@
 					<div id="projectbox_color" style="background:<%= pbDto.getColor() %>;"></div>
 					<div><img class="yellow_star" src="https://flow.team/flow-renewal/assets/images/icons/icon_star_on.png?v=ca949083bd3e2d74e7125167485cff818959483a" /></div>
 					<div id="projectbox_name"><%= pbDto.getProjectName() %></div>
-					<div id="projectbox_people"><img src="../img/project_people.png"> <span><%= pbDto.getMemberCount() %></span></div>
+					<div id="projectbox_people"><img src="img/project_people.png"> <span><%= pbDto.getMemberCount() %></span></div>
 				</div>
 				<% } %>
 			</div>
@@ -87,7 +87,7 @@
 					<div id="projectbox_color" style="background:<%= pDto.getColor() %>;"></div>
 					<div class="star"></div>
 					<div id="projectbox_name"><%= pDto.getProjectName() %></div>
-					<div id="projectbox_people"><img src="../img/project_people.png"> <span><%= pDto.getProjectMemberCount() %></span></div>
+					<div id="projectbox_people"><img src="img/project_people.png"> <span><%= pDto.getProjectMemberCount() %></span></div>
 				</div>
 				<% } %>
 		</div>

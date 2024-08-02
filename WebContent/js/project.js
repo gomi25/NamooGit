@@ -2,12 +2,14 @@ $(function() {
 	$(document).on("click", ".star", function() {
 		let _this = $(this);
 		let project_idx = $(this).parent().attr("project_idx");
+		
 		$.ajax({
 			type: 'get',
-			url: '../AjaxBookmarkOnServlet',
-			data: { member_idx:member_idx_from, project_idx:project_idx },
+			url: 'AjaxBookmarkOnServlet',
+			data: { member_idx: member_idx_from, project_idx: project_idx },
 			success: function(response){
 				//alert(response.result);   // success
+				alert("즐겨찾기");
 				let clone_object = _this.parent().clone();
 				$("#bookmark").append(clone_object);  // 마지막 자식으로~
 				$("#bookmark > div:last-child .star").removeClass("star").html('<img class="yellow_star" src="https://flow.team/flow-renewal/assets/images/icons/icon_star_on.png?v=ca949083bd3e2d74e7125167485cff818959483a">');
@@ -23,8 +25,8 @@ $(function() {
 		let project_idx = $(this).parent().parent().attr("project_idx");
 		$.ajax({
 			type: 'get',
-			url: '../AjaxBookmarkOffServlet',
-			data: { member_idx:member_idx_from, project_idx:project_idx },
+			url: 'AjaxBookmarkOffServlet',
+			data: { member_idx: member_idx_from, project_idx: project_idx },
 			success: function(response){
 				//alert(response.result);   // success/
 				let clone_object = _this.parent().parent().clone();

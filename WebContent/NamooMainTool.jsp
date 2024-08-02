@@ -8,7 +8,7 @@
 
 <%
 	int memberIdx = 2;   // 테스트
-	int teamIdx = 1;     // 테스트
+	int teamIdx = 2;     // 테스트
 	
 	int cntUnreadTotal = 0; // 토픽방에서 안 읽은 메시지 전체 개수 
 	int cntOfTopic = 0;     // 토픽방 개수
@@ -56,6 +56,10 @@
 	for(ChatroomDto dto : listChatroom) {
 		cntChatTotalUnread += dto.getUnread();
 	}
+	
+	// 프로젝트 리스트 가지고오기
+	ProjectDao projectDao = new ProjectDao();
+    ArrayList<ProjectNoBookmarkDto> projectNoBookmarkDto = projectDao.getAllProjectNoBookmark(memberIdx, teamIdx);
 
 
 %>
@@ -322,10 +326,18 @@
 
 		<!---------- 프로젝트 목록 ---------->	
 		<div id="div_project_list_header">
+			<div></div>
+			<div>프로젝트</div>
+			<div class="ic_plus"></div>
 		</div>
-		
-		<div id="div_project_list_body">
+		<% for (ProjectNoBookmarkDto pDto : projectNoBookmarkDto) {	%>
+		<div id="div_project_list_body" project_idx="<%=pDto.getProjectIdx()%>">
+			<div class="main_tool_project_list">
+				<div class="ic_project_list fl"></div> 
+				<div class="ic_project_list_name"><%= pDto.getProjectName() %></div>
+			</div>
 		</div>
+		<% } %>
 
 		
 		<!---------- 채팅방 목록 ---------->	
