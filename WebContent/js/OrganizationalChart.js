@@ -119,7 +119,7 @@ $(function(){
 		let member_idx = $(this).parent().attr("member_idx");
 		$.ajax({
 			type: 'get',
-			url: '../AjaxMemberBookmarkOnServlet',
+			url: 'AjaxMemberBookmarkOnServlet',
 			data: { idx: member_idx, something: "member_idx_to"},
 			success: function(response){
 				//alert("즐겨찾기 성공");
@@ -144,7 +144,7 @@ $(function(){
 		let member_idx = $(this).parent().attr("member_idx");
 		$.ajax({
 			type: 'get',
-			url: '../AjaxMemberBookmarkOffServlet',
+			url: 'AjaxMemberBookmarkOffServlet',
 			data: { idx: member_idx, something: "member_idx_to"},
 			success: function(response){
 				//alert("즐겨찾기 해제");
@@ -179,7 +179,7 @@ $(function(){
 			};
 			$.ajax({
 				type: 'get',
-				url: '../AjaxLoginMemberProfileStateServlet',
+				url: 'AjaxLoginMemberProfileStateServlet',
 				data: params,
 				success: function(response){
 					alert("상태변경");
@@ -216,7 +216,7 @@ $(function(){
 				};
 				$.ajax({
 					type: 'get',
-					url: '../AjaxLoginMemberProfileStateServlet',
+					url: 'AjaxLoginMemberProfileStateServlet',
 					data: params,
 					success: function(response){
 						alert("상태변경");
