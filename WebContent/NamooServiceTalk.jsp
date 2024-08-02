@@ -101,7 +101,7 @@ if(paramMidx != null) {
 		function func_on_error(e){
 			alert("Error!");
 		}
-		let webSocket = new WebSocket("ws://localhost:9092/NamooGit2/broadcasting");
+		let webSocket = new WebSocket("ws://localhost:9092/NamooProject1112/broadcasting");
 		webSocket.onmessage = func_on_message;
 		webSocket.onopen = func_on_open;
 		webSocket.onerror = func_on_error;
@@ -321,15 +321,6 @@ if(paramMidx != null) {
 	<% } %>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
 
 
 
