@@ -3,6 +3,7 @@ package servlet;
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -39,45 +40,44 @@ public class ChatFileUploadServlet extends HttpServlet {
 		MultipartRequest multi = new MultipartRequest(
 										request, 	
 										path,		
-										100*1024*1024,	
+										100*1024*1024,		// MAX_UPLOAD_SIZE
 										"UTF-8",		
 										new DefaultFileRenamePolicy());
 		
+		String fileObject = null;
 		Enumeration<?> files = multi.getFileNames();
-		String fileObject = (String)files.nextElement();
-		String fileName = multi.getFilesystemName(fileObject);	// 서버에 저장된 파일 이름
-		String fileOriginalName = multi.getOriginalFileName(fileObject);  // 웹브라우저에서 선택한 파일 이름
-		long fileSize = 0;
+		if (files.hasMoreElements()) {
+            fileObject = (String) files.nextElement();
+        }
+		
+		String fileName = (fileObject != null) ? multi.getFilesystemName(fileObject) : null;
+        String fileOriginalName = (fileObject != null) ? multi.getOriginalFileName(fileObject) : null;
+        long fileSize = (fileObject != null && multi.getFile(fileObject) != null) ? multi.getFile(fileObject).length() : 0;
+
+		
 		String chatContent = multi.getParameter("chat_content");
 		int chatroomIdx = Integer.parseInt(multi.getParameter("chatroom_idx"));
 
-		ChatDao dao = new ChatDao();
+		ChatDao cDao = new ChatDao();
 		Common com = new Common();
 
-		int fileIdx = 0;
-		if(multi.getFile(fileObject) != null) {	// (1) 파일이 있을 때.
-			fileSize = multi.getFile(fileObject).length();  // 파일크기
-			int fileTypeIdx = 1;
-			if(fileName != null) {
-				fileTypeIdx = com.getFileTypeIdxFromFileName(fileName);	// 파일타입idx 리턴
-				try {
-					// 파일 db추가 및 파일idx 리턴
-					fileIdx = com.registerFile(fileName, fileSize+"Byte", memberIdx, fileTypeIdx, null, chatroomIdx, null, null);
-					// 리턴받은 파일idx 넣어서 채팅글 db추가
-					dao.writeChat(chatroomIdx, memberIdx, chatContent, fileIdx);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				System.out.println("filename : " + fileName);
-			}
-			
-		} else {	// (2) 파일이 없을 때.
-			try {
-				dao.writeChat(chatroomIdx, memberIdx, chatContent, null);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		int chatIdx = 0;
+		try {
+            if (fileObject != null && fileName != null) { // 파일이 있을 때
+                int fileTypeIdx = com.getFileTypeIdxFromFileName(fileName);
+                int fileIdx = com.registerFile(fileName, fileSize + "Byte", memberIdx, fileTypeIdx, null, chatroomIdx, null, null);
+                chatIdx = cDao.writeChat(chatroomIdx, memberIdx, chatContent, fileIdx);
+                System.out.println("filename : " + fileName);
+            } else { // 파일이 없을 때
+                chatIdx = cDao.writeChat(chatroomIdx, memberIdx, chatContent, null);
+            }
+
+            List<Integer> unreadMembers = cDao.getChatMembersExceptAuthor(chatroomIdx, memberIdx);
+            int[] memberIdxArray = unreadMembers.stream().mapToInt(i -> i).toArray();
+            cDao.addUnreadChatToMember(chatIdx, memberIdxArray);
+        } catch (Exception e) {
+            e.printStackTrace(); // TODO: 로깅 프레임워크 사용 권장
+        }
 		
 		RequestDispatcher rd = request.getRequestDispatcher("NamooChat.jsp");
 		rd.forward(request, response);

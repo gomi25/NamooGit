@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.Common;
 
@@ -139,15 +141,78 @@ public class ChatDao {
 	
 	// ============================== 채팅 - 채팅 내용 관련 기능(1/4) ==============================
 	// *******채팅방 생성하는 기능*******
-	
+	//	파라미터: 채팅방이름, 채팅방설명, 팀idx, 공개여부, 생성자idx
+	//  리턴: 생성된 토픽idx	
+	public int createChatroom(int teamIdx, int memberIdx, String name, String info) throws Exception {
+	    Connection conn = getConnection();
+	    String sql1 = "INSERT INTO chatroom (chatroom_idx, name, information, team_idx, alarm)" 
+	                + " VALUES (seq_chatroom.nextval, ?, ?, ?, 1)";
+	    PreparedStatement pstmt = conn.prepareStatement(sql1, new String[] {"chatroom_idx"});
+	    pstmt.setString(1, name);
+	    pstmt.setString(2, info);
+	    pstmt.setInt(3, teamIdx);
+	    pstmt.executeUpdate();
+	    
+	    int chatroomIdx = 0;
+	    ResultSet rs = pstmt.getGeneratedKeys();
+	    if (rs.next()) {
+	        chatroomIdx = rs.getInt(1);
+	    }
+	    rs.close();
+	    pstmt.close();
+	    
+	    // 만든 사람 멤버로 추가
+	    String sql2 = "INSERT INTO chat_member (chatroom_idx, member_idx)" 
+	                + " VALUES (?, ?)";
+	    pstmt = conn.prepareStatement(sql2);
+	    pstmt.setInt(1, chatroomIdx);
+	    pstmt.setInt(2, memberIdx);
+	    pstmt.executeUpdate();
+
+	    pstmt.close();
+	    conn.close();
+
+	    return chatroomIdx;
+	}	
 	
 	// *******채팅방에 멤버 추가*******
+	public void inviteMembersToChatroom(int chatroomIdx, int[] memberIdxArray) throws Exception {
+		Connection conn = getConnection();
+	    PreparedStatement pstmt = null;
+	    
+	    try {
+	        String sql = "INSERT INTO chat_member(chatroom_idx, member_idx) VALUES(?, ?)";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, chatroomIdx);
+	        for (int memberIdx : memberIdxArray) {
+	            pstmt.setInt(2, memberIdx);
+	            pstmt.addBatch(); // Batch 추가
+	        }
+	        pstmt.executeBatch(); // Batch 실행 - addBatch()와 executeBatch()를 사용하여 한 번의 데이터베이스 호출로 여러 레코드를 삽입
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        throw new Exception("Error while inviting members to chatroom.", e);
+	    } finally {
+	        if (pstmt != null) pstmt.close();
+	        if (conn != null) conn.close();
+	    }
+	}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// 파라미터: 채팅방idx, 추가할멤버idx
 	public void addChatMember(int chatroomIdx, int[] memberIdx) throws Exception {
 		Connection conn = getConnection();
+		PreparedStatement pstmt = null;
 		
 		String sql = "INSERT INTO chat_member(chatroom_idx, member_idx) VALUES (?, ?)";
-		PreparedStatement pstmt;
 		for(int i = 0; i < memberIdx.length; i++) {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, chatroomIdx);
@@ -177,15 +242,72 @@ public class ChatDao {
 		}
 		pstmt.executeUpdate();
 		ResultSet rs = pstmt.getGeneratedKeys();
-		int ret = 0;
+		int chatIdx = 0;
 		if(rs.next()) {
-			ret = rs.getInt(1);
+			chatIdx = rs.getInt(1);
 		}
 		rs.close();
 		pstmt.close();
 		conn.close();
 		
-		return ret;
+		return chatIdx;
+	}
+	
+	//  *******채팅글의 안 읽은 사람수 데이터 추가*******	
+	//  파라미터: 채팅글idx, 작성자 제외 안 읽은 사람들의 idx 
+	public void addUnreadChatToMember(int chatIdx, int[] memberIdxArray) throws Exception {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			String sql = "INSERT INTO chat_unread(chat_idx, member_idx)"
+						+ " VALUES(?, ?)";
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, chatIdx);
+			for(int memberIdx : memberIdxArray) {
+				pstmt.setInt(2, memberIdx);
+				pstmt.addBatch(); // Batch 추가
+			}
+			pstmt.executeBatch();
+		} catch (Exception e) {
+			 e.printStackTrace();
+		} finally {
+			if (pstmt != null) pstmt.close();
+	        if (conn != null) conn.close();
+		}
+	}
+	
+	
+	//  *******채팅글의 안 읽은 사람수 데이터 조회*******	
+	//  파라미터: 채팅글idx, 작성자 제외 안 읽은 사람들의 idx 
+	public List<Integer> getChatMembersExceptAuthor(int chatroomIdx, int authorIdx) throws Exception {
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    List<Integer> memberIdxList = new ArrayList<>();
+
+	    try {
+	        String sql = "SELECT member_idx FROM chat_member WHERE chatroom_idx = ? AND member_idx != ?";
+	        conn = getConnection();
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, chatroomIdx);
+	        pstmt.setInt(2, authorIdx);
+	        rs = pstmt.executeQuery();
+
+	        while (rs.next()) {
+	            memberIdxList.add(rs.getInt("member_idx"));
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        if (rs != null) rs.close();
+	        if (pstmt != null) pstmt.close();
+	        if (conn != null) conn.close();
+	    }
+	    
+	    return memberIdxList;
 	}
 	
 	

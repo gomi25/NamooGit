@@ -98,7 +98,8 @@ body { margin: 0; overflow-y: hidden; margin-top: 108px;  }
 	background-color: #FFF !important;
     border-radius: 6px;
     border: 1px solid rgba(0, 0, 0, .12);
-    margin: 9px 0px 9px 15px
+    margin: 9px 0px 9px 15px;
+    cursor: pointer;
 }
 #div_header_left > #div_logo > img {
 	height: 30px;
@@ -1287,7 +1288,6 @@ body { margin: 0; overflow-y: hidden; margin-top: 108px;  }
 }
 
 
-
 /* 하단부 */
 #div_topic_create > div:nth-child(3),
 #div_topic_update > div:nth-child(3) {
@@ -1549,7 +1549,7 @@ body { margin: 0; overflow-y: hidden; margin-top: 108px;  }
 	width: 100px;
 	height: 20px;
 }
-list_view_option > div > .check {
+.list_view_option > div:nth-child(3) > .check { /* 여기 */
 	display: none;
 }
 .list_view_option > div > .check {
@@ -1711,6 +1711,118 @@ list_view_option > div > .check {
 #alarm_off {
 	display: none;
 }
+
+/********************** 채팅방 생성하기 팝업창 **********************/
+#div_create_chatroom {
+	display: none;
+	position: absolute;
+	top: 40%;
+    left: 42%;
+    transform: translate(-50%, -50%);
+	width: 500px;
+	height: 380px;
+	padding: 4px;
+	border: 1px solid #DDD;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, .08);
+    z-index: 12;
+}
+/* 상단부 */
+#div_create_chatroom > div:nth-child(1) {
+    width: 100%;
+    height: 70px;
+    padding: 20px;
+    font-size: 18px;
+    font-weight: 800;
+}
+#div_create_chatroom .exit {
+    margin: 5px;
+    width: 16px;
+	height: 16px;
+    cursor: pointer;
+}
+/* 중앙부 */
+#div_create_chatroom > div:nth-child(2) {
+	width: 100%;
+    height: 240px;
+    padding: 15px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #333;
+}
+#div_create_chatroom label:nth-child(1){
+	display: inline-block;
+   	margin-bottom: 5px;
+}
+#div_create_chatroom input[type='text'], 
+#div_create_chatroom textarea{
+	display: block;
+	width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 9px 10px;
+    line-height: 16px;
+    font-size: 14px;
+    resize: none;
+}
+#div_create_chatroom input[type='text']::placeholder, 
+#div_create_chatroom textarea::placeholder {
+    color: #a2a2a2;
+}
+#div_create_chatroom input[type='text']:focus, 
+#div_create_chatroom textarea:focus {
+	outline: none;
+	border: 1px solid #00C473;
+	background: #f5f5f5;
+}
+#div_create_chatroom input[type='text']:hover, 
+#div_create_chatroom textarea:hover {
+	background: #f5f5f5;
+}	
+/* 하단부 */
+#div_create_chatroom > div:nth-child(3) {
+	width: 100%;
+    height: 50px;
+    padding: 8px;
+}
+#div_create_chatroom > div:nth-child(3) > button {
+    padding: 8px 16px;
+    margin-right: 5px; 
+    color: #c2c2c2;
+    background-color: transparent;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20px;
+    border: 0;
+    border-radius: 6px;
+}	
+#div_create_chatroom > div:nth-child(3) > button:focus {
+	outline: none;
+}	
+#div_create_chatroom > div:nth-child(3) > button:not(.green_light):first-child:hover {
+    cursor: not-allowed;
+    /* pointer-events : none; */
+}
+#div_create_chatroom > div:nth-child(3) > button:last-child:hover {
+	background-color: #F2F4F8;
+    color: black;
+    cursor: pointer;
+}
+#div_create_chatroom > div:nth-child(3) > button.green_light:first-child {
+    background-color: #00C473;
+    color: white;
+    cursor: pointer;
+}
+#div_create_chatroom > div:nth-child(3) > button.green_light:first-child:hover {
+    background-color: #21D78C;
+}	
+
+
+
+
+
 
 /* #div_side2 > #div_title > div:nth-child(2) { 
 	position: relative;
@@ -3532,8 +3644,8 @@ list_view_option > div > .check {
 	padding: 10px;
 }
 
-/* 하단부는 #div_topic_create 에 있음 */	
 
+/* 하단부는 #div_topic_create 에 있음 */	
 /*************** 토픽방 상단 상단바 - [더보기(메뉴)] - [정보변경하기] ***************/
 #div_topic_update {
 	display: none;
@@ -3571,7 +3683,7 @@ list_view_option > div > .check {
 }
 
 /* 중앙부 */
-#div_topic_update > div:nth-child(2){
+#div_topic_update > div:nth-child(2) {
 	width: 550px;
 /* 	height: 500px;	 */
 	height: 440px;	
