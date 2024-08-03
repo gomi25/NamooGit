@@ -5,24 +5,26 @@ public class ChatroomMemberDto {
 	private int memberIdx;			// 회원idx
 	private String profileUrl;		// 프로필
 	private String name;			// 이름
+	private String state;			// 상태
 	private String department;		// 부서
 	private String position;		// 직책
 	private String power;			// 권한
 	
 	
-	public ChatroomMemberDto(int chatroomIdx, int memberIdx, String profileUrl, String name, String department,
+	public ChatroomMemberDto(int chatroomIdx, int memberIdx, String profileUrl, String name, String state, String department,
 			String position, String power) {
 		super();
 		this.chatroomIdx = chatroomIdx;
 		this.memberIdx = memberIdx;
 		this.profileUrl = profileUrl;
 		this.name = name;
+		this.state = state;
 		this.department = department;
 		this.position = position;
 		this.power = power;
 	}
 	
-
+	
 	public int getChatroomIdx() {
 		return chatroomIdx;
 	}
@@ -63,6 +65,16 @@ public class ChatroomMemberDto {
 	}
 
 
+	public String getState() {
+		return state;
+	}
+
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+
 	public String getDepartment() {
 		return department;
 	}
@@ -95,12 +107,14 @@ public class ChatroomMemberDto {
 
 	@Override
 	public String toString() {
-		return "topicIdx : " + chatroomIdx + "\n" +
+		return "chatroomIdx : " + chatroomIdx + "\n" +
    			   "memberIdx : " + memberIdx + "\n" +
    			   "profileUrl : " + profileUrl + "\n" +
    			   "name : " + name + "\n" +
+   			   "state : " + state + "\n" +
    			   "department : " + department + "\n" +
    			   "position : " + position + "\n" +
-   			   "power : " + power;
+   			   "power : " + power + "\n";
 	}
+
 }

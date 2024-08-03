@@ -464,17 +464,17 @@ public class TopicDao {
 	
 	//  *******토픽글의 안 읽은 사람수 조회*******	
 	//  파라미터: 토픽글idx, 작성자 제외 안 읽은 사람들의 idx 
-	public List<Integer> getTopicMembersExceptAuthor(int topicIdx, int authorIdx) throws Exception {
+	public List<Integer> getTopicMembersExceptAuthor(int topicBoardIdx, int authorIdx) throws Exception {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
 	    List<Integer> memberIdxList = new ArrayList<>();
 
 	    try {
-	        String sql = "SELECT member_idx FROM topic_member WHERE topic_idx = ? AND member_idx != ?";
+	        String sql = "SELECT member_idx FROM topic_member WHERE topic_board_idx = ? AND member_idx != ?";
 	        conn = getConnection();
 	        pstmt = conn.prepareStatement(sql);
-	        pstmt.setInt(1, topicIdx);
+	        pstmt.setInt(1, topicBoardIdx);
 	        pstmt.setInt(2, authorIdx);
 	        rs = pstmt.executeQuery();
 

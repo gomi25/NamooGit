@@ -586,6 +586,43 @@
 					<div><%= topicInformation %></div>
 				</div>
 			</div> <!-- div_title 닫는 태그 -->	
+
+			<!---------- 채팅방 생성하기 ---------->		
+			<form id="form_create_chatroom" action="CreateChatroomServlet" method="post">	
+				<div id="div_create_chatroom" class="border">
+					<!-- 상단부 / div:nth-child(1) -->
+					<div>
+						<span>채팅방 생성하기</span> 
+						<div class="exit fr"></div>
+					</div>
+					
+					<!-- 중앙부 / div:nth-child(2) -->
+					<div>
+						<!-- div:nth-child(2) > div:nth-child(1) -->
+						<div>
+			     			<label for="input_name">이름</label><br/>
+			     			<input type="text" name="name" id="input_name" placeholder="채팅방 이름을 입력하세요" required>
+			     			<span class="text_max_value fr">/ 60</span>
+			     			<span class="text_current_value fr">0</span><br/><br/>
+						</div>
+						<!-- div:nth-child(2) > div:nth-child(2) -->
+						<div>
+				  			<label for="textarea_info">채팅방 설명</label><br/>
+							<textarea name="info" id="textarea_info" placeholder="채팅방에 대해 설명해주세요" rows="2"></textarea>
+							<span class="text_max_value fr">/ 300</span>
+							<span class="text_current_value fr">0</span>
+						</div>
+					</div>
+					
+					<!-- 하단부 / div:nth-child(3) -->						
+					<div>
+						<button class="fr" type="submit" id="btn_create_chatroom">완료</button>
+						<button class="fr" type="button">취소</button>
+					</div>
+				</div> <!-- div_create_chatroom 닫는 태그 --> 
+			</form>	<!-- form_create_chatroom --> 
+
+
 		
 			<!---------- 멤버 초대하기 팝업창 ---------->	
 			<form id="form_invite_member" action="${pageContext.request.contextPath}/jsp/InviteTopicMember.jsp" method="get">

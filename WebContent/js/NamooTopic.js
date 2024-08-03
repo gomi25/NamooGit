@@ -1641,9 +1641,24 @@
 						let state = res.state;
 						let profileImgUrl = $("#div_profile_box > img").attr("src");
 						let name = $("#div_profile_box > div").text();
-						let date = new Date();
+						/*let date = new Date();
 						date = date.getFullYear() + "-" + (date.getMonth()<=9 ? "0" : "") + date.getMonth() + "-" + (date.getDate()<=9 ? "0" : "") 
-							+ date.getDate() + " " + (date.getHours()>12 ? "오후 " + date.getHours()-12 : "오전 " + date.getHours()) + ":" + date.getMinutes();
+							+ date.getDate() + " " + (date.getHours()>12 ? "오후 " + date.getHours()-12 : "오전 " + date.getHours()) + ":" + date.getMinutes();*/
+							
+						let date = new Date();
+						let year = date.getFullYear();
+						let month = (date.getMonth() + 1).toString().padStart(2, '0'); // 01, 02, ..., 12
+						let day = date.getDate().toString().padStart(2, '0'); // 01, 02, ..., 31
+						let hours = date.getHours();
+						let minutes = date.getMinutes().toString().padStart(2, '0'); // 00, 01, ..., 59
+						
+						// 12시간제로 변환
+						let ampm = hours >= 12 ? '오후' : '오전';
+						hours = hours % 12;
+						hours = hours ? hours : 12; // 0시를 12시로 변경
+						
+						let formattedDate = `${year}-${month}-${day} ${ampm} ${hours}:${minutes}`;
+	
 						
 						let str = '<div class="div_comment" topic_comment_idx="' + topic_comment_idx + '" writer="' + member_idx + '">' 
 							+ '<div class="div_profile">' 
@@ -1653,7 +1668,7 @@
 							+ '	<div class="fl">' 
 							+ '		<span>' + name + '</span>' 
 							+ '		<span> - ' + state + '</span>' 
-							+ '		<span>' + date +'</span>' 
+							+ '		<span>' + formattedDate +'</span>' 
 							+ '	</div>' 
 							+ '</div>' 
 							+ '<div class="comment_item" contenteditable="false">' 
