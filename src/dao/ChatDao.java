@@ -30,6 +30,7 @@ public class ChatDao {
 		return conn;
 	}
 
+	
 	/* 'PM HH:MI' <- 0 나오게 */
 	//	특정 채팅방의 채팅글 조회 -> 원본
 	public ArrayList<ChatContentsDto> getChatContents(int teamIdx, int chatroomIdx, int memberIdx) throws Exception {
@@ -38,7 +39,7 @@ public class ChatDao {
 	    String sql = " SELECT c.chat_idx, cr.chatroom_idx, " +
 	                 "NVL(m2.profile_pic_url, 'https://jandi-box.com/assets/ic-profile.png') profile_url, m2.member_idx, " +
 	                 "m2.name, tm2.state, c.content, c.file_idx, " +
-	                 "TO_CHAR(c.chat_date, 'AM FMHH:MI', 'NLS_DATE_LANGUAGE=AMERICAN') write_date, " +
+	                 "TO_CHAR(c.chat_date, 'AM HH:MI', 'NLS_DATE_LANGUAGE=AMERICAN') write_date, " +
 	                 "(SELECT COUNT(*) FROM chat_unread WHERE chat_idx = c.chat_idx) unread_cnt, c.modified, fb.file_name " +
 	                 "FROM team_member tm " +
 	                 "INNER JOIN member m ON tm.member_idx = m.member_idx " +
@@ -90,6 +91,8 @@ public class ChatDao {
 
 	    return listRet;
 	}
+	
+
 	
 	// *******채팅글의 채팅댓글 조회*******
 	// 파라미터: 채팅글idx, 팀idx 
@@ -197,15 +200,6 @@ public class ChatDao {
 	        if (conn != null) conn.close();
 	    }
 	}	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	// 파라미터: 채팅방idx, 추가할멤버idx
 	public void addChatMember(int chatroomIdx, int[] memberIdx) throws Exception {
@@ -522,7 +516,7 @@ public class ChatDao {
 		Connection conn = getConnection();
 		ArrayList<ChatroomMemberDto> listRet = new ArrayList<ChatroomMemberDto>();
 		String sql = "SELECT c.chatroom_idx, cm.member_idx, NVL(m.profile_pic_url, 'https://jandi-box.com/assets/ic-profile.png') profile_url, " + 
-				"					        m.name, tm.department, tm.position, tm.power " + 
+				"					        m.name, tm.state, tm.department, tm.position, tm.power " + 
 				" FROM team_member tm INNER JOIN member m on tm.member_idx = m.member_idx " + 
 				"					 INNER JOIN chat_member cm on m.member_idx = cm.member_idx " + 
 				"					 INNER JOIN chatroom c on cm.chatroom_idx = c.chatroom_idx " + 
@@ -537,10 +531,11 @@ public class ChatDao {
 			int memberIdx = rs.getInt("member_idx");
 			String profileUrl = rs.getString("profile_url");
 			String name = rs.getString("name");
+			String state = rs.getString("state");
 			String department = rs.getString("department");
 			String position = rs.getString("position");
 			String power = rs.getString("power");
-			ChatroomMemberDto dto = new ChatroomMemberDto(chatroomIdx, memberIdx, profileUrl, name, department, position, power);
+			ChatroomMemberDto dto = new ChatroomMemberDto(chatroomIdx, memberIdx, profileUrl, name, state, department, position, power);
 			listRet.add(dto);
 		}
 		

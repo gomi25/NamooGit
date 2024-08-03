@@ -5,6 +5,7 @@ public class TeamMemberDto {
 	private int memberIdx;			// 회원idx
 	private String profileUrl;		// 프로필 이미지
 	private String name;			// 이름
+	private String state;			// 이름
 	private String department;		// 부서
 	private String position;		// 직책
 	private String power;			// 권한
@@ -12,6 +13,18 @@ public class TeamMemberDto {
 //	public TeamMemberDto() {
 //		
 //	}
+	
+	public TeamMemberDto(int teamIdx, int memberIdx, String profileUrl, String name, String state, String department, String position,
+			String power) {
+		this.teamIdx = teamIdx;
+		this.memberIdx = memberIdx;
+		this.profileUrl = profileUrl;
+		this.name = name;
+		this.state = state;
+		this.department = department;
+		this.position = position;
+		this.power = power;
+	}
 	
 	public TeamMemberDto(int teamIdx, int memberIdx, String profileUrl, String name, String department, String position,
 			String power) {
@@ -48,6 +61,12 @@ public class TeamMemberDto {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
 	public String getDepartment() {
 		return department;
 	}
@@ -72,6 +91,7 @@ public class TeamMemberDto {
    			   "memberIdx : " + memberIdx + "\n" +
    			   "profileUrl : " + profileUrl + "\n" +
    			   "name : " + name + "\n" +
+   			   "state : " + state + "\n" +
    			   "department : " + department + "\n" +
    			   "position : " + position + "\n" +
    			   "power : " + power + "\n";

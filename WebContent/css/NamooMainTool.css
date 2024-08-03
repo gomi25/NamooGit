@@ -3318,6 +3318,10 @@ body { margin: 0; overflow-y: hidden; }
 .bookmark_item_bottom > div:nth-child(2) > span:nth-child(3) {
 	display: block;
 	font-size: 14px;
+	overflow-x: hidden;
+    max-width: 340px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }	
 .bookmark_file_item_bottom > div:nth-child(2) > span:nth-child(1) {
 	display: block;
