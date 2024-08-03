@@ -44,7 +44,8 @@ body { margin: 0; overflow-y: hidden; }
 	background-color: white;
 	z-index: 12;
 	margin-top: 235px;
-    
+	margin-left: -1470px; 
+	
 }
 .member_profile_container > #profile_image {
 	height: 170px;

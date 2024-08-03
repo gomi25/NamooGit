@@ -2,11 +2,11 @@ $(function(){
 	// 멤버 클릭
 	$("#memberlist").click(function() {
 		$("#div_side3").css('display','block');
-		$("#div_side2").css('display','none');
+		$("#memberlist_div_side2").css('display','none');
      });
 	// 부서 클릭
 	$("#select_teamlist").click(function() {
-		$("#div_side2").css('display','block');
+		$("#memberlist_div_side2").css('display','block');
 		$("#div_side3").css('display','none');
      });
 	// 부서-즐겨찾기 멤버 선택
