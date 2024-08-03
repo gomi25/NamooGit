@@ -505,6 +505,18 @@ td:nth-child(2) {
 
 .answer_update {
 	margin-bottom: 7px;
+	outline: none;
+    border: none;
+    font-size: 12px;
+    padding: 2px 9px;
+    border-radius: 3px
+}
+.answer_delete {
+	outline: none;
+    border: none;
+    font-size: 12px;
+    padding: 2px 9px;
+    border-radius: 3px
 }
 /*footer 부분*/
 #div_footer {

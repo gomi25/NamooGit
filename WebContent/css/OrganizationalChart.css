@@ -10,6 +10,18 @@
 }
 .border { border: 1px solid red; }
 body { margin: 0; overflow-y: hidden; }
+
+#organizational_chart {
+	position: fixed;
+	margin-top: 53px;
+	width: 450px;
+	height: 900px;
+    top: 0;
+    right: 0;
+    background-color: white;
+    display: none;
+    
+}
 #div_transparent_filter {
    position: absolute;
    top: 0;
@@ -207,7 +219,7 @@ body { margin: 0; overflow-y: hidden; }
 #div_side1 > div:nth-child(8) { height: 100%; }
 
 /*--------------------------부서------------------------*/
-#div_side2 {
+#memberlist_div_side2 {
 	width: 439px;
 	min-height: 900px;
 	border-left: 1px solid #E5E5E5;
