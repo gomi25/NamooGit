@@ -331,7 +331,7 @@
 		<div id="div_project_list_header">
 			<div></div>
 			<div><a href="Project.jsp">프로젝트</a></div>
-			<div class="ic_plus"><a href="AddProject.jsp"></a></div>
+			<a href="AddProject.jsp"><div class="ic_plus"></div></a>
 		</div>
 		<%-- <% for (ProjectBookmarkDto pbDto : projectList) {	%>
 		<div id="div_project_list_body" project_idx="<%=pbDto.getProjectIdx()%>">
