@@ -5,16 +5,13 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
-	<link rel="stylesheet" href="../css/JndAlarm_alarm.css"/>
-	<link rel="stylesheet" href="../css/JndAlarm_mention.css"/>
+	<link rel="stylesheet" href="css/JndAlarm_alarm.css"/>
+	<link rel="stylesheet" href="css/JndAlarm_mention.css"/>
 	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 	<script src="${pageContext.request.contextPath}/js/Alarm.js"></script>
-	
 </head>
 <body>
 <!-- 멘션 -->
- <!-- ng-show="isOpenToolDetail.primary" JS에서 사용하는 디렉티브.  -->
-    <!-- isOpenToolDetail.primary가 true일 때만 보이고, false일 때는 위 요소가 화면에서 사라짐. -->
     <div class="panel panel-tool non-selectable toolPanel shadow" id="primary_detail_panel" style="width: 440px;">
         <div class="mention_files">
             <div class="tool-wrapper border">
@@ -24,11 +21,11 @@
                             <span class="tool-title-block">알림 센터</span>
                         </h3>
                         <i class="icon-ic-close btn-close fn-20 flex-fix" style="margin-right:-45px;">
-                            <img src="../img/btn-close.png" style="width:15px;">
+                            <img src="img/btn-close.png" style="width:15px;">
                         </i>
                         <i class="icon-ic-setup btn-setting fn-20 flex-fix" tooltip="알림 센터 설정" tooltip-placement="bottom" tooltip-class="nowrap"
                         style="margin-right: -50px;">
-                            <img src="../img/btn-setting.png" style="width:20px;  margin-top: 6px; width:20px;">
+                            <img src="img/btn-setting.png" style="width:20px;  margin-top: 6px; width:20px;">
                         </i>
                     </div>
                 </div>
@@ -210,9 +207,6 @@
     </div>
     
     <!-- 알림 -->
-    
-     <!-- ng-show="isOpenToolDetail.primary" JS에서 사용하는 디렉티브.  -->
-    <!-- isOpenToolDetail.primary가 true일 때만 보이고, false일 때는 위 요소가 화면에서 사라짐. -->
     <div class="panel panel-tool non-selectable toolPanel shadow" id="primary_detail_panel" style="width: 440px;">
         <div class="files" >
             <div class="tool-wrapper border">
@@ -222,11 +216,11 @@
                             <span class="tool-title-block">알림 센터</span>
                         </h3>
                         <i class="icon-ic-close btn-close fn-20 flex-fix" style="margin-right:-45px;">
-                            <img src="../img/btn-close.png" style="width:15px;">
+                            <img src="img/btn-close.png" style="width:15px;">
                         </i>
                         <i class="icon-ic-setup btn-setting fn-20 flex-fix" tooltip="알림 센터 설정" tooltip-placement="bottom" tooltip-class="nowrap"
                         style="margin-right: -50px;">
-                            <img src="../img/btn-setting.png" style="width:20px;  margin-top: 6px; width:20px;">
+                            <img src="img/btn-setting.png" style="width:20px;  margin-top: 6px; width:20px;">
                         </i>
                     </div>
                 </div>
@@ -294,5 +288,14 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

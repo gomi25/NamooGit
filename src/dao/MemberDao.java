@@ -37,8 +37,8 @@ public class MemberDao {
 		int memberIdxRet = 0;   // 리턴할 member_idx값. 0 은 그냥 초기 값. 
 		Connection conn = getConnection();
 		
-		String sql = "INSERT INTO member(member_idx, pw, name, birth, phone_number, join_date, profile_pic_url, profile_img_idx, color_idx, agreement, verification_code, expiration_date, leave, email)"
-				+ " VALUES(seq_member_idx.nextval, null, null, null, null, null, 'https://jandi-box.com/assets/ic-profile.png', null, null, ?, null, null, ?, null)";
+		String sql = "INSERT INTO member(member_idx, pw, name, birth, phone_number, join_date, profile_pic_url, agreement, verification_code, expiration_date, leave, email)"
+				+ " VALUES(seq_member_idx.nextval, null, null, null, null, null, null, ?, null, null, ?, null)";
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql, new String[] {"member_idx"});
 		pstmt.setInt(1, agreement);
@@ -220,9 +220,8 @@ public class MemberDao {
 		MemberDto dto = null;
 		Connection conn = getConnection();
 		
-		String sql = "SELECT m.name AS 멤버명, m.profile_pic_url AS 멤버프사, m.email AS 이메일, p.img_url AS 선택프사" 	// (선택프사 사용x)
+		String sql = "SELECT m.name AS 멤버명, m.profile_pic_url AS 멤버프사, m.email AS 이메일"
 					+ " FROM member m" 
-					+ " LEFT JOIN profile_img p ON p.profile_img_idx = m.profile_img_idx" 
 					+ " WHERE m.member_idx = ?";
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -236,9 +235,8 @@ public class MemberDao {
 				String memberName = rs.getString(1);	
 				String profilePicUrl = rs.getString(2);
 				String email = rs.getString(3);
-				String profileImgIdx = rs.getString(4);	 	// (선택프사 사용x)
-				
-				dto = new MemberDto(memberName, profilePicUrl, profileImgIdx, email);
+			
+				dto = new MemberDto(memberName, profilePicUrl, email);
 			}
 		} catch(Exception e) {
 			e.printStackTrace();

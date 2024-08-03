@@ -3,13 +3,11 @@ package dto;
 public class MemberDto {
 	private String memberName;
 	private String profilePicUrl;
-	private String profileImgIdx;
 	private String email;
 	
-	public MemberDto(String memberName, String profilePicUrl, String profileImgIdx, String email) {
+	public MemberDto(String memberName, String profilePicUrl, String email) {
 		this.memberName = memberName;
 		this.profilePicUrl = profilePicUrl;
-		this.profileImgIdx = profileImgIdx;
 		this.email = email;
 	}
 
@@ -29,14 +27,6 @@ public class MemberDto {
 		this.profilePicUrl = profilePicUrl;
 	}
 
-	public String getProfileImgIdx() {
-		return profileImgIdx;
-	}
-
-	public void setProfileImgIdx(String profileImgIdx) {
-		this.profileImgIdx = profileImgIdx;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -47,7 +37,6 @@ public class MemberDto {
 
 	@Override
 	public String toString() {
-		return "MemberDto [memberName=" + memberName + ", profilePicUrl=" + profilePicUrl + ", profileImgIdx="
-				+ profileImgIdx + ", email=" + email + "]";
+		return "MemberDto [memberName=" + memberName + ", profilePicUrl=" + profilePicUrl + ", email=" + email + "]";
 	}
 }
