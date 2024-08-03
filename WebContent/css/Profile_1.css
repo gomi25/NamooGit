@@ -1,0 +1,184 @@
+@charset "UTF-8";
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css); 
+.fl { float: left; }
+.fr { float: right; }
+.ab { position: absolute; }
+.re { position: relative; }
+* {
+	box-sizing: border-box;
+	font-family: Noto Sans KR, sans-serif !important;
+}
+.border { border: 1px solid red; }
+body { margin: 0; overflow-y: hidden; }
+.inner2_button {
+	position: relative;
+    padding: 10px 0;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f2f4f8;
+    border-radius: 4px;
+    border: none;
+    width: 258px;
+    height: 38px;
+    margin-left: 12px;
+}
+
+
+#loginmember_profile_container {
+	background-color: white;
+	width: 286px;
+	height: 535px;
+	border-radius: 5px;
+	margin: 0 auto;
+	border: 1px solid #ddd;
+	right: 435px;
+    margin-top: 150px;
+    z-index: 13;
+	
+}
+#loginmember_profile_container > #profile_image {
+	height: 182px;
+	overflow: hidden;
+	
+}
+#profile_image > img {
+	
+	width: 100%;
+	height: 100%;
+	object-fit:cover;
+	filter: brightness(0.6);
+	border-radius: 5px 5px 0 0;
+}
+
+#member_positon  {
+	top: 14px;
+	margin-left: 10px;
+	outline: none;
+	border: none;
+	border-radius: 5px;
+	background-color: #E6A141;
+    border-color: #E6A141;
+    width: 54px;
+    height: 22px;
+    text-align: center;
+}
+#member_positon > em {
+	position: relative;
+	font-size: 12px;
+    font-weight: 700;
+   	bottom: 3px;
+    line-height: 16px;
+   	padding: 3px 8px; 
+    
+    font-style: normal;
+    text-decoration: none;
+    display: inline-block;
+    color: #fff;
+}
+#member_name {
+	top: 110px;
+	margin-left: 20px;
+}
+#member_name > p {
+	width: 286px;
+	background-color: transparent;
+	color: #fff;
+}
+#loginmember_profile_container > #inner1 {
+	height: 81px;
+}
+#inner1 > input {
+	width: 258px;
+	height: 30px;
+	outline: none;
+	margin: 4px 11px;
+	padding: 6px 26px 6px 8px;
+    cursor: pointer;
+   	border-radius: 5px;
+   	border: none;
+    padding-left: 10px;
+  	background-color: white;	
+  	color: #333;
+
+}
+
+#inner1 > input:hover {
+	background-color: rgb(233, 233, 233); 
+}
+.inner1_state_x_img, .inner1_message_x_img {
+	width: 13px;
+	margin-top: 3px;
+}
+
+.member_inner1_state {
+	font-size: 13px;
+	padding: 6px;
+	margin: 13px 15px 3px 15px;
+	border-radius: 5px;
+}
+.member_inner1_state:hover {
+	background-color: rgb(233, 233, 233); 
+}
+.member_inner1_message {
+	font-size: 13px;
+	padding: 6px;
+	margin: 0 15px 5px 15px;
+	border-radius: 5px;
+}
+.member_inner1_message:hover {
+	background-color: rgb(233, 233, 233); 
+}
+#loginmember_profile_container > #inner2 {
+	height: 50px;
+	
+}
+#inner2 > button > div {
+	color: #333;
+}
+#inner2 > button:hover {
+	background-color: #DFE1E5;
+}
+#inner2 > button:nth-child(1) {
+	margin-bottom: 10px;
+}
+#loginmember_profile_container > #inner3 {
+	height: 160px;
+	
+}
+.inner3 {
+	padding-left: 10px;
+}
+.inner3_img {
+	margin-top: 5px;
+}
+.inner3_td_box {
+	width:234px;
+	height: 30px;
+	padding: 6px 8px; 
+	outline: none;
+	cursor: pointer;
+	border-radius: 5px;
+	border: none;
+	color: #333;
+}
+.inner3_font {
+	font-size: 13px;
+}
+.inner3_td_box:hover{
+	background-color: rgb(233, 233, 233); 
+}
+.inner3_td_email {
+	font-size: 13px;
+}
+#loginmember_profile_container > #logout {
+	height: 58px;
+}
+
+#logout > button > div {
+	color: #ff5c48;
+}
+#logout > .inner2_button:hover {
+	background-color: #DFE1E5;
+}
