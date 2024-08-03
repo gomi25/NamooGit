@@ -65,7 +65,7 @@
 	<meta charset="UTF-8">
 	<title>namoo_addproject</title>
 	<link href="https://intercom.help/jandi/assets/favicon" rel="icon">
-	<link rel="stylesheet" href="css/addproject.css"/>
+	<link rel="stylesheet" href="css/Addproject.css"/>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/NamooMainTool.css"/>
 	<link href="https://intercom.help/jandi/assets/favicon" rel="icon">
 	
