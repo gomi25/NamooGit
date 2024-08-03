@@ -61,8 +61,8 @@
 	
 	<title>Insert title here</title>
 	<link rel="stylesheet" href="css/OrganizationalChart.css"/>
-	<link rel="stylesheet" href="css/profile_1.css"/>
-	<link rel="stylesheet" href="css/profile_2.css"/>
+	<link rel="stylesheet" href="css/Profile_1.css"/>
+	<link rel="stylesheet" href="css/Profile_2.css"/>
 	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 	<script src="${pageContext.request.contextPath}/js/OrganizationalChart.js"></script>
 	<script>
