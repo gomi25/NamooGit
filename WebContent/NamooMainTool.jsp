@@ -330,8 +330,8 @@
 		<!---------- 프로젝트 목록 ---------->	
 		<div id="div_project_list_header">
 			<div></div>
-			<div>프로젝트</div>
-			<div class="ic_plus"></div>
+			<div><a href="Project.jsp">프로젝트</a></div>
+			<div class="ic_plus"><a href="AddProject.jsp"></a></div>
 		</div>
 		<%-- <% for (ProjectBookmarkDto pbDto : projectList) {	%>
 		<div id="div_project_list_body" project_idx="<%=pbDto.getProjectIdx()%>">

@@ -8,7 +8,7 @@
 .fl { float: left; }
 .fr { float: right; }
 body { margin: 0; overflow-y: hidden; }
-
+a{ text-decoration-line: none; color: inherit;}
 
 .div_side2_container {
 /* 	display: none; */
@@ -681,7 +681,7 @@ body { margin: 0; overflow-y: hidden; }
 
 
 
-/********************** 프로젝트 목록 - 나중에 합칠 부분 **********************/
+/********************** 프로젝트 목록 **********************/
 #div_side1 > #div_project_list_header { 
 	height: 40px; 
     width: 262px;
@@ -716,7 +716,10 @@ body { margin: 0; overflow-y: hidden; }
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
+#div_side1 > #div_project_list_header > div:nth-child(2) > a {
+	text-decoration-line: none; 
+	color: inherit;
+}
 
 
 /********************** 채팅방 목록  **********************/
