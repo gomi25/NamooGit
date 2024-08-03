@@ -108,7 +108,7 @@
 		let member_idx = <%=memberIdx%>;
 		let team_idx = <%=teamIdx%>;
 	</script>
-	<script src="${pageContext.request.contextPath}/js/project.js"></script>
+	<script src="${pageContext.request.contextPath}/js/Project.js"></script>
 	<script src="${pageContext.request.contextPath}/js/NamooMainTool.js"></script>
 	
 </head>
