@@ -8,7 +8,7 @@
     pageEncoding="UTF-8"%>
     
 <%
-	int memberIdx = 1;   // 로그인 member_idx 가정. ----> 이후에는 (Integer)session.getAttribute("loginId") 등으로 변경해야 돼요~
+	int memberIdx = 0;   // 로그인 member_idx 가정. ----> 이후에는 (Integer)session.getAttribute("loginId") 등으로 변경해야 돼요~
 	//int loginMemberIdx = 5;
 	int serviceTalkroomIdx = 0;
 	
@@ -102,6 +102,7 @@ if(paramMidx != null) {
 			alert("Error!");
 		}
 		let webSocket = new WebSocket("ws://localhost:9092/NamooGit2/broadcasting");
+		let webSocket = new WebSocket("ws://localhost:9090/NamooGit/broadcasting");
 		webSocket.onmessage = func_on_message;
 		webSocket.onopen = func_on_open;
 		webSocket.onerror = func_on_error;
