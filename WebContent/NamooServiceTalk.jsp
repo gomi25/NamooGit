@@ -12,10 +12,10 @@
 	//int loginMemberIdx = 5;
 	int serviceTalkroomIdx = 0;
 	
-String paramMidx = request.getParameter("midx");
-if(paramMidx != null) {
-	memberIdx = Integer.parseInt(paramMidx);
-}
+	String paramMidx = request.getParameter("midx");
+	if(paramMidx != null) {
+		memberIdx = Integer.parseInt(paramMidx);	
+	}	
 	
 	if(request.getParameter("service_talkroom_idx") != null) {   // 이해 : 파라미터 'service_talkroom_idx'라는 게 있으면.
 		serviceTalkroomIdx = Integer.parseInt(request.getParameter("service_talkroom_idx"));
