@@ -380,7 +380,7 @@
 		<!---------- 프로젝트 목록 ---------->	
 		<div id="div_project_list_header">
 			<div></div>
-			<div><a href="Project.jsp">프로젝트</a></div>
+			<div><a href="Project.jsp">프로젝트.</a></div>
 			<a href="AddProject.jsp"><div class="ic_plus"></div></a>
 		</div>
 		<%-- <% for (ProjectBookmarkDto pbDto : projectList) {	%>
