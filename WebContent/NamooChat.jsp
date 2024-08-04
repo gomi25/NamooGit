@@ -7,12 +7,16 @@
 <%@ page import="java.util.ArrayList"%>
 
 <%
-	// 테스트 필요
+
 	String chatroomIdxParam = (String)request.getParameter("chatroomIdx");
 	int chatroomIdx = (chatroomIdxParam != null) ? Integer.parseInt(chatroomIdxParam) : 1;
-
-	int memberIdx = 2;   // 테스트
-	int teamIdx = 2;     // 테스트
+	int memberIdx = 1;   // 테스트
+	int teamIdx = 1;     // 테스트
+	
+// String paramMidx = request.getParameter("midx");
+// if(paramMidx != null) {
+// 	memberIdx = Integer.parseInt(paramMidx);
+// }	
 	
 	int cntUnreadTotal = 0; // 토픽방에서 안 읽은 메시지 전체 개수 
 	int cntOfTopic = 0;     // 토픽방 개수
@@ -24,6 +28,7 @@
 	TopicDao tDao = new TopicDao();
 	Common common = new Common();
 	
+	List<Integer> memberArray = cDao.getChatMembersExceptAuthor(chatroomIdx, memberIdx);
 	//============================팀 전체 멤버 조회 테스트==============================
 	ArrayList<TeamMemberDto> teamMemberList = sDao.getTeamMemberList(teamIdx);	
 	//============================팀 멤버 조회 테스트==============================
@@ -61,7 +66,7 @@
 		cntChatTotalUnread += dto.getUnread();
 	}
 
-//============================토픽전체멤버 조회==============================
+	//============================채팅전체멤버 조회==============================
 	ArrayList<ChatroomMemberDto> listChatroomMember = cDao.getChatroomMemberList(teamIdx, chatroomIdx);
 	String chatroomName = cDao.getChatroomNameFromChatroomIdx(chatroomIdx);
 	String chatroomInformation = cDao.getChatroomInformation(chatroomIdx);
@@ -80,9 +85,11 @@
 // 		ArrayList<TeamMemberDto> teamMemberOutOfTopic = tDao.getTeamMemberListOutOfTopic(teamIdx, topicIdx);
 
 	//============================채팅전체멤버 조회 테스트==============================
-//  	ArrayList<ChatroomDto> listChatroomMember = cDao.getChatroomMemberList(teamIdx, chatroomIdx);
+//  	ArrayList<ChatroomMemberDto> listChatroomMember = cDao.getChatroomMemberList(teamIdx, chatroomIdx);
 	//============================채팅방에 없는 팀멤버 조회==============================
 		ArrayList<TeamMemberDto> teamMemberOutOfChatroom = cDao.getTeamMemberListOutOfChatroom(teamIdx, chatroomIdx);	
+
+
 %>
 <!DOCTYPE html>
 <html>
@@ -103,11 +110,167 @@
 		let team_idx = <%=teamIdx%>;
 	</script>
 	<script src="${pageContext.request.contextPath}/js/NamooChat.js"></script>
-	<script>
-
-	</script>
+		
+	<script> 
+		/* 8.3(토) 웹소켓 테스트 중 */
+		function func_on_message(e) {
+			alert("도착한 메시지 : " + e.data);
+			$("#div_content").append(e.data);
+		}
+		function func_on_open(e) {
+			alert("웹소켓 접속");
+		}
+		function func_on_error(e) {
+			alert("ERROR!")
+		}
+		
+		let webSocket = new WebSocket("ws://localhost:9090/NamooPractice1/broadcasting");
+		webSocket.onmessage = func_on_message;
+		webSocket.onopen = func_on_open;
+		webSocket.onerror = func_on_error;
+		
+		$(function(){
+			$("#div_msg_blank > .ic_comment_enter").click(function(){
+				console.log("클림됨");
+				// 사용자idx
+				let myIdx = member_idx;
+				// 입력한 내용
+				let chatContent = $("#write_chat_content_space").text();
+				// 사용사idx+///+채팅내용 을 변수에 넣고
+				let msg = myIdx + " /// " + chatContent;
+				
+				/* 채팅 보낼 때 필요한 내용들 */
+				// 1) 채팅글idx
+				let chatIdx = 0;
+				// 2) 사용자idx == myIdx
+				// 3) 채팅방idx
+				let chatroomIdx = <%=chatroomIdx%>;
+				// 4) 사용자의 프로필 이미지 
+				let myProfileImg = "<%=teamMember.getProfileUrl()%>";
+				// 5) 사용자의 이름
+				let myName = "<%=teamMember.getName()%>";
+				let myState = " - <%=teamMember.getState()%>";
+				if(myState == null){
+					myState = "";
+				}
+				// 7) 입력한 내용 == chatContent
+				// 8) 안 읽은 메시지 수 
+				let unreadCnt = <%= listChatroomMember.size()%> -1;
+				// 9) 시간
+				const now = new Date();
+				let hours = now.getHours();
+				const minutes = String(now.getMinutes()).padStart(2, '0');
+				const period = hours >= 12 ? 'PM' : 'AM';
+				// 12시간 형식으로 변환
+				hours = hours % 12;
+				hours = hours ? String(hours).padStart(2, '0') : '12'; // 0을 12로 변환하고 두 자리로 맞춤
+				let nowTime = period + ' ' + hours + ':' + minutes;
+				console.log(nowTime);
+				
+// 				const now = new Date();
+// 				const year = now.getFullYear();
+// 				const month = String(now.getMonth() + 1).padStart(2, '0'); // 월을 두 자리로 맞춤
+// 				const date = String(now.getDate()).padStart(2, '0');       // 일을 두 자리로 맞춤
+// 				const hours = String(now.getHours()).padStart(2, '0');     // 시를 두 자리로 맞춤
+// 				const minutes = String(now.getMinutes()).padStart(2, '0'); // 분을 두 자리로 맞춤
+// 				const seconds = String(now.getSeconds()).padStart(2, '0'); // 초를 두 자리로 맞춤
+// 				// let nowDate = `${year}/${month}/${date} ${hours}:${minutes}:${seconds}`;
+// 				let nowDate = year + '/' + month + '/' + date + ' ' + hours + ':' + minutes + ':' + seconds;
+// 				console.log(nowDate);
+				
+				
+				// 10) 즐겨찾기 여부 
+				let bookmark = "ic_bookmark_off";
+				
+				let str = '<div class="chat_message" chat_idx="' + chatIdx + '" writer="' + myIdx + '">' 
+						+ '	<div class="fl">' 
+						+ '		<img class="profile_img" src="' + myProfileImg + '"/>' 
+						+ '	</div>' 
+						+ '	<div class="fl">' 
+						+ '		<div class="profile_name">' 
+						+ 			myName
+						+ '			<span>' + myState + '</span>' 
+						+ '		</div>' 
+						+ '		<div class="msg">' 
+						+ '			<div>' 
+						+ 				chatContent
+						+ '			</div>' 
+						+ '			<span class="unread">' + unreadCnt +  '</span>' 
+						+ '			<span class="time">' + nowTime + '</span>' 
+						+ '		</div>' 
+						+ '	</div>' 
+						+ '	<div style="clear:both;"></div>' 
+						+ '	<!-- 채팅글 [더보기] 창 -->' 
+						+ '	<div class="more_menu_box">' 
+						+ '		<div class="ic_more_menu"></div>' 
+						+ '	</div>' 	
+						+ '	<!-- 채팅글 [더보기] - [내 토픽글 더보기 창] -->' 
+						+ '	<div class="div_chat_more_menu_mine">' 
+						+ '	 	<div>' 
+						+ '		 	<div class="ic_comment fl"></div>' 
+						+ '			<span class="fl">댓글</span>' 
+						+ '	 	</div>' 
+						+ '	 	<div>' 
+						+ '		 	<div class="ic_notice_register fl"></div>' 
+						+ '			<span class="fl">공지등록</span>' 
+						+ '	 	</div>' 
+						+ '	 	<div>' 
+						+ '	 		<div class="fl ' + bookmark + '>' 
+						+ '	 		</div>' 
+						+ '			<span class="fl">즐겨찾기</span>' 
+						+ '	 	</div>' 
+						+ '	 	<div>' 
+						+ '	 		<div class="ic_copy fl"></div>' 
+						+ '			<span class="fl">복사</span>' 
+						+ '	 	</div>' 
+						+ '	 	<div>' 
+						+ '	 		<div class="ic_edit_info fl"></div>' 
+						+ '			<span class="fl">수정</span>' 
+						+ '	 	</div>' 
+						+ '	 	<div>' 
+						+ '	 		<div class="ic_delete fl"></div>' 
+						+ '			<span class="fl">삭제</span>' 
+						+ '	 	</div>' 
+						+ '	 </div> ' 
+						+ '	<!-- 채팅글 [더보기] - [상대 토픽글 더보기 창] -->' 
+						+ '	<div class="div_chat_more_menu_other">' 
+						+ '	 	<div>' 
+						+ '		 	<div class="ic_comment fl"></div>' 
+						+ '			<span class="fl">댓글</span>' 
+						+ '	 	</div>' 					
+						+ '	 	<div>' 
+						+ '		 	<div class="ic_notice_register fl"></div>' 
+						+ '			<span class="fl">공지등록</span>' 
+						+ '	 	</div>' 
+						+ '	 	<div>' 
+						+ '	 		<div class="fl ' + bookmark +'>' 
+						+ '	 		</div>' 
+						+ '			<span class="fl">즐겨찾기</span>' 
+						+ '	 	</div>' 
+						+ '	 	<div>' 
+						+ '	 		<div class="ic_copy fl"></div>' 
+						+ '			<span class="fl">복사</span>' 
+						+ '	 	</div>' 
+						+ '	</div>' 
+						+ '</div>';
+				
+				// 웹소켓으로 보냄
+				webSocket.send(str);
+				// 입력창 비우기
+				$("#write_chat_content_space").text('');
+				// 보낸 후 내 화면의 #div_content 요소의 맨 마지막 태그로 넣어줌(사용자의 화면)
+ 				$("#div_content").append(str);
+ 				$("#div_content").animate({ scrollTop: $('#div_content').prop("scrollHeight")}, 1000);
+			});
+		});
+		
+	</script>	
+		
+		
+		
 </head>
 <body>
+    
 	<!--------------------------------------- #div_header (화면 최상단) --------------------------------------->	
 	<div id="div_header">
 		<div id="div_header_left" class="fl">
@@ -266,7 +429,7 @@
 			
 			</div>				
 		
-<!---------- 토픽방 목록 / header ---------->			
+		<!---------- 토픽방 목록 / header ---------->			
 		<div id="div_topicroom_list_header"> <!-- (3) 토픽-->
 			<div></div>
 			<div>토픽</div>
@@ -275,7 +438,7 @@
 			</div>
 			<div class="ic_plus"></div>
 		</div>
-<!---------- 토픽방 목록 / filter ---------->			
+		<!---------- 토픽방 목록 / filter ---------->			
 		<div id="div_topicroom_filter">
 			<div>
 				<div class="fl"></div>
@@ -283,7 +446,7 @@
 			</div>
 			<span><%=cntOfTopic %> 개 토픽</span>
 		</div>
-<!---------- 토픽방 목록 / body ---------->			
+		<!---------- 토픽방 목록 / body ---------->			
 		<div id="div_topicroom_list_body" class="scrollbar"> <!-- (4) -->
 			<!-- (4)-(1) 필터 -->
 			<div></div>
@@ -345,7 +508,7 @@
 		</div><!-- div_topicroom_list_body 닫는 태그 -->
 
 
-<!---------- 프로젝트 목록 ---------->	
+		<!---------- 프로젝트 목록 ---------->	
 		<div id="div_project_list_header">
 		</div>
 		
@@ -353,7 +516,7 @@
 		</div>
 
 		
-<!---------- 채팅방 목록 ---------->	
+		<!---------- 채팅방 목록 ---------->	
 		<div id="div_chatroom_list_header"> <!-- (5) -->
 			<div></div>
 			<div>채팅</div>
@@ -371,7 +534,6 @@
 				<div class="topic_item" chatroom_idx="<%=chatroomDto.getChatroomIdx()%>">
 					<div class='<%=(chatroomDto.isBookmarkYn() ? "ic_bookmark_on" : "ic_bookmark_off") %> fl'></div>
 					<div class="fl">
-<%-- 					<% { // 반복문을 돌려 : ProfileUrlColorDto의 리스트에 대해서. %> --%>
 						<% if(listImgUrls.size()==0) { %> <!-- 여기여기 -->
 							<img class="fl" src="https://jandi-box.com/teams/0/logo.png?timestamp=20190628"/>
 						<% } %>
@@ -382,14 +544,9 @@
 									break;
 						%>
  							<img class="fl" src="<%=imgUrl%>"/>
-<!-- 	 					<img class="fl" src="https://jandi-box.com/files-profile/9836702f0b26c245a3bb3516afb6452d?size=80"/>
-						<img class="fl" src="https://jandi-box.com/files-profile/049da7c0fc758a63b6df1f4d9d8bb454?size=80"/>
-						<img class="fl" src="https://jandi-box.com/files-profile/6a4eaf2b7a89126e44e9eb0cc81854d6?size=80"/> 
- -->						<% } %>
-<%-- 					<% } %> --%>
+						<% } %>
 					</div>
 					<span><%=chatroomDto.getChatroomName() %></span>
-					<%-- <div class="div_unread"><%=chatDto.getUnread() %></div> --%>
 					<div class='<%= (chatroomDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
 						<%= chatroomDto.getUnread() >=1 ? chatroomDto.getUnread() : "" %>
 					</div>
@@ -399,15 +556,12 @@
 			
 		</div>
 		
-	<!-- 여기까지 일단 완료 7.22(월) 17시 -->	
-	<!-- 여기서부터 이어서 !! -->	
-	
 	<!--------------------------------------- div_side1 - 팝업창 --------------------------------------->
 	<!---------- 토픽 '+버튼' 클릭 시 팝업창 ---------->			
 		<div id="div_topic_plus">
 			<div>새로운 토픽 생성하기</div>
-			<div>참여 가능한 토픽 보기</div>
 			<div>폴더 생성하기</div>
+			<div>참여 가능한 토픽 보기</div>
 		</div>
 		<!---------- 토픽 '+버튼' -> 새로운 토픽 생성 생성하기 ---------->	
 		<form action="#">
@@ -534,9 +688,9 @@
 	
 	
 	
-<!--------------------------------------- 채팅방 --------------------------------------->
+	<!--------------------------------------- 채팅방 --------------------------------------->
 	<div id="div_side2" class="wide fl">
-<!---------- 채팅방 상단 - 채팅방 이름 & 메뉴 ---------->	
+		<!---------- 채팅방 상단 - 채팅방 이름 & 메뉴 ---------->	
 		<div id="div_title" chatroom_idx="<%=chatroomIdx%>">
 			<!-- 상단(1) -->
 			<div class=" fl">
@@ -614,18 +768,6 @@
 						<%
 							}
 						%>
-						<!-- <div class="div_member_list">
-							<div class="fl">
-								<img class="profile_img" src="https://jandi-box.com/files-profile/4065aa3b8f54d09d2c8d799718754681?size=80"/>
-							</div>
-							<div class="fl">
-								<div class="profile_name">김현지</div>
-							</div>
-							<div class="fr">
-								<div class="profile_power power_blue">소유자</div>
-							</div>					
-							<div style="clear:both;"></div>
-						</div> -->
 							<div class="div_not_exist">검색 결과가 없습니다.</div>
 							<div class="invite_member">+토픽에 멤버 초대하기</div>				
 					</div>
@@ -634,199 +776,135 @@
 			</div>
 			
 			<!---------- 채팅 시작하기 (초대하기 버튼) ---------->		
-<!-- 			<form id="form_chat_start" action"" method=""></form> -->
-			
-
-
-			<div id="div_chat_start" class="border">
-				<div>
-					<span>채팅 시작하기</span>
-					<div class="exit"></div>
-				</div>
-				<div>
-					<div class="fl">
-						<span class="span_chat_start">이름</span>
-						<div class="ic_search"></div>
-						<input type="text" placeholder="멤버 검색"/>
-						
-						<span class="span_chat_start">부서</span>
-		        		<select name="department">
-							<option value="전체">전체</option>
-							<option value="개발">개발</option>
-							<option value="인사">인사</option>
-							<option value="회계">회계</option>
-						</select>
-						
-						<span class="span_chat_start">직책</span>
-						<select name="position">
-							<option value="전체">전체</option>
-							<option value="대리">대리</option>
-							<option value="사원">사원</option>
-							<option value="인턴">인턴</option>
-							<option value="주임">주임</option>
-							<option value="팀장">팀장</option>
-						</select>
-						
-						<span class="span_chat_start">권한</span>
-		        		<select name="department">
-							<option value="전체">전체</option>
-							<option value="관리자">관리자</option>
-							<option value="소유자">소유자</option>
-							<option value="정회원">정회원</option>
-							<option value="준회원">준회원</option>
-						</select>
-						
-						<img id="icon_reset" src="img/reset.png"/>
-						<input type="reset" value="검색조건 초기화"/>
+			<form id="form_invite_chat_member" action"" method="post">	
+				<div id="div_chat_start" class="border">
+					<!-- 상단부 -->
+					<div>
+						<span>채팅 시작하기</span>
+						<div class="exit"></div>
 					</div>
-					<div class="fl">
-						<span class="span_chat_start">팀멤버</span>
-						<div id="start_member" class="border">
-					<%
-						for(TeamMemberDto memberOutOfChatroom : teamMemberOutOfChatroom){
-					%>							
-							<div class="div_member_list2" member_idx="<%=memberOutOfChatroom.getMemberIdx()%>">
-								<div class="fl">
-									<img class="profile_img" src="<%=memberOutOfChatroom.getProfileUrl() %>"/>
-								</div>
-								<div class="fl">
-									<div class="profile_name"><%=memberOutOfChatroom.getName()%> </div>
-									<div>
-										<span><%=memberOutOfChatroom.getDepartment()%> / </span>
-											<span> <%=memberOutOfChatroom.getPosition()%></span>
-										</div>
-								</div>
-								<div class="fr">
-									<div class="profile_power power_orange"><%=memberOutOfChatroom.getPower()%></div>
-								</div>					
-								<div style="clear:both;"></div>
-								</div>
-					<%
-						}
-					%>
-							<!-- <div class="div_member_list2" member_idx="101">
-								<div class="fl">
-									<img class="profile_img" src="https://jandi-box.com/files-resource/characters/character_01.png"/>
-								</div>
-								<div class="fl">
-									<div class="profile_name">이세걸</div>
-									<div>
-										<span>7팀 / </span>
-										<span> 이사님</span>
-									</div>
-								</div>
-								<div class="fr">
-									<div class="profile_power power_orange">정회원</div>
-								</div>					
-								<div style="clear:both;"></div>
-							</div>							
-							<div class="div_member_list2" member_idx="102">
-								<div class="fl">
-									<img class="profile_img" src="https://jandi-box.com/files-resource/characters/character_01.png"/>
-								</div>
-								<div class="fl">
-									<div class="profile_name">이영걸</div>
-									<div>
-										<span>7팀 / </span>
-										<span> 전무님</span>
-									</div>
-								</div>
-								<div class="fr">
-									<div class="profile_power power_orange">정회원</div>
-								</div>					
-								<div style="clear:both;"></div>
-							</div>							
-							<div class="div_member_list2" member_idx="103">
-								<div class="fl">
-									<img class="profile_img" src="https://jandi-box.com/files-resource/characters/character_01.png"/>
-								</div>
-								<div class="fl">
-									<div class="profile_name">이한걸</div>
-									<div>
-										<span>7팀 / </span>
-										<span> 실장님</span>
-									</div>
-								</div>
-								<div class="fr">
-									<div class="profile_power power_orange">정회원</div>
-								</div>					
-								<div style="clear:both;"></div>
-							</div>							 -->
+					
+					<div>
+						<div class="fl">
+							<span class="span_chat_start">이름</span>
+							<div class="ic_search"></div>
+							<input type="text" placeholder="멤버 검색"/>
 							
-							<div class="div_not_exist">
+							<span class="span_chat_start">부서</span>
+			        		<select name="department">
+								<option value="전체">전체</option>
+								<option value="개발">개발</option>
+								<option value="인사">인사</option>
+								<option value="회계">회계</option>
+							</select>
+							
+							<span class="span_chat_start">직책</span>
+							<select name="position">
+								<option value="전체">전체</option>
+								<option value="대리">대리</option>
+								<option value="사원">사원</option>
+								<option value="인턴">인턴</option>
+								<option value="주임">주임</option>
+								<option value="팀장">팀장</option>
+							</select>
+							
+							<span class="span_chat_start">권한</span>
+			        		<select name="department">
+								<option value="전체">전체</option>
+								<option value="관리자">관리자</option>
+								<option value="소유자">소유자</option>
+								<option value="정회원">정회원</option>
+								<option value="준회원">준회원</option>
+							</select>
+							
+							<div class="ic_reset fl"></div>
+							<input type="reset" value="검색조건 초기화"/>
+						</div>
+						
+						<div class="fl">
+							<span class="span_chat_start">팀멤버</span>
+							<div id="start_member" class="border">
+						<%
+							for(TeamMemberDto memberOutOfChatroom : teamMemberOutOfChatroom){
+						%>							
+								<div class="div_member_list2" member_idx="<%=memberOutOfChatroom.getMemberIdx()%>">
+									<div class="fl">
+										<img class="profile_img" src="<%=memberOutOfChatroom.getProfileUrl() %>"/>
+									</div>
+									<div class="fl">
+										<div class="profile_name"><%=memberOutOfChatroom.getName()%> </div>
+										<div>
+											<span><%=memberOutOfChatroom.getDepartment()%> / </span>
+												<span> <%=memberOutOfChatroom.getPosition()%></span>
+											</div>
+									</div>
+									<div class="fr">
+										<div class="profile_power power_orange"><%=memberOutOfChatroom.getPower()%></div>
+									</div>					
+									<div style="clear:both;"></div>
+								</div>
+						<%
+							}
+						%>
+								
+								<div class="div_not_exist">
 									검색 결과가 없습니다<br/>
 									지금 바로 7팀에 새로운 멤버를 초대해보세요<br/>
 								</div>
 								<div class="invite_member">
 									팀에 멤버 초대하기
 								</div>
-						</div> <!-- start_member 닫는 태그 -->
+							</div> <!-- start_member 닫는 태그 -->
+							
+							<span class="span_chat_start">선택된 멤버 <span class="count_memeber"> 5</span> </span>
+							<div id="start_choice">
+							<%
+								for(ChatroomMemberDto chatroomMemberDto : listChatroomMember) {
+							%>
+								<div class="fl" member_idx="<%=chatroomMemberDto.getMemberIdx()%>">
+									<img class="profile_img" src="<%=chatroomMemberDto.getProfileUrl()%>"/>
+									<span><%=chatroomMemberDto.getName() %></span>						
+								</div>
+							<%
+								}
+							%>	
+								<div style="clear:both;"></div>
+							</div>
+		
+							<span class="span_chat_start">동일한 멤버와 참여 중인 채팅방</span>
+							<div id="start_together" class="border">
+								<div>
+									<img class="chat_profile" src="img/chat_profile.png"/>
+									<span>프로젝트 채팅방</span>
+									<img src="img/arrowright.png"/>
+								</div>
+								<div>
+									<img class="chat_profile" src="img/chat_profile.png"/>
+									<span>테스트 채팅방</span>
+									<img src="img/arrowright.png"/>
+								</div>
+							</div>
+						</div>
+						<div style="clear:both;"></div>
 						
-						<!-- 여기여기 -->
-						<span class="span_chat_start">선택된 멤버 <span class="count_memeber"> 5</span> </span>
-						<div id="start_choice">
-						<%
-							for(ChatroomMemberDto chatroomMemberDto : listChatroomMember) {
-						%>
-							<div class="fl" member_idx="<%=chatroomMemberDto.getMemberIdx()%>">
-								<img class="profile_img" src="<%=chatroomMemberDto.getProfileUrl()%>"/>
-								<span><%=chatroomMemberDto.getName() %></span>						
+						<div id="div_chat_warning">
+							<div class="fl">
+								<img src="img/info_grey.png"/>
 							</div>
-						<%
-							}
-						%>	
-						<!-- 
-							<div class="fl" member_idx="14">
-								<img class="profile_img" src="https://jandi-box.com/files-profile/6a4eaf2b7a89126e44e9eb0cc81854d6?size=80"/>
-								<span>김민지</span>						
+							<div class="fl">
+								<span>• 채팅은 최대 10명까지 참여할 수 있습니다. 더 많은 멤버의 참여가 필요한 경우 토픽을 생성하여 대화해 주세요.</span><br/>
+								<span>• 채팅은 추후 토픽으로 변경이 불가능합니다. 주제별 토픽을 생성하여 관리해 보세요.</span>
 							</div>
-							<div class="fl" member_idx="13">
-								<img class="profile_img" src="https://jandi-box.com/files-profile/4065aa3b8f54d09d2c8d799718754681?size=80"/>
-								<span>김현지</span>						
-							</div>
-							<div class="fl" member_idx="12">
-								<img class="profile_img" src="https://jandi-box.com/files-profile/b615e8e5e21064bc8a32231d8628a136?size=80"/>
-								<span>원혜경</span>						
-							</div>
-							<div class="fl" member_idx="11">
-								<img class="profile_img" src="https://jandi-box.com/files-profile/444fd3d25ade24bc2ec6480e11949dfa?size=80"/>
-								<span>이나무</span>						
-							</div>
-							 -->
-							<div style="clear:both;"></div>
 						</div>
-	
-						<span class="span_chat_start">동일한 멤버와 참여 중인 채팅방</span>
-						<div id="start_together" class="border">
-							<div>
-								<img class="chat_profile" src="img/chat_profile.png"/>
-								<span>프로젝트 채팅방</span>
-								<img src="img/arrowright.png"/>
-							</div>
-							<div>
-								<img class="chat_profile" src="img/chat_profile.png"/>
-								<span>테스트 채팅방</span>
-								<img src="img/arrowright.png"/>
-							</div>
+						
+						<div>
+							<button type="button" name="invite_member" id="btn_invite_member">초대하기</button>
+							<button type="button" name="close_window">닫기</button>
 						</div>
 					</div>
-					<div style="clear:both;"></div>
-					
-					<div id="div_chat_warning">
-						<div class="fl">
-							<img src="img/info_grey.png"/>
-						</div>
-						<div class="fl">
-							<span>• 채팅은 최대 10명까지 참여할 수 있습니다. 더 많은 멤버의 참여가 필요한 경우 토픽을 생성하여 대화해 주세요.</span><br/>
-							<span>• 채팅은 추후 토픽으로 변경이 불가능합니다. 주제별 토픽을 생성하여 관리해 보세요.</span>
-						</div>
-					</div>
-					<div>
-						<button type="button" name="invite_member">초대하기</button>
-						<button type="button" name="close_window">닫기</button>
-					</div>
-				</div>
-			</div>
+				</div><!-- div_chat_start 닫는 태그 -->
+			</form>	
+			
 			<!---------- 더보기 팝업창 ---------->		
 			<div id="div_chatroom_more_menu">
 				<div>
@@ -849,242 +927,192 @@
 		</div><!-- div_title 닫는 태그 -->
 		
 		
-<!---------- 채팅방 중앙부  ---------->			
-		<div id="div_content" class="scrollbar">
-		
-			<!--------------------------------------- 공지 --------------------------------------->
-			<!---------- 공지 등록하기---------->
-			<div id="div_notice_register" class="border"> 
+		<!---------- 채팅방 생성하기 ---------->	
+		<form id="form_create_chatroom" action="CreateChatroomServlet" method="post">	
+			<div id="div_create_chatroom" class="border">
 				<!-- 상단부 / div:nth-child(1) -->
 				<div>
-					<span>공지 등록</span>
+					<span>채팅방 생성하기</span> 
 					<div class="exit fr"></div>
 				</div>
 				
 				<!-- 중앙부 / div:nth-child(2) -->
 				<div>
 					<!-- div:nth-child(2) > div:nth-child(1) -->
-		  			<label for="textarea_write">메시지</label>
-		  			<div>
-						<div>
-							<textarea name="input_msg" id="textarea_write" placeholder="메시지를 입력해주세요" rows="10"></textarea>
-						</div>
-						<div>
-							<label class="ic_file_clip fl" for="upload_file"></label>
-							<input type="file" id="upload_file" style="clip:rect(0, 0, 0, 0); display:none;"/>
-						</div>
-		  			</div>
+					<div>
+		     			<label for="input_name">이름</label><br/>
+		     			<input type="text" name="name" id="input_name" placeholder="채팅방 이름을 입력하세요" required>
+		     			<span class="text_max_value fr">/ 60</span>
+		     			<span class="text_current_value fr">0</span><br/><br/>
+					</div>
+					<!-- div:nth-child(2) > div:nth-child(2) -->
+					<div>
+			  			<label for="textarea_info">채팅방 설명</label><br/>
+						<textarea name="info" id="textarea_info" placeholder="채팅방에 대해 설명해주세요" rows="2"></textarea>
+						<span class="text_max_value fr">/ 300</span>
+						<span class="text_current_value fr">0</span>
+					</div>
 				</div>
 				
-				<!-- 하단부 / div:nth-child(3) -->
+				<!-- 하단부 / div:nth-child(3) -->						
 				<div>
-					<button class="fr" type="submit" id="new_topic">등록하기</button>
-					<button class="fr" id="" name="close_window">취소</button>
+					<button class="fr" type="submit" id="btn_create_chatroom">완료</button>
+					<button class="fr" type="button">취소</button>
 				</div>
-			</div>		
-			
-			<!---------- 채팅방 내용 ---------->
-			<div class="chat_date">
-				<div>2024년 4월 29일 월요일</div>
-				<div></div>
+			</div> <!-- div_create_chatroom 닫는 태그 --> 
+		</form>	<!-- form_create_chatroom --> 
+		
+		
+		
+		<!---------- 채팅방 중앙부  ---------->			
+	<div id="div_content" class="scrollbar">
+		<!--------------------------------------- 공지 --------------------------------------->
+		<!---------- 공지 등록하기---------->
+		<div id="div_notice_register" class="border"> 
+			<!-- 상단부 / div:nth-child(1) -->
+			<div>
+				<span>공지 등록</span>
+				<div class="exit fr"></div>
 			</div>
+			
+			<!-- 중앙부 / div:nth-child(2) -->
+			<div>
+				<!-- div:nth-child(2) > div:nth-child(1) -->
+	  			<label for="textarea_write">메시지</label>
+	  			<div>
+					<div>
+						<textarea name="input_msg" id="textarea_write" placeholder="메시지를 입력해주세요" rows="10"></textarea>
+					</div>
+					<div>
+						<label class="ic_file_clip fl" for="upload_file"></label>
+						<input type="file" id="upload_file" style="clip:rect(0, 0, 0, 0); display:none;"/>
+					</div>
+	  			</div>
+			</div>
+			
+			<!-- 하단부 / div:nth-child(3) -->
+			<div>
+				<button class="fr" type="submit" id="new_topic">등록하기</button>
+				<button class="fr" id="" name="close_window">취소</button>
+			</div>
+		</div>		
+			
+		<!---------- 채팅방 내용 ---------->
+		<div class="chat_date">
+			<div>2024년 4월 29일 월요일</div>
+			<div></div>
+		</div>
 		<%
 			for(ChatContentsDto chatContents : chatContentsDto) {
 				if(chatContents.getMemberIdx() == null){
 		%>		
-			<div class="chat_notice" chat_idx="<%=chatContents.getChatIdx()%>" writer="<%=chatContents.getMemberIdx()%>">
-				<span><%=chatContents.getContent()%><span class="time"><%=chatContents.getWriteDate()%></span></span>
-			</div>
+		<div class="chat_notice" chat_idx="<%=chatContents.getChatIdx()%>" writer="<%=chatContents.getMemberIdx()%>">
+			<span><%=chatContents.getContent()%><span class="time"><%=chatContents.getWriteDate()%></span></span>
+		</div>
 		<%
 				} else {
 		%>
-			<div class="chat_message" chat_idx="<%=chatContents.getChatIdx()%>" writer="<%=chatContents.getMemberIdx()%>">
-				<div class="fl">
-					<img class="profile_img" src="<%=chatContents.getProfileUrl()%>"/>
-				</div>
-				<div class="fl">
-					<div class="profile_name">
-						<%=chatContents.getName()%>
-						<span><%=(chatContents.getState() == null) ? "" : (" - " + chatContents.getState()) %></span>
-					</div>
-					<div class="msg">
-						<div>
-							<%=chatContents.getContent() == null ? "" : chatContents.getContent()%>
-						</div>
-						<span class="unread"><%=(chatContents.getUnreadCnt() == 0) ? "" : chatContents.getUnreadCnt()%></span>
-						<span class="time"><%=chatContents.getWriteDate()%></span>
-					<%
-						if(chatContents.getFileIdx() != null) { 
-							int fileIdx = chatContents.getFileIdx();
-							String fileName = chatContents.getFileName();
-							int fileTypeIdx = common.getFileTypeIdxFromFileName(fileName);
-							
-							if(common.getFileTypeIdxFromFileName(chatContents.getFileName())==2){	// 이미지일 때
-					%>
-						<div class="file_space" fileTypeIdx="<%=fileTypeIdx%>">
-							<div>
-								<img src="upload/<%=chatContents.getFileName()%>" fileTypeIdx="<%=fileTypeIdx%>"/>
-							</div>
-						</div>
-					<% 		} else { %>
-						<div class="file_space" fileTypeIdx="<%=fileTypeIdx%>">
-							<div class="ic_file_img <%=common.getIconImgFromFileTypeIdx(fileTypeIdx)%> fl" fileTypeIdx="<%=fileTypeIdx%>"></div>
-							<span><%=fileName%></span>
-						</div>
-					<%  	} 
-					  } %>
-						
-					</div>
-				</div>
-				<div style="clear:both;"></div>
-					<!-- 채팅글 [더보기] 창 -->
-					<div class="more_menu_box">
-						<div class="ic_more_menu"></div>
-					</div>	
-					<!-- 채팅글 [더보기] - [내 토픽글 더보기 창] -->
-					<div class="div_chat_more_menu_mine">
-					 	<div>
-						 	<div class="ic_comment fl"></div>
-							<span class="fl">댓글</span>
-					 	</div>
-					 	<div>
-						 	<div class="ic_notice_register fl"></div>
-							<span class="fl">공지등록</span>
-					 	</div>
-					 	<div>
-					 		<div class='fl <%= bDao.isBookmarkChat(chatContents.getMemberIdx(), chatContents.getChatIdx()) ? "ic_bookmark_on" : "ic_bookmark_off" %>'>
-					 		</div>
-							<span class="fl">즐겨찾기</span>
-					 	</div>
-					 	<div>
-					 		<div class="ic_copy fl"></div>
-							<span class="fl">복사</span>
-					 	</div>
-					 	<div>
-					 		<div class="ic_edit_info fl"></div>
-							<span class="fl">수정</span>
-					 	</div>
-					 	<div>
-					 		<div class="ic_delete fl"></div>
-							<span class="fl">삭제</span>
-					 	</div>
-					 </div> 
-					<!-- 채팅글 [더보기] - [상대 토픽글 더보기 창] -->
-					<div class="div_chat_more_menu_other">
-					 	<div>
-						 	<div class="ic_comment fl"></div>
-							<span class="fl">댓글</span>
-					 	</div>					
-					 	<div>
-						 	<div class="ic_notice_register fl"></div>
-							<span class="fl">공지등록</span>
-					 	</div>
-					 	<div>
-					 		<div class='fl <%= bDao.isBookmarkChat(memberIdx, chatContents.getChatIdx()) ? "ic_bookmark_on" : "ic_bookmark_off" %>'>
-					 		</div>
-							<span class="fl">즐겨찾기</span>
-					 	</div>
-					 	<div>
-					 		<div class="ic_copy fl"></div>
-							<span class="fl">복사</span>
-					 	</div>
-				 	</div> 
+		<div class="chat_message" chat_idx="<%=chatContents.getChatIdx()%>" writer="<%=chatContents.getMemberIdx()%>">
+			<div class="fl">
+				<img class="profile_img" src="<%=chatContents.getProfileUrl()%>"/>
 			</div>
+			<div class="fl">
+				<div class="profile_name">
+					<%=chatContents.getName()%>
+					<span><%=(chatContents.getState() == null) ? "" : (" - " + chatContents.getState()) %></span>
+				</div>
+				<div class="msg">
+					<div>
+						<%=chatContents.getContent() == null ? "" : chatContents.getContent()%>
+					</div>
+					<span class="unread"><%=(chatContents.getUnreadCnt() == 0) ? "" : chatContents.getUnreadCnt()%></span>
+					<span class="time"><%=chatContents.getWriteDate()%></span>
+				<%
+					if(chatContents.getFileIdx() != null) { 
+						int fileIdx = chatContents.getFileIdx();
+						String fileName = chatContents.getFileName();
+						int fileTypeIdx = common.getFileTypeIdxFromFileName(fileName);
+						
+						if(common.getFileTypeIdxFromFileName(chatContents.getFileName())==2){	// 이미지일 때
+				%>
+					<div class="file_space" fileTypeIdx="<%=fileTypeIdx%>">
+						<div>
+							<img src="upload/<%=chatContents.getFileName()%>" fileTypeIdx="<%=fileTypeIdx%>"/>
+						</div>
+					</div>
+				<% 		} else { %>
+					<div class="file_space" fileTypeIdx="<%=fileTypeIdx%>">
+						<div class="ic_file_img <%=common.getIconImgFromFileTypeIdx(fileTypeIdx)%> fl" fileTypeIdx="<%=fileTypeIdx%>"></div>
+						<span><%=fileName%></span>
+					</div>
+				<%  	} 
+				  } %>
+					
+				</div>
+			</div>
+			<div style="clear:both;"></div>
+			<!-- 채팅글 [더보기] 창 -->
+			<div class="more_menu_box">
+				<div class="ic_more_menu"></div>
+			</div>	
+			<!-- 채팅글 [더보기] - [내 토픽글 더보기 창] -->
+			<div class="div_chat_more_menu_mine">
+			 	<div>
+				 	<div class="ic_comment fl"></div>
+					<span class="fl">댓글</span>
+			 	</div>
+			 	<div>
+				 	<div class="ic_notice_register fl"></div>
+					<span class="fl">공지등록</span>
+			 	</div>
+			 	<div>
+			 		<div class='fl <%= bDao.isBookmarkChat(chatContents.getMemberIdx(), chatContents.getChatIdx()) ? "ic_bookmark_on" : "ic_bookmark_off" %>'>
+			 		</div>
+					<span class="fl">즐겨찾기</span>
+			 	</div>
+			 	<div>
+			 		<div class="ic_copy fl"></div>
+					<span class="fl">복사</span>
+			 	</div>
+			 	<div>
+			 		<div class="ic_edit_info fl"></div>
+					<span class="fl">수정</span>
+			 	</div>
+			 	<div>
+			 		<div class="ic_delete fl"></div>
+					<span class="fl">삭제</span>
+			 	</div>
+			 </div> 
+			<!-- 채팅글 [더보기] - [상대 토픽글 더보기 창] -->
+			<div class="div_chat_more_menu_other">
+			 	<div>
+				 	<div class="ic_comment fl"></div>
+					<span class="fl">댓글</span>
+			 	</div>					
+			 	<div>
+				 	<div class="ic_notice_register fl"></div>
+					<span class="fl">공지등록</span>
+			 	</div>
+			 	<div>
+			 		<div class='fl <%= bDao.isBookmarkChat(memberIdx, chatContents.getChatIdx()) ? "ic_bookmark_on" : "ic_bookmark_off" %>'>
+			 		</div>
+					<span class="fl">즐겨찾기</span>
+			 	</div>
+			 	<div>
+			 		<div class="ic_copy fl"></div>
+					<span class="fl">복사</span>
+			 	</div>
+		 	</div> 
+		</div> <!-- chat_message 닫는 태그 -->
 		<%
 				}
 			}
 		%>			
-		
-			<div class="chat_notice">
-				<span><strong>YG</strong> 님이 나갔습니다.<span class="time">PM 3:49</span></span>
-			</div> 
-			
-			<div class="chat_message">
-				<div class="fl">
-					<img class="profile_img" src="https://jandi-box.com/files-profile/b615e8e5e21064bc8a32231d8628a136?size=80"/>
-				</div>
-				<div class="fl">
-					<div class="profile_name">원혜경</div>
-					<div class="msg user">
-						음..
-						<span class="unread">1</span>
-						<span class="time">PM 5:10</span>
-					</div>
-				</div>
-				<div style="clear:both;"></div>
-			</div>
-			<!-- 채팅글원본+댓글-->
-			<div class="chat_comment_message">
-				<!-- 댓글프로필이미지 -->
-				<div class="fl">
-					<img class="profile_img" src="https://cdn.jandi.com/app/assets/images/icon/f8aa3b7e.ic-comment-fill.svg"/>
-				</div>
-				<!-- 원본+댓글수+댓글 -->
-				<div class="fl">
-					<!-- 원본 -->
-					<div class="comment_origin">
-						<div class="fl">
-							<img class="profile_img" src="https://jandi-box.com/files-profile/444fd3d25ade24bc2ec6480e11949dfa?size=80"/>
-						</div>
-						<div class="fl">
-							<span>이나무</span>
-							<span>2024/04/29 PM 03:33</span>
-							<span>특정 재료에 알레르기가 있거나 선호하지 않는 음식이 있다면 말씀해주세요!</span>
-						</div>
-						<div style="clear:both;"></div>
-					</div>
-					<!-- 댓글수 -->
-					<div class="comment_count">
-						<span>2개 댓글 모두 보기 →</span>
-					</div>
-					<!-- 댓글 -->
-					<div class="comments">
-						<div class="fl">
-							<img class="profile_img" src="https://jandi-box.com/files-profile/b615e8e5e21064bc8a32231d8628a136?size=80"/>
-						</div>
-						<div class="fl">
-							<span>원혜경</span>
-							<span> - 회의중</span>
-							<span>굴, 전복, 골뱅이 빼고는 대체로 다 좋아합니다~</span>
-							<span class="unread">1</span>
-							<span class="time">PM 5:17</span>
-						</div>
-						<div style="clear:both;"></div>
-					</div>
-				</div>
-				<div style="clear:both;"></div>
-			</div>
-		
 	</div><!-- div_content 닫는 태그 -->
-	
-	
-	<!---------- 채팅방 하단 -채팅입력 ---------->	<!-- (기존) 7.24(수) -->		
-<%-- 	<div id="div_bottom">
-		<!-- 채팅 입력창 -->
-		<div id="div_msg_box" class="wide">
-			<div id="div_msg_space">
-				<!-- 댓글 입력하는 부분 -->
-				<div id="div_msg_blank"> <!-- 이거 -->
-					<div id="write_chat_content_space" contenteditable="true" data-placeholder="채팅을 입력하세요..." class="scrollbar"></div>
-					<input type="hidden" name="chat_content" id="hidden_chat_content">
-		 			<input type="hidden" name="chatroom_idx" value="<%=chatroomIdx%>">
-					<!-- <textarea rows="1" name="comment" placeholder="댓글을 입력하세요..."></textarea> -->
-					<!-- <input type="text" name="comment" placeholder="댓글을 입력하세요..."/> -->
-					<div class="file_list_container"><img scr=""><img scr=""></div>
-					<div class="ic_comment_enter"></div>
-				</div>
-				<!-- 이모티콘, 언급, 파일 -->
-				<div id="div_msg_icon"> <!-- 이거 -->
-					<div class="ic_mention fl"></div>
-					<label class="ic_file_clip fl" for="upload_file"></label>
-					<input type="file" id="upload_file" style="clip:rect(0, 0, 0, 0); display:none;"/>
-				</div>
-			</div>
-		</div> --%>
-
 		
-	<!---------- 채팅방 하단 -채팅입력 ---------->	<!-- (변경) 7.25(목)-->		
-	<form id="form_chat" action="ChatFileUploadServlet" method="post" enctype="multipart/form-data" >
+	<!---------- 채팅방 하단 -채팅입력 ---------->		
+	<!-- 8.3(토) 테스트 중으로 폼 주석 처리 -->
+<!-- 	<form id="form_chat" action="ChatFileUploadServlet" method="post" enctype="multipart/form-data" > -->
 		<div id="div_bottom">
 			<!-- 채팅 입력창 -->
 			<div id="div_msg_box" class="wide">
@@ -1109,7 +1137,7 @@
 				</div>
 			</div>
 		</div>
-	</form>
+<!-- 	</form> -->
 	
 	</div>	<!-- div_side2 닫는 태그 -->
 </div> <!-- div_total_side 닫는 태그 -->	

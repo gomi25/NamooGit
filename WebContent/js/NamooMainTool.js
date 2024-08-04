@@ -1422,21 +1422,4 @@
 	});
 	
 	
-	//===================================== 조직도창 =====================================				
-	$(function() {
-		// 상단에 조직도 이미지를 누르면 조직도가 펼쳐짐
-		$(".ic_header_org_chat_img").click(function(){
-			$("#div_transparent_filter").hide();
-			$("#organizational_chart").show();
-			$("#div_side2").removeClass("wide");
-		});
-		
-		// "x"를 클릭하면 즐겨찾기창 꺼짐  
-		$(".delete_img").click(function(){
-			$("#organizational_chart").hide();
-			$("#div_side2").addClass("wide");
-		}); 
-	});
-	
-	
 	
