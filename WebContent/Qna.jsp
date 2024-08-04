@@ -28,8 +28,6 @@
 	
 	ArrayList<QnaAllQuestionDto> listQna = qDao.getQnaQuestionPage(pageNum);
 	
-	
-	
 	//페이지 나타내기
 	lastPageNum = qDao.getLastPageNumber();
 	endNum = (pageNum / 5 + 1) * 5;
