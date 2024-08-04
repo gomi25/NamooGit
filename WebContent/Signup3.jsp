@@ -10,6 +10,11 @@
 	String password = request.getParameter("password");
 	String email = request.getParameter("email");
 	int memberIdx = Integer.parseInt(request.getParameter("member_idx"));
+	
+    // 이메일 주소를 세션에 저장
+    session.setAttribute("email", email);
+    session.setAttribute("memberIdx", memberIdx);
+    
 	mDao.enterInformation(name, password, email, memberIdx);
 	
 	String code = "";
@@ -108,10 +113,10 @@
 					    "</div>";
 	
 	
-	sender.sendMail(email, name, "제목 테스트 메일 발송 JavaMail API 7/11 14:47", mailContent);
+	sender.sendMail(email, name, "인증 후 바로 NAMOO를 사용하실 수 있습니다.", mailContent);
 	
 %>
-<script>alert("메일 발송 되었습니다!");</script>
+<script>alert("메일 발송 되었습니다! 이메일을 확인해 주세요.");</script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -189,7 +194,6 @@
 	        						+ Number($("#input_verify_code2").val()) * 100
 	        						+ Number($("#input_verify_code3").val()) * 10
 	        						+ Number($("#input_verify_code4").val());
-	        	alert("[TEST] 입력한 코드 = " + user_input_code);
 	        	
 	        	location.href = "SignupAction.jsp?user_input_code=" + user_input_code + "&member_idx=<%=memberIdx%>";
 	        });
@@ -239,5 +243,22 @@
 			</div>
         </div>
     </main>
+    <script>
+        $(document).ready(function() {
+            $("#resendEmail").click(function() {
+                // 새 인증 코드를 생성하여 서버에 요청
+                $.ajax({
+                    url: 'ResendEmail.jsp',
+                    method: 'POST',
+                    success: function(response) {
+                        alert("새 인증 코드가 이메일로 전송되었습니다.");
+                    },
+                    error: function() {
+                        alert("이메일 전송에 실패했습니다. 다시 시도해주세요.");
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

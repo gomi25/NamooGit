@@ -94,6 +94,10 @@ public class MailSender {
 	        msg.setFrom(fromAddr);
 	       
 	        // 수신자
+	        if (emailTo == null || emailTo.isEmpty()) {
+	            throw new IllegalArgumentException("수신자 이메일 주소가 없습니다.");
+	        }
+	        
 	        Address[] arrAddresses = new Address[1];
 	        arrAddresses[0] = new InternetAddress(emailTo, nameTo, charset);
 //	        arrAddresses[1] = new InternetAddress("수신자2 주소","수신자2이름", charset);
