@@ -19,7 +19,30 @@ public class NamooMemberDao {
 	 	return conn;
 	}
 
-/* ================================로그인==================================== */	
+	/* ================================로그인 성공-memberIdx==================================== */	
+	// 1. memberIdx
+	// - 파라미터 : email
+	// - 리턴 : memberIdx
+	public int getMemberIdxFromEmail(String email) throws Exception{
+		// "SELECT count(*) FROM member WHERE id=? AND pw=?"
+		Connection conn = getConnection();
+		String sql = "SELECT member_idx FROM member WHERE email=?";
+		
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, email);
+		ResultSet rs = pstmt.executeQuery();
+		int memberIdx = -1;
+		if(rs.next()){
+			memberIdx = rs.getInt(1);
+		}
+		
+		rs.close();
+		pstmt.close();
+		conn.close();
+		
+		return memberIdx;
+	}
+	/* ================================로그인==================================== */	
 	// 1. 로그인
 	// loginCheck(int) : email, pw 값을 받아서  1의 값를 리턴.
 	// 파라미터 email, pw : email, pw
@@ -46,29 +69,6 @@ public class NamooMemberDao {
 		
 		return result==1;
 	}
-	// 로그인 성공시 해당 멤버 idx 리턴
-	// memberIdxFromEmail(String) : email 값을 받아서  1의 값를 리턴.
-	// 파라미터 email: email
-	// 리턴 : memberIdx 리턴
-	public int memberIdxFromEmail(String email) throws Exception {
-		Connection conn = getConnection();
-		String sql = "SELECT member_idx from member WHERE email = ?";
-		
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1,email);
-		
-		ResultSet rs = pstmt.executeQuery();
-		int result = 0;
-		if(rs.next()) {
-			result = rs.getInt(1);
-		}
-		
-		rs.close();
-		pstmt.close();
-		conn.close();
-		return result;
-	}
-	
 	//2. 비밀번호 찾기
 	// emailCheck(int) : member_idx, email 값을 받아서  1의 값를 리턴.
 	// 파라미터 member_idx, email : member_idx, email

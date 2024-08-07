@@ -6,22 +6,20 @@
 <%@ page import="java.util.*"%>
 
 <%
-
 	// 파라미터 받아서 하는 부분
-	// 	int memberIdx = (Integer)session.getAttribute("memberIdx");
-	// 	int teamIdx = (Integer)session.getAttribute("teamIdx");
-	String topicIdxParam = (String)request.getParameter("topicIdx"); // 이렇게 받으면 토픽방 이름 바뀜. topicIdx 2까지는 데이터가 바뀌는데 3부터는 또 안 바뀜
-	int topicIdx = (topicIdxParam != null) ? Integer.parseInt(topicIdxParam) : 1;
-	
-	int memberIdx = 2;     // 테스트 - session
-	int teamIdx = 1;       // 테스트 - parameter
+	int memberIdx = (Integer)session.getAttribute("memberIdx");
+	int teamIdx = (Integer)request.getAttribute("teamIdx");
+	int topicIdx = (Integer)request.getAttribute("topicIdx"); 
+
+	// 	String topicIdxParam = (String)request.getParameter("topicIdx"); 
+	// 	int memberIdx = 2;     // 테스트 - session
+	// 	int teamIdx = 1;       // 테스트 - parameter
 	// 	int topicIdx = 1;	   // 테스트
 	// 	int topicBoardIdx = 1; // 테스트
 	
 	int cntUnreadTotal = 0; // 토픽방에서 안 읽은 메시지 전체 개수 
 	int cntOfTopic = 0;     // 토픽방 개수
 	int cntOfTopicMember = 0;
-	
 	
 	SideDao sDao = new SideDao();
 	BookmarkDao bDao = new BookmarkDao();
@@ -267,9 +265,9 @@
 			<div id="div_topicroom_list_header"> <!-- (3) 토픽-->
 				<div></div>
 				<div>토픽</div>
-				<div class='<%= cntUnreadTotal >= 1 ? "div_topicroom_unread" : "" %>'>
+				<%-- <div class='<%= cntUnreadTotal >= 1 ? "div_topicroom_unread" : "" %>'>
 					<%= cntUnreadTotal >= 1 ? cntUnreadTotal : ""%>
-				</div>
+				</div> --%>
 				<div class="ic_plus"></div>
 			</div>
 			<!---------- 토픽방 목록 / filter ---------->			
@@ -310,10 +308,10 @@
 						<div class="topic_item" topic_idx="<%=topicDto.getTopicIdx()%>">
 							<div class='<%=(topicDto.isBookmark() ? "ic_bookmark_on" : "ic_bookmark_off") %>'></div>
 							<span><%=topicDto.getName()%></span>
-							<div class="ic_alarm_off"></div>
-							<div class='<%= (topicDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
+							<div class='<%= (topicDto.getAlarm()==1? "" : "ic_alarm_off" ) %>'></div>
+							<%-- <div class='<%= (topicDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
 								<%= topicDto.getUnread() >=1 ? topicDto.getUnread() : "" %>
-							</div>
+							</div> --%>
 						</div>
 						<%
 							}
@@ -331,9 +329,9 @@
 					<div class='<%=(topicDto.isBookmark() ? "ic_bookmark_on" : "ic_bookmark_off") %>'></div>
 					<span><%=topicDto.getName()%></span>
 					<div class='<%=(topicDto.getAlarm()==1 ? "" : "ic_alarm_off") %>'></div>
-					<div class='<%= (topicDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
+					<%-- <div class='<%= (topicDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
 						<%= topicDto.getUnread() >=1 ? topicDto.getUnread() : "" %>
-					</div>
+					</div> --%>
 				</div>
 				<%
 					}
@@ -343,6 +341,9 @@
 	
 			<!---------- 프로젝트 목록 ---------->	
 			<div id="div_project_list_header">
+				<div></div>
+				<div>프로젝트</div>
+				<div class="ic_plus"></div>		
 			</div>
 			
 			<div id="div_project_list_body">
@@ -380,9 +381,9 @@
 					<% } %>
 					</div>
 					<span><%=chatroomDto.getChatroomName() %></span>
-					<div class='<%= (chatroomDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
+					<%-- <div class='<%= (chatroomDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
 						<%= chatroomDto.getUnread() >=1 ? chatroomDto.getUnread() : "" %>
-					</div>
+					</div> --%>
 					<div class="exit"></div>
 				</div>
 			<%	} %>
@@ -396,7 +397,9 @@
 				<div>참여 가능한 토픽 보기</div>
 			</div>
 			<!---------- 토픽 '+버튼' -> 새로운 토픽 생성 생성하기 ---------->	
-			<form action="${pageContext.request.contextPath}/jsp/CreateNewTopic.jsp" method="get">
+			<form action="Controller" method="post">
+				<input type="hidden" name="command" value="create_topic"/>
+				<input type="hidden" name="teamIdx" value="<%=teamIdx%>"/>
 				<div id="div_topic_create"> 
 					<!-- 상단부 / div:nth-child(1) -->
 					<div>
@@ -427,7 +430,7 @@
 							<div class="topic_open_select">
 								<div id="topic_public_div">
 									<div class="ic_topic_public fl"></div>
-									<input type="radio" name="topic_open" id="topic_public" value="1" checked>
+									<input type="radio" name="topic_open" id="topic_public" value="1">
 									<label for="topic_public">공개</label>		
 									<div class="fr"></div>
 								</div>
@@ -1044,7 +1047,7 @@
 								 	<div class="upload_file_space scrollbar" class="scrollbar" >
 								 		<div class="upload_file_list">
 								 			<div>
-								 				<img src="https://jandi-box.com/files-thumb/31792038/1721185886012758fc45d3f6eb711c437f8cf178a88bd?size=80"/>
+								 				<img src=""/>
 								 			</div>
 								 			<div><!-- 파일이름 들어오는 공간 --></div>
 								 			<div>
@@ -1141,25 +1144,7 @@
 								 	<div class="upload_file_space" class="scrollbar" >
 								 		<div class="upload_file_list">
 								 			<div>
-								 				<img src="https://jandi-box.com/files-thumb/31792038/1721185886012758fc45d3f6eb711c437f8cf178a88bd?size=80"/>
-								 			</div>
-								 			<div>download.png</div>
-								 			<div>
-								 				<div class="ic_delete"></div>
-								 			</div>
-								 		</div>
-								 		<div class="upload_file_list">
-								 			<div>
-								 				<img src="https://jandi-box.com/files-thumb/31792038/1721185886012758fc45d3f6eb711c437f8cf178a88bd?size=80"/>
-								 			</div>
-								 			<div>download.png</div>
-								 			<div>
-								 				<div class="ic_delete"></div>
-								 			</div>
-								 		</div>
-								 		<div class="upload_file_list">
-								 			<div>
-								 				<img src="https://jandi-box.com/files-thumb/31792038/1721185886012758fc45d3f6eb711c437f8cf178a88bd?size=80"/>
+								 				<img src=""/>
 								 			</div>
 								 			<div>download.png</div>
 								 			<div>
@@ -1237,13 +1222,13 @@
 				<div class="ic_view_current_board"></div>
 			</div>
 			
-			<!---------- 등록된 공지 숨기기---------->		
+ 			<!---------- 등록된 공지 숨기기---------->		
 			<div class="ic_notice_register_box">
 				<div class="ic_notice_register"></div>
 			</div>		
-		
+		 
 			<!---------- 등록된 공지 ---------->
-			<div id="div_room_notice_view">
+			<!-- <div id="div_room_notice_view">
 				<div class="notice_header">
 					<div class="fl">
 						<img src="https://jandi-box.com/files-profile/444fd3d25ade24bc2ec6480e11949dfa?size=80"/>
@@ -1269,7 +1254,7 @@
 					<div class="ic_arrow_bottom fr"></div>
 				</div>
 				
-				<!---------- 등록된 공지창 - [더보기] ---------->		
+				-------- 등록된 공지창 - [더보기] --------		
 				<div id="div_notice_more_menu">
 					<div>
 						<div class="ic_notice_hide"></div>
@@ -1287,21 +1272,21 @@
 				
 			</div>		
 			
-			<!------------ 등록된 공지창 - [더보기] - [수정] 클릭 시 팝업창 -------->
+			---------- 등록된 공지창 - [더보기] - [수정] 클릭 시 팝업창 ------
 			<div id="div_notice_update" class="border"> 
-				<!-- 상단부 / div:nth-child(1) -->
+				상단부 / div:nth-child(1)
 				<div>
 					<span>공지 수정</span>
 					<div class="exit fr"></div>
 				</div>
 				
-				<!-- 중앙부 / div:nth-child(2) -->
+				중앙부 / div:nth-child(2)
 				<div class="scrollbar">
 		  			<label for="write_topic_noti_box">메시지</label>
 		  			<div id="update_topic_noti_box">
 		  				<textarea name="textarea_noti" id="textarea_noti" placeholder="메시지를 입력해주세요" rows="10" class="scrollbar"></textarea>
 						
-						<!-- 파일 업로드하는 공간 -->
+						파일 업로드하는 공간
 					 	<div class="upload_file_box">
 						 	<div class="upload_file_space scrollbar" class="scrollbar" >
 						 		<div class="upload_file_list">
@@ -1339,13 +1324,13 @@
 		  			</div>
 				</div>
 				
-				<!-- 하단부 / div:nth-child(3) -->
+				하단부 / div:nth-child(3)
 				<div>
 					<button class="fr" type="submit" id="update_noti_content">수정</button>
 					<button class="fr close_window" type="button" id="" name="close_window">취소</button>
 				</div>
-			</div>	<!-- div_notice_update 닫는 태그 -->	
-		
+			</div>	div_notice_update 닫는 태그	
+		 -->
 			<!--------------------------------------- 토픽방 내부 --------------------------------------->		
 			<div id="div_content" class="scrollbar">
 				
@@ -1367,7 +1352,7 @@
 							</div>
 							
 							<div class="fr">
-								<span><%=topicBoardDto.getUnreadCnt()%></span>
+<%-- 								<span><%=topicBoardDto.getUnreadCnt()%></span> --%>
 							</div>
 							
 						</div>

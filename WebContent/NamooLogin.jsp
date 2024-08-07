@@ -1,10 +1,5 @@
-<%@page import="dao.NamooMemberDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
-	NamooMemberDao mDao = new NamooMemberDao();
-
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,17 +51,22 @@
 						alert("error.");
 				    }
 				});
-
-				
 				return true;		
 			});
 			/* 확인버튼 눌렀을 때 모든 창 꺼지기 */
 			$("#div_send_email > div:nth-child(2) input").click(function() { 
 				$("#div_send_email").css('display', 'none');
 				$("#grey_screen").css('display', 'none');
-				
 			});
 			
+			$("#user_email").keyup(function() {
+				let email_input = $(this).val();
+				if(email_input.length > 0) {
+					$(this).css('border', '1px solid #00c473');
+				} else {
+					$(this).css('border', '1px solid red');
+				}
+			});
 		});
 	</script>
 </head>
@@ -88,14 +88,15 @@
 	<div id="div_body" >
 		<div id="div_login">
 			<div><h1>로그인</h1></div>
-			<form action="LoginServlet" method="post">
-				<!-- 인풋  -->
+<!-- 			<form action="NamooMainTool.jsp"> 테스트중 -->
+			<form action="Controller"> <!-- 테스트중 -->
+				<input type="hidden" name="command" value="login_check"/>
 				<div id="div_email_pw" >
 					<div>
 						<input type="email" name="email" placeholder="이메일"/>
 					</div>
 					<div>
-						<input type="password" name="password" placeholder="비밀번호"/>
+						<input type="password" name="pw" placeholder="비밀번호"/>
 					</div>
 				</div>
 				<!-- 체크박스  -->				
@@ -111,7 +112,7 @@
 					<div class="fr">비밀번호 찾기 →</div>
 				</div>
 				<div id="div_login_submit">
-				<button type="submit" id="login_btn">로그인</button></div>
+				<button type="submit"> <!-- disabled --> 로그인</button></div>
 			</form>
 			<div id="div_signup">
 				<div>
