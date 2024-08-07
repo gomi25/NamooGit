@@ -285,7 +285,7 @@
 	/****************************** 토픽 [+] 팝업창 ******************************/					
 	$(function() {
 		// 토픽 '+버튼' 클릭 시 
-		$("#div_topicroom_list_header > div:nth-child(4)").click(function() {
+		$("#div_topicroom_list_header .ic_plus").click(function() {
 			$("#div_topic_plus").css('display','block');
 			$("#div_transparent_filter").css('display','block');
 		});
@@ -326,7 +326,6 @@
 				url : "AjaxCreateTopicFolderServlet",
 				data : params,
 				success : function(res) {
-					alert("성공!");
 					let str = 
 					  '<div class="topic_folder">'
 					+ '	<div class="div_folder_item" topicFolderIdx="' + res.topicFolderIdx +'">'  
@@ -452,7 +451,6 @@
 	                url: "AjaxUpdateTopicFolderServlet",
 	                data: params,
 	                success: function(res) {
-	                    alert(res.result); 
 						_this.attr('contenteditable', 'false').attr('style','');
 	                },
 	                error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -545,6 +543,7 @@
 	        $('#topic_public_div').css('border-color', '#00C473');
 	        $('#topic_public_div > div').css('filter', 'invert(71%) sepia(69%) saturate(5840%) hue-rotate(123deg) brightness(99%) contrast(104%)');
 	        $('#topic_public_div > label').css('color', '#00C473');
+        	toggleCreateTopicButton(); // 버튼 상태 업데이트
 	    });
 		// [새 토픽 생성] - "공개 여부": 비공개 체크		
 	    $('#topic_private_div').click(function() {
@@ -553,6 +552,7 @@
 	        $('#topic_private_div').css('border-color', '#00C473');
 	        $('#topic_private_div > div').css('filter', 'invert(71%) sepia(69%) saturate(5840%) hue-rotate(123deg) brightness(99%) contrast(104%)');
 	        $('#topic_private_div > label').css('color', '#00C473');
+			toggleCreateTopicButton(); // 버튼 상태 업데이트
 	    });
 
 		// [새 토픽 생성] 토픽 이름 입력 시 글자수 체크 및 글자수 제한
@@ -594,7 +594,7 @@
 		// [새 토픽 생성] 토픽 이름 입력, 공개 여부 선택 시 [생성하기] 버튼 활성화
 		function toggleCreateTopicButton() {
 		    const topicName = $('#input_new_topic_name').val().trim();
-		    const topicOpen = $('input[name="topic_open"]:checked').val();
+		    const topicOpen = $('input[name="topic_open"]').filter(':checked').val();
 			console.log("Name:", topicName);  // 디버깅용 콘솔 로그
 		    console.log("Topic Open:", topicOpen);  // 디버깅용 콘솔 로그        
 		
@@ -621,9 +621,11 @@
 			// input과 textarea 초기화
 		    $('input[type="text"]').val('');
 		    $('textarea').val('');
+			$('#new_topic_create').removeClass('green_light'); // 버튼 비활성화 초기화
+		
 		}
 		// 닫기 버튼과 exit 클릭 시 초기화
-		$(".exit, #new_topic_exit").click(function() {
+		$(".exit, #new_topic_cancel").click(function() {
 		    resetForm();
 		});
 	});
@@ -701,7 +703,8 @@
 	$(function(){
 		$("#div_topicroom_list_body .topic_item > span").click(function () {
 			let topicIdx = $(this).parent(".topic_item").attr("topic_idx");
-			location.href = context_path + "/NamooTopic.jsp?topicIdx=" + topicIdx;
+//			location.href = context_path + "/NamooTopic.jsp?topicIdx=" + topicIdx;
+			location.href = context_path + "/Controller?command=topic_choice&teamIdx=" + team_idx + "&topicIdx=" + topicIdx;
 		});
 	});	
 
@@ -719,7 +722,8 @@
 	$(function(){
 		$("#div_chatroom_list_body > .topic_item > span").click(function () {
 			let chatroomIdx = $(this).parent(".topic_item").attr("chatroom_idx");
-			location.href = context_path + "/NamooChat.jsp?chatroomIdx=" + chatroomIdx;
+//			location.href = context_path + "/NamooChat.jsp?chatroomIdx=" + chatroomIdx;
+			location.href = context_path + "/Controller?command=chatroom_choice&teamIdx=" + team_idx + "&chatroomIdx=" + chatroomIdx;
 		});
 	});		
 	
@@ -808,7 +812,6 @@
 	$(function(){
 	 	// 이벤트 위임을 사용하여 동적으로 생성된 요소에도 이벤트가 바인딩되도록 수정
    		$(document).on("click", ".topic_item > div:first-child", function(e){
-			alert("클림됨!");
 			let idx = $(this).parent(".topic_item").attr("topic_idx");
 			let params = { idx : idx, something: "topic_idx" } // 객체 생성
 			let _this = $(this);
@@ -818,7 +821,6 @@
 					url : "AjaxRemoveBookmarkServlet",
 					data : params,
 					success : function(res) {
-						alert("on -> off : " + res.result);
 						_this.removeClass("ic_bookmark_on").addClass("ic_bookmark_off");
 						$("#div_title > div:nth-child(1) > div:nth-child(2)").removeClass("ic_bookmark_on").addClass("ic_bookmark_off");
 					},
@@ -832,7 +834,6 @@
 					url : "AjaxAddBookmarkServlet",
 					data : params,
 					success : function(res) {
-						alert("off -> on : " + res.result);
 						_this.removeClass("ic_bookmark_off").addClass("ic_bookmark_on");
 						$("#div_title > div:nth-child(1) > div:nth-child(2)").removeClass("ic_bookmark_off").addClass("ic_bookmark_on");
 					},
@@ -853,7 +854,6 @@
 	$(function() {	
 		// 토픽 - 즐겨찾기 등록 및 해제
         $("#div_title > div:nth-child(1) > div:nth-child(2)").click(function(){
-			alert("클릭됨");
 			let idx = $(this).attr("topic_idx");
 			let params = { idx : idx, something: "topic_idx" }  // 객체 생성
 			let _this = $(this);
@@ -867,7 +867,6 @@
 	                url : "AjaxRemoveBookmarkServlet",    // ?  		
 	                data : params,            // JSON 형식의 데이터이다.
 	                success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옴. 'res'는 응답받은 데이터.
-	                    alert("ON->OFF : " + res.result);   // "성공"
 						_this.removeClass("ic_bookmark_on").addClass("ic_bookmark_off");
 						$(".topic_item[topic_idx='"+params.idx+"']").find("div:first-child").removeClass("ic_bookmark_on").addClass("ic_bookmark_off");
 	                },
@@ -885,7 +884,6 @@
 	                url : "AjaxAddBookmarkServlet",    // ?  		
 	                data : params,            // JSON 형식의 데이터이다.
 	                success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옴. 'res'는 응답받은 데이터.
-	                    alert("OFF->ON : " + res.result);   // "성공"
 						_this.removeClass("ic_bookmark_off").addClass("ic_bookmark_on");
 						$(".topic_item[topic_idx='"+params.idx+"']").find("div:first-child").removeClass("ic_bookmark_off").addClass("ic_bookmark_on");
 	                },
@@ -1621,15 +1619,12 @@
 							team_idx : team_idx,
 							member_idx : member_idx };
 			let _this = $(this);
-			
-			alert(params);
 			// 여기여기
 			$.ajax({
 		            type : "POST",           
 		            url : "AjaxWriteTopicCommentServlet",	
 	             	data : params,   
 	             	success : function(res){  
-						alert("성공!");
 						// 댓글수 span 요소
 						let cnt_span = _this.closest(".div_comment_box").siblings(".div_comment_count").find("span:nth-child(2)");
 						// 댓글수 +1
@@ -1746,7 +1741,6 @@
 							team_idx : team_idx,
 							member_idx : member_idx };
 			let _this = $(this);
-			alert(params);
 			// 여기여기
 			$.ajax({
 		            type : "POST",           
@@ -1760,7 +1754,6 @@
 						let cnt_span = _this.closest(".div_comment_box").siblings(".div_comment_count").find("span:nth-child(2)");
 						// 댓글수 +1
 						topicCommentCnt = parseInt(cnt_span.text().trim()) +1;
-						alert(topicCommentCnt);
 						// 댓글수 span 요소의 값 변경
 						cnt_span.text(topicCommentCnt);
 						
@@ -2015,7 +2008,6 @@
 					url : "AjaxRemoveBookmarkServlet",
 					data : params,
 					success : function(res) {
-						alert("on -> off : " + res.result);
 						_this.removeClass("ic_bookmark_on").addClass("ic_bookmark_off");
 					},
 					error : function(XMLHttpRequest, textStatus, errorThrown){
@@ -2028,7 +2020,6 @@
 					url : "AjaxAddBookmarkServlet",
 					data : params,
 					success : function(res) {
-						alert("off -> on : " + res.result);
 						_this.removeClass("ic_bookmark_off").addClass("ic_bookmark_on");
 					},
 					error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -2052,7 +2043,6 @@
 					url : "AjaxRemoveBookmarkServlet",
 					data : params,
 					success : function(res) {
-						alert("on -> off : " + res.result);
 						_this.removeClass("ic_bookmark_on").addClass("ic_bookmark_off");
 					},
 					error : function(XMLHttpRequest, textStatus, errorThrown){
@@ -2065,7 +2055,6 @@
 					url : "AjaxAddBookmarkServlet",
 					data : params,
 					success : function(res) {
-						alert("off -> on : " + res.result);
 						_this.removeClass("ic_bookmark_off").addClass("ic_bookmark_on");
 					},
 					error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -2283,7 +2272,6 @@
 	        $('#div_grey_filter').hide();
 	
 			let param = { topic_comment_idx : topicCommentIdx };
-			alert(param);
 			$.ajax({
 				type : "POST",           
 				url : "/NamooPractice1/AjaxDeleteTopicCommentServlet",	// 절대경로
@@ -2339,7 +2327,6 @@
 					url : "AjaxRemoveBookmarkServlet",
 					data : params,
 					success : function(res) {
-						alert("on -> off : " + res.result);
 						_this.removeClass("ic_bookmark_on").addClass("ic_bookmark_off");
 					},
 					error : function(XMLHttpRequest, textStatus, errorThrown){
@@ -2352,7 +2339,6 @@
 					url : "AjaxAddBookmarkServlet",
 					data : params,
 					success : function(res) {
-						alert("off -> on : " + res.result);
 						_this.removeClass("ic_bookmark_off").addClass("ic_bookmark_on");
 					},
 					error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -2376,7 +2362,6 @@
 					url : "AjaxRemoveBookmarkServlet",
 					data : params,
 					success : function(res) {
-						alert("on -> off : " + res.result);
 						_this.removeClass("ic_bookmark_on").addClass("ic_bookmark_off");
 					},
 					error : function(XMLHttpRequest, textStatus, errorThrown){
@@ -2389,7 +2374,6 @@
 					url : "AjaxAddBookmarkServlet",
 					data : params,
 					success : function(res) {
-						alert("off -> on : " + res.result);
 						_this.removeClass("ic_bookmark_off").addClass("ic_bookmark_on");
 					},
 					error : function(XMLHttpRequest, textStatus, errorThrown) {
