@@ -12,7 +12,7 @@ import javax.websocket.server.ServerEndpoint;
 
 import dao.NamooServiceTalkDao;
 
-@ServerEndpoint("/broadcasting")
+@ServerEndpoint("/chat")
 public class BroadSocket { // 중복x 순서 x
    public static Set<Session> setClients = Collections.synchronizedSet(new HashSet<Session>());
    
