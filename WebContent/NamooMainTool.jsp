@@ -123,7 +123,7 @@
 	<link rel="stylesheet" href="css/Profile_1.css"/>
 	<link rel="stylesheet" href="css/Profile_2.css"/>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/NamooMainTool.css"/>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/Addproject.css"/>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/AddProject.css"/>
 	<link href="https://intercom.help/jandi/assets/favicon" rel="icon">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	
