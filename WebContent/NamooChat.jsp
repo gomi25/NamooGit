@@ -7,11 +7,14 @@
 <%@ page import="java.util.ArrayList"%>
 
 <%
-
-	String chatroomIdxParam = (String)request.getParameter("chatroomIdx");
-	int chatroomIdx = (chatroomIdxParam != null) ? Integer.parseInt(chatroomIdxParam) : 1;
-	int memberIdx = 1;   // 테스트
-	int teamIdx = 1;     // 테스트
+	int memberIdx = (Integer)session.getAttribute("memberIdx");
+	int teamIdx = (Integer)request.getAttribute("teamIdx");
+	int chatroomIdx = (Integer)request.getAttribute("chatroomIdx");
+	
+// 	String chatroomIdxParam = (String)request.getParameter("chatroomIdx");
+// 	int chatroomIdx = (chatroomIdxParam != null) ? Integer.parseInt(chatroomIdxParam) : 1;
+// 	int memberIdx = 2;   // 테스트
+// 	int teamIdx = 1;     // 테스트
 	
 // String paramMidx = request.getParameter("midx");
 // if(paramMidx != null) {
@@ -112,9 +115,13 @@
 	<script src="${pageContext.request.contextPath}/js/NamooChat.js"></script>
 		
 	<script> 
+		function scrollToBottom() {
+	        $("#div_content").stop().animate({ scrollTop: $('#div_content').prop("scrollHeight") }, 1000);
+	    }
 		/* 8.3(토) 웹소켓 테스트 중 */
 		function func_on_message(e) {
-			alert("도착한 메시지 : " + e.data);
+// 			alert("도착한 메시지 : " + e.data);
+			alert("새로운 메시지가 도착하였습니다.");
 			$("#div_content").append(e.data);
 		}
 		function func_on_open(e) {
@@ -124,7 +131,7 @@
 			alert("ERROR!")
 		}
 		
-		let webSocket = new WebSocket("ws://localhost:9090/NamooPractice1/broadcasting");
+		let webSocket = new WebSocket("ws://localhost:9090/NamooPractice1/namooChatBroadcasting");
 		webSocket.onmessage = func_on_message;
 		webSocket.onopen = func_on_open;
 		webSocket.onerror = func_on_error;
@@ -149,9 +156,11 @@
 				let myProfileImg = "<%=teamMember.getProfileUrl()%>";
 				// 5) 사용자의 이름
 				let myName = "<%=teamMember.getName()%>";
-				let myState = " - <%=teamMember.getState()%>";
-				if(myState == null){
-					myState = "";
+				let myState = "<%=teamMember.getState()%>";
+				if (myState == "null") {
+				    myState = "";
+				} else {
+					myState = " - " + myState
 				}
 				// 7) 입력한 내용 == chatContent
 				// 8) 안 읽은 메시지 수 
@@ -195,7 +204,7 @@
 						+ '			<div>' 
 						+ 				chatContent
 						+ '			</div>' 
-						+ '			<span class="unread">' + unreadCnt +  '</span>' 
+// 						+ '			<span class="unread">' + unreadCnt +  '</span>' 
 						+ '			<span class="time">' + nowTime + '</span>' 
 						+ '		</div>' 
 						+ '	</div>' 
@@ -260,7 +269,8 @@
 				$("#write_chat_content_space").text('');
 				// 보낸 후 내 화면의 #div_content 요소의 맨 마지막 태그로 넣어줌(사용자의 화면)
  				$("#div_content").append(str);
- 				$("#div_content").animate({ scrollTop: $('#div_content').prop("scrollHeight")}, 1000);
+ 				scrollToBottom();
+//  				$("#div_content").animate({ scrollTop: $('#div_content').prop("scrollHeight")}, 1000);
 			});
 		});
 		
@@ -433,9 +443,9 @@
 		<div id="div_topicroom_list_header"> <!-- (3) 토픽-->
 			<div></div>
 			<div>토픽</div>
-			<div class='<%= cntUnreadTotal >= 1 ? "div_topicroom_unread" : "" %>'>
+			<%-- <div class='<%= cntUnreadTotal >= 1 ? "div_topicroom_unread" : "" %>'>
 				<%= cntUnreadTotal >= 1 ? cntUnreadTotal : ""%>
-			</div>
+			</div> --%>
 			<div class="ic_plus"></div>
 		</div>
 		<!---------- 토픽방 목록 / filter ---------->			
@@ -476,10 +486,10 @@
 					<div class="topic_item" topic_idx="<%=topicDto.getTopicIdx()%>">
 						<div class='<%=(topicDto.isBookmark() ? "ic_bookmark_on" : "ic_bookmark_off") %>'></div>
 						<span><%=topicDto.getName()%></span>
-						<div class="ic_alarm_off"></div>
-						<div class='<%= (topicDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
+						<div class='<%= (topicDto.getAlarm()==1? "" : "ic_alarm_off" ) %>'></div>
+						<%-- <div class='<%= (topicDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
 							<%= topicDto.getUnread() >=1 ? topicDto.getUnread() : "" %>
-						</div>
+						</div> --%>
 					</div>
 					<%
 						}
@@ -497,9 +507,9 @@
 				<div class='<%=(topicDto.isBookmark() ? "ic_bookmark_on" : "ic_bookmark_off") %>'></div>
 				<span><%=topicDto.getName()%></span>
 				<div class='<%=(topicDto.getAlarm()==1 ? "" : "ic_alarm_off") %>'></div>
-				<div class='<%= (topicDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
+				<%-- <div class='<%= (topicDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
 					<%= topicDto.getUnread() >=1 ? topicDto.getUnread() : "" %>
-				</div>
+				</div> --%>
 			</div>
 			<%
 				}
@@ -510,6 +520,9 @@
 
 		<!---------- 프로젝트 목록 ---------->	
 		<div id="div_project_list_header">
+			<div></div>
+			<div>프로젝트</div>
+			<div class="ic_plus"></div>		
 		</div>
 		
 		<div id="div_project_list_body">
@@ -547,9 +560,9 @@
 						<% } %>
 					</div>
 					<span><%=chatroomDto.getChatroomName() %></span>
-					<div class='<%= (chatroomDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
+					<%-- <div class='<%= (chatroomDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
 						<%= chatroomDto.getUnread() >=1 ? chatroomDto.getUnread() : "" %>
-					</div>
+					</div> --%>
 					<div class="exit"></div>
 				</div>
 			<% } %>
@@ -563,87 +576,112 @@
 			<div>폴더 생성하기</div>
 			<div>참여 가능한 토픽 보기</div>
 		</div>
-		<!---------- 토픽 '+버튼' -> 새로운 토픽 생성 생성하기 ---------->	
-		<form action="#">
-			<div id="div_topic_create"> 
-				<!-- 상단부 / div:nth-child(1) -->
-				<div>
-					<span>새 토픽 생성</span>
-					<div class="exit"></div>
-				</div>
-				
-				<!-- 중앙부 / div:nth-child(2) -->
-				<div>
-					<!-- div:nth-child(2) > div:nth-child(1) -->
+			<!---------- 토픽 '+버튼' -> 새로운 토픽 생성 생성하기 ---------->	
+			<form action="${pageContext.request.contextPath}/jsp/CreateNewTopic.jsp" method="get">
+				<div id="div_topic_create"> 
+					<!-- 상단부 / div:nth-child(1) -->
 					<div>
-		     			<label for="input_name">이름</label><span>*</span><br/>
-		     			<input type="text" name="name" id="input_name" placeholder="토픽 이름을 입력하세요" required>
-		     			<span class="text_max_value fr">/ 60</span>
-		     			<span class="text_current_value fr">0</span><br/><br/>
+						<span>새 토픽 생성</span>
+						<div class="exit fr"></div>
 					</div>
-					<!-- div:nth-child(2) > div:nth-child(2) -->
+					
+					<!-- 중앙부 / div:nth-child(2) -->
 					<div>
-			  			<label for="textarea_info">토픽 설명(옵션)</label><br/>
-						<textarea name="info" id="textarea_info" placeholder="토픽에 대해 설명해주세요" rows="3"></textarea>
-						<span class="text_max_value fr">/ 300</span>
-						<span class="text_current_value fr">0</span><br/><br/>
-					</div>
-					<!-- div:nth-child(2) > div:nth-child(3) -->
-					<div>
-			  			<label for="topic_open">공개 여부</label>
-			  			<span>*</span><span>토픽 생성 이후 변경 불가</span><br/>
-						<div class="topic_open_select">
-							<div class="topic_public">
-								<div class="fl"></div>
-								<input type="radio" id="topic_public" name="topic_open" value="public">
-								<label for="topic_public">공개</label>		
+						<!-- div:nth-child(2) > div:nth-child(1) -->
+						<div>
+			     			<label for="input_new_topic_name">이름</label><span>*</span><br/>
+			     			<input type="text" name="name" id="input_new_topic_name" placeholder="토픽 이름을 입력하세요" required>
+			     			<span class="text_max_value fr">/ 60</span>
+			     			<span class="text_current_value fr">0</span><br/><br/>
+						</div>
+						<!-- div:nth-child(2) > div:nth-child(2) -->
+						<div>
+				  			<label for="textarea_new_topic_info">토픽 설명(옵션)</label><br/>
+							<textarea name="info" id="textarea_new_topic_info" placeholder="토픽에 대해 설명해주세요" rows="3"></textarea>
+							<span class="text_max_value fr">/ 300</span>
+							<span class="text_current_value fr">0</span><br/><br/>
+						</div>
+						<!-- div:nth-child(2) > div:nth-child(3) -->
+						<div>
+				  			<label for="topic_open">공개 여부</label>
+				  			<span>*</span><span>토픽 생성 이후 변경 불가</span><br/>
+							<div class="topic_open_select">
+								<div id="topic_public_div">
+									<div class="ic_topic_public fl"></div>
+									<input type="radio" name="topic_open" id="topic_public" value="1">
+									<label for="topic_public">공개</label>		
+									<div class="fr"></div>
+								</div>
+			
+								<div id="topic_private_div">
+									<div class="ic_topic_private fl"></div>
+							        <input type="radio" name="topic_open" id="topic_private"  value="0">
+									<label for="topic_private">비공개</label>		
+									<div class="fr"></div>
+								</div>
+							</div>
+							
+							<br/><br/>
+						</div>
+						<!-- div:nth-child(2) > div:nth-child(4) -->
+						<div>
+							<label>폴더 선택(옵션)</label><br/>
+							<div class="folder_select_option">
+								<span>토픽을 생성 할 폴더를 선택해 주세요.</span>
 								<div class="fr"></div>
 							</div>
-		
-							<div class="topic_private">
-								<div class="fl"></div>
-						        <input type="radio" id="topic_private" name="topic_open" value="private">
-								<label for="topic_private">비공개</label>		
-								<div class="fr"></div>
+							<span>선택한 폴더는 개인에게만 적용됩니다.</span>
+							<!-- 폴더 선택(옵션) 팝업창 -->			 <!-- 나나 -->
+							<div class="folder_list_pop_up"> 
+								<div class="scrollbar">
+									<div>
+										<div>
+											<div class="check fl"></div>
+										</div>
+										<div class="fl">폴더 선택 안함</div>
+									</div>
+	
+									<input type="hidden" id="selected_folder"  name="selected_folder" value="">
+								<%
+									for(FolderBoxDto folderDto : listFolderBox) {
+								%>
+									<div class="my_folder_list">
+										<div>
+											<div class="check fl"></div>
+										</div>
+										<div class="fl" topic_folder_idx="<%=folderDto.getTopicFolderIdx()%>"><%=folderDto.getName() %></div>
+										<!-- 각 폴더 리스트 항목에서 JavaScript를 사용하여 hidden input 태그의 값을 설정 -->
+									</div>
+								<%
+									}
+								%>	
+								</div>
 							</div>
 						</div>
 						
-						<br/><br/>
+						
 					</div>
-					<!-- div:nth-child(2) > div:nth-child(4) -->
+							<!-- button태그와 input태그 차이 찾아보기 -->
+							<!-- <input type="submit" value="생성하기"/> -->
 					<div>
-						<label>폴더 선택(옵션)</label><br/>
-						<div class="folder_select_option">
-							<span>토픽을 생성 할 폴더를 선택해 주세요.</span>
-							<div class="fr"></div>
-						</div>
-						<span>선택한 폴더는 개인에게만 적용됩니다.</span>
+						<button class="fr" type="submit" id="new_topic_create">생성하기</button>
+						<button class="fr" type="button" id="new_topic_cancel">닫기</button>
 					</div>
-	
+					
 				</div>
-						<!-- button태그와 input태그 차이 찾아보기 -->
-						<!-- <input type="submit" value="생성하기"/> -->
-				<div>
-					<button class="fr" type="submit" id="new_topic">생성하기</button>
-					<button class="fr" id="">닫기</button>
-				</div>
-				
-			</div>
-		</form>
-		
-		<!---------- 토픽 '+버튼' -> 참여 가능한 토픽 보기 ---------->	
-		<div id="div_topic_openlist">
+			</form><!-- 새 토픽 생성하기 -->
+			
+			<!---------- 토픽 '+버튼' -> 참여 가능한 토픽 보기 ---------->	
+			<div id="div_topic_openlist">
 				<!-- 상단부 / div:nth-child(1) -->
 				<div>
 					<span>토픽 목록</span>
 					<div class="exit"></div>				
 				</div>
-				
 				<!-- 중앙부1 / div:nth-child(2) -->
 				<div>
-					<input type="text" name="name" id="input_name" placeholder="토픽 이름을 검색하세요">
+					<input type="text" name="topic_search" placeholder="토픽 이름을 검색하세요">
 				</div>
-				
 				<!-- 중앙부2 / div:nth-child(3) -->
 				<div>
 					<div class="fl"></div>
@@ -661,7 +699,6 @@
 						</div>
 					</div>
 				</div>
-
 				<!-- 하단부 / div:nth-child(4) -->
 				<div>
 					<button type="button"> + 새 토픽 생성</button>
@@ -776,7 +813,8 @@
 			</div>
 			
 			<!---------- 채팅 시작하기 (초대하기 버튼) ---------->		
-			<form id="form_invite_chat_member" action"" method="post">	
+			<form id="form_invite_chat_member" action="InviteChatroomMemberServlet" method="post">	
+				<input type="hidden" name="input_chatroom_idx" value="<%=chatroomIdx%>"/>
 				<div id="div_chat_start" class="border">
 					<!-- 상단부 -->
 					<div>
@@ -901,6 +939,7 @@
 							<button type="button" name="invite_member" id="btn_invite_member">초대하기</button>
 							<button type="button" name="close_window">닫기</button>
 						</div>
+						<input type="hidden" id="selected_members" name="selected_members" value="">						
 					</div>
 				</div><!-- div_chat_start 닫는 태그 -->
 			</form>	
@@ -999,16 +1038,16 @@
 			
 		<!---------- 채팅방 내용 ---------->
 		<div class="chat_date">
-			<div>2024년 4월 29일 월요일</div>
+			<div>2024년 8월 2일 금요일</div>
 			<div></div>
 		</div>
 		<%
 			for(ChatContentsDto chatContents : chatContentsDto) {
 				if(chatContents.getMemberIdx() == null){
 		%>		
-		<div class="chat_notice" chat_idx="<%=chatContents.getChatIdx()%>" writer="<%=chatContents.getMemberIdx()%>">
-			<span><%=chatContents.getContent()%><span class="time"><%=chatContents.getWriteDate()%></span></span>
-		</div>
+<%-- 		<div class="chat_notice" chat_idx="<%=chatContents.getChatIdx()%>" writer="<%=chatContents.getMemberIdx()%>"> --%>
+<%-- 			<span><%=chatContents.getContent()%><span class="time"><%=chatContents.getWriteDate()%></span></span> --%>
+<!-- 		</div> -->
 		<%
 				} else {
 		%>
@@ -1025,7 +1064,7 @@
 					<div>
 						<%=chatContents.getContent() == null ? "" : chatContents.getContent()%>
 					</div>
-					<span class="unread"><%=(chatContents.getUnreadCnt() == 0) ? "" : chatContents.getUnreadCnt()%></span>
+					<span class="unread"><%-- <%=(chatContents.getUnreadCnt() == 0) ? "" : chatContents.getUnreadCnt()%> --%></span>
 					<span class="time"><%=chatContents.getWriteDate()%></span>
 				<%
 					if(chatContents.getFileIdx() != null) { 

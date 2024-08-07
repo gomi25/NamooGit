@@ -1,14 +1,15 @@
 <%@page import="java.util.List"%>
 <%@page import="com.Common"%>
-<%@page import="dto.*"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="dao.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+<%@ page import="dao.*"%>
+<%@ page import="dto.*"%>
+<%@ page import="java.util.ArrayList"%>
+
 <%
-	int memberIdx = 2;   // 테스트
-	int teamIdx = 2;     // 테스트
+// 	int memberIdx = 2;   // 테스트
+	int memberIdx = (Integer)session.getAttribute("memberIdx");
+	int teamIdx = 1;     // 테스트 중
 	
 	int cntUnreadTotal = 0; // 토픽방에서 안 읽은 메시지 전체 개수 
 	int cntOfTopic = 0;     // 토픽방 개수
@@ -56,89 +57,31 @@
 	for(ChatroomDto dto : listChatroom) {
 		cntChatTotalUnread += dto.getUnread();
 	}
-	
-	// 프로젝트 리스트 가지고오기
-	/* ProjectDao projectDao = new ProjectDao();
-	ArrayList<ProjectBookmarkDto> projectList = projectDao.checkProjectName(teamIdx); */
 
 
-
-
-
-		//조직도
-		int memberIdxFrom = memberIdx;
-    	//	int memberIdx = (Integer)session.getAttribute("memberIdx");
-    	//	int teamIdx =(Integer)session.getAttribute("teamIdx");
-    	
-        OrganizationalChartDao odao = new OrganizationalChartDao();
-        ArrayList<OrganizationalMemberListDto> listMember = null;
-        ArrayList<OrganizationalBookmarkMemberListDto> bookmarkMember = null;
-        
-        ArrayList<MemberProfileDto> memberProfile = null;
-        
-        try {
-            listMember = odao.getOrganizationalMemberList(teamIdx, memberIdxFrom);
-            bookmarkMember = odao.getOrganizationalBookmarkMemberList(teamIdx, memberIdxFrom);
-            memberProfile = odao.getMemberProfile(teamIdx);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        
-
-    	// 팀이름 가지고 오기
-        String teamName = "";
-        try {
-            teamName = odao.checkOrganizationalTeamName(teamIdx);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        
-        // 팀의 인원수
-        int memberCount = 0;
-        try {
-            memberCount = odao.checkOrganizationalMemberCount(teamIdx);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // 즐겨찾기 멤버수
-        int bookmarkMemberCount = 0;
-        try {
-        	bookmarkMemberCount = odao.checkOrganizationalBookmarkMemberCount(teamIdx);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    %>
-
-
-
+%>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
-	
-	<title>Insert title here</title>
-	<link rel="stylesheet" href="css/OrganizationalChart.css"/>
-	<link rel="stylesheet" href="css/Profile_1.css"/>
-	<link rel="stylesheet" href="css/Profile_2.css"/>
+	<title>NamooMainTool</title>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/NamooMainTool.css"/>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/AddProject.css"/>
 	<link href="https://intercom.help/jandi/assets/favicon" rel="icon">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-	<script src="${pageContext.request.contextPath}/js/OrganizationalChart.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	
 	<script>
 		let context_path = '${pageContext.request.contextPath}';
 		let member_idx = <%=memberIdx%>;
 		let team_idx = <%=teamIdx%>;
-		let login_member_idx = <%=memberIdx%>;
 	</script>
 	<script src="${pageContext.request.contextPath}/js/NamooMainTool.js"></script>
-	
+	<script>
+
+	</script>
 </head>
 <body>
 	<!--------------------------------------- #div_header (화면 최상단) --------------------------------------->	
@@ -162,7 +105,7 @@
 			<div class="fr" data-toggle="tooltip" title="검색">
 				<div class="ic_header_search"></div>
 			</div>
-			<div class="fr ic_header_org_chat_img" data-toggle="tooltip" title="조직도">
+			<div class="fr" data-toggle="tooltip" title="조직도">
 				<div class="ic_header_org_chat"></div>
 			</div>
 			<div class="fr" data-toggle="tooltip" title="알림센터">
@@ -303,9 +246,9 @@
 		<div id="div_topicroom_list_header"> <!-- (3) 토픽-->
 			<div></div>
 			<div>토픽</div>
-			<div class='<%= cntUnreadTotal >= 1 ? "div_topicroom_unread" : "" %>'>
+			<%-- <div class='<%= cntUnreadTotal >= 1 ? "div_topicroom_unread" : "" %>'>
 				<%= cntUnreadTotal >= 1 ? cntUnreadTotal : ""%>
-			</div>
+			</div> --%>
 			<div class="ic_plus"></div>
 		</div>
 		<!---------- 토픽방 목록 / filter ---------->			
@@ -346,10 +289,10 @@
 					<div class="topic_item" topic_idx="<%=topicDto.getTopicIdx()%>">
 						<div class='<%=(topicDto.isBookmark() ? "ic_bookmark_on" : "ic_bookmark_off") %>'></div>
 						<span><%=topicDto.getName()%></span>
-						<div class="ic_alarm_off"></div>
-						<div class='<%= (topicDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
+						<div class='<%= (topicDto.getAlarm()==1? "" : "ic_alarm_off" ) %>'></div>
+						<%-- <div class='<%= (topicDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
 							<%= topicDto.getUnread() >=1 ? topicDto.getUnread() : "" %>
-						</div>
+						</div> --%>
 					</div>
 					<%
 						}
@@ -367,9 +310,9 @@
 				<div class='<%=(topicDto.isBookmark() ? "ic_bookmark_on" : "ic_bookmark_off") %>'></div>
 				<span><%=topicDto.getName()%></span>
 				<div class='<%=(topicDto.getAlarm()==1 ? "" : "ic_alarm_off") %>'></div>
-				<div class='<%= (topicDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
+				<%-- <div class='<%= (topicDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
 					<%= topicDto.getUnread() >=1 ? topicDto.getUnread() : "" %>
-				</div>
+				</div> --%>
 			</div>
 			<%
 				}
@@ -381,17 +324,12 @@
 		<!---------- 프로젝트 목록 ---------->	
 		<div id="div_project_list_header">
 			<div></div>
-			<div><a href="Project.jsp">프로젝트</a></div>
-			<a href="AddProject.jsp"><div class="ic_plus"></div></a>
+			<div>프로젝트</div>
+			<div class="ic_plus"></div>		
 		</div>
-		<%-- <% for (ProjectBookmarkDto pbDto : projectList) {	%>
-		<div id="div_project_list_body" project_idx="<%=pbDto.getProjectIdx()%>">
-			<div class="main_tool_project_list">
-				<div class="ic_project_list fl"></div> 
-				<div class="ic_project_list_name"><%= pbDto.getProjectName() %></div>
-			</div>
+		
+		<div id="div_project_list_body">
 		</div>
-		<% } %> --%>
 
 		
 		<!---------- 채팅방 목록 ---------->	
@@ -424,9 +362,9 @@
 						<% } %>
 					</div>
 					<span><%=chatroomDto.getChatroomName() %></span>
-					<div class='<%= (chatroomDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
+					<%-- <div class='<%= (chatroomDto.getUnread()>=1 ? "div_unread" : "" ) %>'>
 						<%= chatroomDto.getUnread() >=1 ? chatroomDto.getUnread() : "" %>
-					</div>
+					</div> --%>
 					<div class="exit"></div>
 				</div>
 			<%  } %>
@@ -440,87 +378,113 @@
 			<div>폴더 생성하기</div>
 			<div>참여 가능한 토픽 보기</div>
 		</div>
-		<!---------- 토픽 '+버튼' -> 새로운 토픽 생성 생성하기 ---------->	
-		<form action="#">
-			<div id="div_topic_create"> 
-				<!-- 상단부 / div:nth-child(1) -->
-				<div>
-					<span>새 토픽 생성</span>
-					<div class="exit"></div>
-				</div>
-				
-				<!-- 중앙부 / div:nth-child(2) -->
-				<div>
-					<!-- div:nth-child(2) > div:nth-child(1) -->
+			<!---------- 토픽 '+버튼' -> 새로운 토픽 생성 생성하기 ---------->	
+			<form action="Controller" method="post">
+				<input type="hidden" name="command" value="create_topic"/>
+				<input type="hidden" name="teamIdx" value="<%=teamIdx%>"/>				<div id="div_topic_create"> 
+					<!-- 상단부 / div:nth-child(1) -->
 					<div>
-		     			<label for="input_name">이름</label><span>*</span><br/>
-		     			<input type="text" name="name" id="input_name" placeholder="토픽 이름을 입력하세요" required>
-		     			<span class="text_max_value fr">/ 60</span>
-		     			<span class="text_current_value fr">0</span><br/><br/>
+						<span>새 토픽 생성</span>
+						<div class="exit fr"></div>
 					</div>
-					<!-- div:nth-child(2) > div:nth-child(2) -->
+					
+					<!-- 중앙부 / div:nth-child(2) -->
 					<div>
-			  			<label for="textarea_info">토픽 설명(옵션)</label><br/>
-						<textarea name="info" id="textarea_info" placeholder="토픽에 대해 설명해주세요" rows="3"></textarea>
-						<span class="text_max_value fr">/ 300</span>
-						<span class="text_current_value fr">0</span><br/><br/>
-					</div>
-					<!-- div:nth-child(2) > div:nth-child(3) -->
-					<div>
-			  			<label for="topic_open">공개 여부</label>
-			  			<span>*</span><span>토픽 생성 이후 변경 불가</span><br/>
-						<div class="topic_open_select">
-							<div class="topic_public">
-								<div class="fl"></div>
-								<input type="radio" id="topic_public" name="topic_open" value="public">
-								<label for="topic_public">공개</label>		
+						<!-- div:nth-child(2) > div:nth-child(1) -->
+						<div>
+			     			<label for="input_new_topic_name">이름</label><span>*</span><br/>
+			     			<input type="text" name="name" id="input_new_topic_name" placeholder="토픽 이름을 입력하세요" required>
+			     			<span class="text_max_value fr">/ 60</span>
+			     			<span class="text_current_value fr">0</span><br/><br/>
+						</div>
+						<!-- div:nth-child(2) > div:nth-child(2) -->
+						<div>
+				  			<label for="textarea_new_topic_info">토픽 설명(옵션)</label><br/>
+							<textarea name="info" id="textarea_new_topic_info" placeholder="토픽에 대해 설명해주세요" rows="3"></textarea>
+							<span class="text_max_value fr">/ 300</span>
+							<span class="text_current_value fr">0</span><br/><br/>
+						</div>
+						<!-- div:nth-child(2) > div:nth-child(3) -->
+						<div>
+				  			<label for="topic_open">공개 여부</label>
+				  			<span>*</span><span>토픽 생성 이후 변경 불가</span><br/>
+							<div class="topic_open_select">
+								<div id="topic_public_div">
+									<div class="ic_topic_public fl"></div>
+									<input type="radio" name="topic_open" id="topic_public" value="1">
+									<label for="topic_public">공개</label>		
+									<div class="fr"></div>
+								</div>
+			
+								<div id="topic_private_div">
+									<div class="ic_topic_private fl"></div>
+							        <input type="radio" name="topic_open" id="topic_private"  value="0">
+									<label for="topic_private">비공개</label>		
+									<div class="fr"></div>
+								</div>
+							</div>
+							
+							<br/><br/>
+						</div>
+						<!-- div:nth-child(2) > div:nth-child(4) -->
+						<div>
+							<label>폴더 선택(옵션)</label><br/>
+							<div class="folder_select_option">
+								<span>토픽을 생성 할 폴더를 선택해 주세요.</span>
 								<div class="fr"></div>
 							</div>
-		
-							<div class="topic_private">
-								<div class="fl"></div>
-						        <input type="radio" id="topic_private" name="topic_open" value="private">
-								<label for="topic_private">비공개</label>		
-								<div class="fr"></div>
+							<span>선택한 폴더는 개인에게만 적용됩니다.</span>
+							<!-- 폴더 선택(옵션) 팝업창 -->			 <!-- 나나 -->
+							<div class="folder_list_pop_up"> 
+								<div class="scrollbar">
+									<div>
+										<div>
+											<div class="check fl"></div>
+										</div>
+										<div class="fl">폴더 선택 안함</div>
+									</div>
+	
+									<input type="hidden" id="selected_folder"  name="selected_folder" value="">
+								<%
+									for(FolderBoxDto folderDto : listFolderBox) {
+								%>
+									<div class="my_folder_list">
+										<div>
+											<div class="check fl"></div>
+										</div>
+										<div class="fl" topic_folder_idx="<%=folderDto.getTopicFolderIdx()%>"><%=folderDto.getName() %></div>
+										<!-- 각 폴더 리스트 항목에서 JavaScript를 사용하여 hidden input 태그의 값을 설정 -->
+									</div>
+								<%
+									}
+								%>	
+								</div>
 							</div>
 						</div>
 						
-						<br/><br/>
+						
 					</div>
-					<!-- div:nth-child(2) > div:nth-child(4) -->
+							<!-- button태그와 input태그 차이 찾아보기 -->
+							<!-- <input type="submit" value="생성하기"/> -->
 					<div>
-						<label>폴더 선택(옵션)</label><br/>
-						<div class="folder_select_option">
-							<span>토픽을 생성 할 폴더를 선택해 주세요.</span>
-							<div class="fr"></div>
-						</div>
-						<span>선택한 폴더는 개인에게만 적용됩니다.</span>
+						<button class="fr" type="submit" id="new_topic_create">생성하기</button>
+						<button class="fr" type="button" id="new_topic_cancel">닫기</button>
 					</div>
-	
+					
 				</div>
-						<!-- button태그와 input태그 차이 찾아보기 -->
-						<!-- <input type="submit" value="생성하기"/> -->
-				<div>
-					<button class="fr" type="submit" id="new_topic">생성하기</button>
-					<button class="fr" id="">닫기</button>
-				</div>
-				
-			</div>
-		</form>
-		
-		<!---------- 토픽 '+버튼' -> 참여 가능한 토픽 보기 ---------->	
-		<div id="div_topic_openlist">
+			</form><!-- 새 토픽 생성하기 -->
+			
+			<!---------- 토픽 '+버튼' -> 참여 가능한 토픽 보기 ---------->	
+			<div id="div_topic_openlist">
 				<!-- 상단부 / div:nth-child(1) -->
 				<div>
 					<span>토픽 목록</span>
 					<div class="exit"></div>				
 				</div>
-				
 				<!-- 중앙부1 / div:nth-child(2) -->
 				<div>
-					<input type="text" name="name" id="input_name" placeholder="토픽 이름을 검색하세요">
+					<input type="text" name="topic_search" placeholder="토픽 이름을 검색하세요">
 				</div>
-				
 				<!-- 중앙부2 / div:nth-child(3) -->
 				<div>
 					<div class="fl"></div>
@@ -538,7 +502,6 @@
 						</div>
 					</div>
 				</div>
-
 				<!-- 하단부 / div:nth-child(4) -->
 				<div>
 					<button type="button"> + 새 토픽 생성</button>
@@ -676,258 +639,6 @@
 			</div>
 		</div>
 	</div> <!-- div_side_bookmark 닫는 태그 -->
-
-	
-	<!----------------조직도-------------------------->	
-	<!---------------- 부서 -------------------->
-	<div id="organizational_chart">
-		<div class="re">
-			<div id="memberlist_div_side2" class="fr">
-				<div>
-					<div id="list">
-						<div class="fl organizational_chart_name">조직도</div>
-						<div class="fl total_number">총 <%=memberCount%>명</div>
-						<div class="fr delete"><img class="delete_img" src="img/x_button.png"/></div>
-					</div>
-					<div id="search">
-						<div id="search_parents" class="fl re"><input id="search_input" name="member_search" type="text" placeholder="멤버 검색" ></div>
-							<div class="ab"><img id="search_icon" src="img/img_icon_search.png"/></div>
-					</div>
-					<div id="select">
-						<div id="teamlist"><button>팀</button></div>
-						<div id="memberlist"><button>멤버</button></div>
-					</div>
-					<div id="select_list">
-						<!-- 부서(즐겨찾기 멤버) -->
-						<div id="bookmark_member">
-							<button>
-								<div class="fl">즐겨찾기 멤버</div>
-								<div class="fr"><%=bookmarkMemberCount%></div>
-								<div class="fr"><img src="img/people.png"/></div>
-							</button>	
-						</div>
-						<!--부서 (팀) -->
-						<div id="team_name">
-							<button>
-								<div class="fl"><%=teamName%></div>
-								<div class="fr"><%=memberCount%></div>
-								<div class="fr"><img src="img/people.png"/></div>
-							</button>
-						</div>
-					</div>
-					
-					<!-- 즐겨찾기 멤버 리스트 -->
-					<div id="bookmark_memberlist" class="re" style="display:none;">
-					<% for (OrganizationalBookmarkMemberListDto bmDto : bookmarkMember) { %>
-						<div class="member1" member_idx="<%=bmDto.getMemberIdx()%>">
-							<img class="fl" src="<%=bmDto.getProfilePicUrl()%>"/>
-							<div class="fl member1_detail member_name">
-								<div id="name" class="fl"><%=bmDto.getMemberName()%></div> 
-								<div id="state"><%=bmDto.getState()==null ? " " : "&nbsp-" + bmDto.getState()%></div>
-							</div>
-							<div class="fr bookmark_img"><img src="https://flow.team/flow-renewal/assets/images/icons/icon_star_on.png?v=ca949083bd3e2d74e7125167485cff818959483a"></div>
-							<div class="fl member1_detail">
-								<div id="team" class="fl"><%=bmDto.getTeamName()%></div>
-								<div id="position"> /<%=bmDto.getPosition()%></div>
-							</div>
-							<div id="message" class="fl member1_detail"><%=bmDto.getStateMessage()==null ? " " : bmDto.getStateMessage()%></div>
-						</div>
-						<% } %>
-					</div>
-					
-					<!-- 팀 멤버 리스트 -->
-					<div id="team_memberlist" class="re">
-					<% for (OrganizationalMemberListDto omDto : listMember) { %>
-						<div class="member1" member_idx="<%=omDto.getMemberIdx()%>">
-							<img class="fl" src="<%=omDto.getProfilePicUrl()%>"/>
-							<div class="fl member1_detail member_name">
-								<div id="name" class="fl"><%=omDto.getMemberName()%></div> 
-								<div id="state"><%=omDto.getState()==null ? " " : "&nbsp-" + omDto.getState()%></div>
-							</div>
-							<% if (omDto.getMemberIdx() != memberIdx ) { %> 
-							
-				        	<% 
-				        		String strDisplayNone1 = "", strDisplayNone2 = "";
-				        		if ("Y".equals(omDto.getBookmarkMember()))
-				        			strDisplayNone2 = "display: none;";
-			        			else
-			        				strDisplayNone1 = "display: none;";
-				        	
-				        	%>
-				            <img class="fr bookmark_img team_bookmark_img" style="<%=strDisplayNone1%>" src="https://flow.team/flow-renewal/assets/images/icons/icon_star_on.png?v=ca949083bd3e2d74e7125167485cff818959483a" alt="Bookmark" />
-				            <div class="fr nobookmark_img" style="<%=strDisplayNone2%>"></div>
-				        	<% } %>
-							<div class="fl member1_detail">
-								<div id="team" class="fl"><%=omDto.getTeamName()%></div>
-								<div id="position"> /<%=omDto.getPosition()%></div>
-							</div>
-							<div id="message" class="fl member1_detail"><%=omDto.getStateMessage()==null ? " " : omDto.getStateMessage()%></div>
-						</div>
-						<% } %>
-						
-					</div>
-				</div>
-				
-			</div>
-			
-		<!---------------- 멤버 -------------------->	
-			<div id="div_side3" class="fr re">
-				<div id="list">
-					<div class="fl organizational_chart_name">조직도</div>
-					<div class="fl total_number">총 <%=memberCount%>명</div>
-					<div class="fr delete"><img src="img/x_button.png"/></div>
-				</div>
-				<div id="search">
-					<div id="search_parents" class="fl re"><input id="search_input" name="member_search" type="text" placeholder="멤버 검색" ></div>
-					<div class="ab"><img id="search_icon" src="img/img_icon_search.png"/></div>
-				</div>
-				 <div id="select">
-					<div id="select_teamlist"><button>팀</button></div>
-					<div id="select_memberlist"><button>멤버</button></div>
-				</div>
-				<div id="allmemberlist">
-					<button>
-						<div class="fl">전체 멤버</div>
-						<div class="fr"><%=memberCount%></div>
-						<div class="fr"><img src="img/people.png"/></div>
-					</button>	
-				</div>
-				
-				<div id="team_memberlist" class="re">
-				<% for (OrganizationalMemberListDto omDto : listMember) { %>
-					<div class="member1" member_idx="<%=omDto.getMemberIdx()%>">
-						<img class="fl" src="<%=omDto.getProfilePicUrl()%>"/>
-						<div class="fl member1_detail member_name">
-							<div id="name" class="fl"><%=omDto.getMemberName()%></div> 
-							<div id="state"><%=omDto.getState()==null ? " " : "&nbsp-" + omDto.getState()%></div>
-						</div>
-						<% if (omDto.getMemberIdx() != memberIdx ) { %>
-			        	<% if ("Y".equals(omDto.getBookmarkMember())) { %>
-			            <img class="fr bookmark_img" src="https://flow.team/flow-renewal/assets/images/icons/icon_star_on.png?v=ca949083bd3e2d74e7125167485cff818959483a" alt="Bookmark" style="width:21px, heught:21px;"/>
-			        	<% } else {  %>
-			            <div class="fr nobookmark_img"></div>
-			        	<% } %>
-			        	<% } %>
-						<div class="fl member1_detail">
-							<div id="team" class="fl"><%=omDto.getTeamName()%></div>
-							<div id="position"> /<%=omDto.getPosition()%></div>
-						</div>
-						<div id="message" class="fl member1_detail"><%=omDto.getStateMessage()==null ? " " : omDto.getStateMessage()%></div>
-					</div>
-					<% } %>
-				</div>
-			</div>
-			
-				<!-- 멤버 상세 프로필 -->
-				<% for (MemberProfileDto mpDto : memberProfile) { %>
-				<% if (mpDto.getMemberIdx() != memberIdx ) { %> 
-				<div id="member_profile_container_<%=mpDto.getMemberIdx()%>" class="ab member_profile_container" member_idx="<%=mpDto.getMemberIdx()%>" style="display: none;">				
-					<div id="profile_image" class="re">
-						<img src="<%=mpDto.getProfilePicUrl()%>">
-						<div class="ab member_positon"><em><%=mpDto.getPower() %></em></div>
-						<div class="ab profile_member_name"><p><%=mpDto.getMemberName() %></p></div>
-					</div>
-					<div class="member_profile_state">
-						<div><%=mpDto.getState()==null ? " " : mpDto.getState() %></div>
-						<div><%=mpDto.getStateMessage()==null ? " " : mpDto.getStateMessage() %></div>
-					</div>
-					<div id="profileinner2">
-						<button class="profileinner2_button"><div>1:1 메세지</div></button>
-					</div>
-					<div id="profileinner3">
-						<table>
-							<tr>
-								<td><img src="img/organizational.png"  class="inner3_img"></td>
-								<td><div class="inner3_td1"><%=mpDto.getTeamName() %></div></td>
-							</tr>
-							<tr>
-								<td></td>
-								<td><div class="inner3_td1"><%=mpDto.getPosition() %></div></td>
-							</tr>
-							<tr>
-								<td><img src="img/gift_grey.png" class="inner3_img"></td>
-								<td><div class="inner3_td2"><%=mpDto.getBirth().split(" ")[0].replace("-",".") %></div></td>
-							</tr>
-							<tr>
-								<td><img src="img/phone_grey.png" class="inner3_img"></td>
-								<td><div class="inner3_td2"><%=mpDto.getPhoneNumber() %></div></td>
-							</tr>
-							<tr>
-								<td><img src="img/email_grey.png" class="inner3_img"></td>
-								<td><div class="inner3_td1"><%=mpDto.getEmail() %></div></td>
-							</tr>
-						</table>
-					</div>
-				</div>  
-				<% } %>
-				<% } %> 
-				
-				
-				
-				
-				<!-- 로그인 멤버 상세 프로필 -->
-			 	<% for (MemberProfileDto mpDto : memberProfile) { %>
-				<% if (mpDto.getMemberIdx() == memberIdx ) { %> 
-					<div id="loginmember_profile_container" class="ab" member_idx="<%=memberIdx%>" style="display: none;">
-						<div id="profile_image" class="re">
-							<img src="<%=mpDto.getProfilePicUrl()%>">
-							<div id="member_positon" class="ab"><em><%=mpDto.getPower() %></em></div>
-							<div id="member_name" class="ab"><p><%=mpDto.getMemberName() %></p></div>
-						</div>
-						
-						<div id="inner1">
-							<%if(mpDto.getState()!=null) { %>
-							<div class="member_inner1_state"><%=mpDto.getState() %><img class="fr inner1_state_x_img" src="img/x.png"></div>
-							<% } %> 
-							<%if(mpDto.getState() == null) { %>
-							<input class="status_input" type="text" name="상태설정" placeholder="상태설정" /> 
-							<% } %> 
-							<div class="member_inner1_message"><%=mpDto.getStateMessage()==null ? " " : mpDto.getStateMessage() %><img class="fr inner1_message_x_img" src="img/x.png"></div>
-							<input style="display:none;" type="text" name="상태메세지" placeholder="상태 메세지" />
-						</div>
-						<div id="inner2">
-							<button class="inner2_button"><div>@멘션 확인하기</div></button>
-						</div>
-						
-						<div id="inner3">
-							<table>
-								<tr>
-									<td><img src="img/organizational.png"  class="inner3_img"></td>
-									<td>
-										<div class="inner3_font"><%=mpDto.getPosition() %></div>
-										<input style="display:none;" class="inner3_td_box" type="text" name="직책" placeholder="직책" />
-									</td>
-								</tr>
-								<tr>
-									<td><img src="img/gift_grey.png" class="inner3_img"></td>
-									<td>
-										<div class="inner3_font"><%=mpDto.getBirth().split(" ")[0].replace("-",".") %></div>
-										<input style="display:none;" class="inner3_td_box" type="text" name="생년월일" placeholder="생년월일" />
-									</td>
-								</tr>
-								<tr>
-									<td><img src="img/phone_grey.png" class="inner3_img"></td>
-									<td>
-										<div class="inner3_font"><%=mpDto.getPhoneNumber() %></div>
-										<input style="display:none;" class="inner3_td_box" type="text" name="휴대전화" placeholder="휴대전화" />
-									</td>
-								</tr>
-								<tr>
-									<td><img src="img/email_grey.png" class="inner3_img"></td>
-									<td><div class="inner3_td_email">k97328aa@gmail.com</div></td>
-								</tr>
-							</table>
-						</div>
-						<div id="logout">
-							<button class="inner2_button"><div>로그아웃</div></button>
-						</div>
-					</div> 
-					<% } %> 
-					<% } %> 
-		</div>
-	</div>
-	
-	
 		
 	
 	<!--------------------------------------- 기타 팝업창 --------------------------------------->	
@@ -936,11 +647,6 @@
 	<!-- 회색판 -->
 	<div id="div_grey_filter"></div>
 	
-
-	
-	
-	<div style="clear:both;"></div>
-
-
+		
 </body>
 </html>

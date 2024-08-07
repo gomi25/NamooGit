@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
 		boolean result = false;
 		try {
 			result = mDao.loginCheck(email, pw);
-			memberIdx = mDao.memberIdxFromEmail(email);
+//			memberIdx = mDao.memberIdxFromEmail(email);
 		} catch (Exception e) {	e.printStackTrace();}
 		
 	
