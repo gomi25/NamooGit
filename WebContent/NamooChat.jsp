@@ -577,7 +577,9 @@
 			<div>참여 가능한 토픽 보기</div>
 		</div>
 			<!---------- 토픽 '+버튼' -> 새로운 토픽 생성 생성하기 ---------->	
-			<form action="${pageContext.request.contextPath}/jsp/CreateNewTopic.jsp" method="get">
+			<form action="Controller" method="post">
+				<input type="hidden" name="command" value="create_topic"/>
+				<input type="hidden" name="teamIdx" value="<%=teamIdx%>"/>
 				<div id="div_topic_create"> 
 					<!-- 상단부 / div:nth-child(1) -->
 					<div>
@@ -728,6 +730,7 @@
 	<!--------------------------------------- 채팅방 --------------------------------------->
 	<div id="div_side2" class="wide fl">
 		<!---------- 채팅방 상단 - 채팅방 이름 & 메뉴 ---------->	
+	  
 		<div id="div_title" chatroom_idx="<%=chatroomIdx%>">
 			<!-- 상단(1) -->
 			<div class=" fl">
@@ -967,7 +970,10 @@
 		
 		
 		<!---------- 채팅방 생성하기 ---------->	
-		<form id="form_create_chatroom" action="CreateChatroomServlet" method="post">	
+<!-- 		<form id="form_create_chatroom" action="CreateChatroomServlet" method="post">	 -->
+		<form id="form_create_chatroom" action="Controller" method="post">	
+			<input type="hidden" name="command" value="create_chatroom"/>
+			<input type="hidden" name="teamIdx" value="<%=teamIdx%>"/>
 			<div id="div_create_chatroom" class="border">
 				<!-- 상단부 / div:nth-child(1) -->
 				<div>

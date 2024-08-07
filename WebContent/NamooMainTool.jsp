@@ -66,7 +66,6 @@
 	<meta charset="UTF-8">
 	<title>NamooMainTool</title>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/NamooMainTool.css"/>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/AddProject.css"/>
 	<link href="https://intercom.help/jandi/assets/favicon" rel="icon">
 	
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -533,7 +532,10 @@
 	<div id="div_side2" class="wide fl">
 		
 		<!---------- 채팅방 생성하기 ---------->		
-		<form id="form_create_chatroom" action="CreateChatroomServlet" method="post">	
+<!-- 		<form id="form_create_chatroom" action="CreateChatroomServlet" method="post">	 -->
+		<form id="form_create_chatroom" action="Controller" method="post">	
+			<input type="hidden" name="command" value="create_chatroom"/>
+			<input type="hidden" name="teamIdx" value="<%=teamIdx%>"/>
 			<div id="div_create_chatroom" class="border">
 				<!-- 상단부 / div:nth-child(1) -->
 				<div>

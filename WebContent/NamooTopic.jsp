@@ -591,7 +591,9 @@
 			</div> <!-- div_title 닫는 태그 -->	
 
 			<!---------- 채팅방 생성하기 ---------->		
-			<form id="form_create_chatroom" action="CreateChatroomServlet" method="post">	
+			<form id="form_create_chatroom" action="Controller" method="post">	
+				<input type="hidden" name="command" value="create_chatroom"/>
+				<input type="hidden" name="teamIdx" value="<%=teamIdx%>"/>
 				<div id="div_create_chatroom" class="border">
 					<!-- 상단부 / div:nth-child(1) -->
 					<div>
