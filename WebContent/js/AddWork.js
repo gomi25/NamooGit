@@ -6,6 +6,7 @@ $(function() {
          });
 		$("#div_transparent_filter").click(function() {
             $("#prioritize").css('display','none');
+			$("#addwork_prioritize").css('display','none');
             $("#div_transparent_filter").css('display','none');
          });   
          /*-------------우선순위(선택)-----------------*/
@@ -14,44 +15,45 @@ $(function() {
 		$(".low").click(function() {
 			$(".add_prioritize").css('display','none');
 			$("#prioritize").css('display','none');
-            $(".add_low").css('display','block');
+            $(".addwork_add_low").css('display','block');
             $("#div_transparent_filter").css('display','block');
          });
 		$(".add_x_img").click(function() {
-			$(".add_low").css('display','none');
-            $(".add_prioritize").css('display','block');
+			$(".addwork_add_low").css('display','none');
+			$(".add_prioritize").css('display','none');
          });
+		 
 		/*-------보통------*/
 		$(".normal").click(function() {
 			$(".add_prioritize").css('display','none');
 			$("#prioritize").css('display','none');
-            $(".add_normal").css('display','block');
+            $(".addwork_add_normal").css('display','block');
             $("#div_transparent_filter").css('display','block');
          });
 		$(".add_x_img").click(function() {
-			$(".add_normal").css('display','none');
+			$(".addwork_add_normal").css('display','none');
             $(".add_prioritize").css('display','block');
          });
 		/*-------높음------*/
 		$(".hight").click(function() {
 			$(".add_prioritize").css('display','none');
 			$("#prioritize").css('display','none');
-            $(".add_hight").css('display','block');
+            $(".addwork_add_hight").css('display','block');
             $("#div_transparent_filter").css('display','block');
          });
 		$(".add_x_img").click(function() {
-			$(".add_hight").css('display','none');
+			$(".addwork_add_hight").css('display','none');
             $(".add_prioritize").css('display','block');
          });
 		/*-------긴급------*/
 		$(".emergency").click(function() {
 			$(".add_prioritize").css('display','none');
 			$("#prioritize").css('display','none');
-            $(".add_emergency").css('display','block');
+            $(".addwork_add_emergency").css('display','block');
             $("#div_transparent_filter").css('display','block');
          });
 		$(".add_x_img").click(function() {
-			$(".add_emergency").css('display','none');
+			$(".addwork_add_emergency").css('display','none');
             $(".add_prioritize").css('display','block');
          });
 
