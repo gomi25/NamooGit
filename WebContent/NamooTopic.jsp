@@ -1018,6 +1018,8 @@
 			<!----------  [토픽글 작성] 토픽방 내부 하단의 게시글 등록 클릭 시 팝업창---------->	
 <%-- 		<form action="${pageContext.request.contextPath}/jsp/WriteTopicBoard.jsp" id="writeTopicBoardForm" method="get">  --%>
 			<form id="form_board_write" action="TopicFileUploadServlet" method="post" enctype="multipart/form-data" >
+				<input type="hidden" name="topic_idx" id="hidden_topic_idx" value="<%=topicIdx%>">
+				<input type="hidden" name="team_idx" value="<%=teamIdx %>"/>
 				<div id="div_write_topic_board">
 					<!-- 상단부 / div:nth-child(1) -->
 					<div>
@@ -1042,7 +1044,6 @@
 								<!-- 텍스트 작성하는 공간 -->
 								<div id="write_topic_board_space" class="scrollbar" contenteditable="true" data-placeholder="게시글의 본문을 입력하세요"  aria-labelledby="label_board_content"></div>
 							 	<input type="hidden" name="topic_board_content" id="hidden_board_content">
-								<input type="hidden" name="topic_idx" id="hidden_topic_idx" value="<%=topicIdx%>">
 		                    
 								<!-- 파일 업로드하는 공간 -->
 							 	<div class="upload_file_box">
@@ -1115,7 +1116,11 @@
 			</form>	<!-- form_board_write 닫는 태그 -->
 		
 			<!---------- [토픽글 수정] 팝업창 ---------->
-			<form action="${pageContext.request.contextPath}/jsp/UpdateTopicBoard.jsp" id="updateTopicBoardForm" method="get"> 
+<%-- 			<form action="${pageContext.request.contextPath}/jsp/UpdateTopicBoard.jsp" id="updateTopicBoardForm" method="get">  --%>
+			<form action="Controller" id="updateTopicBoardForm" method="post"> 
+				<input type="hidden" name="command" value="update_topic_board"/>
+				<input type="hidden" name="teamIdx" value="<%=teamIdx%>"/>
+				<input type="hidden" name="topicIdx" value="<%=topicIdx%>"/>
 				<input type="hidden" id="hidden_topic_board_idx" name="topicBoardIdx" value="">
 				<div id="div_update_topic_board">
 					<!-- 상단부 / div:nth-child(1) -->
@@ -1831,15 +1836,18 @@
 	<div id="div_transparent_filter"></div>
 	<!-- 회색판 -->
 	<div id="div_grey_filter"></div>
+	
 	<!-- 토픽 삭제 시 알림창 -->
-    <form action="${pageContext.request.contextPath}/jsp/DeleteTopic.jsp" id="deleteTopicForm" method="get">
-	    <input type="hidden" name="input_topicIdx" value="<%=request.getParameter("topicIdx") %>"/>
+    <form action="Controller" id="deleteTopicForm" method="post">
+    	<input type="hidden" name="command" value="delete_topic"/>
+	    <input type="hidden" name="topicIdx" value="<%=topicIdx%>"/>
+	    <input type="hidden" name="teamIdx" value="<%=teamIdx%>"/>
 	 	<div id="delete_topic_pop_up" class="notification_pop_up">
 		    <div>토픽을 정말 삭제하시겠습니까?</div>
 		    <div>모든 메시지와 파일이 삭제되며 복구할 수 없습니다</div>
 		    <div>
 	            <button type="button" class="btn btn_cancel">취소</button>
-	            <button type="submit" class="btn btn_danger" id="confirmDelete">확인</button>
+	            <button type="submit" class="btn btn_danger">확인</button>
 		    </div>
 		</div> 
    	</form>
@@ -1888,14 +1896,20 @@
 	</div>
 	
 	<!-- 토픽글 삭제 시 알림창 -->
-	<div id="delete_topic_board_pop_up" class="notification_pop_up">
-		<div>이 토픽글을 삭제하시겠습니까?</div>
-		<div>삭제하시면 복구할 수 없습니다.</div>
-		<div>
-			<button class="btn btn_cancel">취소</button>
-			<button class="btn btn_danger">확인</button>
+	<form id="delete_pop_up" action="Controller" method="post">
+		<input type="hidden" name="command" value="delete_topic_board"/>
+		<input type="hidden" name="teamIdx" value="<%=teamIdx%>"/>
+		<input type="hidden" name="topicIdx" value="<%=topicIdx%>"/>
+		<div id="delete_topic_board_pop_up" class="notification_pop_up">
+			<div>이 토픽글을 삭제하시겠습니까?</div>
+			<div>삭제하시면 복구할 수 없습니다.</div>
+			<div>
+				<button type="button" class="btn btn_cancel">취소</button>
+				<button type="submit" class="btn btn_danger">확인</button>
+			</div>
+			<input type="hidden" name="topicBoardIdx" value=""/>
 		</div>
-	</div>
+	</form>
 	
 	<!-- 토픽댓글 삭제 시 알림창 -->
 	<div id="delete_topic_comment_pop_up" class="notification_pop_up">

@@ -186,8 +186,8 @@ public class ChatDao {
 	    try {
 	        String sql = "INSERT INTO chat_member(chatroom_idx, member_idx) VALUES(?, ?)";
 	        pstmt = conn.prepareStatement(sql);
-	        pstmt.setInt(1, chatroomIdx);
 	        for (int memberIdx : memberIdxArray) {
+	        	pstmt.setInt(1, chatroomIdx);
 	            pstmt.setInt(2, memberIdx);
 	            pstmt.addBatch(); // Batch 추가
 	        }
@@ -589,10 +589,126 @@ public class ChatDao {
 	    return listRet;
 	}
 
+	// deleteChatroom(int): 채팅방 삭제하는 기능
+	// 파라미터: chatroom_idx
+	public void deleteChatroom(int chatroomIdx) throws Exception {
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    
+	    try {
+	        conn = getConnection();
+	        
+	        // 1. 해당 채팅방의 모든 chat_idx 조회
+	        String selectChatsSql = "SELECT chat_idx FROM chat WHERE chatroom_idx = ?";
+	        pstmt = conn.prepareStatement(selectChatsSql);
+	        pstmt.setInt(1, chatroomIdx);
+	        rs = pstmt.executeQuery(); 
+
+	        List<Integer> allChatIdx = new ArrayList<>();
+	        while (rs.next()) {
+	            allChatIdx.add(rs.getInt("chat_idx"));
+	        }
+	        rs.close();
+	        pstmt.close();
+	        
+	        // 2. 조회한 chat_idx를 기반으로 관련된 chat_comment_idx, file_idx 조회 및 삭제
+	        for (int chatIdx : allChatIdx) {
+	            // chat_comment 조회 및 삭제
+	            String selectCommentsSql = "SELECT chat_comment_idx, file_idx FROM chat_comment WHERE chat_idx = ?";
+	            pstmt = conn.prepareStatement(selectCommentsSql);
+	            pstmt.setInt(1, chatIdx);
+	            rs = pstmt.executeQuery();
+
+	            while (rs.next()) {
+	                int chatCommentIdx = rs.getInt("chat_comment_idx");
+	                int fileIdx = rs.getInt("file_idx");
+
+	                // 즐겨찾기에서 해당 chat_comment_idx 삭제
+	                String deleteBookmarkSql = "DELETE FROM bookmark WHERE chat_comment_idx = ?";
+	                PreparedStatement pstmt2 = conn.prepareStatement(deleteBookmarkSql);
+	                pstmt2.setInt(1, chatCommentIdx);
+	                pstmt2.executeUpdate();
+	                pstmt2.close();
+
+	                // file_box에서 해당 file_idx 삭제 (file_idx가 0보다 큰 경우에만)
+	                if (fileIdx > 0) {
+	                    String deleteFileSql = "DELETE FROM file_box WHERE file_idx = ?";
+	                    pstmt2 = conn.prepareStatement(deleteFileSql);
+	                    pstmt2.setInt(1, fileIdx);
+	                    pstmt2.executeUpdate();
+	                    pstmt2.close();
+	                }
+	            }
+	            rs.close();
+	            pstmt.close();
+
+	            // 모든 chat_comment 삭제
+	            String deleteCommentsSql = "DELETE FROM chat_comment WHERE chat_idx = ?";
+	            pstmt = conn.prepareStatement(deleteCommentsSql);
+	            pstmt.setInt(1, chatIdx);
+	            pstmt.executeUpdate();
+	            pstmt.close();
+
+	            // 즐겨찾기에서 해당 chat_idx 삭제
+	            String deleteBookmarkForChatSql = "DELETE FROM bookmark WHERE chat_idx = ?";
+	            pstmt = conn.prepareStatement(deleteBookmarkForChatSql);
+	            pstmt.setInt(1, chatIdx);
+	            pstmt.executeUpdate();
+	            pstmt.close();
+	        }
+
+	        // 3. chat 삭제
+	        String deleteChatsSql = "DELETE FROM chat WHERE chatroom_idx = ?";
+	        pstmt = conn.prepareStatement(deleteChatsSql);
+	        pstmt.setInt(1, chatroomIdx);
+	        pstmt.executeUpdate();
+	        pstmt.close();
+	        
+	        // 4. 즐겨찾기에서 해당 chatroom_idx 삭제
+	        String deleteBookmarkForChatroomSql = "DELETE FROM bookmark WHERE chatroom_idx = ?";
+	        pstmt = conn.prepareStatement(deleteBookmarkForChatroomSql);
+	        pstmt.setInt(1, chatroomIdx);
+	        pstmt.executeUpdate();
+	        pstmt.close();
+	        
+	        // 5. file_box에서 해당 chatroom_idx 관련 파일 삭제
+	        String deleteFilesSql = "DELETE FROM file_box WHERE chatroom_idx = ?";
+	        pstmt = conn.prepareStatement(deleteFilesSql);
+	        pstmt.setInt(1, chatroomIdx);
+	        pstmt.executeUpdate();
+	        pstmt.close();
+	        
+	        // 6. chat_member 삭제
+	        String deleteChatMembersSql = "DELETE FROM chat_member WHERE chatroom_idx = ?";
+	        pstmt = conn.prepareStatement(deleteChatMembersSql);
+	        pstmt.setInt(1, chatroomIdx);
+	        pstmt.executeUpdate();
+	        pstmt.close();
+	        
+	        // 7. chatroom 삭제
+	        String deleteChatroomSql = "DELETE FROM chatroom WHERE chatroom_idx = ?";
+	        pstmt = conn.prepareStatement(deleteChatroomSql);
+	        pstmt.setInt(1, chatroomIdx);
+	        pstmt.executeUpdate();
+	        pstmt.close();
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) { rs.close(); }
+	            if (pstmt != null) { pstmt.close(); }
+	            if (conn != null) { conn.close(); }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
 	
 
 	
-//	 *******채팅방에서 내보내기 기능(or나가기) *******
+//	 *******채팅방에서 내보내기 기능 *******
 	public void exitChatroom(int chatroomIdx, int memberIdx) throws Exception {
 		Connection conn = getConnection();
 		
@@ -606,6 +722,87 @@ public class ChatDao {
 		pstmt.close();
 		conn.close();
 	}
+	
+	// leaveChatroom(int, int): 채팅방 나가기 기능
+	// 파라미터: chatroom_idx, member_idx(사용자)
+	public void leaveChatroom(int chatroomIdx, int memberIdx) throws Exception {
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    
+	    try {
+	        conn = getConnection();
+	        
+	        // 1. 해당 채팅방의 모든 chat_idx 조회
+	        String selectChatsSql = "SELECT chat_idx FROM chat WHERE chatroom_idx = ?";
+	        pstmt = conn.prepareStatement(selectChatsSql);
+	        pstmt.setInt(1, chatroomIdx);
+	        rs = pstmt.executeQuery(); 
+
+	        List<Integer> allChatIdx = new ArrayList<>();
+	        while (rs.next()) {
+	            allChatIdx.add(rs.getInt("chat_idx"));
+	        }
+	        rs.close();
+	        pstmt.close();
+	        
+	        // 2. 조회한 chat_idx를 기반으로 관련된 chat_comment_idx 조회 및 즐겨찾기 삭제
+	        for (int chatIdx : allChatIdx) {
+	            // chat_comment 조회
+	            String selectCommentsSql = "SELECT chat_comment_idx FROM chat_comment WHERE chat_idx = ?";
+	            pstmt = conn.prepareStatement(selectCommentsSql);
+	            pstmt.setInt(1, chatIdx);
+	            rs = pstmt.executeQuery();
+
+	            List<Integer> allChatCommentIdx = new ArrayList<>();
+	            while (rs.next()) {
+	                allChatCommentIdx.add(rs.getInt("chat_comment_idx"));
+	            }
+	            rs.close();
+	            pstmt.close();
+
+	            // 즐겨찾기에서 해당 chat_idx와 chat_comment_idx에 대한 데이터 삭제
+	            String deleteBookmarkForChatSql = "DELETE FROM bookmark WHERE (chat_idx = ? OR chat_comment_idx = ?) AND member_idx_from = ?";
+	            pstmt = conn.prepareStatement(deleteBookmarkForChatSql);
+	            pstmt.setInt(1, chatIdx);
+	            
+	            for (int chatCommentIdx : allChatCommentIdx) {
+	                pstmt.setInt(2, chatCommentIdx);
+	                pstmt.setInt(3, memberIdx);
+	                pstmt.executeUpdate();
+	            }
+	            pstmt.close();
+	        }
+	        
+	        // 3. 즐겨찾기에서 해당 chatroom_idx와 연결된 데이터 삭제
+	        String deleteBookmarkForChatroomSql = "DELETE FROM bookmark WHERE chatroom_idx = ? AND member_idx_from = ?";
+	        pstmt = conn.prepareStatement(deleteBookmarkForChatroomSql);
+	        pstmt.setInt(1, chatroomIdx);
+	        pstmt.setInt(2, memberIdx);
+	        pstmt.executeUpdate();
+	        pstmt.close();
+	        
+	        // 4. chat_member에서 해당 member 삭제
+	        String deleteChatMemberSql = "DELETE FROM chat_member WHERE chatroom_idx = ? AND member_idx = ?";
+	        pstmt = conn.prepareStatement(deleteChatMemberSql);
+	        pstmt.setInt(1, chatroomIdx);
+	        pstmt.setInt(2, memberIdx);
+	        pstmt.executeUpdate();
+	        pstmt.close();
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (rs != null) { rs.close(); }
+	            if (pstmt != null) { pstmt.close(); }
+	            if (conn != null) { conn.close(); }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
+
 	
 //	 *******채팅방 내에 있는 파일 조회하는 기능*******
 	public void getChatroomFile(int chatroomIdx) throws Exception {
@@ -698,43 +895,71 @@ public class ChatDao {
 	// 채팅방방이름 불러오는 메서드
 	// 파라미터: 채팅방idx
 	// 리턴: 채팅방이름
-		public String getChatroomNameFromChatroomIdx(int chatroomIdx) throws Exception {
-			String strRet = null;
-			
-			String sql = "SELECT name FROM chatroom WHERE chatroom_idx=?";
-			Connection conn = getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, chatroomIdx);
-			ResultSet rs = pstmt.executeQuery();
-			if(rs.next()) {
-				strRet = rs.getString("name");
-			}
-			rs.close();
-			pstmt.close();
-			conn.close();
-			
-			return strRet;
+	public String getChatroomNameFromChatroomIdx(int chatroomIdx) throws Exception {
+		String strRet = null;
+		
+		String sql = "SELECT name FROM chatroom WHERE chatroom_idx=?";
+		Connection conn = getConnection();
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, chatroomIdx);
+		ResultSet rs = pstmt.executeQuery();
+		if(rs.next()) {
+			strRet = rs.getString("name");
 		}
+		rs.close();
+		pstmt.close();
+		conn.close();
+		
+		return strRet;
+	}
 		
 	//  *******채팅방의 설명 조회 기능*******	
-		public String getChatroomInformation(int chatroomIdx) throws Exception {
-			Connection conn = getConnection();
-			String sql = "SELECT information FROM chatroom WHERE chatroom_idx = ?";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, chatroomIdx);
-			ResultSet rs = pstmt.executeQuery();
-			String result = "";
-			if(rs.next()) {
-				result = rs.getString(1);
-			}
-			
-			rs.close();
-			pstmt.close();
-			conn.close();
-			
-			return result;
-		}	
-			
+	public String getChatroomInformation(int chatroomIdx) throws Exception {
+		Connection conn = getConnection();
+		String sql = "SELECT information FROM chatroom WHERE chatroom_idx = ?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, chatroomIdx);
+		ResultSet rs = pstmt.executeQuery();
+		String result = "";
+		if(rs.next()) {
+			result = rs.getString(1);
+		}
+		
+		rs.close();
+		pstmt.close();
+		conn.close();
+		
+		return result;
+	}	
+		
+	// getChatroomMemberCount(int): 채팅방 멤버 수 조회 기능
+	// 파라미터: chatroom_idx
+	// 리턴: 채팅방 멤버 수
+	public int getChatroomMemberCount(int chatroomIdx) throws Exception {
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    int memberCount = 0;
+
+	    try {
+	        conn = getConnection();
+	        String sql = "SELECT COUNT(*) FROM chat_member WHERE chatroom_idx = ?";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, chatroomIdx);
+	        rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            memberCount = rs.getInt(1);
+	        }
+	    } finally {
+	        if (rs != null) rs.close();
+	        if (pstmt != null) pstmt.close();
+	        if (conn != null) conn.close();
+	    }
+
+	    return memberCount;
+	}
+	
+		
 }
 
 

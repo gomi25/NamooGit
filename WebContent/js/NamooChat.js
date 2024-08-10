@@ -990,6 +990,21 @@
 				$("#div_transparent_filter").css('display','none');
 			});
 			
+			// [더보기] - [채팅방 나가기] 클릭 시
+			$("#div_chatroom_more_menu > div:nth-child(4)").click(function() {
+				$("#div_chatroom_more_menu").hide();
+				$("#div_transparent_filter").hide();
+				$("#div_grey_filter").show();
+				$("#delete_chatroom_pop_up").show();
+			});
+			$("#delete_chatroom_pop_up .btn_cancel").click(function() {
+				$("#delete_chatroom_pop_up").hide();
+				$("#div_grey_filter").hide();
+			});
+			$("#delete_chatroom_pop_up .btn_ok").click(function() {
+				$("#delete_chatroom_pop_up").hide();
+				$("#div_grey_filter").hide();
+			});
 			
 			// 설명창
 			$("[data-toggle='tooltip']").each(function(idx, item) {
