@@ -33,13 +33,13 @@
 	<meta charset="UTF-8">
 	<title>namoo</title>
 	<link href="https://intercom.help/jandi/assets/favicon" rel="icon">
-	<link rel="stylesheet" href="css/Gantt.css"/> 
-	<link rel="stylesheet" href="css/Member_select.css"/>
-	<link rel="stylesheet" href="css/Addwork.css"/>
-	<link rel="stylesheet" href="css/Prioritize.css"/>
-	<link rel="stylesheet" href="css/State.css"/>
-	<link rel="stylesheet" href="css/Gantt_work.css"/>
-	<link rel="stylesheet" href="css/Member_1_select.css"/>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/Gantt.css"/> 
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/Member_select.css"/>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/Addwork.css"/>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/Prioritize.css"/>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/State.css"/>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/Gantt_work.css"/>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/Member_1_select.css"/>
 	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 	<script src="${pageContext.request.contextPath}/js/GanttWork.js"></script>
 	<script src="${pageContext.request.contextPath}/js/AddWork.js"></script>
@@ -769,12 +769,7 @@
 				<button id="select">선택</button>
 			</div>
 		</div>
-		
 	</div>	
-	
-	
-	
-
 	
 	<div style="clear:both;"></div>
 	
@@ -782,16 +777,3 @@
 </html>
 
 
-
-
-
-<!-- 	<style>
-		html, body {
-			height: 100%;
-			padding: 0px;
-			margin: 0px;
-			overflow: hidden;
-		}
-	</style>
- -->
- 
