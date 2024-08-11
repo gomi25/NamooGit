@@ -23,10 +23,10 @@ public class GanttGroupDao {
 	}
 	
 	// addGanttGroup : 간트 그룹 추가
-	// ganttGroupIdx : 간트그룹idx, projectIdx : 프로젝트idx, ganttGroupName : 간트그룹이름
+	// 리턴: ganttgroup_idx(간트그룹idx), project_idx(프로젝트idx), ganttgroup_name(간트그룹이름)
 	public void addGanttGroup(int ganttGroupIdx, int projectIdx, String ganttGroupName) throws Exception {
 		Connection conn = getConnection();
-		String sql = "INSERT INTO GANTT_GROUP(GANTTGROUP_IDX, PROJECT_IDX, GANTTGROUP_NAME) VALUES(?, ?, ?)";
+		String sql = "INSERT INTO gantt_group(ganttgroup_idx, project_idx, ganttgroup_name) VALUES(?, ?, ?)";
 		   
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, ganttGroupIdx);
@@ -37,58 +37,58 @@ public class GanttGroupDao {
 		   
 		pstmt.close();
 		conn.close();
-		   
-		   
 	}	
-	
-	
 	
 //-------------------------SELECT-------------------------------	
 	
-	// getGanttGroupName1 이랑 같음
-	// getGanttGroupName : 간트차트 그룹명 출력 
-	 public String[] getGanttGroupName(int projectIdx) throws Exception{
-			Connection conn = getConnection();
+	// getGanttGroupName : 간트차트 그룹명, 그룹개수 출력  
+	// 파라미터: project_idx
+	// 리턴: 그룹수
+	public String[] getGanttGroupName(int projectIdx) throws Exception{
+		Connection conn = getConnection();
 			
-			String sql1 = "SELECT count(*) FROM gantt_group gg WHERE gg.project_idx = ?";
-			
-			PreparedStatement pstmt1 = conn.prepareStatement(sql1);
-			pstmt1.setInt(1, projectIdx);
-			
-			int count = 0;
-			ResultSet rs1 = pstmt1.executeQuery();
-			while(rs1.next()) {
-				count = rs1.getInt(1);
-			}
-			
-			rs1.close();
-			pstmt1.close();
-			
-			String[] groupName = new String[count];
-			
-			String sql2 = "SELECT gg.ganttgroup_name" + " FROM gantt_group gg" + " WHERE gg.project_idx = ?";
-
-			PreparedStatement pstmt2 = conn.prepareStatement(sql2);
-			pstmt2.setInt(1, projectIdx);
-
-			ResultSet rs2 = pstmt2.executeQuery();
-			int i = 0;
-			while (rs2.next()) {
-					groupName[i] = rs2.getString("ganttgroup_name");
-					i++;
-			}
-			
-			rs2.close();
-			pstmt2.close();
-			conn.close();
-			
-			return groupName;
-
+		String sql1 = "SELECT count(*) FROM gantt_group gg WHERE gg.project_idx = ?";
+		
+		PreparedStatement pstmt1 = conn.prepareStatement(sql1);
+		pstmt1.setInt(1, projectIdx);
+		
+		int count = 0;
+		ResultSet rs1 = pstmt1.executeQuery();
+		while(rs1.next()) {
+			count = rs1.getInt(1);
 		}
+		
+		rs1.close();
+		pstmt1.close();
+		
+		String[] groupName = new String[count];
+		// 파라미터: project_idx
+		// 리턴: 그룹명
+		String sql2 = "SELECT gg.ganttgroup_name" 
+				+ " FROM gantt_group gg" 
+				+ " WHERE gg.project_idx = ?";
+		
+		PreparedStatement pstmt2 = conn.prepareStatement(sql2);
+		pstmt2.setInt(1, projectIdx);
+		
+		ResultSet rs2 = pstmt2.executeQuery();
+		int i = 0;
+		while (rs2.next()) {
+				groupName[i] = rs2.getString("ganttgroup_name");
+				i++;
+		}
+		
+		rs2.close();
+		pstmt2.close();
+		conn.close();
+		
+		return groupName;
+	}
 	 
-	 // getGanttGroupName랑 같음
-	 // getGanttGroupName1 : 간트차트 그룹명 출력 (프로젝트별)
-	 public ArrayList<GanttGroupDto> getGanttGroupName1(int projectIdx) throws Exception{
+	// getGanttGroupName1 : 간트차트 그룹명 출력 (프로젝트별) 
+	// 파라미터: project_idx
+	// 리턴: ganttgroup_idx, ganttgroup_name
+	public ArrayList<GanttGroupDto> getGanttGroupName1(int projectIdx) throws Exception{
 		ArrayList<GanttGroupDto> listRet = new ArrayList<GanttGroupDto>();
 
 	 	Connection conn = getConnection();
@@ -114,16 +114,15 @@ public class GanttGroupDao {
 		return listRet;
 	}
 	 
-	 
-	 
-	 public int checkGanttWorkSubworkCount(int groupIdx, int workIdx) throws Exception {
-		String sql = "SELECT SUM(counts) AS total_count "
-				+ "FROM  (SELECT COUNT(*) AS counts FROM gantt_work gw WHERE gw.group_idx = ?" 
+	 // checkGanttWorkSubworkCount: (그룹별)업무 + 하위업무 개수
+	 // 파라미터: group_idx, work_idx
+	 // 리턴: (그룹별)업무 + 하위업무 개수
+	public int checkGanttWorkSubworkCount(int groupIdx, int workIdx) throws Exception {
+		String sql = "SELECT SUM(counts) AS total_count"
+				+ "	FROM  (SELECT COUNT(*) AS counts FROM gantt_work gw WHERE gw.group_idx = ?" 
 				+ " UNION ALL" 
 				+ " SELECT COUNT(*) AS counts FROM gantt_subwork gs WHERE gs.work_idx = ?)"; 
 				
-				
-		
 		Connection conn = getConnection();
 		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setInt(1, groupIdx);
@@ -139,6 +138,6 @@ public class GanttGroupDao {
 		conn.close();
 		
 		return result;
-	 }	
+	}	
 
 }

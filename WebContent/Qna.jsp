@@ -93,7 +93,7 @@
 		<img src="img/hankookdoro.png"/>
 		</div>
 		
-<!-- 신청자 정보 -->
+	<!-- 신청자 정보 -->
 	<form action="QnaInsert.jsp">
 		<div id="div_content2">
 			<span>신청자 정보</span>
@@ -176,7 +176,7 @@
 			</div>
 		</div>
 	</form>
-<!-- QnA부분 -->
+		<!-- QnA부분 -->
 		<div id="div_QnA">
 			<div>
 				컨설팅 Q&A
