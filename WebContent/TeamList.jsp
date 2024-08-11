@@ -5,10 +5,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	int memberIdx = 34;   // TODO : 세션에서 가져오는 걸로 변경.
-	
-	MemberDao mDao = new MemberDao();
-	MemberDto memberDto = mDao.getMemberDtoByMemberIdx(memberIdx);
+	MemberDto memberDto = (MemberDto) request.getAttribute("memberDto");
+	ArrayList<TeamListDto> list = (ArrayList<TeamListDto>) request.getAttribute("teamList");
 %>
 
 <!DOCTYPE html>
@@ -24,7 +22,7 @@
 	        // "div_email" 클릭 시 "dropdown_menu" 표시
 	        $('#div_email').click(function(event) {
 	            event.stopPropagation();
-	            $('.profile_dropdown').toggle(); // 토글 방식으로 보여주기/숨기기 전환
+	            $('.profile_dropdown').toggle(); 
 	        });
 
 	        // "dropdown_menu" 외부 클릭 시 "dropdown_menu" 숨기기
@@ -38,21 +36,21 @@
 
 	        // "teamName" 입력란 클릭 시 툴팁 표시
 	        $('input[name="teamName"]').focus(function() {
-	            $('#tooltip').fadeIn(); // 툴팁 표시
+	            $('#tooltip').fadeIn(); 
 	        });
 	        // "teamName" 입력란 포커스 아웃 시 툴팁 숨김
 	        $('input[name="teamName"]').blur(function() {
-	            $('#tooltip').fadeOut(); // 툴팁 숨김
+	            $('#tooltip').fadeOut();
 	        });
 	
 	        // "teamDomain" 입력란 클릭 시 툴팁2 표시
 	        $('input[name="teamDomain"]').focus(function() {
-	            $('#tooltip2').fadeIn(); // 툴팁2 표시
+	            $('#tooltip2').fadeIn(); 
 	        });
 	
 	        // "teamDomain" 입력란 포커스 아웃 시 툴팁2 숨김
 	        $('input[name="teamDomain"]').blur(function() {
-	            $('#tooltip2').fadeOut(); // 툴팁2 숨김
+	            $('#tooltip2').fadeOut(); 
 	        });
 
 	         // 입력란 값 변경 시 버튼 활성화 상태 업데이트
@@ -73,18 +71,18 @@
 	        // "팀으로 이동하기" 버튼 클릭 시 팀 생성 창 숨기기
 	        $('#button').click(function() {
 	            if (!$(this).is(':disabled')) {
-	                $('#team-make-main').hide(); // 팀 생성 창 숨기기
+	                $('#team-make-main').hide();
 	            }
 	        });
 	
 	        // "Xbtn" 클릭 시 팀 생성 창 숨기기
 	        $('#Xbtn').click(function() {
-	            $('#team-make-main').hide(); // 팀 생성 창 숨기기
+	            $('#team-make-main').hide();
 	        });
 	
 	         // 팀 생성하기 버튼과 + 팀 생성하기 버튼 클릭 시 팀 생성 창 보이기
 	        $('#div_team_make_button .btn_btn_green, #div_team_make_big .btn_btn_big').click(function() {
-	            $('#team-make-main').show(); // 팀 생성 창 보이기
+	            $('#team-make-main').show(); 
 	        });
 	    });
     </script>
@@ -138,7 +136,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="24px" fill="#999"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>                            
                         </i>
                         <div class="option-txt">
-                            <span class="settings">계정 설정</span> <!-- 누르면 현지님 계정 설정 부분이랑 합치기 -->
+                            <span class="settings">계정 설정</span>
                         </div>
                     </li>
                     <li class="option-item">
@@ -195,29 +193,27 @@
                 <span>팀 리스트</span>
             </div>
             <div class="section-body">
-            	<%
-//             	TeamListDto teamListDto = mDao.getListTeamListDto(memberIdx);
-            	ArrayList<TeamListDto> list = mDao.getListTeamListDto(memberIdx);
-            	if(list.size() == 0) {
-            	%>
-	                <div id="div_main_pic"> <!-- 생성된 팀 리스트가 한 개라도 있으면 display: none 처리 -->
-	                    <div id="div_img_txt">
-	                        <img src="https://cdn.jandi.com/main/assets/images/ae79d593.bg_welcome.png">
-	                        <div id="div_main_txt_button" class="fr">
-	                            <div id="div_txt1">
-	                                <span>잔디는 파일 공유가 손쉬운 업무용 메신저입니다.</span>
-	                            </div>
-	                            <div id="div_txt2">
-	                                <span>지금 무료로 팀을 개설하시고 훨씬 빠르고 효율적인 업무 환경을 경험하세요!</span>
-	                            </div>
-	                            <div id="div_team_make_button">
-	                                <button type="button" class="btn_btn_green" ng-click="createTeam()" translate="">
-	                                    <span>팀 생성하기</span>
-	                                </button>
-	                            </div>
-	                        </div>
-	                    </div>
-	                </div>
+	            <%
+	            if(list == null || list.size() == 0) {
+	            %>
+                <div id="div_main_pic"> <!-- 생성된 팀 리스트가 한 개라도 있으면 display: none 처리 -->
+                    <div id="div_img_txt">
+                        <img src="https://cdn.jandi.com/main/assets/images/ae79d593.bg_welcome.png">
+                        <div id="div_main_txt_button" class="fr">
+                            <div id="div_txt1">
+                                <span>잔디는 파일 공유가 손쉬운 업무용 메신저입니다.</span>
+                            </div>
+                            <div id="div_txt2">
+                                <span>지금 무료로 팀을 개설하시고 훨씬 빠르고 효율적인 업무 환경을 경험하세요!</span>
+                            </div>
+                            <div id="div_team_make_button">
+                                <button type="button" class="btn_btn_green" ng-click="createTeam()" translate="">
+                                    <span>팀 생성하기</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <%
                 }
                 %>

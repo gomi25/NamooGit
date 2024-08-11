@@ -37,8 +37,8 @@ public class MemberDao {
 		int memberIdxRet = 0;   // 리턴할 member_idx값. 0 은 그냥 초기 값. 
 		Connection conn = getConnection();
 		
-		String sql = "INSERT INTO member(member_idx, pw, name, birth, phone_number, join_date, profile_pic_url, profile_img_idx, color_idx, agreement, verification_code, expiration_date, leave, email)"
-				+ " VALUES(seq_member_idx.nextval, null, null, null, null, null, 'https://jandi-box.com/assets/ic-profile.png', null, null, ?, null, null, ?, null)";
+		String sql = "INSERT INTO member(member_idx, pw, name, birth, phone_number, join_date, profile_pic_url, agreement, verification_code, expiration_date, leave, email)"
+				+ " VALUES(seq_member_idx.nextval, null, null, null, null, null, 'https://jandi-box.com/assets/ic-profile.png', ?, null, null, ?, null)";
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql, new String[] {"member_idx"});
 		pstmt.setInt(1, agreement);
@@ -86,7 +86,6 @@ public class MemberDao {
 		
 		pstmt.setString(1, verificationCode);
 		 
-		// 현재 시간에서 20분을 더한 시간 계산
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MINUTE, 20);
         Timestamp expirationDate = new Timestamp(cal.getTimeInMillis());
@@ -99,7 +98,7 @@ public class MemberDao {
 		conn.close();
 	}
 	
-	// enterVerifyCode(int memberIdx, String verificationCode) : 인증 코드 확인  *** 실행 안 됨 ***
+	// enterVerifyCode(int memberIdx, String verificationCode) : 인증 코드 확인
 	public boolean enterVerifyCode(int memberIdx, String verificationCode) throws Exception {
 		Connection conn = null;
         PreparedStatement pstmt = null;
@@ -164,7 +163,9 @@ public class MemberDao {
 		return pkNum;
 	}
 	
-	// 
+	// addTeamFirstMember : 팀 생성 시 첫 팀 멤버 테이블에 INSERT
+	// off : 0. 부재중 아님 1. 부재중
+	// leave : 탈퇴(1), 탈퇴x(0)
 	public void addTeamFirstMember(int teamIdx, int memberIdx) throws Exception {
 		String sql = "INSERT INTO team_member(team_idx, member_idx, "
 				+ " power, off, state, state_message, department, position, leave)"
@@ -180,6 +181,7 @@ public class MemberDao {
 	}
 	
 	// getListTeamListDto(int memberIdx) : 팀 리스트 보여 주기
+	// 리턴값 = 멤버의 팀 리스트
 	public ArrayList<TeamListDto> getListTeamListDto(int memberIdx) throws Exception {
 		ArrayList<TeamListDto> list = new ArrayList<>();
 		Connection conn = getConnection();
@@ -215,14 +217,14 @@ public class MemberDao {
 		return list;
 	}
 	
-	// getMemberDtoByMemberIdx(int memberIdx) : 팀 생성 화면에서 회원 프로필 띄우기 
+	// getMemberDtoByMemberIdx(int memberIdx) : 팀 생성 화면에서 회원 프로필 띄우기
+	// 리턴값 = 멤버의 프로필
 	public MemberDto getMemberDtoByMemberIdx(int memberIdx) throws Exception {
 		MemberDto dto = null;
 		Connection conn = getConnection();
 		
-		String sql = "SELECT m.name AS 멤버명, m.profile_pic_url AS 멤버프사, m.email AS 이메일, p.img_url AS 선택프사" 	// (선택프사 사용x)
+		String sql = "SELECT m.name AS 멤버명, m.profile_pic_url AS 멤버프사, m.email AS 이메일" 	// (선택프사 사용x)
 					+ " FROM member m" 
-					+ " LEFT JOIN profile_img p ON p.profile_img_idx = m.profile_img_idx" 
 					+ " WHERE m.member_idx = ?";
 		
 		PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -236,9 +238,8 @@ public class MemberDao {
 				String memberName = rs.getString(1);	
 				String profilePicUrl = rs.getString(2);
 				String email = rs.getString(3);
-				String profileImgIdx = rs.getString(4);	 	// (선택프사 사용x)
 				
-				dto = new MemberDto(memberName, profilePicUrl, profileImgIdx, email);
+				dto = new MemberDto(memberName, profilePicUrl, email);
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
