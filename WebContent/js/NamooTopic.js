@@ -799,13 +799,6 @@
 		$('#div_create_chatroom #textarea_info').on('input', toggleCreateChatroomButton);
 	});		
 	
-	
-	
-	
-	
-	
-	
-	
 
 /****************************** 목록의 즐겨찾기 ******************************/		
 	// 토픽 목록에 [즐겨찾기] 아이콘 클릭 시 즐겨찾기 등록 및 해제
@@ -845,9 +838,6 @@
 		});
 	});
 	
-/* 여기까지 일단 완료 7.22(월) 17시 */	
-
-/* 여기부터 이어서  */			
 
 //===================================== div_side2 =====================================				
 //===================================== 토픽방 상단바 =====================================						
@@ -926,7 +916,18 @@
 			$("#div_title_participants .ic_exit_chatroom").hide();
 		});
 		
-		$(".ic_exit_chatroom").click(function(){
+		$("#remove_topicMember_pop_up .btn_ok").click(function(){
+			$("#div_grey_filter").hide();
+			$("#remove_topicMember_pop_up").hide();
+		//	location.href = context_path + '/jsp/RemoveMemberInThisTopic.jsp?removeMemberIdx=' + removeMemberIdx;
+		});
+		$("#remove_topicMember_pop_up .btn_cancel").click(function(){
+			$("#div_grey_filter").hide();
+			$("#remove_topicMember_pop_up").hide();
+		});
+		
+		// 토픽 멤버 내보내기 버튼 클릭 시 
+		$(document).on('click', '.ic_exit_chatroom', function() {
 			$("#div_title_participants").hide();
 			
 			let removeMemberIdx = $(this).parent(".div_member_list").attr("member_idx");
@@ -937,16 +938,8 @@
 			$("#remove_topicMember_pop_up").show();
 			$("#remove_member_info > img").attr('src', removeMemberImg);
 			$("#remove_member_info > span").text(removeMemberName);
+			$("#removeTopicMemberForm > input[name='removeMemberIdx']").val(removeMemberIdx);
 			
-			$("#remove_topicMember_pop_up .btn_ok").click(function(){
-				$("#div_grey_filter").hide();
-				$("#remove_topicMember_pop_up").hide();
-				location.href = context_path + '/jsp/RemoveMemberInThisTopic.jsp?removeMemberIdx=' + removeMemberIdx;
-			});
-			$("#remove_topicMember_pop_up .btn_cancel").click(function(){
-				$("#div_grey_filter").hide();
-				$("#remove_topicMember_pop_up").hide();
-			});
 		});
 		
 		// [참여 멤버] 검색 시
@@ -994,9 +987,7 @@
 			}
 		});
 	});	
-/* 여기까지 일단 완료 7.24(수) 11시 */	
 	
-/* 여기부터 이어서  */				
 	$(function() {				
 		// [알람이미지] 클릭 시 
 		$("#div_title > div:nth-child(2) > div:nth-child(3)").click(function(){
@@ -1402,8 +1393,6 @@
 		// form 제출
 		$("#form_board_write").submit(function(event) {
 	       $('#hidden_board_content').val($('#write_topic_board_space').text().trim());
-//		    $("#hidden_topic_idx").val();
-//		    $("#hidden_topic_idx").val();
 		});	
 
 //		// 전송버튼 클릭 시 

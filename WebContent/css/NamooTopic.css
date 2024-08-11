@@ -355,6 +355,7 @@ body { margin: 0; overflow-y: hidden; margin-top: 108px;  }
 
 /* 토픽목록 및 채팅 목록 블럭*/
 #div_side1 > #div_topicroom_list_header,
+#div_side1 > #div_project_list_header,
 #div_side1 > #div_chatroom_list_header { 
 	height: 40px; 
 	position: relative; 
@@ -363,11 +364,11 @@ body { margin: 0; overflow-y: hidden; margin-top: 108px;  }
 
 /* 토픽목록 및 채팅 목록 아래 화살표 ↓ */
 #div_side1 > #div_topicroom_list_header > div:nth-child(1),
+#div_side1 > #div_project_list_header > div:nth-child(1),
 #div_side1 > #div_chatroom_list_header > div:nth-child(1) { 
 	position: absolute; 
 	top: 16px;
     left: 13px;
-	
 	width: 8px;
 	height: 8px;
 	background-image: url("https://cdn-icons-png.flaticon.com/512/61/61041.png");
@@ -375,6 +376,7 @@ body { margin: 0; overflow-y: hidden; margin-top: 108px;  }
 }
 
 #div_side1 > #div_topicroom_list_header > div:nth-child(2),
+#div_side1 > #div_project_list_header > div:nth-child(2),
 #div_side1 > #div_chatroom_list_header > div:nth-child(2) { 
 	position: absolute; 
 	top: 7px;
@@ -429,6 +431,7 @@ body { margin: 0; overflow-y: hidden; margin-top: 108px;  }
 	cursor: pointer;
 }
 #div_side1 > #div_topicroom_list_header > .ic_plus,
+#div_side1 > #div_project_list_header > .ic_plus,
 #div_side1 > #div_chatroom_list_header > .ic_plus { 
 	position: absolute; 
 	top: 10px;
@@ -436,6 +439,7 @@ body { margin: 0; overflow-y: hidden; margin-top: 108px;  }
 }
 /* 토픽목록 및 채팅목록 +버튼:hover */
 #div_side1 > #div_topicroom_list_header > div:nth-child(4):hover,
+#div_side1 > #div_project_list_header > div:nth-child(4):hover,
 #div_side1 > #div_chatroom_list_header > div:nth-child(4):hover {
     background-color: #ECEFF1;
 	border-radius: 4px;
@@ -634,7 +638,7 @@ body { margin: 0; overflow-y: hidden; margin-top: 108px;  }
 	background-size: 100%;
 	filter: invert(94%) sepia(0%) saturate(0%) hue-rotate(157deg) brightness(87%) contrast(83%);
 }
-.ic_alarm_off {
+.ic_alarm_on {
 	display: inline-block;
 	margin: 8px;
 	width: 18px;

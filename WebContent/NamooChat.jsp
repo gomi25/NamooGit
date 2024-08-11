@@ -11,19 +11,9 @@
 	int teamIdx = (Integer)request.getAttribute("teamIdx");
 	int chatroomIdx = (Integer)request.getAttribute("chatroomIdx");
 	
-// 	String chatroomIdxParam = (String)request.getParameter("chatroomIdx");
-// 	int chatroomIdx = (chatroomIdxParam != null) ? Integer.parseInt(chatroomIdxParam) : 1;
-// 	int memberIdx = 2;   // 테스트
-// 	int teamIdx = 1;     // 테스트
-	
-// String paramMidx = request.getParameter("midx");
-// if(paramMidx != null) {
-// 	memberIdx = Integer.parseInt(paramMidx);
-// }	
-	
-	int cntUnreadTotal = 0; // 토픽방에서 안 읽은 메시지 전체 개수 
 	int cntOfTopic = 0;     // 토픽방 개수
 	int cntOfTopicMember = 0;
+	int cntUnreadTotal = 0; 
 	
 	SideDao sDao = new SideDao();
 	BookmarkDao bDao = new BookmarkDao();
@@ -59,8 +49,6 @@
 		cntOfTopic++;	// 토픽방 개수 +1
 	}
 	
-	// 채팅방DTO 타입(int chatroomIdx, ArrayList<ProfileUrlColorDto> listProfileUrlColor, String chatroomName,
-	//		String information, String chatRecentDateTime, boolean bookmarkYn, int alarm, int unread)
 	ArrayList<ChatroomDto> listChatroom = sDao.getChatroomList(memberIdx, teamIdx);
 	
 	// 채팅방에서 안 읽은 메시지 개수
@@ -74,23 +62,11 @@
 	String chatroomName = cDao.getChatroomNameFromChatroomIdx(chatroomIdx);
 	String chatroomInformation = cDao.getChatroomInformation(chatroomIdx);
 
+	//============================채팅방에 없는 팀멤버 조회==============================
+	ArrayList<TeamMemberDto> teamMemberOutOfChatroom = cDao.getTeamMemberListOutOfChatroom(teamIdx, chatroomIdx);	
+
 	//============================채팅글 조회==============================
 	ArrayList<ChatContentsDto> chatContentsDto = cDao.getChatContents(teamIdx, chatroomIdx, memberIdx); 
-	//============================토픽글 조회==============================
-// 		ArrayList<TopicBoardDto> listTopicBoard = tDao.getTopicBoardList(teamIdx, topicIdx, memberIdx);
-	//============================토픽댓글 조회==============================
-//	 	ArrayList<TopicCommentDto> listTopicComment = tdao.getTopicCommentList(topicBoardIdx, teamIdx);		
-	//============================토픽전체멤버 조회==============================
-// 		ArrayList<TopicMemberDto> listTopicMember = tDao.getTopicMemberList(teamIdx, topicIdx);
-// 		String topicName = tDao.getTopicNameFromTopicIdx(topicIdx);
-// 		String topicInformation = tDao.getTopicInformation(topicIdx);
-	//============================토픽전체멤버 조회 ==============================
-// 		ArrayList<TeamMemberDto> teamMemberOutOfTopic = tDao.getTeamMemberListOutOfTopic(teamIdx, topicIdx);
-
-	//============================채팅전체멤버 조회 테스트==============================
-//  	ArrayList<ChatroomMemberDto> listChatroomMember = cDao.getChatroomMemberList(teamIdx, chatroomIdx);
-	//============================채팅방에 없는 팀멤버 조회==============================
-		ArrayList<TeamMemberDto> teamMemberOutOfChatroom = cDao.getTeamMemberListOutOfChatroom(teamIdx, chatroomIdx);	
 
 
 %>
@@ -816,8 +792,10 @@
 			</div>
 			
 			<!---------- 채팅 시작하기 (초대하기 버튼) ---------->		
-			<form id="form_invite_chat_member" action="InviteChatroomMemberServlet" method="post">	
-				<input type="hidden" name="input_chatroom_idx" value="<%=chatroomIdx%>"/>
+			<form id="form_invite_chat_member" action="Controller" method="post">	
+				<input type="hidden" name="command" value="invite_chatroom_member">
+				<input type="hidden" name="teamIdx" value="<%=teamIdx %>"/>
+				<input type="hidden" name="chatroomIdx" value="<%=chatroomIdx%>"/>
 				<div id="div_chat_start" class="border">
 					<!-- 상단부 -->
 					<div>
@@ -1434,17 +1412,24 @@
 	</div>
 
 	<!-- 토픽 멤버 내보내기 시 알림창 -->
-	<div id="remove_topicMember_pop_up" class="notification_pop_up">
-		<div>정말 이 멤버를 내보내시겠습니까?</div>
-		<div id="remove_member_info">
-			<img class="profile_img" src=""/> <!-- 내보낼 멤버 이미지 -->
-			<span></span>
+    <form action="Controller" id="removeChatroomMemberForm" method="post">
+    	<input type="hidden" name="command" value="remove_chatroom_member"/>
+	    <input type="hidden" name="chatroomIdx" value="<%=chatroomIdx%>"/>
+	    <input type="hidden" name="teamIdx" value="<%=teamIdx%>"/>
+	    <input type="hidden" name="removeMemberIdx" value=""/>	
+		<div id="remove_chatroomMember_pop_up" class="notification_pop_up">
+			<div>정말 이 멤버를 내보내시겠습니까?</div>
+			<div id="remove_member_info">
+				<img class="profile_img" src=""/> <!-- 내보낼 멤버 이미지 -->
+				<span></span>
+			</div>
+			<div>
+				<button type="button" class="btn_cancel">취소</button>
+				<button type="submit" class="btn_ok">확인</button>
+			</div>
 		</div>
-		<div>
-			<button class="btn_cancel">취소</button>
-			<button class="btn_ok">확인</button>
-		</div>
-	</div>
+    </form>
+
 	<!-- 토픽 나가기 시 알림창 -->
 	<div id="exit_topic_pop_up" class="notification_pop_up">
 		<div>현재 이 토픽의 관리자입니다.</div>

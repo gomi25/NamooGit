@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
+import action.AddChatroomMemberAction;
+import action.AddTopicMemberAction;
 import action.ChatroomChoiceAction;
 import action.CreateChatroomAction;
 import action.CreateProject;
@@ -16,12 +18,14 @@ import action.CreateProjectFormAction;
 import action.CreateQnaAction;
 import action.CreateTeamAction;
 import action.CreateTopicAction;
+import action.DeleteChatroomAction;
 import action.DeleteTopicAction;
 import action.DeleteTopicBoardAction;
 import action.EnterTeamList;
-import action.DeleteChatroomAction;
 import action.LoginCheckAction;
 import action.ProjectListAction;
+import action.RemoveChatroomMemberAction;
+import action.RemoveTopicMemberAction;
 import action.TopicChoiceAction;
 import action.UpdateTopicBoardAction;
 
@@ -38,9 +42,6 @@ public class Controller extends HttpServlet {
 		Action action = null;
 		
 		switch(command) {
-//			case "go_topic": action = new GoTopicAction(); break; 
-//			case "go_chatroom": action = new GoChatroomAction(); break; 
-//			case "go_maintool": action = new GoChatroomAction(); break; 
 			case "login_check" : action = new LoginCheckAction(); break;
 			case "topic_choice" : action = new TopicChoiceAction(); break;
 			case "chatroom_choice" : action = new ChatroomChoiceAction(); break;
@@ -50,10 +51,12 @@ public class Controller extends HttpServlet {
 			case "delete_topic_board" : action = new DeleteTopicBoardAction(); break;
 			case "delete_topic" : action = new DeleteTopicAction(); break;
 			case "delete_chatroom" : action = new DeleteChatroomAction(); break;
+			case "inviteTopicMember" : action = new AddTopicMemberAction(); break;
+			case "inviteChatroomMember" : action = new AddChatroomMemberAction(); break;
+			case "remove_topic_member" : action = new RemoveTopicMemberAction(); break;
+			case "remove_chatroom_member" : action = new RemoveChatroomMemberAction(); break;
+
 			case "enter_team_list" : action = new EnterTeamList(); break;
-			
-//			case "inviteTopicMember" : action = new AddTopicMemberAction(); break;
-//			case "inviteChatroomMember" : action = new AddChatroomMemberAction(); break;
 			
 			case "create_team" : action = new CreateTeamAction(); break;
 			

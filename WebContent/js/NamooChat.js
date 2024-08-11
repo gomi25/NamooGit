@@ -688,7 +688,8 @@
 	$(function() {			
 		// [참여멤버] ".profile_power"쪽에 마우스 커서 올리면  
 		// ".ic_exit_chatroom" 보이도록
-		$(".div_participants .div_member_list").mouseover(function(){
+		$(document).on('mouseover', '.div_participants .div_member_list', function() {
+//		$(".div_participants .div_member_list").mouseover(function(){
 			$(".div_participants .ic_exit_chatroom").show();
 		});
 		// 마우스 커서 벗어나면 채팅방 제목 및 설명 팝업 사라짐
@@ -696,7 +697,18 @@
 			$(".div_participants .ic_exit_chatroom").hide();
 		});
 		
-		$(".ic_exit_chatroom").click(function(){
+		$("#remove_chatroomMember_pop_up .btn_ok").click(function(){
+			$("#div_grey_filter").hide();
+			$("#remove_topicMember_pop_up").hide();
+		//	location.href = context_path + '/jsp/RemoveMemberInThisTopic.jsp?removeMemberIdx=' + removeMemberIdx;
+		});
+		$("#remove_chatroomMember_pop_up .btn_cancel").click(function(){
+			$("#div_grey_filter").hide();
+			$("#remove_topicMember_pop_up").hide();
+		});
+		
+		// 토픽 멤버 내보내기 버튼 클릭 시 
+		$(document).on('click', '.ic_exit_chatroom', function() {
 			$(".div_participants").hide();
 			
 			let removeMemberIdx = $(this).parent(".div_member_list").attr("member_idx");
@@ -707,16 +719,8 @@
 			$("#remove_topicMember_pop_up").show();
 			$("#remove_member_info > img").attr('src', removeMemberImg);
 			$("#remove_member_info > span").text(removeMemberName);
+			$("#removeChatroomMemberForm > input[name='removeMemberIdx']").val(removeMemberIdx);
 			
-			$("#remove_topicMember_pop_up .btn_ok").click(function(){
-				$("#div_grey_filter").hide();
-				$("#remove_topicMember_pop_up").hide();
-				location.href = context_path + '/jsp/RemoveMemberInThisTopic.jsp?removeMemberIdx=' + removeMemberIdx;
-			});
-			$("#remove_topicMember_pop_up .btn_cancel").click(function(){
-				$("#div_grey_filter").hide();
-				$("#remove_topicMember_pop_up").hide();
-			});
 		});
 		
 		// [참여 멤버] 검색 시
@@ -898,7 +902,6 @@
 				$(this).parent().remove();   // .choice_member를 삭제.
 				
 				let insert_where = insert_here(name);
-				console.log("insert_where : ", insert_where);
 				if(insert_where == null) {
 					$("#div_chat_start #start_member").prepend(str);  // 첫째 자식으로 추가.
 				} else {
@@ -964,7 +967,7 @@
 		
 		    // 초기 상태에서도 선택된 멤버 수 업데이트
 		    updateSelectedMembers();
-		});
+	});
 		
 		
 	$(function() {					

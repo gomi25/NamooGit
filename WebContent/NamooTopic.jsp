@@ -11,21 +11,16 @@
 	int teamIdx = (Integer)request.getAttribute("teamIdx");
 	int topicIdx = (Integer)request.getAttribute("topicIdx"); 
 
-	// 	String topicIdxParam = (String)request.getParameter("topicIdx"); 
-	// 	int memberIdx = 2;     // 테스트 - session
-	// 	int teamIdx = 1;       // 테스트 - parameter
-	// 	int topicIdx = 1;	   // 테스트
-	// 	int topicBoardIdx = 1; // 테스트
-	
-	int cntUnreadTotal = 0; // 토픽방에서 안 읽은 메시지 전체 개수 
 	int cntOfTopic = 0;     // 토픽방 개수
 	int cntOfTopicMember = 0;
+	int cntUnreadTotal = 0;  
 	
 	SideDao sDao = new SideDao();
 	BookmarkDao bDao = new BookmarkDao();
 	ChatDao cDao = new ChatDao();
 	TopicDao tDao = new TopicDao();
 	Common common = new Common();
+	
 	//============================팀 전체 멤버 조회 테스트==============================
 	ArrayList<TeamMemberDto> teamMemberList = sDao.getTeamMemberList(teamIdx);
 	//============================팀 멤버 조회 테스트==============================
@@ -74,8 +69,6 @@
 	//============================토픽전체멤버 조회==============================
 	ArrayList<TeamMemberDto> teamMemberOutOfTopic = tDao.getTeamMemberListOutOfTopic(teamIdx, topicIdx);
 
-	//============================채팅전체멤버 조회 테스트==============================
-	// 	ArrayList<ChatroomDto> listChatroomMember = cDao.getChatroomMemberList(teamIdx, chatroomIdx);
 %>
 
 <!DOCTYPE html>
@@ -630,8 +623,11 @@
 
 		
 			<!---------- 멤버 초대하기 팝업창 ---------->	
-			<form id="form_invite_member" action="${pageContext.request.contextPath}/jsp/InviteTopicMember.jsp" method="get">
-				<input type="hidden" name="input_topic_idx" value="<%=topicIdx%>"/>
+<%-- 			<form id="form_invite_member" action="${pageContext.request.contextPath}/jsp/InviteTopicMember.jsp" method="get"> --%>
+			<form id="form_invite_member" action="Controller" method="post">	
+				<input type="hidden" name="command" value="invite_topic_member">
+				<input type="hidden" name="teamIdx" value="<%=teamIdx%>"/>
+				<input type="hidden" name="topicIdx" value="<%=topicIdx%>"/>
 				<div id="div_invite_member" class="border">
 					<div>
 						<span class="fl">멤버 초대하기</span>
@@ -676,11 +672,8 @@
 						<div class="fl">
 							<span class="span_invite_member">팀멤버</span>
 							<div id="team_member" class="border scrollbar">
-		
-		
 						<%
 							for(TeamMemberDto memberOutOfTopicDto : teamMemberOutOfTopic){
-								
 						%>
 								<div class="div_member_list2" member_idx="<%=memberOutOfTopicDto.getMemberIdx()%>">
 									<div class="fl">
@@ -700,7 +693,6 @@
 								</div>
 						<%
 							}
-						
 						%>
 								<div class="div_not_exist">
 									검색 결과가 없습니다<br/>
@@ -709,7 +701,6 @@
 								<div class="invite_member">
 									팀에 멤버 초대하기
 								</div>
-							
 							</div>
 							
 							<span class="span_invite_member">선택된 멤버 <span class="count_memeber"> 5</span> </span>
@@ -1853,17 +1844,23 @@
    	</form>
 
 	<!-- 토픽 멤버 내보내기 시 알림창 -->
-	<div id="remove_topicMember_pop_up" class="notification_pop_up">
-		<div>정말 이 멤버를 내보내시겠습니까?</div>
-		<div id="remove_member_info">
-			<img class="profile_img" src=""/> <!-- 내보낼 멤버 이미지 -->
-			<span></span>
+    <form action="Controller" id="removeTopicMemberForm" method="post">
+    	<input type="hidden" name="command" value="remove_topic_member"/>
+	    <input type="hidden" name="topicIdx" value="<%=topicIdx%>"/>
+	    <input type="hidden" name="teamIdx" value="<%=teamIdx%>"/>
+	    <input type="hidden" name="removeMemberIdx" value=""/>
+		<div id="remove_topicMember_pop_up" class="notification_pop_up">
+			<div>정말 이 멤버를 내보내시겠습니까?</div>
+			<div id="remove_member_info">
+				<img class="profile_img" src=""/> <!-- 내보낼 멤버 이미지 -->
+				<span></span>
+			</div>
+			<div>
+				<button type="button" class="btn_cancel">취소</button>
+				<button type="submit" class="btn_ok">확인</button>
+			</div>
 		</div>
-		<div>
-			<button class="btn_cancel">취소</button>
-			<button class="btn_ok">확인</button>
-		</div>
-	</div>
+	</form>	
 	
 	<!-- 토픽 나가기 시 알림창 -->
 	<div id="exit_topic_pop_up" class="notification_pop_up">
