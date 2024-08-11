@@ -5,6 +5,10 @@ public class MemberDto {
 	private String profilePicUrl;
 	private String email;
 	
+	public MemberDto() {
+		
+	}
+	
 	public MemberDto(String memberName, String profilePicUrl, String email) {
 		this.memberName = memberName;
 		this.profilePicUrl = profilePicUrl;

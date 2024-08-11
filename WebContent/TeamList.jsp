@@ -1,14 +1,16 @@
 <%@page import="java.util.ArrayList"%>
-<%@page import="dto.TeamListDto"%>
-<%@page import="dto.MemberDto"%>
-<%@page import="dao.MemberDao"%>
+<%@page import="dto.*"%>
+<%@page import="dao.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
 	int memberIdx = (Integer)session.getAttribute("memberIdx");
-
-	MemberDto memberDto = (MemberDto) request.getAttribute("memberDto");
-	ArrayList<TeamListDto> list = (ArrayList<TeamListDto>)request.getAttribute("teamList");
+	
+// 	MemberDto memberDto = (MemberDto) request.getAttribute("memberDto");
+// 	ArrayList<TeamListDto> list = (ArrayList<TeamListDto>)request.getAttribute("teamList");
+	MemberDto memberDto = new MemberDto();
+	MemberDao mDao = new MemberDao();
+	ArrayList<TeamListDto> list = mDao.getListTeamListDto(memberIdx);
 %>
 
 <!DOCTYPE html>
@@ -123,7 +125,10 @@
     <div id="div_header">
         <div id="div_logo" class="fl"><img src="img/namooCompanyLogo.png"/></div>
         <div id="div_email" class="fr">
-		    <% if (memberDto != null) { %>
+        
+		    <% 
+		    	if (memberDto != null) { 
+		    %>
 		        <img src="<%= memberDto.getProfilePicUrl() != null ? memberDto.getProfilePicUrl() : "default_profile.png" %>">
 		        <span id="select_email"><%= memberDto.getMemberName() != null ? memberDto.getMemberName() : "Unknown" %></span>
 		    <% } else { %>
