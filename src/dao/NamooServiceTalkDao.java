@@ -8,9 +8,6 @@ import java.util.ArrayList;
 
 import dto.ServiceTalkContentDto;
 import dto.ServiceTalkShowProfilePicAndNameDto;
-
-
-
 public class NamooServiceTalkDao {
 	Connection getConnection() throws Exception{
 		String driver = "oracle.jdbc.driver.OracleDriver"; 	// 드라이버 정보
@@ -22,7 +19,9 @@ public class NamooServiceTalkDao {
 	 	
 	 	return conn;
 	}
-	// 서비스톡 목록 : 프사, 이름, 읽음표시 같이 표시하기
+	
+	// serviceTalkShowTalKroom(): 서비스톡 목록 : 프사, 이름, 읽음표시 같이 표시하기
+	// 리턴: m.member_idx, t.service_talkroom_idx, t.service_talk_idx, m.name, m.profile_pic_url, t.message, t.read, t.talk_date
 	public ArrayList<ServiceTalkContentDto> serviceTalkShowTalKroom() throws Exception {
 		ArrayList<ServiceTalkContentDto> listRet = new ArrayList<ServiceTalkContentDto>();
 		Connection conn = getConnection();
@@ -59,7 +58,9 @@ public class NamooServiceTalkDao {
 		return listRet;
 	}
 	
-	// 서비스톡방 : 프사와 이름 같이 표시하기
+	// serviceTalkShowProfilePicAndName(int): 서비스톡방 : 프사와 이름 같이 표시하기
+	// 파라미터: memberIdx
+	// 리턴: profile_pic_url, name 
 	public ArrayList<ServiceTalkShowProfilePicAndNameDto> serviceTalkShowProfilePicAndName(int memberIdx) throws Exception{ //모든 DTO를 가지고 오는 메서드
 		ArrayList<ServiceTalkShowProfilePicAndNameDto> listRet = new ArrayList<ServiceTalkShowProfilePicAndNameDto>();
 		Connection conn = getConnection();
@@ -81,7 +82,9 @@ public class NamooServiceTalkDao {
 		conn.close();
 		return listRet;
 	}
-	//서비스톡방 조회
+	// serviceTalkShoWTalkContent(int): 서비스톡방 조회
+	// 파라미터: serviceTalkroomIdx
+	// 리턴: m.member_idx, t.service_talkroom_idx, t.service_talk_idx, m.name, m.profile_pic_url, t.message, t.read
 	public ArrayList<ServiceTalkContentDto> serviceTalkShoWTalkContent(int serviceTalkroomIdx) throws Exception {
 		ArrayList<ServiceTalkContentDto> listRet = new ArrayList<ServiceTalkContentDto>();
 		Connection conn = getConnection();
@@ -111,41 +114,9 @@ public class NamooServiceTalkDao {
 		conn.close();
 		return listRet;
 	}
-//	//서비스 톡방 : 회원 톡 보여주기
-//	public ArrayList<ServiceTalkContentDto> serviceTalkShowRightTalkWithPicAndName(int serviceTalkroomIdx) throws Exception {
-//		ArrayList<ServiceTalkContentDto> listRet = new ArrayList<ServiceTalkContentDto>();
-//		Connection conn = getConnection();
-//		String sql = "SELECT m.member_idx, t.service_talkroom_idx, t.service_talk_idx, m.name, m.profile_pic_url, t.message, t.read" + 
-//				" FROM member m INNER JOIN service_talk t" + 
-//				" ON m.member_idx = t.member_idx" + 
-//				" WHERE t.member_idx != 0" + 
-//				" AND t.service_talkroom_idx = ?" + 
-//				" ORDER BY t.service_talk_idx ASC ";
-//		
-//		PreparedStatement pstmt = conn.prepareStatement(sql);
-//		pstmt.setInt(1, serviceTalkroomIdx);
-//		ResultSet rs = pstmt.executeQuery();
-//		
-//		while(rs.next()) {
-//			int memberIdx = rs.getInt("member_idx");
-//			int serviceTalkIdx = rs.getInt("service_talk_idx");
-//			int read = rs.getInt("read");
-//			String profilePicUrl = rs.getString("profile_pic_url");
-//			String name = rs.getString("name");
-//			String message = rs.getString("message");
-//			
-//			ServiceTalkContentDto dto = new ServiceTalkContentDto(memberIdx, serviceTalkroomIdx, serviceTalkIdx, profilePicUrl, name, null, message, read);
-//			listRet.add(dto);
-//		}
-//	
-//		rs.close();
-//		pstmt.close();
-//		conn.close();
-//		return listRet;
-//	}
-	// 서비스 톡방 : 메시지 입력
-	// memberIdx 파라미터 : 0 이면 관리자가 말한 거.
-	// memberIdx 파라미터 : 1 이면 고갱이 말한 거고.
+	
+	// serviceTalkShoWTalkContent(int, int, String): 채팅 입력
+	// 파라미터: serviceTalkroomIdx, memberIdx, message
 	public void serviceTalkSendMessage(int serviceTalkroomIdx, int memberIdx, String message) throws Exception{
 		Connection conn = getConnection();
 		String sql = "INSERT INTO service_talk(service_talk_idx, service_talkroom_idx, member_idx, message, talk_date, read)" + 
@@ -159,16 +130,9 @@ public class NamooServiceTalkDao {
 		pstmt.close();
 		conn.close();
 	}
-// 시간 표시하기 : 분이 달라질 떄만 표시하는 방법! 물어보기
-//	public String serviceTalkTime (int serviceTalkIdx, int ServiceTalkRoomIdx) throws Exception {
-//		Connection conn = getConnection();
-//		String sql = "";
-//		
-//		PreparedStatement pstmt = conn.prepareStatement(sql);
-//		
-//		
-//	}
-	// 서비스톡방 : 방 나가기	
+
+	// deleteServiceTalkRoom(int): 톡방 삭제
+	// 파라미터: serviceTalkroomIdx
 	public void deleteServiceTalkRoom(int serviceTalkroomIdx) throws Exception{
 		Connection conn = getConnection();
 		String sql = "DELETE FROM service_talkroom" + 
@@ -182,7 +146,9 @@ public class NamooServiceTalkDao {
 		conn.close();
 	}
 	
-	// getMemberIdxByServiceTalkroomIdx(int) : serviceTalkroomIdx 값을 받아서 (관리자와 1:1톡 하고 있는 고객의) memberIdx 값을 리턴.
+	// getMemberIdxByServiceTalkroomIdx(int): serviceTalkroomIdx 값을 받아서 (관리자와 1:1톡 하고 있는 고객의) memberIdx 값을 리턴. 삭제
+	// 파라미터: serviceTalkroomIdx
+	// 리턴: member_idx 
 	public int getMemberIdxByServiceTalkroomIdx(int serviceTalkroomIdx) throws Exception {
 		System.out.println(serviceTalkroomIdx);
 		String sql = "SELECT member_idx " + 
@@ -208,6 +174,10 @@ public class NamooServiceTalkDao {
 	// 3) conn.prepareStatement(sql, arr);
 	// 4) executeUpdate() 직후에 (executeQuery() 이게 아니고) getGeneratedKeys() 실행 (추가).
 	// 5) rs.next() ---> rs.getInt(1) 로 받으면 그 값이 바로 (이번에 새롭게 만들어진) PK 값이다.
+	
+	// createServiceTalkRoomByMemberIdx(int): 리턴 타입을 int로 바꿈.
+	// 파라미터: memberIdx
+	// 리턴: member_idx 
 	public int createServiceTalkRoomByMemberIdx(int memberIdx) throws Exception {
 		System.out.println(memberIdx);
 		String[] arr = { "service_talkroom_idx" };

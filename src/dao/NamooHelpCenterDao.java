@@ -21,8 +21,10 @@ public class NamooHelpCenterDao {
 	 	
 	 	return conn;
 	}
-	/* ===============================헬프센터==================================== */
-	//19. 기사 검색
+	
+	// getSearchedHelpPost(String): 헬프 Post에서 검색
+	// 파라미터: keyword
+	// 리턴: 검색값
 	public ArrayList<HelpPostDto> getSearchedHelpPost(String keyword) throws Exception{ //모든 DTO를 가지고 오는 메서드
 		ArrayList<HelpPostDto> listRet = new ArrayList<HelpPostDto>();
 		Connection conn = getConnection();
@@ -34,8 +36,6 @@ public class NamooHelpCenterDao {
 		ResultSet rs = pstmt.executeQuery();
 		
 		while(rs.next()) {
-			//rs가 첫째 행(row) 바로 위에 생김
-			//rs.next : 1) 다음행을 가리킴 2)있으면 true를 리턴, 없으면 false를 리턴 
 			String title = rs.getString("title");
 			String content = rs.getString("content");
 			int helpCategoryIdx = rs.getInt("help_category_idx");
@@ -49,7 +49,9 @@ public class NamooHelpCenterDao {
 		conn.close();
 		return listRet;
 	}
-	//20. 이용가이드(대표글 표시)
+	
+	// mainHelpPost(): 이용가이드(대표글 표시)
+	// 리턴: 대표글 3가지
 	public ArrayList<HelpPostDto> mainHelpPost() throws Exception{ //모든 DTO를 가지고 오는 메서드
 		ArrayList<HelpPostDto> listRet = new ArrayList<HelpPostDto>();
 		String sql ="SELECT title, post_idx, help_category_idx FROM help_post WHERE title like '%사용방법%'" + 
@@ -60,8 +62,6 @@ public class NamooHelpCenterDao {
 		ResultSet rs = pstmt.executeQuery();
 		
 		while(rs.next()) {
-			//rs가 첫째 행(row) 바로 위에 생김
-			//rs.next : 1) 다음행을 가리킴 2)있으면 true를 리턴, 없으면 false를 리턴 
 			int postIdx = rs.getInt("post_idx");
 			int helpCategoryIdx = rs.getInt("help_category_idx");
 			String title = rs.getString("title");
@@ -74,7 +74,9 @@ public class NamooHelpCenterDao {
 		conn.close();
 		return listRet;
 	}
-	//21.자료 카테고리 표시
+	
+	// showHelpPostCategory(): 자료 카테고리 표시
+	// 리턴: 자료 카테고리 리스트
 	public ArrayList<ShowHelpPostCategoryDto> showHelpPostCategory() throws Exception{ //모든 DTO를 가지고 오는 메서드
 		ArrayList<ShowHelpPostCategoryDto> listRet = new ArrayList<ShowHelpPostCategoryDto>();
 		String sql ="SELECT h.icon_img_url, h.title, h.subtitle, h.help_idx, ( " + 
@@ -108,7 +110,10 @@ public class NamooHelpCenterDao {
 		conn.close();
 		return listRet;
 	}
-	//21-1.자료 카테고리 표시(하나만)
+	
+	// showHelpPostCategoryOne(int): 자료 카테고리 표시(하나만)
+	// 파라미터: helpIdx
+	// 리턴: 자료 카테고리 리스트
 	public ArrayList<ShowHelpPostCategoryDto> showHelpPostCategoryOne(int helpIdx) throws Exception{ //모든 DTO를 가지고 오는 메서드
 		ArrayList<ShowHelpPostCategoryDto> listRet = new ArrayList<ShowHelpPostCategoryDto>();
 		String sql ="SELECT h.icon_img_url, h.title, h.subtitle, ( " + 
@@ -144,37 +149,9 @@ public class NamooHelpCenterDao {
 		return listRet;
 	}
 	
-	//22. 카테고리 명, 글제목 표시
-	/*
-	public ArrayList<ShowCategoryNameAndTitleDto> showCategoryNameAndTitle(int helpIdx) throws Exception{
-		ArrayList<ShowCategoryNameAndTitleDto> listRet = new ArrayList<ShowCategoryNameAndTitleDto>();
-		Connection conn = getConnection();
-		String sql = "SELECT c.help_category_idx, p.post_idx, c.name, p.title" + 
-				" FROM help h INNER JOIN help_category c" + 
-				" ON h.help_idx = c.help_idx INNER JOIN  help_post p" + 
-				" ON c.help_category_idx = p.help_category_idx" + 
-				" AND c.help_idx = ?" +
-				" ORDER BY c.help_category_idx, post_idx";
-		
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setInt(1, helpIdx);
-		ResultSet rs = pstmt.executeQuery();
-
-		while(rs.next()) {
-			int helpCategoryIdx = rs.getInt("help_category_idx");
-			int postIdx = rs.getInt("post_idx");
-			String categoryName = rs.getString("name");
-			String title = rs.getString("title");
-			ShowCategoryNameAndTitleDto dto = new ShowCategoryNameAndTitleDto(helpCategoryIdx, postIdx, categoryName, title);
-			listRet.add(dto);
-		}
-		rs.close();
-		pstmt.close();
-		conn.close();
-		return listRet;
-	}
-	*/
-	// 22-1 new) getListHelpCategoryName(int helpIdx) : 카테고리 명 (리스트)
+	// getListHelpCategoryName(int): 카테고리 명 (리스트)
+	// 파라미터: helpIdx
+	// 리턴: 카테고리 명
 	public ArrayList<String> getListHelpCategoryName(int helpIdx) throws Exception {
 		ArrayList<String> listRet = new ArrayList<String>();
 		String sql = "SELECT DISTINCT c.help_category_idx, c.name" + 
@@ -196,8 +173,10 @@ public class NamooHelpCenterDao {
 		return listRet;
 	}
 	
-	// 22-2) getListHelpPostTitle(int helpIdx, String helpCategoryName) : 글제목 (리스트)
-	public ArrayList<ShowCategoryNameAndTitleDto> getListHelpPostTitle(int helpIdx, String helpCategoryName) throws Exception {
+	// getListHelpPostTitle(int, String): 글제목 (리스트)
+	// 파라미터: helpIdx, helpCategoryName
+	// 리턴: 글제목 리스트
+	public ArrayList<ShowCategoryNameAndTitleDto> helpCategoryName(int helpIdx, String helpCategoryName) throws Exception {
 		ArrayList<ShowCategoryNameAndTitleDto> listRet = new ArrayList<ShowCategoryNameAndTitleDto>();
 		String sql = "SELECT c.help_category_idx, p.post_idx, p.title " + 
 					"	FROM help h INNER JOIN help_category c " + 
@@ -224,7 +203,9 @@ public class NamooHelpCenterDao {
 		return listRet;
 	}
 
-	// post_idx 값 -----> HelpPostDto 객체 리턴.
+	// getHelpPostContentDto(int): HelpPostDto 객체 리턴.
+	// 파라미터: postIdx
+	// 리턴: HelpPostDto 객체 리턴.
 	public HelpPostDto getHelpPostContentDto(int postIdx) throws Exception {
 		String sql = "SELECT post_idx, help_category_idx, title, content " + 
 					" FROM help_post " + 

@@ -61,7 +61,7 @@ a{ text-decoration-line: none; color: inherit;}
 }
 #div_dashboard_header > div:nth-child(3) > img { /* 헤더 위젯설정 이미지  */
 	width: 20px;
-	margin-bottom: 10px;
+	margin-bottom: 23px;
 }
 #div_dashboard_header > div:nth-child(3):hover > img { /* 위젯설정 이미지 호버 */
     filter: invert(70%) sepia(45%) saturate(4172%) hue-rotate(107deg) brightness(97%) contrast(80%);
