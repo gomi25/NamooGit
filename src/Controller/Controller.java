@@ -22,7 +22,6 @@ import action.EnterTeamList;
 import action.DeleteChatroomAction;
 import action.LoginCheckAction;
 import action.ProjectListAction;
-import action.TeamListAction;
 import action.TopicChoiceAction;
 import action.UpdateTopicBoardAction;
 
@@ -56,7 +55,6 @@ public class Controller extends HttpServlet {
 //			case "inviteTopicMember" : action = new AddTopicMemberAction(); break;
 //			case "inviteChatroomMember" : action = new AddChatroomMemberAction(); break;
 			
-			case "team_list" : action = new TeamListAction(); break;
 			case "create_team" : action = new CreateTeamAction(); break;
 			
 			case "create_qna" : action = new CreateQnaAction(); break;

@@ -123,8 +123,13 @@
     <div id="div_header">
         <div id="div_logo" class="fl"><img src="img/namooCompanyLogo.png"/></div>
         <div id="div_email" class="fr">
-            <img src="<%=memberDto.getProfilePicUrl()%>">
-            <span id="select_email"><%=memberDto.getMemberName() %></span>
+		    <% if (memberDto != null) { %>
+		        <img src="<%= memberDto.getProfilePicUrl() != null ? memberDto.getProfilePicUrl() : "default_profile.png" %>">
+		        <span id="select_email"><%= memberDto.getMemberName() != null ? memberDto.getMemberName() : "Unknown" %></span>
+		    <% } else { %>
+		        <img src="https://jandi-box.com/assets/ic-profile.png">
+		        <span id="select_email">Unknown</span>
+		    <% } %>
             <div class="dropdown_menu profile_dropdown" style="display: none; visibility: visible;">
                 <h5 class="option-title">
                     <span class="option-txt">
