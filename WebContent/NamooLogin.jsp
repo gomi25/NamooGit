@@ -1,5 +1,9 @@
+<%@page import="dao.NamooMemberDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	NamooMemberDao mDao = new NamooMemberDao();
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,67 +12,7 @@
 	<link href="https://intercom.help/jandi/assets/favicon" rel="icon">
 	<link rel="stylesheet" href="css/NamooLogin.css"/>
 	<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-	<script>
-		$(function() {
-			/* 비밀번호 찾기 창 뜨게 */		
-			$("#div_checkbox > div:nth-child(3)").click(function() { 
-				$("#grey_screen").css('display', 'block');
-				$("#div_find_password").css('display', 'block');
-				$("#user_email").css('border','1px solid #e0e4ed');
- 			});
-			/* 취소버튼 눌렀을 때 창 꺼지기 */
-			$("#div_find_password_body > div:nth-child(3) > div:nth-child(2)").click(function() { 
-				$("#user_email").val('');
-				$("#grey_screen").css('display', 'none');
-				$("#div_find_password").css('display', 'none');
-			});
-			/* 확인버튼 눌렀을 때 이메일 발송창 뜨게 */
-			$("#div_find_password_body > div:nth-child(3) > div:nth-child(1)").click(function() { 
-				let user_email = $("#user_email").val();
-				//alert(user_email);
-				if(user_email.length < 2){
-					$("#user_email").css('border','1px solid red');
-					return false;
-				}
-				$("#user_email").css('border','1px solid #e0e4ed');
-				$("#div_find_password").css('display', 'none');
-				$("#div_send_email").css('display', 'block');
-				
-				let params = {
-					emailTo: user_email,
-					nameTo: '고객님',
-					subject: '나무 비밀번호 안내메일 제목'
-				};
-				
-				$.ajax({
-					type: "post",
-				    url: 'AjaxSendEmailServlet', // 만들어둔 서블릿 파일 이름 적기
-				    data : params,		// 받아놓은 파라미터
-				    success: function (data) {
-				    	alert("메일이 발송되었습니다.");
-				    },
-				    error: function (data, status, err) {
-						alert("error.");
-				    }
-				});
-				return true;		
-			});
-			/* 확인버튼 눌렀을 때 모든 창 꺼지기 */
-			$("#div_send_email > div:nth-child(2) input").click(function() { 
-				$("#div_send_email").css('display', 'none');
-				$("#grey_screen").css('display', 'none');
-			});
-			
-			$("#user_email").keyup(function() {
-				let email_input = $(this).val();
-				if(email_input.length > 0) {
-					$(this).css('border', '1px solid #00c473');
-				} else {
-					$(this).css('border', '1px solid red');
-				}
-			});
-		});
-	</script>
+	<script src="${pageContext.request.contextPath}/js/NamooLogin.js"></script>
 </head>
 <body>
 <!--===========================상단 헤더===============================-->
@@ -88,15 +32,15 @@
 	<div id="div_body" >
 		<div id="div_login">
 			<div><h1>로그인</h1></div>
-<!-- 			<form action="NamooMainTool.jsp"> 테스트중 -->
-			<form action="Controller"> <!-- 테스트중 -->
+			<form action="Controller">
 				<input type="hidden" name="command" value="login_check"/>
+				<!-- 인풋  -->
 				<div id="div_email_pw" >
 					<div>
-						<input type="email" name="email" placeholder="이메일"/>
+						<input type="email" id="email" name="email" placeholder="이메일"/>
 					</div>
 					<div>
-						<input type="password" name="pw" placeholder="비밀번호"/>
+						<input type="password" id="password" name="pw" placeholder="비밀번호"/>
 					</div>
 				</div>
 				<!-- 체크박스  -->				
@@ -112,7 +56,7 @@
 					<div class="fr">비밀번호 찾기 →</div>
 				</div>
 				<div id="div_login_submit">
-				<button type="submit"> <!-- disabled --> 로그인</button></div>
+				<button type="submit" id="login_btn">로그인</button></div>
 			</form>
 			<div id="div_signup">
 				<div>
@@ -143,7 +87,6 @@
 			<div><input type="submit" value="확인"></div>
 		</div>
 	</form>
-<!--_________________________ 이메일 발송창 __________________________-->
 </body>
 </html>
 

@@ -106,6 +106,17 @@ a{ text-decoration-line: none; color: inherit;}
  	margin-right: 282px;
     margin-top: 15px;
 }
+.enter-button{ 	/*입장하기*/
+	font-weight: 500;
+	padding: 7px 14px;
+	background-color: #00c473;
+	color: #fff;
+	border-color: #00c473;
+   	border-radius : 6px;
+ 	margin-right: 282px;
+    margin-top: 15px;
+    cursor: pointer;
+}
 #div_header1 > div:nth-child(6):hover {
 	background: #00b76b;
 }

@@ -15,6 +15,7 @@ import action.CreateTeamAction;
 import action.CreateTopicAction;
 import action.DeleteTopicAction;
 import action.DeleteTopicBoardAction;
+import action.EnterTeamList;
 import action.DeleteChatroomAction;
 import action.LoginCheckAction;
 import action.TeamListAction;
@@ -46,6 +47,7 @@ public class Controller extends HttpServlet {
 			case "delete_topic_board" : action = new DeleteTopicBoardAction(); break;
 			case "delete_topic" : action = new DeleteTopicAction(); break;
 			case "delete_chatroom" : action = new DeleteChatroomAction(); break;
+			case "enter_team_list" : action = new EnterTeamList(); break;
 			
 //			case "inviteTopicMember" : action = new AddTopicMemberAction(); break;
 //			case "inviteChatroomMember" : action = new AddChatroomMemberAction(); break;

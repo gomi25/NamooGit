@@ -21,7 +21,7 @@
 	
 	<script>
 		let memberIdx = <%=memberIdx%>;
-		alert("memberIdx = " + memberIdx);
+		//alert("memberIdx = " + memberIdx);
 		let swiper, swiper2;
 		$(function() {
 			swiper = new Swiper('.swiper.companies_logo_left', {
@@ -65,7 +65,12 @@
 		<div class="fl"><a href="Qna.jsp">도입문의</a></div>
 		<div class="fl"><a href="NamooHelpMain.jsp">헬프센터</a></div>
 		<div class="fl"><a href="https://blog.jandi.com/ko/">블로그</a></div>
-		<div class="fr"><a href="NamooLogin.jsp"><strong>입장하기</strong></a></div>
+		<form action="Controller">
+			<input type="hidden" name="command" value="enter_team_list">
+			<input type="hidden" name="memberIdx" value="<%=memberIdx%>">
+			<input type="submit" id="enter" value="입장하기" style="display:none;">
+			<label for="enter" class="enter-button fr">입장하기</label>
+		</form>
 		<div class="fr"><a href="https://www.jandi.com/landing/kr/download"><strong>다운로드</strong></a></div>
 	</div>
 	
