@@ -1141,9 +1141,7 @@
 		$(document).on('click', '#div_remove_participants .btn_cancel', function() {
 		    $("#div_remove_participants").hide();
 		});
-		
 	});	
-	
 	
 	$(function() {		
 		// [더보기] - [토픽 삭제하기] 클릭 시
@@ -1160,18 +1158,8 @@
 		$("#delete_topic_pop_up .btn_danger").click(function() {
 			$("#delete_topic_pop_up").hide();
 			$("#div_grey_filter").hide();
-//	        $('#deleteTopicForm').attr('action', '${pageContext.request.contextPath}').submit();
-//			let topicIdx = $("#deleteTopicForm > input[name='topicIdx']").val();
-//			 // deleteTopic.jsp로 이동하여 삭제 수행
-//	        location.href = context_path + '/jsp/DeleteTopic.jsp?topicIdx=' + topicIdx;
 		});
 		
-		// "확인" 버튼 클릭 시 폼 제출
-//    $('#confirmDelete').click(function() {
-//    });
-		
-		
-			
 		// [더보기] - [토픽 나가기] 클릭 시
 		$("#div_topicroom_more_menu > div:nth-child(5)").click(function() {
 			$("#div_topicroom_more_menu").css('display','none');
@@ -1414,14 +1402,15 @@
 		// form 제출
 		$("#form_board_write").submit(function(event) {
 	       $('#hidden_board_content').val($('#write_topic_board_space').text().trim());
-		   // $("#hidden_topic_idx").val();
+//		    $("#hidden_topic_idx").val();
+//		    $("#hidden_topic_idx").val();
 		});	
 
-		// 전송버튼 클릭 시 
-		$(".create_complete").click(function() {
-			// 토픽글 폼 제출될 때 "입력한 내용" & "채팅방idx" 값 제출 
-			$("#form_board_write").submit();
-	    });		
+//		// 전송버튼 클릭 시 
+//		$(".create_complete").click(function() {
+//			// 토픽글 폼 제출될 때 "입력한 내용" & "채팅방idx" 값 제출 
+//			$("#form_board_write").submit();
+//	    });		
 		
     });
 		
@@ -1446,7 +1435,6 @@
 			
 			// topic_board_idx값 넣고
 			topicBoardIdx = $(this).closest('.content_board').attr('topic_board_idx');
-			 console.log("topicBoardIdx: " + topicBoardIdx); // 디버깅을 위해 콘솔에 출력
 			let title =  $(this).parents(".div_content_center").find(".article_title > span").text();
 			$("#input_board_title_update").val(title);
 			let content =  $(this).parents(".div_content_center").find(".article_contents > span").text();
@@ -1456,11 +1444,11 @@
 	        $("#hidden_topic_board_idx").val(topicBoardIdx);			
 		});
 		
-		// [게시글 수정] 팝업창에 있는 "수정" 버튼 클릭 시 팝업창 띄우기
-		$("#div_update_topic_board #btn_update_topic_board").click(function() {
-			// form 제출
-	        $("#update_topic_form").submit();
-		});
+//		// [게시글 수정] 팝업창에 있는 "수정" 버튼 클릭 시 팝업창 띄우기
+//		$("#div_update_topic_board #btn_update_topic_board").click(function() {
+//			// form 제출
+//	        $("#update_topic_form").submit();
+//		});
 		
 		// 팝업창 내 "x" 버튼 클릭 
 		$("#div_update_topic_board .exit").click(function() {
@@ -1712,14 +1700,14 @@
 						_this.closest(".div_comment_box").before(str);
 						_this.siblings(".write_topic_comment_space").text('');
 						
-						// form 제출
+						/*// form 제출
 						$("#form_update_file").submit(function(event) {
 					        $("#form_update_file input[name='topicIdx']").val();
 					        $("#form_update_file input[name='topic_comment_idx']").val(topic_comment_idx);
 						});	
 				        
 				        // 폼 제출
-				        $("#form_update_file").submit();
+				        $("#form_update_file").submit();*/
 					},
 	             	error : function(XMLHttpRequest, textStatus, errorThrown){ 
 	                	    		alert("통신 실패.")
@@ -2092,19 +2080,7 @@
 		    }
 		});
 		
-/*		// 토픽방 - 토픽글 - [더보기] - [수정] 클릭 시
-		$(".div_board_more_menu_mine > div:nth-child(4)").click(function(){
-			$("#div_transparent_filter").css('display','none');
-			$(".div_board_more_menu_mine").css('display','none');
-		});*/
-		
-		// 토픽글 - [더보기] - [삭제] -[취소]
-		$("#delete_topic_board_pop_up .btn_cancel").click(function() {
-			$("#delete_topic_board_pop_up").css('display','none');
-			$("#div_grey_filter").css('display','none');
-		});
 	});
-
 	
 	// 토픽글 - [더보기] - [삭제] 클릭 시
 	$(function() {
@@ -2114,24 +2090,19 @@
 	        topicBoardIdx = $(this).closest('.content_board').attr('topic_board_idx');
 			$("#div_transparent_filter").hide();
 			$(".div_board_more_menu_mine").hide();
-	        // 팝업창 열기
 			$("#div_grey_filter").show();
 	        $('#delete_topic_board_pop_up').show();
-	    });
+			$('#delete_topic_board_pop_up input[name="topicBoardIdx"]').val(topicBoardIdx);
+		});
 	
 	    // 팝업창 내 "확인" 버튼 클릭 
 	    $('#delete_topic_board_pop_up .btn_danger').click(function() {
-	        // 팝업창 닫기
 	        $('#delete_topic_board_pop_up').hide();
 	        $('#div_grey_filter').hide();
-	
-	        // deleteTopicBoard.jsp로 이동하여 삭제 수행
-	        location.href = context_path + '/jsp/DeleteTopicBoard.jsp?topicBoardIdx=' + topicBoardIdx;
 	    });
 	
 	    // 팝업창 내 "취소" 버튼 클릭 
 	    $('#delete_topic_board_pop_up .btn_cancel').click(function() {
-	        // 팝업창 닫기
 	        $('#delete_topic_board_pop_up').hide();
 	        $('#div_grey_filter').hide();
 	    });
@@ -2148,15 +2119,6 @@
 			$(this).find(".more_menu_box").css('display','none');
 		});
 		
-/*		$(".div_comment").mouseover(function(){
-			$(this).find(".more_menu_box").css('display','block');
-		});*/
-		// 토픽댓글 마우스 커서 벗어나면 [더보기] 사라짐
-/*		$(".div_comment").mouseout(function(){
-			$(this).find(".more_menu_box").css('display','none');
-		});*/
-		
-		
 		// 토픽글 [더보기] 클릭
 		$(document).on("click", ".div_comment .more_menu_box", function(){
 			// 판단.  
@@ -2167,37 +2129,19 @@
 				$(this).next().next(".div_comment_more_menu_other").css('display','block'); // 상대 토픽글의 [더보기]
 			}
 			$("#div_transparent_filter").css('display','block');
-
 		});
+		
 		$(document).on("click", "#div_transparent_filter", function(){
 			$(".div_comment_more_menu_mine").css('display','none');		// 내 토픽글의 [더보기]
 			$(".div_comment_more_menu_other").css('display','none');	// 상대 토픽글의 [더보기]
 			$("#div_transparent_filter").css('display','none');
 		});
-		
-/*		// 토픽댓글 [더보기] 클릭
-		$(".div_comment .more_menu_box").click(function(){
-			// 판단.
-			let writer = $(this).parents(".div_comment").attr("writer");
-			if(writer==$("#div_profile_box").attr("member_idx")) {
-				$(this).next(".div_comment_more_menu_mine").css('display','block');		  // 내 토픽글의 [더보기]
-			} else {
-				$(this).next().next(".div_comment_more_menu_other").css('display','block'); // 상대 토픽글의 [더보기]
-			}
-			$("#div_transparent_filter").css('display','block');
-		});
-		$("#div_transparent_filter").click(function() {
-			$(".div_comment_more_menu_mine").css('display','none');		// 내 토픽글의 [더보기]
-			$(".div_comment_more_menu_other").css('display','none');	// 상대 토픽글의 [더보기]
-			$("#div_transparent_filter").css('display','none');
-		});*/
-		
 	});	
 	
 	// 토픽댓글 - [더보기] - [수정]	
 	$(document).ready(function() {
 	    // '수정' 버튼 클릭 시 댓글 수정 활성화
-	    $(".div_comment_more_menu_mine > div:nth-child(3)").click(function() {
+		$(document).on("click", ".div_comment_more_menu_mine > div:nth-child(3)", function(){
 			$(".div_comment_more_menu_mine").css('display','none');		
 	        // '수정' 버튼이 클릭된 div_comment 내에서 comment_item 요소를 찾음
 	        let commentItem = $(this).closest('.div_comment').find('.comment_item');
@@ -2219,7 +2163,7 @@
 	    });
 
 		// comment_item에서 Enter 키 입력 이벤트 처리
-	    $(".comment_item").on('keydown', function(event) {
+		$(document).on("keydown", ".comment_item", function(event){
 	        // Enter 키 눌렀을 때 동작
 	        if (event.key === 'Enter' && !event.shiftKey) {
 	            event.preventDefault(); // 기본 Enter 동작(줄바꿈) 방지
@@ -2245,8 +2189,6 @@
 	        }
 	    });
 	});
-	
-	
 
 	// 토픽댓글 - [더보기] - [삭제]
 	$(function() {

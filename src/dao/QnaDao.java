@@ -25,12 +25,9 @@ public class QnaDao {
 		return conn;
 	}
 
-	
-	
-	
 //-----------------------DELETE----------------------------------------
-	// deleteQnaQuestion : qna 질문 삭제
-	// input : qna_idx
+	// deleteQnaQuestion: qna 질문 삭제
+	// 파라미터: qna_idx
 	public void deleteQnaQuestion(int qnaIdx) throws Exception { 
 		Connection conn = getConnection();
 		String sql = "DELETE FROM qna WHERE qna_idx = ?";
@@ -43,7 +40,8 @@ public class QnaDao {
 	}	
 	
 	
-	// deleteQnaAnswer : qna 답변 삭제
+	// deleteQnaAnswer: qna 답변 삭제
+	// 파라미터: answer_idx
 	public void deleteQnaAnswer(int answerIdx) throws Exception { 
 		Connection conn = getConnection();
 		String sql = "DELETE FROM qna_answer WHERE answer_idx = ?";
@@ -55,12 +53,9 @@ public class QnaDao {
 		conn.close();
 	}
 	
-	
-	
-	
 //-----------------------UPDATE----------------------------------------
-	// updateQnaContent : qna의 content 변경
-	// input : content[내용], qna_idx
+	// updateQnaContent: qna의 content 변경
+	// 파라미터: content(내용), qna_idx
 	public void updateQnaContent(String content, int qnaIdx) throws Exception { 
 		Connection conn = getConnection();
 		String sql = "UPDATE qna"  
@@ -75,8 +70,8 @@ public class QnaDao {
 		conn.close();
    } 
 	
-	// updateQnaAnswer : qna 답변 변경
-	// input : content[내용], answer_idx
+	// updateQnaAnswer: qna 답변 변경
+	// 파라미터: content(내용), answer_idx
 	public void updateQnaAnswer(String content, int qnaIdx) throws Exception { 
 		Connection conn = getConnection();
 		String sql = "UPDATE qna_answer"  
@@ -91,8 +86,8 @@ public class QnaDao {
 		conn.close();
    } 
 	
-	
-	// 답변상태 변경
+	// updateQnaAnswerCondition: 답변상태 변경(답변 완료)
+	// 파라미터: qna_idx
 	public void updateQnaAnswerCondition(int qnaIdx) throws Exception { 
 		Connection conn = getConnection();
 		String sql = "UPDATE qna"  
@@ -107,7 +102,8 @@ public class QnaDao {
 		conn.close();
    } 
 	
-	
+	// updateQnaAnswerNoCondition: 답변상태 변경(미답변)
+	// 파라미터: qna_idx
 	public void updateQnaAnswerNoCondition(int qnaIdx) throws Exception { 
 		Connection conn = getConnection();
 		String sql = "UPDATE qna"  
@@ -122,17 +118,10 @@ public class QnaDao {
 		conn.close();
    }
 	
-	
-	
-	
 //-----------------------INSERT----------------------------------------
 	
-
-	
-	
-
-	
-	//qna
+	// addQna3: 도입문의
+	// 파라미터: name, phone_number, position, email, industry, count(인원수), question, agreement(동의여부), reply_condition(답변상태), content
 	public void addQna3(String name, String phone_number, String position, String email, int industry, int count, int question, int agreement, int reply_condition, String content) throws Exception {
 	    Connection conn = getConnection();
 	    String sql = "INSERT INTO qna(qna_idx, name, phone_number, position, email, industry, count, question, agreement, question_date, reply_condition, content)"
@@ -150,16 +139,14 @@ public class QnaDao {
 	    pstmt.setInt(9, reply_condition);  
 	    pstmt.setString(10, content);  
 
-
 	    pstmt.executeUpdate();
 	       
 	    pstmt.close();
 	    conn.close();
 	}
 	
-
-	
-	// qna 질문들 답변
+	// addQnaAnswer: qna 답변
+	// 파라미터: qna_idx, content
 	public void addQnaAnswer(int qna_idx, String content) throws Exception {
 	    Connection conn = getConnection();
 	    String sql = "INSERT INTO qna_answer(ANSWER_IDX, QnA_IDX, CONTENT, ANSWER_DATE) VALUES(seq_qna_answer.nextval, ?, ?, sysdate)";
@@ -168,131 +155,126 @@ public class QnaDao {
  
 	    pstmt.setInt(1, qna_idx);  
 	    pstmt.setString(2, content);  
- 
 
 	    pstmt.executeUpdate();
 	       
 	    pstmt.close();
 	    conn.close();
-	    
 	}
-	
-	
-
-
-
-
 	
 //--------------------------SELECT------------------------------------------
-	// getQnaAnswer : qna답변
-	// input : qna_idx 
-	// output : 답변 내용, 답변 날짜
-	 public QnaAnswerDto getQnaAnswer(int qnaIdx) throws Exception {
-		 	QnaAnswerDto dtoRet = null;
-		 	String sql = "SELECT qa.answer_idx, qa.qna_idx, qa.content, qa.answer_date" 
-		 			+ " FROM qna_answer qa" 
-		 			+ " WHERE qna_idx =?"; 
-		 	Connection conn = getConnection();
-
-		 	PreparedStatement pstmt = conn.prepareStatement(sql);
-		 	pstmt.setInt(1, qnaIdx);
-		 	ResultSet rs = pstmt.executeQuery();
-
-		 	if(rs.next()) {
-		 		int answerIdx = rs.getInt("answer_idx");
-		 		String content = rs.getString("content");
-		 		String answerDate = rs.getString("answer_date");
-		 		dtoRet = new QnaAnswerDto(answerIdx, qnaIdx, content, answerDate);
-		 	}
-		 	rs.close();
-		 	pstmt.close();
-		 	conn.close();
-		 	
-		 	return dtoRet;
-		 	
-		 	
-	 }
+	// getQnaAnswer: qna답변
+	// 파라미터: qna_idx
+	// 리턴: answer_idx, content(답변 내용), answer_date(답변 날짜)
+	public QnaAnswerDto getQnaAnswer(int qnaIdx) throws Exception {
+		QnaAnswerDto dtoRet = null;
+		String sql = "SELECT qa.answer_idx, qa.content, qa.answer_date" 
+				+ " FROM qna_answer qa" 
+				+ " WHERE qna_idx =?"; 
+		Connection conn = getConnection();
+		
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, qnaIdx);
+		ResultSet rs = pstmt.executeQuery();
+		
+		if(rs.next()) {
+			int answerIdx = rs.getInt("answer_idx");
+			String content = rs.getString("content");
+			String answerDate = rs.getString("answer_date");
+			dtoRet = new QnaAnswerDto(answerIdx, qnaIdx, content, answerDate);
+		}
+		rs.close();
+		
+		pstmt.close();
+		conn.close();
+		
+		return dtoRet;
+	}
 	 
-	 // 질문들 
-	 public ArrayList<QnaAllQuestionDto> getQnaAllQuestion() throws Exception {
-		 	ArrayList<QnaAllQuestionDto> listRet = new ArrayList<QnaAllQuestionDto>();
-		 	String sql = "SELECT q.qna_idx, q.reply_condition, q.content, q.name, q.question_date" 
-		 			+ " FROM qna q"
-		 			+ " ORDER BY q.qna_idx DESC"; 
-//		 			+ " WHERE qna_idx =?"; 
-		 	Connection conn = getConnection();
-
-		 	PreparedStatement pstmt = conn.prepareStatement(sql);
-		 	ResultSet rs = pstmt.executeQuery();
-		 	while(rs.next()) {
-		 		int qnaIdx = rs.getInt("qna_idx");
-		 		int replyCondition = rs.getInt("reply_condition");
-		 		String content = rs.getString("content");
-		 		String name = rs.getString("name");
-		 		String questionDate = rs.getString("question_date");
-		 		int open = rs.getInt("open");
-		 	
-		 		QnaAllQuestionDto dto = new QnaAllQuestionDto(qnaIdx, replyCondition, content, name, questionDate);
-			 	listRet.add(dto);
-		 	}
-		 	rs.close();
-		 	pstmt.close();
-		 	conn.close();
-		 	return listRet;
-	 }
-
+	 // getQnaAllQuestion: 질문들
+	 // 리턴: qna_idx, reply_condition(답변상태), content, name, question_date
+	public ArrayList<QnaAllQuestionDto> getQnaAllQuestion() throws Exception {
+		ArrayList<QnaAllQuestionDto> listRet = new ArrayList<QnaAllQuestionDto>();
+		String sql = "SELECT q.qna_idx, q.reply_condition, q.content, q.name, q.question_date" 
+				+ " FROM qna q"
+				+ " ORDER BY q.qna_idx DESC"; 
+		Connection conn = getConnection();
+		
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		ResultSet rs = pstmt.executeQuery();
+		while(rs.next()) {
+			int qnaIdx = rs.getInt("qna_idx");
+			int replyCondition = rs.getInt("reply_condition");
+			String content = rs.getString("content");
+			String name = rs.getString("name");
+			String questionDate = rs.getString("question_date");
+			int open = rs.getInt("open");
+		
+			QnaAllQuestionDto dto = new QnaAllQuestionDto(qnaIdx, replyCondition, content, name, questionDate);
+		 	listRet.add(dto);
+		}
+		rs.close();
+		pstmt.close();
+		conn.close();
+		return listRet;
+	}
 	 
-	// 질문들 paging 
-	 public ArrayList<QnaAllQuestionDto> getQnaQuestionPage(int pageNum) throws Exception {
-		 	ArrayList<QnaAllQuestionDto> listRet = new ArrayList<QnaAllQuestionDto>();
-			int endNum = pageNum * 10;
-			int startNum = endNum - 9;
+	 // getQnaQuestionPage: 질문들 paging 
+	 // 파라미터: pageNum
+	 // 리턴: qna_idx, reply_condition, content, name, question_date
+	public ArrayList<QnaAllQuestionDto> getQnaQuestionPage(int pageNum) throws Exception {
+		ArrayList<QnaAllQuestionDto> listRet = new ArrayList<QnaAllQuestionDto>();
+		int endNum = pageNum * 10;
+		int startNum = endNum - 9;
 			   
-		 	String sql = "SELECT t2.*"
-						+ " FROM (SELECT rownum rnum, t1.*"
-						+ " FROM (SELECT q.qna_idx, q.reply_condition, q.content, q.name, q.question_date"
-						+ " FROM qna q"
-						+ " ORDER BY q.qna_idx DESC) t1) t2"
-						+   " WHERE rnum>=? AND rnum<=?";
-		 	Connection conn = getConnection();
+		String sql = "SELECT t2.*"
+				+ " FROM (SELECT rownum rnum, t1.*"
+				+ " FROM (SELECT q.qna_idx, q.reply_condition, q.content, q.name, q.question_date"
+				+ " FROM qna q"
+				+ " ORDER BY q.qna_idx DESC) t1) t2"
+				+ " WHERE rnum>=? AND rnum<=?";
+		Connection conn = getConnection();
 
-		 	PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, startNum);
-			pstmt.setInt(2, endNum);
-		 	ResultSet rs = pstmt.executeQuery();
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, startNum);
+		pstmt.setInt(2, endNum);
+		ResultSet rs = pstmt.executeQuery();
 
-		 	while(rs.next()) {
-		 		int qnaIdx = rs.getInt("qna_idx");
-		 		int reply_condition = rs.getInt("reply_condition");
-		 		String content = rs.getString("content");
-		 		String name = rs.getString("name");
-		 		String question_date = rs.getString("question_date");
+		while(rs.next()) {
+			int qnaIdx = rs.getInt("qna_idx");
+			int reply_condition = rs.getInt("reply_condition");
+			String content = rs.getString("content");
+			String name = rs.getString("name");
+			String question_date = rs.getString("question_date");
 		 	
-		 		QnaAllQuestionDto dto = new QnaAllQuestionDto(qnaIdx, reply_condition, content, name, question_date);
-			 	listRet.add(dto);
-		 	}
-		 	rs.close();
-		 	pstmt.close();
-		 	conn.close();
-
-		 	return listRet;
+			QnaAllQuestionDto dto = new QnaAllQuestionDto(qnaIdx, reply_condition, content, name, question_date);
+			listRet.add(dto);
+		}
+		rs.close();
+		pstmt.close();
+		conn.close();
+		return listRet;
 	}
 	 
+	// getLastPageNumber: 마지막 페이지
 	public int getLastPageNumber() throws Exception {
-	   String sql = "SELECT COUNT(*) FROM qna";
-	   Connection conn = getConnection();
-	   PreparedStatement pstmt = conn.prepareStatement(sql);
-	   ResultSet rs = pstmt.executeQuery();
-	   int countRet = -1;
-	   if(rs.next()) {
-		   countRet = rs.getInt(1);
-	   }
-	   rs.close();
-	   pstmt.close();
-	   conn.close();
-	   return countRet/10 + (countRet % 10 > 0 ? 1 : 0);
+		String sql = "SELECT COUNT(*) FROM qna";
+		Connection conn = getConnection();
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		ResultSet rs = pstmt.executeQuery();
+		int countRet = -1;
+		if(rs.next()) {
+			countRet = rs.getInt(1);
+		}
+		rs.close();
+		pstmt.close();
+		conn.close();
+		return countRet/10 + (countRet % 10 > 0 ? 1 : 0);
 	}
-
+	
+	// changeToUnrepliedByAnswerIdx: 답변상태 미답변으로 바꾸기
+	// 파라미터: answer_idx
+	// 리턴: qna_idx
 	public void changeToUnrepliedByAnswerIdx(int answerIdx) throws Exception {
 		String sql = "SELECT qna_idx FROM qna_answer WHERE answer_idx=?";
 		Connection conn = getConnection();
@@ -307,18 +289,19 @@ public class QnaDao {
 		pstmt.close();
 		// --------------------------------------------------------------
 		// 이렇게, 하나의 메서드 안에서 SQL문 2개를 실행할 때에는
-		// rs와 pstmt를 닫아줘야 해요(306,307행). 주로 실수하는 게... pstmt를 안 닫아요. 둘 다 닫아야 함!
+		// rs와 pstmt를  둘 다 닫아야 함!
+		
+		// 파라미터: qna_idx
 		sql = "UPDATE qna "
 				+ " SET reply_condition = 0"
 				+ " WHERE qna_idx=?";
 		pstmt = conn.prepareStatement(sql);
-		
+	
 		pstmt.setInt(1, qnaIdx);
 		pstmt.executeUpdate();
-      
+  
 		rs.close();
 		pstmt.close();
 		conn.close();
-		
 	}
 }

@@ -577,7 +577,9 @@
 			<div>참여 가능한 토픽 보기</div>
 		</div>
 			<!---------- 토픽 '+버튼' -> 새로운 토픽 생성 생성하기 ---------->	
-			<form action="${pageContext.request.contextPath}/jsp/CreateNewTopic.jsp" method="get">
+			<form action="Controller" method="post">
+				<input type="hidden" name="command" value="create_topic"/>
+				<input type="hidden" name="teamIdx" value="<%=teamIdx%>"/>
 				<div id="div_topic_create"> 
 					<!-- 상단부 / div:nth-child(1) -->
 					<div>
@@ -728,6 +730,7 @@
 	<!--------------------------------------- 채팅방 --------------------------------------->
 	<div id="div_side2" class="wide fl">
 		<!---------- 채팅방 상단 - 채팅방 이름 & 메뉴 ---------->	
+	  
 		<div id="div_title" chatroom_idx="<%=chatroomIdx%>">
 			<!-- 상단(1) -->
 			<div class=" fl">
@@ -967,7 +970,10 @@
 		
 		
 		<!---------- 채팅방 생성하기 ---------->	
-		<form id="form_create_chatroom" action="CreateChatroomServlet" method="post">	
+<!-- 		<form id="form_create_chatroom" action="CreateChatroomServlet" method="post">	 -->
+		<form id="form_create_chatroom" action="Controller" method="post">	
+			<input type="hidden" name="command" value="create_chatroom"/>
+			<input type="hidden" name="teamIdx" value="<%=teamIdx%>"/>
 			<div id="div_create_chatroom" class="border">
 				<!-- 상단부 / div:nth-child(1) -->
 				<div>
@@ -1379,6 +1385,21 @@
 	<!-- 회색판 -->
 	<div id="div_grey_filter"></div>
 	
+	<!-- 채팅방 나가기 시 알림창 -->
+    <form action="Controller" id="deleteChatroomForm" method="post">
+    	<input type="hidden" name="command" value="delete_chatroom"/>
+	    <input type="hidden" name="chatroomIdx" value="<%=chatroomIdx%>"/>
+	    <input type="hidden" name="teamIdx" value="<%=teamIdx%>"/>
+	 	<div id="delete_chatroom_pop_up" class="notification_pop_up">
+		    <div>이 채팅방에서 나가시겠습니까?</div>
+		    <div>다시 초대를 받지 않는 한 동일한 채팅방에 참여하실 수 없습니다.</div>
+		    <div>
+	            <button type="button" class="btn btn_cancel">취소</button>
+	            <button type="submit" class="btn btn_danger">확인</button>
+		    </div>
+		</div> 
+   	</form>	
+	
 	<!-- 채팅글 삭제 시 알림창 -->
 	<div id="delete_chat_content_pop_up" class="notification_pop_up">
 		<div>이 메시지를 삭제하시겠습니까?</div>
@@ -1388,6 +1409,7 @@
 			<button type="button" class="btn btn_danger">확인</button>
 		</div>
 	</div>
+	
 	<!-- 채팅댓글 삭제 시 알림창 -->
 	<div id="delete_chat_comment_pop_up" class="notification_pop_up">
 		<div>이 댓글을 삭제하시겠습니까?</div>

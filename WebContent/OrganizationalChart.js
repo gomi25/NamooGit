@@ -20,6 +20,8 @@ $(function(){
 		$("#bookmark_memberlist").css('display','none');
      });
 
+
+
 	// 초기상태
     $('#team_name > button').addClass('clicked');
 
@@ -37,6 +39,9 @@ $(function(){
         // 클릭된 버튼에 클릭된 상태 추가
         $(this).addClass('clicked');
     });
+
+
+
 
 	// 멤버 검색
 	$("#search input").keyup(function(e) {
@@ -99,7 +104,12 @@ $(function(){
 		$("#div_transparent_filter").css('display','none');
 		$("#loginmember_profile_container").hide();
      });
+	
 
+
+	
+	
+	
 	//멤버 즐겨찾기 
 	$(document).on("click", ".nobookmark_img", function() {
 		$(this).css('display','none');
@@ -191,6 +201,7 @@ $(function(){
 		$(".member_inner1_state").hide(); 
 		$(".status_input").show(); 
 		
+		
 		$(".status_input").on('keyup', function(event) {
 		 	// span_folder_name에서 Enter 키 입력 이벤트 처리
         	// Enter 키 눌렀을 때 동작
@@ -222,5 +233,7 @@ $(function(){
 		});
 	});
 
-	
+
+
+		
 });
