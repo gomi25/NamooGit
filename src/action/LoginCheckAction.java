@@ -2,6 +2,7 @@ package action;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,7 +11,6 @@ import javax.servlet.http.HttpSession;
 import dao.NamooMemberDao;
 
 public class LoginCheckAction implements Action {
-
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("email");
@@ -24,17 +24,19 @@ public class LoginCheckAction implements Action {
 		
 		try {
 			result = mDao.loginCheck(email, pw);
-			if(result) {
-				memberIdx = mDao.getMemberIdxFromEmail(email);
-				HttpSession session = request.getSession();
-				session.setAttribute("memberIdx", memberIdx);
-				request.getRequestDispatcher("NamooMainTool.jsp").forward(request, response);
-			} else {
-				request.getRequestDispatcher("NamooLogin.jsp").forward(request, response);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			memberIdx = mDao.memberIdxFromEmail(email);
+		} catch (Exception e) {	e.printStackTrace();}
 		
+	
+		if(result) {	//NamooMainLogined.jsp로 이동
+			HttpSession session = request.getSession();
+			session.setAttribute("memberIdx", memberIdx);
+			RequestDispatcher rd = request.getRequestDispatcher("NamooMainLogined.jsp");
+			rd.forward(request,response);
+		} else {		//NamooLogin.jsp로 이동
+			RequestDispatcher rd = request.getRequestDispatcher("NamooLogin.jsp");
+			rd.forward(request,response);
+		}
 	}
+
 }
