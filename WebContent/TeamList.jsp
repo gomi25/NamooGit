@@ -5,8 +5,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
+	int memberIdx = (Integer)session.getAttribute("memberIdx");
+
 	MemberDto memberDto = (MemberDto) request.getAttribute("memberDto");
-	ArrayList<TeamListDto> list = (ArrayList<TeamListDto>) request.getAttribute("teamList");
+	ArrayList<TeamListDto> list = (ArrayList<TeamListDto>)request.getAttribute("teamList");
 %>
 
 <!DOCTYPE html>
@@ -118,7 +120,6 @@
 	            </div>
             </form>
         </div>
-    </div>
     <div id="div_header">
         <div id="div_logo" class="fl"><img src="img/namooCompanyLogo.png"/></div>
         <div id="div_email" class="fr">
@@ -156,7 +157,6 @@
         </div>
         <div style="clear:both;"></div>
     </div> 
-    </div>
     <!-- 전체 -->
     <div id="div_main">
         <!-- 윗부분 -->

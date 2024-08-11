@@ -10,12 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import action.Action;
 import action.ChatroomChoiceAction;
+import action.CheckboxAgreeAction;
 import action.CreateChatroomAction;
 import action.CreateTeamAction;
 import action.CreateTopicAction;
+import action.DeleteChatroomAction;
 import action.DeleteTopicAction;
 import action.DeleteTopicBoardAction;
-import action.DeleteChatroomAction;
+import action.InsertMemberInfoAction;
 import action.LoginCheckAction;
 import action.TeamListAction;
 import action.TopicChoiceAction;
@@ -50,8 +52,11 @@ public class Controller extends HttpServlet {
 //			case "inviteTopicMember" : action = new AddTopicMemberAction(); break;
 //			case "inviteChatroomMember" : action = new AddChatroomMemberAction(); break;
 			
+			case "checkbox_agree" : action = new CheckboxAgreeAction(); break;
+			case "insert_member_info" : action = new InsertMemberInfoAction(); break;
 			case "team_list" : action = new TeamListAction(); break;
 			case "create_team" : action = new CreateTeamAction(); break;
+		
 		}
 		action.execute(request, response);	// 웹브라우저의 요청 처리
 	}

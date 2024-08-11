@@ -2,8 +2,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	MemberDao mDao = new MemberDao();
-	int memberIdx = mDao.agreeToTerms(1, 0);
+	//MemberDao mDao = new MemberDao();
+	//int memberIdx = mDao.agreeToTerms(1, 0);
+	int memberIdx = (int)request.getAttribute("memberIdx");
 %>
 <!DOCTYPE html>
 <html>
@@ -30,7 +31,7 @@
 	</div>
 	<main style="margin-top: 125px;">
         <h1>회원가입</h1>
-        <form id="signupForm" action="Signup3.jsp" method="post"> <!-- 폼에 ID 추가 -->
+        <form id="signupForm" action="Controller?command=insert_member_info" method="post"> <!-- 폼에 ID 추가 -->
         	<input type="hidden" name="member_idx" value="<%=memberIdx%>"/>
             <fieldset>
                 <div id="div_input_name">

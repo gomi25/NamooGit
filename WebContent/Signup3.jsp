@@ -3,13 +3,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	request.setCharacterEncoding("utf-8");
+	int memberIdx = Integer.parseInt(request.getParameter("member_idx"));
+	/* request.setCharacterEncoding("utf-8");
 
 	MemberDao mDao = new MemberDao();
 	String name = request.getParameter("name");
 	String password = request.getParameter("password");
 	String email = request.getParameter("email");
-	int memberIdx = Integer.parseInt(request.getParameter("member_idx"));
+	
 	mDao.enterInformation(name, password, email, memberIdx);
 	
 	String code = "";
@@ -108,7 +109,7 @@
 					    "</div>";
 	
 	
-	sender.sendMail(email, name, "제목 테스트 메일 발송 JavaMail API 7/11 14:47", mailContent);
+	sender.sendMail(email, name, "인증 후 바로 NAMOO를 사용하실 수 있습니다.", mailContent); */
 	
 %>
 <script>alert("메일 발송 되었습니다!");</script>
@@ -189,7 +190,6 @@
 	        						+ Number($("#input_verify_code2").val()) * 100
 	        						+ Number($("#input_verify_code3").val()) * 10
 	        						+ Number($("#input_verify_code4").val());
-	        	alert("[TEST] 입력한 코드 = " + user_input_code);
 	        	
 	        	location.href = "SignupAction.jsp?user_input_code=" + user_input_code + "&member_idx=<%=memberIdx%>";
 	        });

@@ -19,7 +19,7 @@
 		// 실패 ---> alert("아님! 다시 시도해 주세요.");
 %>
 		<script>
-			alert("아님! 다시 시도해 주세요.");
+			alert("인증 코드가 맞지 않습니다. 다시 시도해 주세요.");
 			location.href = "Signup3.jsp?member_idx=<%=memberIdx%>";
 		</script>
 <%
