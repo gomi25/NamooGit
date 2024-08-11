@@ -7,7 +7,7 @@
     pageEncoding="UTF-8"%>
 <%
 	int memberIdx = 2;   // 테스트
-	int teamIdx = 2;     // 테스트
+	int teamIdx = 1;     // 테스트
 	
 	int cntUnreadTotal = 0; // 토픽방에서 안 읽은 메시지 전체 개수 
 	int cntOfTopic = 0;     // 토픽방 개수
