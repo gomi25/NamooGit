@@ -94,7 +94,8 @@
 		</div>
 		
 	<!-- 신청자 정보 -->
-	<form action="QnaInsert.jsp">
+	<form action="Controller" method="post">
+		<input type="hidden" name="command" value="create_qna" />
 		<div id="div_content2">
 			<span>신청자 정보</span>
 			<div id="div_content1_input">

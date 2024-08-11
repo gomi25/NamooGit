@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import action.Action;
 import action.ChatroomChoiceAction;
 import action.CreateChatroomAction;
+import action.CreateProject;
+import action.CreateProjectFormAction;
+import action.CreateQnaAction;
 import action.CreateTeamAction;
 import action.CreateTopicAction;
 import action.DeleteTopicAction;
@@ -18,6 +21,7 @@ import action.DeleteTopicBoardAction;
 import action.EnterTeamList;
 import action.DeleteChatroomAction;
 import action.LoginCheckAction;
+import action.ProjectListAction;
 import action.TeamListAction;
 import action.TopicChoiceAction;
 import action.UpdateTopicBoardAction;
@@ -54,6 +58,11 @@ public class Controller extends HttpServlet {
 			
 			case "team_list" : action = new TeamListAction(); break;
 			case "create_team" : action = new CreateTeamAction(); break;
+			
+			case "create_qna" : action = new CreateQnaAction(); break;
+			case "create_project_form" : action = new CreateProjectFormAction(); break;
+			case "create_project" : action = new CreateProject(); break;
+			case "project_list" : action = new ProjectListAction(); break;
 		}
 		action.execute(request, response);	// 웹브라우저의 요청 처리
 	}

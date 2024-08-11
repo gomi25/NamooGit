@@ -6,8 +6,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-	int memberIdx = 2;   // 테스트
-	int teamIdx = 1;     // 테스트
+ 	int memberIdx = 2;   // 테스트
+	//int memberIdx = (Integer)session.getAttribute("memberIdx");
+	int teamIdx = 1;     // 테스트 중
 	
 	int cntUnreadTotal = 0; // 토픽방에서 안 읽은 메시지 전체 개수 
 	int cntOfTopic = 0;     // 토픽방 개수
@@ -323,22 +324,12 @@
 
 		</div><!-- div_topicroom_list_body 닫는 태그 -->
 
-
 		<!---------- 프로젝트 목록 ---------->	
 		<div id="div_project_list_header">
 			<div></div>
-			<div><a href="Project.jsp">프로젝트</a></div>
-			<a href="AddProject.jsp"><div class="ic_plus"></div></a>
+			<div onclick="location.href='Controller?command=project_list'">프로젝트</div>
+			<div class="ic_plus" onclick="location.href='Controller?command=create_project_form'"></div>
 		</div>
-		<%-- <% for (ProjectBookmarkDto pbDto : projectList) {	%>
-		<div id="div_project_list_body" project_idx="<%=pbDto.getProjectIdx()%>">
-			<div class="main_tool_project_list">
-				<div class="ic_project_list fl"></div> 
-				<div class="ic_project_list_name"><%= pbDto.getProjectName() %></div>
-			</div>
-		</div>
-		<% } %> --%>
-
 		
 		<!---------- 채팅방 목록 ---------->	
 		<div id="div_chatroom_list_header"> <!-- (5) -->
@@ -376,7 +367,6 @@
 					<div class="exit"></div>
 				</div>
 			<%  } %>
-			
 		</div>
 		
 	<!--------------------------------------- div_side1 - 팝업창 --------------------------------------->
@@ -508,38 +498,37 @@
 	
 		</div> <!-- div_side1의 div닫는태그 -->
 	
-	
-	
 	<!-- 프로젝트 만들기 -->
-<form action="NewProjectInsert.jsp">
-	<div class="parents">
-		<div id="addproject" >
-			<div>프로젝트 만들기</div>
-			<div id="project_name"><input type="text" name="project_name" placeholder="제목을 입력하세요"></div>
-			<div id="project_color"><p>프로젝트 색상 </p></div>
-			<div id="project_colorselect" class="color_select_container fl">
-
-				<% for(int i=0; i<=11; i++) { %>
-						<div><div id="blue" class="color_select<%=i+1 %>"></div><input class="ab radio" type="radio" name="color_select" value="<%= i + 1 %>"/></div>
-				<%} %>
-					
-				
+		<form action="Controller" method="post">
+			<input type="hidden" name="command" value="create_project" />
+			<input type="hidden" name="teamIdx" value="<%=teamIdx%>"/>
+			<input type="hidden" name="memberIdx" value="<%=memberIdx%>"/>		
+			<div class="parents">
+				<div id="addproject" >
+					<div>프로젝트 만들기</div>
+					<div id="project_name"><input type="text" name="project_name" placeholder="제목을 입력하세요"></div>
+					<div id="project_color"><p>프로젝트 색상 </p></div>
+					<div id="project_colorselect" class="color_select_container fl">
+		
+						<% for(int i=0; i<=11; i++) { %>
+								<div><div id="blue" class="color_select<%=i+1 %>"></div><input class="ab radio" type="radio" name="color_select" value="<%= i + 1 %>"/></div>
+						<%} %>
+							
+						
+					</div>
+					<div id="project_button" ><button>프로젝트 생성</button></div>
+				</div>
+				<div id="photo" >
+					<img class="re" src="img/addproject.png"/>
+						<button class="ab"><img src="img/x_button.png"></button>
+						<img id="photo_top" class="ab" src="https://flow.team/flow-renewal/assets/images/project_template/template-tit.png?v=d5ff71180aa5f78c0e8110be3e4ff6ecf376e77c"/>
+						<img id="photo_bottom" class="ab" src="https://flow.team/flow-renewal/assets/images/project_template/template-feed.png?v=a3c7e402a757051a39eb1555fc308db8f588a9b6"/>
+				</div>
 			</div>
-			<div id="project_button" ><button>프로젝트 생성</button></div>
-		</div>
-		<div id="photo" >
-			<img class="re" src="img/addproject.png"/>
-				<button class="ab"><img src="img/x_button.png"></button>
-				<img id="photo_top" class="ab" src="https://flow.team/flow-renewal/assets/images/project_template/template-tit.png?v=d5ff71180aa5f78c0e8110be3e4ff6ecf376e77c"/>
-				<img id="photo_bottom" class="ab" src="https://flow.team/flow-renewal/assets/images/project_template/template-feed.png?v=a3c7e402a757051a39eb1555fc308db8f588a9b6"/>
-			
-		</div>
-	</div>
-</form>
+		</form>
 </div> 
 
 
-	
 	<!--------------------------------------- 즐겨찾기 창 --------------------------------------->	
 	<div id="div_side_bookmark">
 		<div id="bookmark_header">
@@ -599,23 +588,13 @@
 		}	
 		%>	
 		
-			
 			<div class="bookmark_ending_item">
 				<div class="ic_ending"></div>
 			</div>
 		</div>
 	</div> <!-- div_side_bookmark 닫는 태그 -->
 		
-	
-
-	
-	
-	
-
 	<div style="clear:both;"></div>
 
-
-
-	
 </body>
 </html>

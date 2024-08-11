@@ -443,7 +443,7 @@ a{ text-decoration-line: none; color: inherit;}
 }
 #div_side1 > #div_topicroom_list_header > .ic_plus,
 #div_side1 > #div_chatroom_list_header > .ic_plus,
-#div_side1 > #div_project_list_header >  a >.ic_plus { 
+#div_side1 > #div_project_list_header > .ic_plus { 
 	position: absolute; 
 	top: 10px;
     right: 15px;

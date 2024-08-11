@@ -382,8 +382,8 @@
 		<!---------- 프로젝트 목록 ---------->	
 		<div id="div_project_list_header">
 			<div></div>
-			<div><a href="Project.jsp">프로젝트</a></div>
-			<a href="AddProject.jsp"><div class="ic_plus"></div></a>
+			<div onclick="location.href='Controller?command=project_list'">프로젝트</div>
+			<div class="ic_plus" onclick="location.href='Controller?command=create_project_form'"></div>
 		</div>
 		
 		<!-- <div id="div_project_list_body">
@@ -519,7 +519,6 @@
 							</div>
 						</div>
 						
-						
 					</div>
 							<!-- button태그와 input태그 차이 찾아보기 -->
 							<!-- <input type="submit" value="생성하기"/> -->
@@ -581,10 +580,6 @@
 			</div>
 	
 		</div> <!-- div_side1의 div닫는태그 -->
-	
-	
-	
-	
 	<!--------------------------------------- 채팅방 --------------------------------------->
 	<div id="div_side2" class="wide fl">
 	<!-- 투명 스크린  : 화면을 클릭했을 때 창이 꺼지는 기능 -->
@@ -1454,8 +1449,6 @@
 	</div>	<!-- div_side2 닫는 태그 -->
 </div> <!-- div_total_side 닫는 태그 -->	
 
-
-	
 	<!--------------------------------------- 즐겨찾기 창 --------------------------------------->	
 	<div id="div_side_bookmark">
 		<div id="bookmark_header">
@@ -1514,7 +1507,6 @@
 			}
 		}	
 		%>	
-		
 			
 			<div class="bookmark_ending_item">
 				<div class="ic_ending"></div>
@@ -1611,7 +1603,6 @@
 						
 					</div>
 				</div>
-				
 			</div>
 			
 		<!---------------- 멤버 -------------------->	

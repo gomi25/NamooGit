@@ -6,9 +6,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-
 	int memberIdx = 2;   // 테스트
-	int teamIdx = 1;     // 테스트
+	//int memberIdx = (Integer)session.getAttribute("memberIdx");
+	int teamIdx = 1;     // 테스트 중
 	
 	int cntUnreadTotal = 0; // 토픽방에서 안 읽은 메시지 전체 개수 
 	int cntOfTopic = 0;     // 토픽방 개수
@@ -61,10 +61,6 @@
 	/* ProjectDao projectDao = new ProjectDao();
 	ArrayList<ProjectBookmarkDto> projectList = projectDao.checkProjectName(teamIdx); */
 
-
-	
-	
-	
 
 	// 즐겨찾기 프로젝트
 	/*int memberIdxFrom = 2; // 테스트
@@ -360,18 +356,9 @@
 			<!---------- 프로젝트 목록 ---------->	
 			<div id="div_project_list_header">
 				<div></div>
-				<div><a href="Project.jsp">프로젝트</a></div>
-				<a href="AddProject.jsp"><div class="ic_plus"></div></a>
+				<div onclick="location.href='Controller?command=project_list'">프로젝트</div>
+				<div class="ic_plus" onclick="location.href='Controller?command=create_project_form'"></div>
 			</div>
-			<%-- <% for (ProjectBookmarkDto pbDto : projectList) {	%>
-			<div id="div_project_list_body" project_idx="<%=pbDto.getProjectIdx()%>">
-				<div class="main_tool_project_list">
-					<div class="ic_project_list fl"></div> 
-					<div class="ic_project_list_name"><%= pbDto.getProjectName() %></div>
-				</div>
-			</div>
-			<% } %> --%>
-	
 			
 			<!---------- 채팅방 목록 ---------->	
 			<div id="div_chatroom_list_header"> <!-- (5) -->
@@ -541,9 +528,6 @@
 		
 			</div> <!-- div_side1의 div닫는태그 -->
 		
-		
-		
-		
 		<div id="project_div_side2" class="fr" >
 			<div id="side2_header">
 				<div>내 프로젝트</div>
@@ -575,12 +559,9 @@
 					<% } %>
 			</div>
 			
-			
 			</div>
 		</div>
 	</div> <!-- div_total_side 닫는 태그 -->	
-
-
 	
 	<!--------------------------------------- 즐겨찾기 창 --------------------------------------->	
 	<div id="div_side_bookmark">
@@ -640,14 +621,12 @@
 			}
 		}	
 		%>	
-		
 			<div class="bookmark_ending_item">
 				<div class="ic_ending"></div>
 			</div>
 		</div>
 	</div> <!-- div_side_bookmark 닫는 태그 -->
 		
-	
 	<div style="clear:both;"></div>
 </body>
 </html>
