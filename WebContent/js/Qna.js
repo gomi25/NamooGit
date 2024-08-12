@@ -73,17 +73,31 @@ $(function() {
 		//파라미터 값으로 들어갈 인풋 경로 넣기
 		let content = $(this).closest(".add_answer").find(".add_answer_input").val();
 		//alert("content : " + content);
-		let qna_idx = $(this).closest("tr").prev().attr("qna_idx");
+		let qnaIdx = $(this).closest("tr").prev().attr("qna_idx");
 		//alert("qna_idx : " + qna_idx);
-		
+		let _this = $(this);
 		$.ajax({
-		    url: 'UpdateQnaAnswerServlet', // 만들어둔 서블릿 파일 이름 적기
-		    data : {content : content, qna_idx : qna_idx},		// 받아놓은 파라미터
+		    url: '../UpdateQnaAnswerServlet', // 만들어둔 서블릿 파일 이름 적기
+		    data : {content : content, qna_idx : qnaIdx},		// 받아놓은 파라미터
 			contentType: 'application/json; charset=utf-8',
 
 		    success: function (data) {
 				//성공시 원하는 기능 넣기
-				alert("수정되었습니다 : " + data.content);  // 성공		
+				//alert("수정되었습니다 : " + data.content);  // 성공	
+	      
+	        	let updatedContent = content; // 수정된 내용
+
+            // 현재 Q&A의 답변 부분 찾기
+            	let answerRow = _this.closest("tr").nextAll(".qna_answer").first();
+            
+	            if (answerRow.length > 0) {
+	                // 답변이 존재하는 경우
+	                answerRow.find(".answer_content").text(updatedContent);
+	                _this.closest("tr").hide(); // 답변 작성 폼 숨기기
+	            } else {
+	                alert("답변이 없습니다.");
+	            }
+					_this.closest("tr").hide(); // 답변 작성 폼 숨기기
 		    },
 		    error: function (data, status, err) {
 				alert("error.");
@@ -93,17 +107,17 @@ $(function() {
 	
 	// 답변 삭제
 	$(".answer_delete").click(function() {
-    	let answer_idx = $(this).closest("tr").attr("answer_idx");
+    	let answerIdx = $(this).closest("tr").attr("answer_idx");
 		let _this = $(this);
 		$.ajax({
 		    type: 'post',
-		    url: 'QnaAnswerDeleteServlet',
-		    data: { answer_idx: answer_idx },
+		    url: '../QnaAnswerDeleteServlet',
+		    data: { answer_idx: answerIdx },
 		    success: function(response){
 			// [정리] $.ajax()의 success함수 안에서 $(this)를 못써!
 				_this.closest("tr").prev().prev().find(".reply_status").text("미답변");
             	_this.closest("tr").prev().prev().find(".qna_button").css('display','block');
-		    	$(".qna_answer[answer_idx='" + answer_idx + "']").remove(); // 해당 답변 행 삭제
+		    	$(".qna_answer[answer_idx='" + answerIdx + "']").remove(); // 해당 답변 행 삭제
 
 		    },
 		    error: function(data, status, err){
