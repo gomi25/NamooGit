@@ -208,7 +208,8 @@
 					    <tr class="add_answer" id="answer_form_<%=qDto.getQnaIdx() %>" style="display: none;">
 					        <td></td>
 					        <td>
-					            <form action="QnaAnswerInsert.jsp" method="post">
+					            <form action="Controller" method="post">
+					            <input type="hidden" name="command" value="create_qna_answer" />
 					                <input type="hidden" name="qna_idx" value="<%= qDto.getQnaIdx() %>">
 					                <div>
 					                    <input class="fl add_answer_input" type="text" name="content">

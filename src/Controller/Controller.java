@@ -16,6 +16,7 @@ import action.CreateChatroomAction;
 import action.CreateProject;
 import action.CreateProjectFormAction;
 import action.CreateQnaAction;
+import action.CreateQnaAnswerAction;
 import action.CreateTeamAction;
 import action.CreateTopicAction;
 import action.DeleteChatroomAction;
@@ -61,6 +62,7 @@ public class Controller extends HttpServlet {
 			case "create_team" : action = new CreateTeamAction(); break;
 			
 			case "create_qna" : action = new CreateQnaAction(); break;
+			case "create_qna_answer" : action = new CreateQnaAnswerAction(); break;
 			case "create_project_form" : action = new CreateProjectFormAction(); break;
 			case "create_project" : action = new CreateProject(); break;
 			case "project_list" : action = new ProjectListAction(); break;
