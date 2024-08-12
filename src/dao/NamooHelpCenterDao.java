@@ -226,6 +226,36 @@ public class NamooHelpCenterDao {
 		conn.close();
 		return dtoRet;
 	}
+	// getListHelpPostTitle(int, String): 글제목 (리스트)
+	// 파라미터: helpIdx, helpCategoryName
+	// 리턴: 글제목 리스트
+	public ArrayList<ShowCategoryNameAndTitleDto> getListHelpPostTitle(int helpIdx, String helpCategoryName) throws Exception {
+		ArrayList<ShowCategoryNameAndTitleDto> listRet = new ArrayList<ShowCategoryNameAndTitleDto>();
+		String sql = "SELECT c.help_category_idx, p.post_idx, p.title " + 
+					"	FROM help h INNER JOIN help_category c " + 
+					"	ON h.help_idx = c.help_idx INNER JOIN  help_post p " + 
+					"	ON c.help_category_idx = p.help_category_idx " + 
+					"	AND c.help_idx = ?  " + 
+					"	AND c.name = ? " + 
+					"	ORDER BY c.help_category_idx, post_idx";
+		Connection conn = getConnection();
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, helpIdx);
+		pstmt.setString(2, helpCategoryName);
+		ResultSet rs = pstmt.executeQuery();
+		while(rs.next()) {
+			int helpCategoryIdx = rs.getInt("help_category_idx");
+			int postIdx = rs.getInt("post_idx");
+			String title = rs.getString("title");
+			ShowCategoryNameAndTitleDto dto = new ShowCategoryNameAndTitleDto(helpCategoryIdx, postIdx, helpCategoryName, title);
+			listRet.add(dto);
+		}
+		rs.close();
+		pstmt.close();
+		conn.close();
+		return listRet;
+	}
+	
 }
 
 

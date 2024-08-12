@@ -32,7 +32,7 @@
 	<div id="div_body" >
 		<div id="div_login">
 			<div><h1>로그인</h1></div>
-			<form action="Controller">
+			<form action="Controller" method="post">
 				<input type="hidden" name="command" value="login_check"/>
 				<!-- 인풋  -->
 				<div id="div_email_pw" >
