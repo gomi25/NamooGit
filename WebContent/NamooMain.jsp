@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<% 	Integer memberIdx = (Integer)session.getAttribute("memberIdx"); 
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -74,7 +76,7 @@
 	<!------------------- 도입문의, 회원가입 버튼 ---------------->
 	<div id="div_body_button">
 		<div class="fl"><a href="Controller?command=enter_qna">도입문의</a></div>
-		<div class="fl"><a href="https://www.jandi.com/landing/kr/signup">회원가입</a></div>
+		<div class="fl"><a href="Controller?command=enter_signup1_page">회원가입</a></div>
 	</div>
 	<!---------------------------영상 ------------------------>
 	<div id="div_body_video">
@@ -160,8 +162,8 @@
 		<div>
 			<h1>협업툴 전문가에게 지금 문의하세요</h1>
 			도입문의를 남겨주시면 잔디 컨설턴트가 24시간 내 연락 드립니다.<br/>
-			<div class="fl">도입문의</div>
-			<div class="fl">회원가입</div>
+			<div class="fl" location.href="Controller?command=enter_qna">도입문의</div>
+			<div class="fl" location.href="Controller?command=enter_signup1_page">회원가입</div>
 		</div>
 	</div>
 	<!--------------------- footer 부분 ------------------------>

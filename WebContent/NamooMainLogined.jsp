@@ -59,18 +59,13 @@
 	<div id="div_header1">
 		<div class="fl">
 			<img src="https://jandi-box.com/teams/0/logo.png?timestamp=20190628">
-			<span><a href="NamooMain.jsp">NAMOO</a></span>
+			<span><a href="Controller?command=enter_main_page">NAMOO</a></span>
 		</div>
-		<div class="fl"><a href="hsttps://www.jandi.com/landing/kr/industry">고객사례</a></div>
-		<div class="fl"><a href="Qna.jsp">도입문의</a></div>
-		<div class="fl"><a href="NamooHelpMain.jsp">헬프센터</a></div>
+		<div class="fl"><a href="Controller?command=enter_consumer_case">고객사례</a></div>
+		<div class="fl"><a href="Controller?command=enter_qna">도입문의</a></div>
+		<div class="fl"><a href="Controller?command=enter_help_center">헬프센터</a></div>
 		<div class="fl"><a href="https://blog.jandi.com/ko/">블로그</a></div>
-		<form action="Controller">
-			<input type="hidden" name="command" value="enter_team_list">
-			<input type="hidden" name="memberIdx" value="<%=memberIdx%>">
-			<input type="submit" id="enter" value="입장하기" style="display:none;">
-			<label for="enter" class="enter-button fr">입장하기</label>
-		</form>
+		<div class="fr"><a href="Controller?command=enter_team_list"><strong>입장하기</strong></a></div>
 		<div class="fr"><a href="https://www.jandi.com/landing/kr/download"><strong>다운로드</strong></a></div>
 	</div>
 	
@@ -84,8 +79,8 @@
 	
 	<!------------------- 도입문의, 회원가입 버튼 ---------------->
 	<div id="div_body_button">
-		<div class="fl"><a href="https://www.jandi.com/landing/kr/consult">도입문의</a></div>
-		<div class="fl"><a href="https://www.jandi.com/landing/kr/signup">회원가입</a></div>
+		<div class="fl"><a href="Controller?command=enter_qna">도입문의</a></div>
+		<div class="fl"><a href="Controller?command=enter_signup1_page">회원가입</a></div>
 	</div>
 	<!---------------------------영상 ------------------------>
 	<div id="div_body_video">
@@ -171,8 +166,8 @@
 		<div>
 			<h1>협업툴 전문가에게 지금 문의하세요</h1>
 			도입문의를 남겨주시면 잔디 컨설턴트가 24시간 내 연락 드립니다.<br/>
-			<div class="fl">도입문의</div>
-			<div class="fl">회원가입</div>
+			<div class="fl"  location.href="Controller?command=enter_qna">도입문의</div>
+			<div class="fl" location.href="Controller?command=enter_signup1_page">회원가입</div>
 		</div>
 	</div>
 	<!--------------------- footer 부분 ------------------------>

@@ -31,7 +31,7 @@ public class LoginCheckAction implements Action {
 		if(result) {	//NamooMainLogined.jsp로 이동
 			HttpSession session = request.getSession();
 			session.setAttribute("memberIdx", memberIdx);
-			RequestDispatcher rd = request.getRequestDispatcher("NamooMainLogined.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("NamooMain.jsp");
 			rd.forward(request,response);
 		} else {		//NamooLogin.jsp로 이동
 			RequestDispatcher rd = request.getRequestDispatcher("NamooLogin.jsp");

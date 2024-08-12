@@ -41,11 +41,11 @@
 			<!-- 로고+나무  -->
 			<div class="fl">
 				<div class="fl"><img src="img/logo_white.png"/></div>
-				<div class="fl"><a href="NamooHelpMain.jsp">NAMOO</a></div>
+				<div class="fl"><a href="Controller?command=enter_main_page">NAMOO</a></div>
 			</div>
 			<!-- 나무로 이동  -->
 			<div class="fr"> 
-				<a href="NamooMain.jsp">NAMOO로 이동</a>
+				<a href="Controller?command=enter_main_page">NAMOO로 이동</a>
 			</div>
 		</div>
 		<!-- 검색창 -->

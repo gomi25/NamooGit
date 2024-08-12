@@ -22,11 +22,14 @@ import action.CreateTopicAction;
 import action.DeleteChatroomAction;
 import action.DeleteTopicAction;
 import action.DeleteTopicBoardAction;
+import action.EnterAccountSettingPageAction;
 import action.EnterConsumerCaseAction;
 import action.EnterHelpCenterAction;
 import action.EnterLoginPageAction;
 import action.EnterMainPageAction;
+import action.EnterMainPageLogined;
 import action.EnterQnaAction;
+import action.EnterSignup1PageAction;
 import action.EnterTeamList;
 import action.LoginCheckAction;
 import action.ProjectListAction;
@@ -65,21 +68,23 @@ public class Controller extends HttpServlet {
 			case "remove_topic_member" : action = new RemoveTopicMemberAction(); break;
 			case "remove_chatroom_member" : action = new RemoveChatroomMemberAction(); break;
 
-			case "enter_team_list" : action = new EnterTeamList(); break;
 
 //			case "inviteTopicMember" : action = new AddTopicMemberAction(); break;
 //			case "inviteChatroomMember" : action = new AddChatroomMemberAction(); break;
 			//잠시 영역좀 나누겠습니다. hj-------------------------------------------------------
+			case "enter_team_list" : action = new EnterTeamList(); break;
 			case "enter_help_center" : action = new EnterHelpCenterAction(); break; 		// 헬프센터로 이동
 			case "enter_consumer_case" : action = new EnterConsumerCaseAction(); break;
 			case "enter_qna" : action = new EnterQnaAction(); break;
 			case "enter_login_page" : action = new EnterLoginPageAction(); break;
 			case "enter_main_page" : action = new EnterMainPageAction(); break;
+			case "enter_signup1_page" : action = new EnterSignup1PageAction(); break;
+			case "enter_account_setting_page" : action = new EnterAccountSettingPageAction();break;
+			case "enter_main_page_logined" : action = new EnterMainPageLogined(); break;
 			
 			
 			//---------------------------------------------------------------------------
 			case "create_team" : action = new CreateTeamAction(); break;
-			
 			case "create_qna" : action = new CreateQnaAction(); break;
 			case "create_qna_answer" : action = new CreateQnaAnswerAction(); break;
 			case "create_project_form" : action = new CreateProjectFormAction(); break;

@@ -67,17 +67,17 @@
 <body>
 <!------------------------상단 헤더----------------------->
    <div id="div_header1">
-      <div class="fl">
-         <img src="https://jandi-box.com/teams/0/logo.png?timestamp=20190628">
-         <span>NAMOO</span>
-      </div>
-      <div class="fl"><a href="https://www.jandi.com/landing/kr/industry">고객사례</a></div>
-      <div class="fl"><a href="https://www.jandi.com/landing/kr/consult">도입문의</a></div>
-      <div class="fl"><a href="https://support.jandi.com/ko/">헬프센터</a></div>
-      <div class="fl"><a href="https://blog.jandi.com/ko/">블로그</a></div>
-      <div class="fr"><a href="http://localhost:9090/WebProject1/nammo_login.html"><strong>로그인</strong></a></div>
-      <div class="fr"><a href="https://www.jandi.com/landing/kr/download"><strong>다운로드</strong></a></div>
-   </div>
+		<div class="fl">
+			<img src="https://jandi-box.com/teams/0/logo.png?timestamp=20190628">
+			<span><a href="Controller?command=enter_main_page">NAMOO</a></span>
+		</div>
+		<div class="fl"><a href="Controller?command=enter_consumer_case">고객사례</a></div>
+		<div class="fl"><a href="Controller?command=enter_qna">도입문의</a></div>
+		<div class="fl"><a href="Controller?command=enter_help_center">헬프센터</a></div>
+		<div class="fl"><a href="https://blog.jandi.com/ko/">블로그</a></div>
+		<div class="fr"><a href="Controller?command=enter_login_page"><strong>로그인</strong></a></div>
+		<div class="fr"><a href="https://www.jandi.com/landing/kr/download"><strong>다운로드</strong></a></div>
+	</div>
 
 	<form action="Controller?command=checkbox_agree" method="post">
 		<div id="div_content">
@@ -120,7 +120,7 @@
 			<button type="submit" disabled id="div_next">다음</button>
 			<div id="div_already_login">
 				<p>이미 가입하셨나요?</p>
-				<a href="Signup2.html">로그인</a>
+				<a href="Controller?command=enter_login_page">로그인</a>
 			</div>
 		</div>
 	</form>

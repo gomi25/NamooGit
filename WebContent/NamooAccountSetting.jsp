@@ -4,7 +4,7 @@
     pageEncoding="UTF-8"%>
 <% 
 	NamooMemberDao memberDao = new NamooMemberDao();
-	int memberIdx = 3;   // TODO : 나중에 세션에서 읽어오는 걸로 변경해야.
+	int memberIdx = (Integer)session.getAttribute("memberIdx");
 	//파일 올리기 앞 뒤 주소창 붙이기
 	String strProfileImgUrl = memberDao.showProfilePic(memberIdx);
 	if(strProfileImgUrl != null && 
@@ -34,11 +34,13 @@
 <body>
 	<div id="transparent_screen"></div>
 	<!-------------------------- 헤더  -------------------------->
+	
+	
 	<div id="div_header" class="fl"> 
 		<!-- 로고 -->
 	 	<div id="div_logo" class="fl">
 			<img src="https://jandi-box.com/teams/0/logo.png?timestamp=20190628" >
-			<div><a href="NamooMain.jsp">NAMOO</a></div>
+			<div><a href="Controller?command=enter_main_page_logined">NAMOO</a></div>
 		</div>
 		<!-- 다운로드 -->
 		<div id="div_pc_app" class="fl">
@@ -56,7 +58,7 @@
 		<div id="div_setting_box1" >
 			<!-- 카테고리 -->
 			<div id="div_category">
-				<div class="fl"><a href="NamooMain.jsp">나무 메인</a> </div>
+				<div class="fl"><a href="Controller?command=enter_main_page_logined">나무 메인</a> </div>
 				<div class="fl">&nbsp > &nbsp<b> 계정 설정</b></div>
 			</div>
 			<!----------------------- 세팅박스 영역 ----------------------->
