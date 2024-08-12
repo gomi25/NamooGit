@@ -78,7 +78,6 @@ public class Controller extends HttpServlet {
 			
 			
 			//---------------------------------------------------------------------------
-			case "team_list" : action = new TeamListAction(); break;
 			case "create_team" : action = new CreateTeamAction(); break;
 			
 			case "create_qna" : action = new CreateQnaAction(); break;

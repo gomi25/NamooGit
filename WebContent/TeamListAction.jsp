@@ -15,6 +15,5 @@
 	
 %>
 <script>
-	alert("TODO : HK페이지 주소로 이동!");
-	//location.href = "HK페이지 주소";
+	location.href = "NamooMainTool.jsp";
 </script>
