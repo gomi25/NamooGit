@@ -48,8 +48,6 @@ public class Controller extends HttpServlet {
 		Action action = null;
 		
 		switch(command) {
-			case "login_check" : action = new LoginCheckAction(); break;
-			case "topic_choice" : action = new TopicChoiceAction(); break;
 //			case "go_topic": action = new GoTopicAction(); break; 
 //			case "go_chatroom": action = new GoChatroomAction(); break; 
 //			case "go_maintool": action = new GoChatroomAction(); break; 
