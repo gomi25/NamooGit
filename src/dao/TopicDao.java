@@ -30,9 +30,6 @@ public class TopicDao {
 		return conn;
 	}
 	
-	
-	/* =============================== 폴더 ==================================== */	
-	
 	// createTopicFolder(int, int): 폴더 생성하는 기능
 	// 파라미터: member_idx, team_idx
 	// 리턴: topic_folder_idx
@@ -141,9 +138,6 @@ public class TopicDao {
 		}
 	}
 	
-	
-	/* =============================== 토픽 ==================================== */
-	
 	// createTopic(String, String, int, int, int): 토픽 생성하는 기능(+만든 사람을 토픽 멤버로 추가하고 토픽매니저 설정)	
 	// 파라미터: name, info, teamIdx, open(공개여부), memberIdx(사용자)
 	// 리턴: topid_idx	
@@ -222,9 +216,6 @@ public class TopicDao {
 		}
 		return result;
 	}
-	
-	
-	/* =============================== 토픽글 ==================================== */	
 	
 	// writeTopicBoard(int, int, String, String): 토픽글 작성 기능
 	// 파라미터: topic_idx, member_idx(작성자), title(글제목), content(글내용)
@@ -598,9 +589,6 @@ public class TopicDao {
 
 	    return memberIdxList;
 	}
-
-	
-	/* =============================== 토픽댓글 ==================================== */
 	
 	// getTopicCommentCnt(int): 토픽글에 포함된 댓글수 조회하는 기능
 	// 파라미터: topic_board_idx
@@ -814,18 +802,15 @@ public class TopicDao {
 	    }
 	}
 	
-	
-	/* =============================== 상단바 메뉴 ==================================== */
-	
 	//  getTopicMemberList(int, int): 토픽방에 참여하는 멤버 전체 조회하는 기능	
 	//	파라미터: team_idx, topic_idx
 	//	리턴: 토픽 참여멤버 리스트(topic_idx, member_idx, profile_pic_url, name, department, position, power, manager)
 	public ArrayList<TopicMemberDto> getTopicMemberList(int teamIdx, int topicIdx) throws Exception {
+		ArrayList<TopicMemberDto> listRet = new ArrayList<TopicMemberDto>();
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
 	    
-	    ArrayList<TopicMemberDto> listRet = new ArrayList<TopicMemberDto>();
 	    try {
 	 		String sql = "SELECT t.topic_idx, tpm.member_idx, NVL(m.profile_pic_url, 'https://jandi-box.com/assets/ic-profile.png') profile_pic_url,"
 	 				 + "        m.name, tm.department, tm.position, tm.power, tpm.manager"
@@ -908,7 +893,6 @@ public class TopicDao {
 	    }
 	}
 	
-	
 	// getTeamMemberListOutOfTopic(int, int): 해당 토픽에 소속되지 않은 팀 멤버 전체 조회 기능	
 	// 파라미터 : team_idx, topic_idx
 	// 리턴 : 팀 멤버 리스트(team_idx, member_idx, member_idx, profile_pic_url, name, department, position, power)
@@ -956,8 +940,6 @@ public class TopicDao {
 		return listRet;
 	}
 	
-	
-	
 	// registerTopicNoti(int, int, String): 토픽 공지 등록하는 기능
 	// 파라미터: topic_idx, member_idx, content
 	public void registerTopicNoti(int topicIdx, int memberIdx, String content) throws Exception {
@@ -1002,7 +984,6 @@ public class TopicDao {
             if (pstmt != null) {pstmt.close();}
             if (conn != null) {conn.close();}
 	    }
-		
 	}
 
 	// deleteTopicNoti(int): 토픽 공지 삭제하는 기능	
