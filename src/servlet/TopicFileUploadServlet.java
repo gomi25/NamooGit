@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.Common;
 import com.oreilly.servlet.MultipartRequest;
@@ -26,8 +27,8 @@ public class TopicFileUploadServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		
-		int memberIdx = 2;   // TODO : 나중에) 세션에서 읽어오는 걸로.
-		
+		HttpSession session = request.getSession();
+		int memberIdx = (Integer)session.getAttribute("memberIdx");
 		ServletContext application = getServletContext();
 		String path = application.getRealPath("/upload");
 		System.out.println("(참고) real path: " + path);	
@@ -50,6 +51,7 @@ public class TopicFileUploadServlet extends HttpServlet {
 		String fileOriginalName = multi.getOriginalFileName(fileObject);  // 웹브라우저에서 선택한 파일 이름
 		long fileSize = 0;
 		
+		int teamIdx = Integer.parseInt(multi.getParameter("team_idx"));
 		int topicIdx = Integer.parseInt(multi.getParameter("topic_idx"));
 	    String topicBoardTitle = multi.getParameter("topic_board_title");
 		String topicBoardContent = multi.getParameter("topic_board_content");
@@ -63,9 +65,9 @@ public class TopicFileUploadServlet extends HttpServlet {
 	    try {
 	        topicBoardIdx = tDao.writeTopicBoard(topicIdx, memberIdx, topicBoardTitle, topicBoardContent);
 	        // 작성자를 제외한 멤버 목록 조회
-	        List<Integer> unreadMembers = tDao.getTopicMembersExceptAuthor(topicIdx, memberIdx);
-	        int[] memberIdxArray = unreadMembers.stream().mapToInt(i -> i).toArray();
-	        tDao.addUnreadMember(topicBoardIdx, memberIdxArray);
+//	        List<Integer> unreadMembers = tDao.getTopicMembersExceptAuthor(topicIdx, memberIdx);
+//	        int[] memberIdxArray = unreadMembers.stream().mapToInt(i -> i).toArray();
+//	        tDao.addUnreadMember(topicBoardIdx, memberIdxArray);
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
@@ -87,7 +89,11 @@ public class TopicFileUploadServlet extends HttpServlet {
 			}
 		}
 		
-		RequestDispatcher rd = request.getRequestDispatcher("NamooTopic.jsp");
+		request.setAttribute("teamIdx", teamIdx);
+		request.setAttribute("topicIdx", topicIdx);
+		
+		RequestDispatcher rd = request.getRequestDispatcher("/NamooTopic.jsp");
 		rd.forward(request, response);
+//        response.sendRedirect(request.getContextPath() + "/NamooTopic.jsp?topicIdx=" + topicIdx);
 	}
 }
