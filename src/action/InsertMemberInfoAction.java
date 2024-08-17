@@ -28,7 +28,6 @@ public class InsertMemberInfoAction implements Action {
 				code += (int)(Math.random()*10);
 			mDao.emailVerification(memberIdx, code);
 			
-			// TODO HERE : 메일발송API를 사용해서 메일 발송.
 			MailSender sender = new MailSender();
 			
 			String mailContent = "    <div class='emailBackground border'>" +

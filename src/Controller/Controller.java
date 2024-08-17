@@ -12,6 +12,10 @@ import action.Action;
 import action.AddChatroomMemberAction;
 import action.AddTopicMemberAction;
 import action.ChatroomChoiceAction;
+import action.CheckboxAgreeAction;
+import action.ConsumerCaseAction;
+import action.ConsumerCaseInfoAction;
+import action.ConsumerCaseListAction;
 import action.CreateChatroomAction;
 import action.CreateProject;
 import action.CreateProjectFormAction;
@@ -31,6 +35,8 @@ import action.EnterMainPageLogined;
 import action.EnterQnaAction;
 import action.EnterSignup1PageAction;
 import action.EnterTeamList;
+import action.EnterTeamListFromAction;
+import action.InsertMemberInfoAction;
 import action.LoginCheckAction;
 import action.ProjectListAction;
 import action.RemoveChatroomMemberAction;
@@ -84,12 +90,21 @@ public class Controller extends HttpServlet {
 			
 			
 			//---------------------------------------------------------------------------
-			case "create_team" : action = new CreateTeamAction(); break;
 			case "create_qna" : action = new CreateQnaAction(); break;
 			case "create_qna_answer" : action = new CreateQnaAnswerAction(); break;
 			case "create_project_form" : action = new CreateProjectFormAction(); break;
 			case "create_project" : action = new CreateProject(); break;
 			case "project_list" : action = new ProjectListAction(); break;
+			
+			// ------------------- 하늘 -------------------
+			case "checkbox_agree" : action = new CheckboxAgreeAction(); break;
+			case "insert_member_info" : action = new InsertMemberInfoAction(); break;
+			case "enter_team_list_from_signup" : action = new EnterTeamListFromAction(); break;
+			case "create_team" : action = new CreateTeamAction();
+			case "consumer_case" : action = new ConsumerCaseAction(); break;
+			case "consumer_case_info" : action = new ConsumerCaseInfoAction(); break;
+			case "consumer_case_list" : action = new ConsumerCaseListAction(); break;
+			
 		}
 		action.execute(request, response);	// 웹브라우저의 요청 처리
 	}
