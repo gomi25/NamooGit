@@ -1,11 +1,12 @@
 	
 	//===================================== div_header =====================================			
+	// 로고 클릭 시 페이지 이동
 	$(function() {
 		$("#div_logo").click(function() {
-			location.href = context_path + "/NamooMainTool.jsp";
+			location.href = context_path + "/Controller?command=mainTool_choice&teamIdx=" + team_idx;
 		});
 		$("#pop_up_header_setting > div:nth-child(4)").click(function() {
-			location.href = context_path + "/NamooMainTool.jsp";
+			location.href = context_path + "/Controller?command=mainTool_choice&teamIdx=" + team_idx;
 		});
 	});		
 	
@@ -32,17 +33,13 @@
 
 
 			
-//===================================== div_side1 =====================================	
+	//===================================== div_side1 =====================================	
 	$(function() {		
 		// [대화방 검색] 팝업창
 		$("#div_room_search > div").click(function() {
 			$("#search_all_room").css('display','block');
 			$("#div_grey_filter").css('display','block');
 		});
-//			$("#div_grey_filter").click(function() {
-//				$("#search_all_room").css('display','none');
-//				$("#div_grey_filter").css('display','none');
-//			});	
 
 		// [대화방 검색] 검색 시
 		$("#search_all_room input[name='member_search']").keyup(function(e) {
@@ -112,7 +109,7 @@
 	/****************************** 토픽 [+] 팝업창 ******************************/					
 	$(function() {
 		// 토픽 '+버튼' 클릭 시 
-		$("#div_topicroom_list_header > div:nth-child(4)").click(function() {
+		$("#div_topicroom_list_header .ic_plus").click(function() {
 			$("#div_topic_plus").css('display','block');
 			$("#div_transparent_filter").css('display','block');
 		});
@@ -153,7 +150,6 @@
 				url : "AjaxCreateTopicFolderServlet",
 				data : params,
 				success : function(res) {
-					alert("성공!");
 					let str = 
 					  '<div class="topic_folder">'
 					+ '	<div class="div_folder_item" topicFolderIdx="' + res.topicFolderIdx +'">'  
@@ -188,10 +184,8 @@
 				$(".list_view_option").css('display','none');
 			}
 		});
-//	});
-	
-//	$(function() {				
-	/********** 토픽 [+] 팝업창  - [더보기] 팝업창 **********/				
+		
+		/********** 토픽 [+] 팝업창  - [더보기] 팝업창 **********/				
 		let isMenuOpen = false;		
 	
 		// 토픽폴더 [더보기] 클릭 
@@ -237,7 +231,7 @@
 			}
 		});
 
-	    // '수정' 버튼 클릭 시 댓글 수정 활성화
+	    // '수정' 버튼 클릭 시 수정 활성화
 	    $(".topic_folder_more_menu > div:nth-child(2)").click(function() {
 			$(".topic_folder_more_menu").hide();		
 	        // '수정' 버튼이 클릭된 div_comment 내에서 comment_item 요소를 찾음
@@ -265,7 +259,7 @@
 	        if (event.key === 'Enter' && !event.shiftKey) {
 	            event.preventDefault(); // 기본 Enter 동작(줄바꿈) 방지
 	            
-	            // 수정된 댓글 내용 가져오기
+	            // 수정된 폴더 내용 가져오기
 	            let topicFolderIdx = $(this).closest('.div_folder_item').attr('topicFolderIdx');
 	            let folderName = $(this).text().trim(); // 텍스트 내용 가져오기
 				let params = { 
@@ -278,7 +272,6 @@
 	                url: "AjaxUpdateTopicFolderServlet",
 	                data: params,
 	                success: function(res) {
-	                    alert(res.result); 
 						_this.attr('contenteditable', 'false').attr('style','');
 	                },
 	                error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -370,6 +363,7 @@
 	        $('#topic_public_div').css('border-color', '#00C473');
 	        $('#topic_public_div > div').css('filter', 'invert(71%) sepia(69%) saturate(5840%) hue-rotate(123deg) brightness(99%) contrast(104%)');
 	        $('#topic_public_div > label').css('color', '#00C473');
+        	toggleCreateTopicButton(); // 버튼 상태 업데이트
 	    });
 		// [새 토픽 생성] - "공개 여부": 비공개 체크		
 	    $('#topic_private_div').click(function() {
@@ -378,6 +372,7 @@
 	        $('#topic_private_div').css('border-color', '#00C473');
 	        $('#topic_private_div > div').css('filter', 'invert(71%) sepia(69%) saturate(5840%) hue-rotate(123deg) brightness(99%) contrast(104%)');
 	        $('#topic_private_div > label').css('color', '#00C473');
+			toggleCreateTopicButton(); // 버튼 상태 업데이트
 	    });
 
 		// [새 토픽 생성] 토픽 이름 입력 시 글자수 체크 및 글자수 제한
@@ -419,7 +414,7 @@
 		// [새 토픽 생성] 토픽 이름 입력, 공개 여부 선택 시 [생성하기] 버튼 활성화
 		function toggleCreateTopicButton() {
 		    const topicName = $('#input_new_topic_name').val().trim();
-		    const topicOpen = $('input[name="topic_open"]:checked').val();
+		    const topicOpen = $('input[name="topic_open"]').filter(':checked').val();
 			console.log("Name:", topicName);  // 디버깅용 콘솔 로그
 		    console.log("Topic Open:", topicOpen);  // 디버깅용 콘솔 로그        
 		
@@ -431,7 +426,6 @@
 		        $('#new_topic_create').removeClass('green_light');
 		    }
 		}
-		
 		$('#input_new_topic_name').on('input', toggleCreateTopicButton);
 		$('input[name="topic_open"]').on('change', toggleCreateTopicButton);	
 
@@ -447,9 +441,11 @@
 			// input과 textarea 초기화
 		    $('input[type="text"]').val('');
 		    $('textarea').val('');
+			$('#new_topic_create').removeClass('green_light'); // 버튼 비활성화 초기화
+		
 		}
 		// 닫기 버튼과 exit 클릭 시 초기화
-		$(".exit, #new_topic_exit").click(function() {
+		$(".exit, #new_topic_cancel").click(function() {
 		    resetForm();
 		});
 	});
@@ -518,16 +514,12 @@
 	    });
 	});
 
-
-
-
-
 	/****************************** 토픽목록 ******************************/	
 	// 토픽 클릭 시 페이지 이동 
 	$(function(){
 		$("#div_topicroom_list_body .topic_item > span").click(function () {
 			let topicIdx = $(this).parent(".topic_item").attr("topic_idx");
-			location.href = context_path + "/NamooTopic.jsp?topicIdx=" + topicIdx;
+			location.href = context_path + "/Controller?command=topic_choice&teamIdx=" + team_idx + "&topicIdx=" + topicIdx;
 		});
 	});	
 
@@ -545,7 +537,7 @@
 	$(function(){
 		$("#div_chatroom_list_body > .topic_item > span").click(function () {
 			let chatroomIdx = $(this).parent(".topic_item").attr("chatroom_idx");
-			location.href = context_path + "/NamooChat.jsp?chatroomIdx=" + chatroomIdx;
+			location.href = context_path + "/Controller?command=chatroom_choice&teamIdx=" + team_idx + "&chatroomIdx=" + chatroomIdx;
 		});
 		$("#div_chatroom_list_header > .ic_plus").click(function () {
 			$("#div_new_chatroom_create").show();
@@ -557,7 +549,6 @@
 	$(function(){
 	 	// 이벤트 위임을 사용하여 동적으로 생성된 요소에도 이벤트가 바인딩되도록 수정
    		$(document).on("click", ".topic_item > div:first-child", function(e){
-			alert("클림됨!");
 			let idx = $(this).parent(".topic_item").attr("chatroom_idx");
 			let params = { idx : idx, something: "chatroom_idx" } // 객체 생성
 			let _this = $(this);
@@ -567,7 +558,6 @@
 					url : "AjaxRemoveBookmarkServlet",
 					data : params,
 					success : function(res) {
-						alert("on -> off : " + res.result);
 						_this.removeClass("ic_bookmark_on").addClass("ic_bookmark_off");
 						$("#div_title > div:nth-child(1) > div:nth-child(2)").removeClass("ic_bookmark_on").addClass("ic_bookmark_off");
 					},
@@ -581,7 +571,6 @@
 					url : "AjaxAddBookmarkServlet",
 					data : params,
 					success : function(res) {
-						alert("off -> on : " + res.result);
 						_this.removeClass("ic_bookmark_off").addClass("ic_bookmark_on");
 						$("#div_title > div:nth-child(1) > div:nth-child(2)").removeClass("ic_bookmark_off").addClass("ic_bookmark_on");
 					},
@@ -598,7 +587,6 @@
 	$(function() {	
 		// 채팅 - 즐겨찾기 등록 및 해제
         $("#div_title > div:nth-child(1) > div:nth-child(2)").click(function(){
-			alert("클릭됨");
 			let idx = $(this).attr("chatroom_idx");
 			let params = { idx : idx, something: "chatroom_idx" }  // 객체 생성
 			let _this = $(this);
@@ -612,7 +600,6 @@
 	                url : "AjaxRemoveBookmarkServlet",  	
 	                data : params,           
 	                success : function(res){ 
-	                    alert("ON->OFF : " + res.result);   // "성공"
 						_this.removeClass("ic_bookmark_on").addClass("ic_bookmark_off");
 						$(".topic_item[chatroom_idx='"+params.idx+"']").find("div:first-child").removeClass("ic_bookmark_on").addClass("ic_bookmark_off");
 	                },
@@ -630,7 +617,6 @@
 	                url : "AjaxAddBookmarkServlet",    // ?  		
 	                data : params,            // JSON 형식의 데이터이다.
 	                success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옴. 'res'는 응답받은 데이터.
-	                    alert("OFF->ON : " + res.result);   // "성공"
 						_this.removeClass("ic_bookmark_off").addClass("ic_bookmark_on");
 						$(".topic_item[chatroom_idx='"+params.idx+"']").find("div:first-child").removeClass("ic_bookmark_off").addClass("ic_bookmark_on");
 	                },
@@ -1060,132 +1046,6 @@
 			$("#form_chat").submit();
 	    });		
     });
-		
-		
-		// ajax 방식 - 채팅글 ".ic_comment_enter" 버튼 클릭 시
-/*		$(document).on("click", ".ic_comment_enter", function(){
-			return;			
-			let chatroomIdx = $(this).parents("#div_bottom").siblings("#div_title").attr("chatroom_idx");
-			let chatContent = $(this).siblings("#write_chat_content_space").text(); 
-			let params = { 	chatroom_idx : chatroomIdx, 
-						   	chat_content : chatContent,
-							team_idx : team_idx,
-							member_idx : member_idx };
-			let _this = $(this);
-			
-			$.ajax({
-		            type : "POST",           
-		            url : "AjaxWriteChatContentServlet",	
-	             	data : params,   
-	             	success : function(res){  
-						console.log(res);
-						alert(res.result);
-						
-						let chat_idx = res.chatIdx;
-						let state = res.state;
-						let profileImgUrl = $("#div_profile_box > img").attr("src");
-						let name = $("#div_profile_box > div").text();
-						let unreadCnt = parseInt($("#div_title > div:nth-child(2) > div:nth-child(2)").text().trim())-1;
-						let date = new Date();
-						let hours = date.getHours();
-						let minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-						let period = hours >= 12 ? "PM" : "AM";
-						hours = hours % 12;
-						hours = hours ? hours : 12; // 0을 12로 변환
-						let formattedDate = period + " " + hours + ":" + minutes;
-						
-						let str = 
-							  '<div class="chat_message" chat_idx="' + chat_idx + '"writer="'+ member_idx +'">'
-							+ ' <div class="fl">'
-							+ '	 <img class="profile_img" src="' + profileImgUrl + '"/>'
-							+ ' </div>'
-							+ ' <div class="fl">'
-							+ '	 <div class="profile_name">' + name + '<span> - ' + state + '</span>'
-							+ '  </div>'
-							+ '	 <div class="msg">'
-							+ 		chatContent
-							+ '		<span class="unread">' + unreadCnt + '</span>' 
-							+ '		<span class="time">'+ formattedDate +'</span>'
-							+ '  </div>'
-							+ ' </div>'
-							+ ' <div style="clear:both;"></div>'
-							+ '</div>';
-						
-						_this.closest("#div_bottom").siblings("#div_content").append(str);
-						_this.siblings("#write_chat_content_space").text('');
-					},
-	             	error : function(XMLHttpRequest, textStatus, errorThrown){ 
-	                	    		alert("통신 실패.")
-	             	}
-	     	});
-		});
-		
-		// 채팅글에서 [Enter] 입력 시
-		$(document).on("keydown", "#write_chat_content_space", function(){		
-			event.stopPropagation();
-			
-		    // Enter 키가 눌렸는지 확인 && shift키가 동시에 놀리지 않았는지 확인 (줄바꿈으로 사용 가능)
-		    if (event.key === 'Enter' && !event.shiftKey) {
-		        event.preventDefault(); // 기본 Enter 동작(줄바꿈) 방지
-				let chatroomIdx = $(this).parents("#div_bottom").siblings("#div_title").attr("chatroom_idx");
-				let chatContent = $(this).text(); 
-				let params = { 	chatroom_idx : chatroomIdx, 
-							   	chat_content : chatContent,
-								team_idx : team_idx,
-								member_idx : member_idx };
-				let _this = $(this);
-	
-				// 여기여기
-				$.ajax({
-			            type : "POST",           
-			            url : "AjaxWriteChatContentServlet",	
-		             	data : params,   
-		             	success : function(res){  
-							
-							let chat_idx = res.chatIdx;
-							let state = res.state;
-							let profileImgUrl = $("#div_profile_box > img").attr("src");
-							let name = $("#div_profile_box > div").text();
-							let unreadCnt = parseInt($("#div_title > div:nth-child(2) > div:nth-child(2)").text().trim())-1;
-							let date = new Date();
-							let hours = date.getHours();
-							let minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-							let period = hours >= 12 ? "PM" : "AM";
-							hours = hours % 12;
-							hours = hours ? hours : 12; // 0을 12로 변환
-							let formattedDate = period + " " + hours + ":" + minutes;
-							
-							let str = 
-								  '<div class="chat_message" chat_idx="' + chat_idx + '"writer="'+ member_idx +'">'
-								+ ' <div class="fl">'
-								+ '	 <img class="profile_img" src="' + profileImgUrl + '"/>'
-								+ ' </div>'
-								+ ' <div class="fl">'
-								+ '	 <div class="profile_name">' + name + '<span> - ' + state + '</span>'
-								+ '  </div>'
-								+ '	 <div class="msg">'
-								+ 		chatContent
-								+ '		<span class="unread">' + unreadCnt + '</span>' 
-								+ '		<span class="time">'+ formattedDate +'</span>'
-								+ '  </div>'
-								+ ' </div>'
-								+ ' <div style="clear:both;"></div>'
-								+ '</div>';
-							
-							_this.closest("#div_bottom").siblings("#div_content").append(str);
-							_this.text('');
-						},
-		             	error : function(XMLHttpRequest, textStatus, errorThrown){ 
-		                	    		alert("통신 실패.")
-		             	}
-		     	});
-				
-		    }
-			
-		});*/
-
-
-
 
 //===================================== 채팅방 - 채팅글 - [더보기] =====================================	
 	// 채팅글 - 마우스오버 시
@@ -1273,7 +1133,6 @@
 					url : "AjaxRemoveBookmarkServlet",
 					data : params,
 					success : function(res) {
-						alert("on -> off : " + res.result);
 						_this.removeClass("ic_bookmark_on").addClass("ic_bookmark_off");
 					},
 					error : function(XMLHttpRequest, textStatus, errorThrown){
@@ -1286,7 +1145,6 @@
 					url : "AjaxAddBookmarkServlet",
 					data : params,
 					success : function(res) {
-						alert("off -> on : " + res.result);
 						_this.removeClass("ic_bookmark_off").addClass("ic_bookmark_on");
 					},
 					error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -1310,7 +1168,6 @@
 					url : "AjaxRemoveBookmarkServlet",
 					data : params,
 					success : function(res) {
-						alert("on -> off : " + res.result);
 						_this.removeClass("ic_bookmark_on").addClass("ic_bookmark_off");
 					},
 					error : function(XMLHttpRequest, textStatus, errorThrown){
@@ -1323,7 +1180,6 @@
 					url : "AjaxAddBookmarkServlet",
 					data : params,
 					success : function(res) {
-						alert("off -> on : " + res.result);
 						_this.removeClass("ic_bookmark_off").addClass("ic_bookmark_on");
 					},
 					error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -1369,7 +1225,6 @@
 				url : "AjaxDeleteChatContentServlet",	
 				data : param,   
 				success : function(res){  
-					alert(res);
 					// 댓글 삭제
 					$(".chat_message[chat_idx='" + chatIdx + "']").remove();
 				},
@@ -1418,23 +1273,6 @@
 			$("#file_content").addClass("select");
 			$("#all_content").removeClass("select");
 			$(".bookmark_text_item").hide();
-		}); 
-	});
-	
-	
-	//===================================== 조직도창 =====================================				
-	$(function() {
-		// 상단에 조직도 이미지를 누르면 조직도가 펼쳐짐
-		$(".ic_header_org_chat_img").click(function(){
-			$("#div_transparent_filter").hide();
-			$("#organizational_chart").show();
-			$("#div_side2").removeClass("wide");
-		});
-		
-		// "x"를 클릭하면 즐겨찾기창 꺼짐  
-		$(".delete_img").click(function(){
-			$("#organizational_chart").hide();
-			$("#div_side2").addClass("wide");
 		}); 
 	});
 	

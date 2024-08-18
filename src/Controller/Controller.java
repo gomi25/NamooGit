@@ -38,9 +38,11 @@ import action.EnterTeamList;
 import action.EnterTeamListFromAction;
 import action.InsertMemberInfoAction;
 import action.LoginCheckAction;
+import action.MainToolChoiceAction;
 import action.ProjectListAction;
 import action.RemoveChatroomMemberAction;
 import action.RemoveTopicMemberAction;
+import action.SendChatAction;
 import action.TopicChoiceAction;
 import action.UpdateTopicBoardAction;
 
@@ -57,10 +59,9 @@ public class Controller extends HttpServlet {
 		Action action = null;
 		
 		switch(command) {
-//			case "go_topic": action = new GoTopicAction(); break; 
-//			case "go_chatroom": action = new GoChatroomAction(); break; 
-//			case "go_maintool": action = new GoChatroomAction(); break; 
+			// ------------------- 혜경 -------------------
 			case "login_check" : action = new LoginCheckAction(); break; 					// 로그인 체크 커맨드
+			case "mainTool_choice" : action = new MainToolChoiceAction(); break;
 			case "topic_choice" : action = new TopicChoiceAction(); break;			
 			case "chatroom_choice" : action = new ChatroomChoiceAction(); break;
 			case "create_topic" : action = new CreateTopicAction(); break;
@@ -73,10 +74,8 @@ public class Controller extends HttpServlet {
 			case "inviteChatroomMember" : action = new AddChatroomMemberAction(); break;
 			case "remove_topic_member" : action = new RemoveTopicMemberAction(); break;
 			case "remove_chatroom_member" : action = new RemoveChatroomMemberAction(); break;
+			case "send_chat" : action = new SendChatAction(); break;
 
-
-//			case "inviteTopicMember" : action = new AddTopicMemberAction(); break;
-//			case "inviteChatroomMember" : action = new AddChatroomMemberAction(); break;
 			//잠시 영역좀 나누겠습니다. hj-------------------------------------------------------
 			case "enter_team_list" : action = new EnterTeamList(); break;
 			case "enter_help_center" : action = new EnterHelpCenterAction(); break; 		// 헬프센터로 이동

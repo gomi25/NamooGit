@@ -26,7 +26,7 @@
 	ArrayList<TeamMemberDto> teamMemberList = sDao.getTeamMemberList(teamIdx);	
 	//============================팀 멤버 조회 테스트==============================
 	TeamMemberDto teamMember = sDao.getTeamMember(teamIdx, memberIdx);	
-	//============================토픽방목록, 채팅방목록 조회 테스트==============================	
+	//============================토픽방목록, 채팅방목록 조회 ==============================	
 	// 대화창검색 - 전체 토픽목록
 	ArrayList<TopicDto> listTopicAll = sDao.getAllTopicList(memberIdx, teamIdx);	
 	// 폴더DTO 타입(int topicFolderIdx, int memberIdx, int teamIdx, String name)
@@ -68,7 +68,6 @@
 	//============================채팅글 조회==============================
 	ArrayList<ChatContentsDto> chatContentsDto = cDao.getChatContents(teamIdx, chatroomIdx, memberIdx); 
 
-
 %>
 <!DOCTYPE html>
 <html>
@@ -94,9 +93,7 @@
 		function scrollToBottom() {
 	        $("#div_content").stop().animate({ scrollTop: $('#div_content').prop("scrollHeight") }, 1000);
 	    }
-		/* 8.3(토) 웹소켓 테스트 중 */
 		function func_on_message(e) {
-// 			alert("도착한 메시지 : " + e.data);
 			alert("새로운 메시지가 도착하였습니다.");
 			$("#div_content").append(e.data);
 		}
@@ -115,12 +112,22 @@
 		$(function(){
 			$("#div_msg_blank > .ic_comment_enter").click(function(){
 				console.log("클림됨");
+				
+	            // 사용자 입력 내용 가져오기
+	            let chatContent = $("#write_chat_content_space").text().trim();
+	            if (chatContent === "") {
+	                return; // 입력 내용이 없으면 전송하지 않음
+	            }
+				
 				// 사용자idx
 				let myIdx = member_idx;
-				// 입력한 내용
-				let chatContent = $("#write_chat_content_space").text();
+				
+// 				// 입력한 내용
+// 				let chatContent = $("#write_chat_content_space").text();
+
 				// 사용사idx+///+채팅내용 을 변수에 넣고
 				let msg = myIdx + " /// " + chatContent;
+				
 				
 				/* 채팅 보낼 때 필요한 내용들 */
 				// 1) 채팅글idx
@@ -128,6 +135,26 @@
 				// 2) 사용자idx == myIdx
 				// 3) 채팅방idx
 				let chatroomIdx = <%=chatroomIdx%>;
+				
+	           // 서버에 메시지 저장 (AJAX 사용)
+	            $.ajax({
+	                url: context_path + "/Controller",
+	                method: "POST",
+	                data: {
+	                    command: "send_chat",
+	                    chatroomIdx: chatroomIdx,
+	                    memberIdx: myIdx,
+	                    content: chatContent
+	                },
+	                success: function(response) {
+	                    console.log("메시지가 서버에 저장되었습니다. chatIdx:", response.chatIdx);
+	                    chatIdx = response.chatIdx;
+	                },
+	                error: function(error) {
+	                    console.log("메시지 저장 중 오류 발생:", error);
+	                }
+	            });				
+				
 				// 4) 사용자의 프로필 이미지 
 				let myProfileImg = "<%=teamMember.getProfileUrl()%>";
 				// 5) 사용자의 이름
@@ -146,23 +173,10 @@
 				let hours = now.getHours();
 				const minutes = String(now.getMinutes()).padStart(2, '0');
 				const period = hours >= 12 ? 'PM' : 'AM';
-				// 12시간 형식으로 변환
-				hours = hours % 12;
+				hours = hours % 12; // 12시간 형식으로 변환
 				hours = hours ? String(hours).padStart(2, '0') : '12'; // 0을 12로 변환하고 두 자리로 맞춤
 				let nowTime = period + ' ' + hours + ':' + minutes;
 				console.log(nowTime);
-				
-// 				const now = new Date();
-// 				const year = now.getFullYear();
-// 				const month = String(now.getMonth() + 1).padStart(2, '0'); // 월을 두 자리로 맞춤
-// 				const date = String(now.getDate()).padStart(2, '0');       // 일을 두 자리로 맞춤
-// 				const hours = String(now.getHours()).padStart(2, '0');     // 시를 두 자리로 맞춤
-// 				const minutes = String(now.getMinutes()).padStart(2, '0'); // 분을 두 자리로 맞춤
-// 				const seconds = String(now.getSeconds()).padStart(2, '0'); // 초를 두 자리로 맞춤
-// 				// let nowDate = `${year}/${month}/${date} ${hours}:${minutes}:${seconds}`;
-// 				let nowDate = year + '/' + month + '/' + date + ' ' + hours + ':' + minutes + ':' + seconds;
-// 				console.log(nowDate);
-				
 				
 				// 10) 즐겨찾기 여부 
 				let bookmark = "ic_bookmark_off";
@@ -246,13 +260,9 @@
 				// 보낸 후 내 화면의 #div_content 요소의 맨 마지막 태그로 넣어줌(사용자의 화면)
  				$("#div_content").append(str);
  				scrollToBottom();
-//  				$("#div_content").animate({ scrollTop: $('#div_content').prop("scrollHeight")}, 1000);
 			});
 		});
-		
 	</script>	
-		
-		
 		
 </head>
 <body>
@@ -948,7 +958,6 @@
 		
 		
 		<!---------- 채팅방 생성하기 ---------->	
-<!-- 		<form id="form_create_chatroom" action="CreateChatroomServlet" method="post">	 -->
 		<form id="form_create_chatroom" action="Controller" method="post">	
 			<input type="hidden" name="command" value="create_chatroom"/>
 			<input type="hidden" name="teamIdx" value="<%=teamIdx%>"/>
@@ -987,9 +996,8 @@
 		
 		
 		
-		<!---------- 채팅방 중앙부  ---------->			
+	<!---------- 채팅방 중앙부  ---------->			
 	<div id="div_content" class="scrollbar">
-		<!--------------------------------------- 공지 --------------------------------------->
 		<!---------- 공지 등록하기---------->
 		<div id="div_notice_register" class="border"> 
 			<!-- 상단부 / div:nth-child(1) -->
@@ -1134,7 +1142,6 @@
 	</div><!-- div_content 닫는 태그 -->
 		
 	<!---------- 채팅방 하단 -채팅입력 ---------->		
-	<!-- 8.3(토) 테스트 중으로 폼 주석 처리 -->
 <!-- 	<form id="form_chat" action="ChatFileUploadServlet" method="post" enctype="multipart/form-data" > -->
 		<div id="div_bottom">
 			<!-- 채팅 입력창 -->
@@ -1271,8 +1278,6 @@
 						<div id="write_chat_comment_space" contenteditable="true" data-placeholder="댓글을 입력하세요..." class="scrollbar"></div>
 <!-- 						<input type="hidden" name="chat_conmment" id="hidden_chat_comment"> -->
 <%-- 			수정필요	<input type="hidden" name="chat_comment_idx" value="<%=chatContentsDto%>"> --%>
-<!-- 						<textarea rows="1" placeholder="댓글을 입력하세요..."></textarea> -->
-						<!-- <input type="text" name="comment" placeholder="댓글을 입력하세요..."/> -->
 						<div class="ic_comment_enter"></div>
 					</div>
 					<!-- 이모티콘, 언급, 파일 -->
@@ -1353,9 +1358,6 @@
 		</div>
 	</div> <!-- div_side_bookmark 닫는 태그 -->
 		
-
-	
-	
 	
 	<!--------------------------------------- 기타 팝업창 --------------------------------------->	
 	<!-- 투명판 -->
@@ -1398,19 +1400,6 @@
 		</div>
 	</div>
 	
-	<!-- (토픽의 팝업창 예시) 여기서부터 -->
-	<div id="delete_topic_pop_up" class="notification_pop_up">
-	    <div>토픽을 정말 삭제하시겠습니까?</div>
-	    <div>모든 메시지와 파일이 삭제되며 복구할 수 없습니다</div>
-	    <div>
-            <form action="${pageContext.request.contextPath}/jsp/DeleteTopic.jsp" id="deleteTopicForm" method="get">
-	            <input type="hidden" name="input_topicIdx" value="<%= request.getParameter("topicIdx") %>"/>
-	            <button type="button" class="btn btn_cancel">취소</button>
-	            <button type="submit" class="btn btn_danger" id="confirmDelete">확인</button>
-        	</form>
-	    </div>
-	</div>
-
 	<!-- 토픽 멤버 내보내기 시 알림창 -->
     <form action="Controller" id="removeChatroomMemberForm" method="post">
     	<input type="hidden" name="command" value="remove_chatroom_member"/>

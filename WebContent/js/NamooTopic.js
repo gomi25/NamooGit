@@ -1,11 +1,12 @@
 
 	//===================================== div_header =====================================			
+	// 로고 클릭 시 페이지 이동
 	$(function() {
 		$("#div_logo").click(function() {
-			location.href = context_path + "/NamooMainTool.jsp";
+			location.href = context_path + "/Controller?command=mainTool_choice&teamIdx=" + team_idx;
 		});
 		$("#pop_up_header_setting > div:nth-child(4)").click(function() {
-			location.href = context_path + "/NamooMainTool.jsp";
+			location.href = context_path + "/Controller?command=mainTool_choice&teamIdx=" + team_idx;
 		});
 	});		
 	
@@ -212,10 +213,6 @@
 			$("#search_all_room").css('display','block');
 			$("#div_grey_filter").css('display','block');
 		});
-//			$("#div_grey_filter").click(function() {
-//				$("#search_all_room").css('display','none');
-//				$("#div_grey_filter").css('display','none');
-//			});	
 
 		// [대화방 검색] 검색 시
 		$("#search_all_room input[name='member_search']").keyup(function(e) {
@@ -360,9 +357,7 @@
 				$(".list_view_option").css('display','none');
 			}
 		});
-//	});
 	
-//	$(function() {				
 	/********** 토픽 [+] 팝업창  - [더보기] 팝업창 **********/			
 		let isMenuOpen = false;		
 	
@@ -410,7 +405,7 @@
 			}
 		});
 
-	    // '수정' 버튼 클릭 시 댓글 수정 활성화
+	    // '수정' 버튼 클릭 시  수정 활성화
 		$(document).on("click", ".topic_folder_more_menu > div:nth-child(2)", function(e) {
 			$(".topic_folder_more_menu").hide();		
 	        // '수정' 버튼이 클릭된 div_comment 내에서 comment_item 요소를 찾음
@@ -703,7 +698,6 @@
 	$(function(){
 		$("#div_topicroom_list_body .topic_item > span").click(function () {
 			let topicIdx = $(this).parent(".topic_item").attr("topic_idx");
-//			location.href = context_path + "/NamooTopic.jsp?topicIdx=" + topicIdx;
 			location.href = context_path + "/Controller?command=topic_choice&teamIdx=" + team_idx + "&topicIdx=" + topicIdx;
 		});
 	});	
@@ -722,7 +716,6 @@
 	$(function(){
 		$("#div_chatroom_list_body > .topic_item > span").click(function () {
 			let chatroomIdx = $(this).parent(".topic_item").attr("chatroom_idx");
-//			location.href = context_path + "/NamooChat.jsp?chatroomIdx=" + chatroomIdx;
 			location.href = context_path + "/Controller?command=chatroom_choice&teamIdx=" + team_idx + "&chatroomIdx=" + chatroomIdx;
 		});
 	});		
@@ -800,7 +793,7 @@
 	});		
 	
 
-/****************************** 목록의 즐겨찾기 ******************************/		
+	/****************************** 목록의 즐겨찾기 ******************************/		
 	// 토픽 목록에 [즐겨찾기] 아이콘 클릭 시 즐겨찾기 등록 및 해제
 	$(function(){
 	 	// 이벤트 위임을 사용하여 동적으로 생성된 요소에도 이벤트가 바인딩되도록 수정
@@ -1433,12 +1426,6 @@
 	        $("#hidden_topic_board_idx").val(topicBoardIdx);			
 		});
 		
-//		// [게시글 수정] 팝업창에 있는 "수정" 버튼 클릭 시 팝업창 띄우기
-//		$("#div_update_topic_board #btn_update_topic_board").click(function() {
-//			// form 제출
-//	        $("#update_topic_form").submit();
-//		});
-		
 		// 팝업창 내 "x" 버튼 클릭 
 		$("#div_update_topic_board .exit").click(function() {
 			$("#div_update_topic_board").hide();
@@ -1816,58 +1803,11 @@
 	             	}
 	     	});
 
-
-
 		    }
 			
 		});
 	});			
 	
-	
-
-	
-	
-	
-
-
-		
-//		// 클릭 시 form 제출
-//		$(".ic_comment_enter").click(function() {
-//		    let commentContent = $(this).closest(".form_write_comment").find(".write_topic_comment_space").text();
-//		    $(this).closest(".form_write_comment").find("#hidden_board_comment").val(commentContent);
-//		    $(this).closest(".form_write_comment").submit();
-//		});
-//		
-//		// Enter 키 입력 이벤트
-//		$(".write_topic_comment_space").on('keyup', function(event) {
-//		    // Enter 키가 눌렸는지 확인 && shift키가 동시에 놀리지 않았는지 확인 (줄바꿈으로 사용 가능)
-//		    if (event.key === 'Enter' && !event.shiftKey) {
-//		        event.preventDefault(); // 기본 Enter 동작(줄바꿈) 방지
-//		        let commentContent = $(this).text();
-//		        $(this).closest(".form_write_comment").find("#hidden_board_comment").val(commentContent);
-//		        $(this).closest(".form_write_comment").submit();
-//		    }
-//		});
-
-		
-//		 클릭 시 form 제출
-//        $(".ic_comment_enter").click(function() {
-//			$(this).closest(".form_write_comment").submit();
-//        });
-//
-//         Enter 키 입력 이벤트 
-//        $(".write_topic_comment_space").on('keyup', function(event) {
-//            // Enter 키가 눌렸는지 확인 && shift키가 동시에 놀리지 않았는지 확인 (줄바꿈으로 사용 가능)
-//			if (event.key === 'Enter' && !event.shiftKey) {
-//                event.preventDefault(); // 기본 Enter 동작(줄바꿈) 방지
-//                $(this).closest(".form_write_comment").submit();
-//            }
-//        });
-
-//	    $('#writeTopicBoardForm').on('submit', function() {
-//	        $('#hidden_board_content').val($('#write_topic_board_space').text());
-//	    });
-
 
 	$(function(){
 		// [입력창] - 맨션(@) 클릭 시
@@ -1885,9 +1825,6 @@
 		});
 	});
 
-/*======= 테스트 중 ========*/
-
-
 	// 사용자 idx
 	$(function(){
 		$(".mention_member_list").each(function() {
@@ -1899,20 +1836,6 @@
 			}
 		});
 	});
-	
-	// 참고하고 지우기 ↓
-	// 토픽글 [더보기] 클릭
-//		$(".div_content_center .more_menu_box").click(function(){
-//			// 판단.  
-//			let writer = $(this).parents(".content_board").attr("writer");
-//			if(writer==$("#div_profile_box").attr("member_idx")) {
-//				$(this).next(".div_board_more_menu_mine").css('display','block');		  // 내 토픽글의 [더보기]
-//			} else {
-//				$(this).next().next(".div_board_more_menu_other").css('display','block'); // 상대 토픽글의 [더보기]
-//			}
-//			$("#div_transparent_filter").css('display','block');
-//		});
-	
 	
 
 //===================================== 토픽방 - 토픽글 - [더보기] =====================================	
@@ -1943,26 +1866,10 @@
 			$("#div_transparent_filter").css('display','none');
 		});
 		
-		/*$(".div_content_center .more_menu_box").click(function(){
-			// 판단.  
-			let writer = $(this).parents(".content_board").attr("writer");
-			if(writer==$("#div_profile_box").attr("member_idx")) {
-				$(this).next(".div_board_more_menu_mine").css('display','block');		  // 내 토픽글의 [더보기]
-			} else {
-				$(this).next().next(".div_board_more_menu_other").css('display','block'); // 상대 토픽글의 [더보기]
-			}
-			$("#div_transparent_filter").css('display','block');
-		});*/
-		/*$("#div_transparent_filter").click(function() {
-			$(".div_board_more_menu_mine").css('display','none');	// 내 토픽글의 [더보기]
-			$(".div_board_more_menu_other").css('display','none');	// 상대 토픽글의 [더보기]
-			$("#div_transparent_filter").css('display','none');
-		});*/
 	});	
 	
 	// 토픽글 - [더보기]
 	$(function() {			
-		
 		// 토픽방 - 토픽글 - [더보기] - [공지등록] 클릭 시
 		$(".div_board_more_menu_mine > div:nth-child(1)").click(function(){
 			$("#div_transparent_filter").css('display','none');
@@ -2224,17 +2131,6 @@
 	     	});
 	    });
 
-/*<원본>  // 팝업창 내 "확인" 버튼 클릭 
-	    $('#delete_topic_comment_pop_up .btn_danger').click(function() {
-	        // 팝업창 닫기
-	        $('#delete_topic_comment_pop_up').hide();
-	        $('#div_grey_filter').hide();
-	
-	        // deleteTopicBoard.jsp로 이동하여 삭제 수행
-	        location.href = context_path + '/jsp/DeleteTopicComment.jsp?topicCommentIdx=' + topicCommentIdx;
-	    });*/
-	
-	    // 팝업창 내 "취소" 버튼 클릭 
 	    $('#delete_topic_comment_pop_up .btn_cancel').click(function() {
 	        // 팝업창 닫기
 	        $('#delete_topic_comment_pop_up').hide();
@@ -2315,12 +2211,6 @@
 		});
 	});	
 	
-	
-	
-	
-	
-	
-	
 	// 파일 null일 경우 display:none 처리하는 방법
 	$(document).ready(function() {
 	  // (토픽글) 모든 .article_file 요소를 반복 처리
@@ -2347,12 +2237,6 @@
 	    }
 	  });
 	});
-	
-	
-	
-	
-	
-	
 
 	//===================================== 즐겨찾기창 =====================================				
 	$(function() {

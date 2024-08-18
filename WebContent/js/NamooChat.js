@@ -1,11 +1,3 @@
-	//		$(".div_member_list2").each(function(idx, item) {
-	//			alert(idx + " : " + $(item).find(".profile_name").text());
-	//		});			
-	//		let doo = $(".div_member_list2").eq(0).find(".profile_name").text();
-	//		let se = $(".div_member_list2").eq(1).find(".profile_name").text();
-	//		alert(doo + " , " + se);
-
-		
 	//=====================================댓글 모두 보기 클릭=====================================			
 		$(function() {
 			// x 클릭 시 #div_side_message 사라지고 기존 화면대로 돌아감
@@ -25,15 +17,15 @@
 		});
 	
 	//===================================== div_header =====================================			
+	// 로고 클릭 시 페이지 이동
 	$(function() {
 		$("#div_logo").click(function() {
-			location.href = context_path + "/NamooMainTool.jsp";
+			location.href = context_path + "/Controller?command=mainTool_choice&teamIdx=" + team_idx;
 		});
 		$("#pop_up_header_setting > div:nth-child(4)").click(function() {
-			location.href = context_path + "/NamooMainTool.jsp";
+			location.href = context_path + "/Controller?command=mainTool_choice&teamIdx=" + team_idx;
 		});
-		
-	});		
+	});			
 	
 	$(function() {		
 		// 최상단의 [메뉴] 클릭 시  #pop_up_header_menu
@@ -56,19 +48,13 @@
 		});	
 	});
 
-
-			
-//===================================== div_side1 =====================================	
+	//===================================== div_side1 =====================================	
 	$(function() {		
 		// [대화방 검색] 팝업창
 		$("#div_room_search > div").click(function() {
 			$("#search_all_room").css('display','block');
 			$("#div_grey_filter").css('display','block');
 		});
-//			$("#div_grey_filter").click(function() {
-//				$("#search_all_room").css('display','none');
-//				$("#div_grey_filter").css('display','none');
-//			});	
 
 		// [대화방 검색] 검색 시
 		$("#search_all_room input[name='member_search']").keyup(function(e) {
@@ -213,10 +199,8 @@
 				$(".list_view_option").css('display','none');
 			}
 		});
-//	});
 	
-//	$(function() {				
-	/********** 토픽 [+] 팝업창  - [더보기] 팝업창 **********/				
+		/********** 토픽 [+] 팝업창  - [더보기] 팝업창 **********/				
 		let isMenuOpen = false;		
 	
 		// 토픽폴더 [더보기] 클릭 
@@ -554,7 +538,6 @@
 	$(function(){
 		$("#div_topicroom_list_body .topic_item > span").click(function () {
 			let topicIdx = $(this).parent(".topic_item").attr("topic_idx");
-//			location.href = context_path + "/NamooTopic.jsp?topicIdx=" + topicIdx;
 			location.href = context_path + "/Controller?command=topic_choice&teamIdx=" + team_idx + "&topicIdx=" + topicIdx;
 		});
 	});	
@@ -573,7 +556,6 @@
 	$(function(){
 		$("#div_chatroom_list_body > .topic_item > span").click(function () {
 			let chatroomIdx = $(this).parent(".topic_item").attr("chatroom_idx");
-//			location.href = context_path + "/NamooChat.jsp?chatroomIdx=" + chatroomIdx;
 			location.href = context_path + "/Controller?command=chatroom_choice&teamIdx=" + team_idx + "&chatroomIdx=" + chatroomIdx;
 		});
 		$("#div_chatroom_list_header > .ic_plus").click(function () {
@@ -619,8 +601,8 @@
 		});
 	});
 	
-//===================================== div_side2 =====================================				
-//===================================== 채팅방 상단바 =====================================						
+	//===================================== div_side2 =====================================				
+	//===================================== 채팅방 상단바 =====================================						
 	$(function() {	
 		// 채팅 - 즐겨찾기 등록 및 해제
         $("#div_title > div:nth-child(1) > div:nth-child(2)").click(function(){
@@ -689,7 +671,6 @@
 		// [참여멤버] ".profile_power"쪽에 마우스 커서 올리면  
 		// ".ic_exit_chatroom" 보이도록
 		$(document).on('mouseover', '.div_participants .div_member_list', function() {
-//		$(".div_participants .div_member_list").mouseover(function(){
 			$(".div_participants .ic_exit_chatroom").show();
 		});
 		// 마우스 커서 벗어나면 채팅방 제목 및 설명 팝업 사라짐
@@ -700,7 +681,6 @@
 		$("#remove_chatroomMember_pop_up .btn_ok").click(function(){
 			$("#div_grey_filter").hide();
 			$("#remove_topicMember_pop_up").hide();
-		//	location.href = context_path + '/jsp/RemoveMemberInThisTopic.jsp?removeMemberIdx=' + removeMemberIdx;
 		});
 		$("#remove_chatroomMember_pop_up .btn_cancel").click(function(){
 			$("#div_grey_filter").hide();
@@ -1016,7 +996,7 @@
 			$('[data-toggle="tooltip"]').tooltip();
 			
 
-//=====================================채팅방  내부=====================================			
+	//=====================================채팅방  내부=====================================			
 			// 채팅방 상단바 더보기 클릭 - 공지등록하기 클릭 시 팝업창 뜨도록 
 			$("#div_chatroom_more_menu > div:nth-child(1)").click(function() {
 				$("#div_notice_register").css('display','block');
@@ -1040,7 +1020,7 @@
 		
 		
 		
-//===================================== 채팅방 - 채팅글 - [입력창] =====================================
+	//===================================== 채팅방 - 채팅글 - [입력창] =====================================
 	// [입력창] - 채팅글 작성 
 	$(function() {
 		const $write_chat_content_space = $('#write_chat_content_space');
@@ -1065,170 +1045,6 @@
 	});		
 	
 	
-/* 8.3(토) 테스트 중에 잠깐 주석처리!
-	// 채팅글 작성
-	$(function() {
-		// document에 이벤트 리스너를 설정하여 현재 존재하지 않는 요소에도 이벤트를 처리할 수 있게 함
-		$(document).on("keyup", "#write_chat_content_space", function(){
-            if (event.shiftKey) {
-				// Shift 키가 눌린 상태에서 키를 뗀 경우, 현재 커서 위치에 줄 바꿈을 삽입
-                document.execCommand('insertLineBreak');	// document.execCommand 메서드를 사용하여 현재 커서 위치에 줄 바꿈을 삽입
-            } 
-	    });
-		
-		// 파일 업로드 시 - 미리보기
-		$("#upload_file_chat_content").on("change", function(e) {
-			let files = e.target.files;
-			let reader = new FileReader();
-			reader.readAsDataURL(files[0]);
-			reader.onload = function(e) {
-				$("#div_msg_blank > div:first-child > img").attr("src", e.target.result);
-				$("#div_msg_blank > div:first-child > img").css("display", "block");
-				$("#div_msg_blank > div:first-child > img").css("object-fit", "cover");
-				$("#div_msg_blank > div:first-child").css("display", "block");
-				$("#div_msg_blank > div:nth-child(2)").css("width", "96%");
-				$("#div_msg_blank > .ic_comment_enter").css("right", "30px");
-			}
-		});
-		
-		// form 제출
-		$("#form_chat").submit(function(event) {
-	        $("#hidden_chat_content").val($("#write_chat_content_space").text().trim());
-	        // $("#hidden_chatroom_idx").val();
-		});	
-
-		// 전송버튼 클릭 시 
-		$(".ic_comment_enter").click(function() {
-			// 채팅글 폼 제출될 때 "입력한 내용" & "채팅방idx" 값 제출 
-			$("#form_chat").submit();
-	    });		
-    });
- */
-		
-		
-		// ajax 방식 - 채팅글 ".ic_comment_enter" 버튼 클릭 시
-/*		$(document).on("click", ".ic_comment_enter", function(){
-			return;			
-			let chatroomIdx = $(this).parents("#div_bottom").siblings("#div_title").attr("chatroom_idx");
-			let chatContent = $(this).siblings("#write_chat_content_space").text(); 
-			let params = { 	chatroom_idx : chatroomIdx, 
-						   	chat_content : chatContent,
-							team_idx : team_idx,
-							member_idx : member_idx };
-			let _this = $(this);
-			
-			$.ajax({
-		            type : "POST",           
-		            url : "AjaxWriteChatContentServlet",	
-	             	data : params,   
-	             	success : function(res){  
-						console.log(res);
-						alert(res.result);
-						
-						let chat_idx = res.chatIdx;
-						let state = res.state;
-						let profileImgUrl = $("#div_profile_box > img").attr("src");
-						let name = $("#div_profile_box > div").text();
-						let unreadCnt = parseInt($("#div_title > div:nth-child(2) > div:nth-child(2)").text().trim())-1;
-						let date = new Date();
-						let hours = date.getHours();
-						let minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-						let period = hours >= 12 ? "PM" : "AM";
-						hours = hours % 12;
-						hours = hours ? hours : 12; // 0을 12로 변환
-						let formattedDate = period + " " + hours + ":" + minutes;
-						
-						let str = 
-							  '<div class="chat_message" chat_idx="' + chat_idx + '"writer="'+ member_idx +'">'
-							+ ' <div class="fl">'
-							+ '	 <img class="profile_img" src="' + profileImgUrl + '"/>'
-							+ ' </div>'
-							+ ' <div class="fl">'
-							+ '	 <div class="profile_name">' + name + '<span> - ' + state + '</span>'
-							+ '  </div>'
-							+ '	 <div class="msg">'
-							+ 		chatContent
-							+ '		<span class="unread">' + unreadCnt + '</span>' 
-							+ '		<span class="time">'+ formattedDate +'</span>'
-							+ '  </div>'
-							+ ' </div>'
-							+ ' <div style="clear:both;"></div>'
-							+ '</div>';
-						
-						_this.closest("#div_bottom").siblings("#div_content").append(str);
-						_this.siblings("#write_chat_content_space").text('');
-					},
-	             	error : function(XMLHttpRequest, textStatus, errorThrown){ 
-	                	    		alert("통신 실패.")
-	             	}
-	     	});
-		});
-		
-		// 채팅글에서 [Enter] 입력 시
-		$(document).on("keydown", "#write_chat_content_space", function(){		
-			event.stopPropagation();
-			
-		    // Enter 키가 눌렸는지 확인 && shift키가 동시에 놀리지 않았는지 확인 (줄바꿈으로 사용 가능)
-		    if (event.key === 'Enter' && !event.shiftKey) {
-		        event.preventDefault(); // 기본 Enter 동작(줄바꿈) 방지
-				let chatroomIdx = $(this).parents("#div_bottom").siblings("#div_title").attr("chatroom_idx");
-				let chatContent = $(this).text(); 
-				let params = { 	chatroom_idx : chatroomIdx, 
-							   	chat_content : chatContent,
-								team_idx : team_idx,
-								member_idx : member_idx };
-				let _this = $(this);
-	
-				// 여기여기
-				$.ajax({
-			            type : "POST",           
-			            url : "AjaxWriteChatContentServlet",	
-		             	data : params,   
-		             	success : function(res){  
-							
-							let chat_idx = res.chatIdx;
-							let state = res.state;
-							let profileImgUrl = $("#div_profile_box > img").attr("src");
-							let name = $("#div_profile_box > div").text();
-							let unreadCnt = parseInt($("#div_title > div:nth-child(2) > div:nth-child(2)").text().trim())-1;
-							let date = new Date();
-							let hours = date.getHours();
-							let minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-							let period = hours >= 12 ? "PM" : "AM";
-							hours = hours % 12;
-							hours = hours ? hours : 12; // 0을 12로 변환
-							let formattedDate = period + " " + hours + ":" + minutes;
-							
-							let str = 
-								  '<div class="chat_message" chat_idx="' + chat_idx + '"writer="'+ member_idx +'">'
-								+ ' <div class="fl">'
-								+ '	 <img class="profile_img" src="' + profileImgUrl + '"/>'
-								+ ' </div>'
-								+ ' <div class="fl">'
-								+ '	 <div class="profile_name">' + name + '<span> - ' + state + '</span>'
-								+ '  </div>'
-								+ '	 <div class="msg">'
-								+ 		chatContent
-								+ '		<span class="unread">' + unreadCnt + '</span>' 
-								+ '		<span class="time">'+ formattedDate +'</span>'
-								+ '  </div>'
-								+ ' </div>'
-								+ ' <div style="clear:both;"></div>'
-								+ '</div>';
-							
-							_this.closest("#div_bottom").siblings("#div_content").append(str);
-							_this.text('');
-						},
-		             	error : function(XMLHttpRequest, textStatus, errorThrown){ 
-		                	    		alert("통신 실패.")
-		             	}
-		     	});
-				
-		    }
-			
-		});*/
-
-
 
 
 	//===================================== 채팅방 - 채팅글 - [더보기] =====================================	
