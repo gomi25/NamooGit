@@ -19,6 +19,7 @@ a{ text-decoration-line: none; color: inherit;}
 	border-radius: 15px;
 	background-color:#fff;
 	box-shadow: 10px 10px 20px rgba(0, 0, 0, .2), 0 0 10px rgba(0, 0, 0, .1);
+	display: none;
 }
 #start_talk { /* 채팅목록 초기화면 */
 	margin: 0 auto;
@@ -208,7 +209,6 @@ a{ text-decoration-line: none; color: inherit;}
 	border-radius: 15px;
 	background-color: #fff;
 	box-shadow: 10px 10px 20px rgba(0, 0, 0, .2), 0 0 10px rgba(0, 0, 0, .1);
-	/* display: none; */
 }
 .profile{ /* 나무 매니저 프로필 */
 	background: url("https://cf.channel.io/thumb/200x200/pub-file/124098/6513bf3a31f765d54a8e/tmp-2920076808") 
