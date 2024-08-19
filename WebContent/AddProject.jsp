@@ -7,8 +7,9 @@
     pageEncoding="UTF-8"%>
 <%
  	int memberIdx = 2;   // 테스트
-	//int memberIdx = (Integer)session.getAttribute("memberIdx");
 	int teamIdx = 1;     // 테스트 중
+	//int memberIdx = (Integer)session.getAttribute("memberIdx");
+	//int teamIdx = (Integer)request.getAttribute("teamIdx");
 	
 	int cntUnreadTotal = 0; // 토픽방에서 안 읽은 메시지 전체 개수 
 	int cntOfTopic = 0;     // 토픽방 개수

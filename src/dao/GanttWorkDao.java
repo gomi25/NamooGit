@@ -33,16 +33,53 @@ public class GanttWorkDao {
 	
 	// deleteGanttWorkMember: 간트 업무 멤버 삭제
 	// 파라미터: work_idx(업무idx), member_idx(업무 담당 멤버idx)
-	public void deleteGanttWorkMember(int workIdx, int memberIdx) throws Exception { 
-		Connection conn = getConnection();
-		String sql = "DELETE FROM work_member WHERE work_idx = ? AND member_idx = ?";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		pstmt.setInt(1, workIdx);
-		pstmt.setInt(2, memberIdx);
-		pstmt.executeUpdate();
-  
-		pstmt.close();
-		conn.close();
+//	public void deleteGanttWorkMember(int workIdx, int memberIdx) throws Exception { 
+//		Connection conn = getConnection();
+//		String sql = "DELETE FROM work_member WHERE work_idx = ? AND member_idx = ?";
+//		PreparedStatement pstmt = conn.prepareStatement(sql);
+//		pstmt.setInt(1, workIdx);
+//		pstmt.setInt(2, memberIdx);
+//		pstmt.executeUpdate();
+//  
+//		pstmt.close();
+//		conn.close();
+//	}
+	
+	
+	public void deleteGanttWorkMember(int workIdx, int memberIdx) {
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    
+	    try {
+	        conn = getConnection();
+	        
+	        String sql = "DELETE FROM work_member WHERE work_idx = ? AND member_idx = ?";
+	        pstmt = conn.prepareStatement(sql);
+	        
+	        pstmt.setInt(1, workIdx);
+	        pstmt.setInt(2, memberIdx);
+	        
+	        pstmt.executeUpdate();
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        
+	    } finally {
+	        try {
+	            if (pstmt != null) {
+	                pstmt.close();
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        try {
+	            if (conn != null) {
+	                conn.close();
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
 	}
 	
 	// deleteGanttWork: 간트 업무 삭제  
