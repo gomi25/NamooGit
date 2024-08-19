@@ -61,8 +61,6 @@ public class GanttGroupDao {
 	    }
 	}
 	
-	
-	
 //-------------------------SELECT-------------------------------	
 	
 	// getGanttGroupName : 간트차트 그룹명, 그룹개수 출력  

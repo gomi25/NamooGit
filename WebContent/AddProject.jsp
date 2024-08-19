@@ -190,10 +190,7 @@
 								<span class="fl room_name"><%=tDto.getName()%></span>
 							</div>
 						</div>
-						<%
-							}
-						%>
-						
+						<% } %>
 						<% 
 							for(ChatroomDto chatDto : listChatroom) { 
 								ArrayList<String> listImgUrls = sDao.getChatroomMembersImageUrl(chatDto.getChatroomIdx(), memberIdx);
@@ -244,7 +241,6 @@
 						새 토픽 생성하기
 					</button>
 				</div>
-			
 			</div>				
 		
 		<!---------- 토픽방 목록 / header ---------->			
@@ -299,15 +295,10 @@
 							<%= topicDto.getUnread() >=1 ? topicDto.getUnread() : "" %>
 						</div>
 					</div>
-					<%
-						}
-					%>
+					<% } %>
 				</div>
 			</div>		
-			<%
-			}
-			%>		
-			
+			<% } %>
 			<%
 				for(TopicDto topicDto : listTopic){
 			%>
@@ -319,10 +310,7 @@
 					<%= topicDto.getUnread() >=1 ? topicDto.getUnread() : "" %>
 				</div>
 			</div>
-			<%
-				}
-			%>
-
+			<% } %>
 		</div><!-- div_topicroom_list_body 닫는 태그 -->
 
 		<!---------- 프로젝트 목록 ---------->	
@@ -496,7 +484,6 @@
 					<div class="check fr"></div>
 				</div>
 			</div>
-	
 		</div> <!-- div_side1의 div닫는태그 -->
 	
 	<!-- 프로젝트 만들기 -->
@@ -513,9 +500,8 @@
 		
 						<% for(int i=0; i<=11; i++) { %>
 								<div><div id="blue" class="color_select<%=i+1 %>"></div><input class="ab radio" type="radio" name="color_select" value="<%= i + 1 %>"/></div>
-						<%} %>
+						<% } %>
 							
-						
 					</div>
 					<div id="project_button" ><button>프로젝트 생성</button></div>
 				</div>
@@ -528,7 +514,6 @@
 			</div>
 		</form>
 </div> 
-
 
 	<!--------------------------------------- 즐겨찾기 창 --------------------------------------->	
 	<div id="div_side_bookmark">
@@ -588,7 +573,6 @@
 			}
 		}	
 		%>	
-		
 			<div class="bookmark_ending_item">
 				<div class="ic_ending"></div>
 			</div>
