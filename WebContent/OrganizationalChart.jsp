@@ -61,56 +61,51 @@
 	/* ProjectDao projectDao = new ProjectDao();
 	ArrayList<ProjectBookmarkDto> projectList = projectDao.checkProjectName(teamIdx); */
 
-
-
-
-
-		//조직도
-		int memberIdxFrom = memberIdx;
-    	//	int memberIdx = (Integer)session.getAttribute("memberIdx");
-    	//	int teamIdx =(Integer)session.getAttribute("teamIdx");
-    	
-        OrganizationalChartDao odao = new OrganizationalChartDao();
-        ArrayList<OrganizationalMemberListDto> listMember = null;
-        ArrayList<OrganizationalBookmarkMemberListDto> bookmarkMember = null;
-        
-        ArrayList<MemberProfileDto> memberProfile = null;
-        
-        try {
-            listMember = odao.getOrganizationalMemberList(teamIdx, memberIdxFrom);
-            bookmarkMember = odao.getOrganizationalBookmarkMemberList(teamIdx, memberIdxFrom);
-            memberProfile = odao.getMemberProfile(teamIdx);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+	//조직도
+	int memberIdxFrom = memberIdx;
+   	//	int memberIdx = (Integer)session.getAttribute("memberIdx");
+   	//	int teamIdx =(Integer)session.getAttribute("teamIdx");
+   	
+       OrganizationalChartDao odao = new OrganizationalChartDao();
+       ArrayList<OrganizationalMemberListDto> listMember = null;
+       ArrayList<OrganizationalBookmarkMemberListDto> bookmarkMember = null;
+       
+       ArrayList<MemberProfileDto> memberProfile = null;
+       
+       try {
+           listMember = odao.getOrganizationalMemberList(teamIdx, memberIdxFrom);
+           bookmarkMember = odao.getOrganizationalBookmarkMemberList(teamIdx, memberIdxFrom);
+           memberProfile = odao.getMemberProfile(teamIdx);
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
         
         
 
-    	// 팀이름 가지고 오기
-        String teamName = "";
-        try {
-            teamName = odao.checkOrganizationalTeamName(teamIdx);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        
-        // 팀의 인원수
-        int memberCount = 0;
-        try {
-            memberCount = odao.checkOrganizationalMemberCount(teamIdx);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // 즐겨찾기 멤버수
-        int bookmarkMemberCount = 0;
-        try {
-        	bookmarkMemberCount = odao.checkOrganizationalBookmarkMemberCount(teamIdx);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+   	// 팀이름 가지고 오기
+       String teamName = "";
+       try {
+           teamName = odao.checkOrganizationalTeamName(teamIdx);
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+       
+       
+       // 팀의 인원수
+       int memberCount = 0;
+       try {
+           memberCount = odao.checkOrganizationalMemberCount(teamIdx);
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+       // 즐겨찾기 멤버수
+       int bookmarkMemberCount = 0;
+       try {
+       	bookmarkMemberCount = odao.checkOrganizationalBookmarkMemberCount(teamIdx);
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
     %>
-
 
 
 <!DOCTYPE html>
@@ -242,9 +237,7 @@
 								<span class="fl room_name"><%=tDto.getName()%></span>
 							</div>
 						</div>
-						<%
-							}
-						%>
+						<% } %>
 						
 						<% 
 							for(ChatroomDto chatDto : listChatroom) { 
@@ -296,7 +289,6 @@
 						새 토픽 생성하기
 					</button>
 				</div>
-			
 			</div>				
 		
 		<!---------- 토픽방 목록 / header ---------->			
@@ -351,14 +343,10 @@
 							<%= topicDto.getUnread() >=1 ? topicDto.getUnread() : "" %>
 						</div>
 					</div>
-					<%
-						}
-					%>
+					<% } %>
 				</div>
 			</div>		
-			<%
-			}
-			%>		
+			<% } %>		
 			
 			<%
 				for(TopicDto topicDto : listTopic){
@@ -371,12 +359,8 @@
 					<%= topicDto.getUnread() >=1 ? topicDto.getUnread() : "" %>
 				</div>
 			</div>
-			<%
-				}
-			%>
-
+			<% } %>
 		</div><!-- div_topicroom_list_body 닫는 태그 -->
-
 
 		<!---------- 프로젝트 목록 ---------->	
 		<div id="div_project_list_header">
@@ -430,7 +414,6 @@
 					<div class="exit"></div>
 				</div>
 			<%  } %>
-			
 		</div>
 		
 	<!--------------------------------------- div_side1 - 팝업창 --------------------------------------->
@@ -504,7 +487,6 @@
 					<button class="fr" type="submit" id="new_topic">생성하기</button>
 					<button class="fr" id="">닫기</button>
 				</div>
-				
 			</div>
 		</form>
 		
@@ -561,10 +543,7 @@
 			</div>
 	
 		</div> <!-- div_side1의 div닫는태그 -->
-	
-	
-	
-	
+
 	<!--------------------------------------- 채팅방 --------------------------------------->
 	<div id="div_side2" class="wide fl">
 		
@@ -602,15 +581,12 @@
 				</div>
 			</div> <!-- div_create_chatroom 닫는 태그 --> 
 		</form>	<!-- form_create_chatroom --> 
-		
 	
 	<div class="div_side2_container"></div>	<!-- side2에 아무것도 없을 경우 뜨도록  -->			
 	
 	</div>	<!-- div_side2 닫는 태그 -->
 </div> <!-- div_total_side 닫는 태그 -->	
 
-
-	
 	<!--------------------------------------- 즐겨찾기 창 --------------------------------------->	
 	<div id="div_side_bookmark">
 		<div id="bookmark_header">
@@ -670,13 +646,11 @@
 		}	
 		%>	
 		
-			
 			<div class="bookmark_ending_item">
 				<div class="ic_ending"></div>
 			</div>
 		</div>
 	</div> <!-- div_side_bookmark 닫는 태그 -->
-
 	
 	<!----------------조직도-------------------------->	
 	<!---------------- 부서 -------------------->
@@ -767,7 +741,6 @@
 						
 					</div>
 				</div>
-				
 			</div>
 			
 		<!---------------- 멤버 -------------------->	
@@ -862,9 +835,6 @@
 				<% } %>
 				<% } %> 
 				
-				
-				
-				
 				<!-- 로그인 멤버 상세 프로필 -->
 			 	<% for (MemberProfileDto mpDto : memberProfile) { %>
 				<% if (mpDto.getMemberIdx() == memberIdx ) { %> 
@@ -888,7 +858,6 @@
 						<div id="inner2">
 							<button class="inner2_button"><div>@멘션 확인하기</div></button>
 						</div>
-						
 						<div id="inner3">
 							<table>
 								<tr>
@@ -923,24 +892,17 @@
 						</div>
 					</div> 
 					<% } %> 
-					<% } %> 
+				<% } %> 
 		</div>
 	</div>
-	
-	
-		
 	
 	<!--------------------------------------- 기타 팝업창 --------------------------------------->	
 	<!-- 투명판 -->
 	<div id="div_transparent_filter"></div>
 	<!-- 회색판 -->
 	<div id="div_grey_filter"></div>
-	
 
-	
-	
 	<div style="clear:both;"></div>
-
 
 </body>
 </html>
