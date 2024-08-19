@@ -7,6 +7,11 @@ $(function(){
 	} else{
 		$("#div_service_talk1_1").show();
 	}*/
+	$(".enter_service_talk").click(function(){
+		$("#div_service_talk2").css('display','block');
+		$("#div_service_talk1").css('display','block');
+		$("#div_service_talk1_1").css('display','block');
+	});
 	// 톡방 : 클릭시 톡방 나가기 창 뜸 		
 	$(".header_quit").click(function() { 
 		$("#quit_service_talk").css('display', 'block');
@@ -42,7 +47,7 @@ $(function(){
 				//alert("서비스톡 생성 되었습니다.");		
 				//alert(data.result);  // 성공		
 				let service_talkroom_idx = data.service_talkroom_idx;
-				location.href = "NamooServiceTalk.jsp?service_talkroom_idx=" + service_talkroom_idx;
+				location.href = "NamooMainTool.jsp?service_talkroom_idx=" + service_talkroom_idx;
 				//$("#div_service_talk2").css('display','block');
 		    },
 		    error: function (data, status, err) {
@@ -51,7 +56,7 @@ $(function(){
 		});
 	});
 	$(".header_back").click(function(){
-		location.href = "NamooServiceTalk.jsp";
+		location.href = "NamooMainTool.jsp";
 		/*
 		alert("!");
 		let member_idx = $("#div_service_talk1_1").attr("member_idx");
@@ -69,7 +74,7 @@ $(function(){
 	$(".div_talk_room").click(function(){
 		let talkroomIdx = $(this).attr("talkroom_idx");
 		//alert("talkroomIdx = " + talkroomIdx);
-		let url = "NamooServiceTalk.jsp?service_talkroom_idx=" + talkroomIdx;
+		let url = "NamooMainTool.jsp?service_talkroom_idx=" + talkroomIdx;
 		location.href = url;
 	});
 	

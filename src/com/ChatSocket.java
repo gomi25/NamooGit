@@ -10,7 +10,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-@ServerEndpoint("/namooChatBroadcasting")
+@ServerEndpoint("/broadcasting")
 public class ChatSocket {
 	public static Set<Session> setClients = Collections.synchronizedSet(new HashSet<Session>());
 	
