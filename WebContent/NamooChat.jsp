@@ -104,7 +104,7 @@
 			alert("ERROR!")
 		}
 		
-		let webSocket = new WebSocket("ws://localhost:9090/NamooPractice1/namooChatBroadcasting");
+		let webSocket = new WebSocket("ws://localhost:9090/NamooGit/namooChatBroadcasting");
 		webSocket.onmessage = func_on_message;
 		webSocket.onopen = func_on_open;
 		webSocket.onerror = func_on_error;
