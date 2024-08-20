@@ -27,7 +27,7 @@ public class SideDao {
 	// getTeamMemberList(int): 팀 멤버 전체 조회하는 기능		
 	// 파라미터 : team_idx
 	// 리턴 : 팀 멤버 정보 리스트(team_idx, member_idx, profile_pic_url, name, department, position, power)
-	public ArrayList<TeamMemberDto> getTeamMemberList(int teamIdx) throws Exception {
+	public ArrayList<TeamMemberDto> getTeamMemberList(int teamIdx)  {
 		ArrayList<TeamMemberDto> listRet = new ArrayList<TeamMemberDto>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -72,7 +72,7 @@ public class SideDao {
 	// getTeamMember(int, int): 팀 멤버 정보 조회하는 기능		
 	// 파라미터 : team_idx, member_idx
 	// 리턴 : team_idx, member_idx, profile_pic_url, name, department, position, power
-	public TeamMemberDto getTeamMember(int teamIdx, int memberIdx) throws Exception {
+	public TeamMemberDto getTeamMember(int teamIdx, int memberIdx)  {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -117,7 +117,7 @@ public class SideDao {
 	// getFolderList(int, int): 특정 대상자의 폴더 리스트를 조회하는 기능
 	// 파라미터: member_idx, team_idx
 	// 리턴: 폴더 정보 리스트(topic_folder_idx, name)
-	public ArrayList<FolderBoxDto> getFolderList(int memberIdx, int teamIdx) throws Exception {
+	public ArrayList<FolderBoxDto> getFolderList(int memberIdx, int teamIdx)  {
 		ArrayList<FolderBoxDto> listRet = new ArrayList<FolderBoxDto>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -156,7 +156,7 @@ public class SideDao {
 	// getTopicListFromFolderIdx(int, int): 특정 폴더에 포함된 토픽 목록 조회하는 기능
 	// 파라미터 : member_idx, topic_folder_idx
 	// 리턴 : 폴더 안 토픽 정보 리스트(topic_idx, name, information, team_idx, open, alarm, unread, bookmark_count)
-	public ArrayList<TopicDto> getTopicListFromFolderIdx(int memberIdx, int topicFolderIdx) throws Exception {
+	public ArrayList<TopicDto> getTopicListFromFolderIdx(int memberIdx, int topicFolderIdx)  {
 		ArrayList<TopicDto> listRet = new ArrayList<TopicDto>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -205,7 +205,7 @@ public class SideDao {
 	// getTopicListOutside(int, int): (폴더 밖) 토픽 목록하는 조회하는 기능
 	// 파라미터 : member_idx, team_idx
 	// 리턴 : 폴더 밖 토픽 정보 리스트 (topic_idx, name, information, team_idx, open, alarm, unread, bookmark_count
-	public ArrayList<TopicDto> getTopicListOutside(int memberIdx, int teamIdx) throws Exception {
+	public ArrayList<TopicDto> getTopicListOutside(int memberIdx, int teamIdx)  {
 		ArrayList<TopicDto> listRet = new ArrayList<TopicDto>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -267,7 +267,7 @@ public class SideDao {
 	// getAllTopicList(int, int): 전체  토픽 조회하는 기능
 	// 파라미터 : member_idx 
 	// 리턴 :전체 토픽 리스트 정보(topic_idx, name, information, team_idx, open, alarm, unread, bookmark_count)
-	public ArrayList<TopicDto> getAllTopicList(int memberIdx, int teamIdx) throws Exception {
+	public ArrayList<TopicDto> getAllTopicList(int memberIdx, int teamIdx)  {
 		ArrayList<TopicDto> listRet = new ArrayList<TopicDto>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -317,7 +317,7 @@ public class SideDao {
 	// getChatroomMembersImageUrl(int, int): 채팅방 멤버 이미지url
 	// 파라미터: chatroom_idx, member_idx
 	// 리턴: profile_pic_url
-	public ArrayList<String> getChatroomMembersImageUrl(int chatroomIdx, int memberIdxMe) throws Exception {
+	public ArrayList<String> getChatroomMembersImageUrl(int chatroomIdx, int memberIdxMe)  {
 		ArrayList<String> listRet = new ArrayList<String>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -356,7 +356,7 @@ public class SideDao {
 	// getChatroomList(int, int): 채팅방 목록 조회하는 기능
 	// 파라미터: member_idx, team_idx
 	// 리턴: 채팅방리스트
-	public ArrayList<ChatroomDto> getChatroomList(int memberIdx, int teamIdx) throws Exception {
+	public ArrayList<ChatroomDto> getChatroomList(int memberIdx, int teamIdx)  {
 		ArrayList<ChatroomDto> listRet = new ArrayList<ChatroomDto>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -412,7 +412,7 @@ public class SideDao {
 	// getStateOfMember(int, int): 특정 멤버의 상태를 조회하는 기능
 	// 파라미터: team_idx, member_idx
 	// 리턴: state
-	public String getStateOfMember(int teamIdx, int memberIdx) throws Exception {
+	public String getStateOfMember(int teamIdx, int memberIdx)  {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;

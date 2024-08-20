@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,7 @@ public class TopicDao {
 	// createTopicFolder(int, int): 폴더 생성하는 기능
 	// 파라미터: member_idx, team_idx
 	// 리턴: topic_folder_idx
-	public int createTopicFolder(int memberIdx, int teamIdx) throws Exception {
+	public int createTopicFolder(int memberIdx, int teamIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -62,12 +61,13 @@ public class TopicDao {
 	            e.printStackTrace();
 	        }
 		}
+	    
 		return ret;
 	}
 	
 	// updateTopicFolder(int, String): 폴더이름 수정하는 기능
 	// 파라미터: topic_folder_idx, name
-	public void updateTopicFolder(int topicFolderIdx, String name) throws Exception {
+	public void updateTopicFolder(int topicFolderIdx, String name) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 		try {
@@ -92,7 +92,7 @@ public class TopicDao {
 	
 	// deleteTopicFolder(int): 폴더 삭제하는 기능
 	// 파라미터: topic_folder_idx
-	public void deleteTopicFolder(int topicFolderIdx) throws Exception {
+	public void deleteTopicFolder(int topicFolderIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 		try {
@@ -115,7 +115,7 @@ public class TopicDao {
 	
 	// addTopicToFolder(int, int): 폴더에 토픽을 추가하는 기능	
 	// 파라미터: topic_folder_idx, topic_idx
-	public void addTopicToFolder(int topicFolderIdx, int topicIdx) throws Exception {
+	public void addTopicToFolder(int topicFolderIdx, int topicIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    try {
@@ -141,7 +141,7 @@ public class TopicDao {
 	// createTopic(String, String, int, int, int): 토픽 생성하는 기능(+만든 사람을 토픽 멤버로 추가하고 토픽매니저 설정)	
 	// 파라미터: name, info, teamIdx, open(공개여부), memberIdx(사용자)
 	// 리턴: topid_idx	
-	public int createTopic(String name, String info, int teamIdx, int open, int memberIdx) throws Exception {
+	public int createTopic(String name, String info, int teamIdx, int open, int memberIdx) {
 	    int topicIdx = 0;  // pk값(topic_idx)
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
@@ -188,7 +188,7 @@ public class TopicDao {
 	// getTopicInformation(int): 토픽의 정보 조회 기능		
 	// 파라미터: topicIdx
 	// 리턴: information
-	public String getTopicInformation(int topicIdx) throws Exception {
+	public String getTopicInformation(int topicIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -220,7 +220,7 @@ public class TopicDao {
 	// writeTopicBoard(int, int, String, String): 토픽글 작성 기능
 	// 파라미터: topic_idx, member_idx(작성자), title(글제목), content(글내용)
 	// 리턴: topic_board_idx
-	public int writeTopicBoard(int topicIdx, int memberIdx, String title, String content) throws Exception {
+	public int writeTopicBoard(int topicIdx, int memberIdx, String title, String content) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -256,7 +256,7 @@ public class TopicDao {
 	
 	// addFileToTopic(int, int) : 토픽글의 파일 추가하는 기능
 	// 파라미터: topic_board_idx, file_idx
-	public void addFileToTopic(int topicBoardIdx, int fileIdx) throws Exception {
+	public void addFileToTopic(int topicBoardIdx, int fileIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    try {
@@ -282,7 +282,7 @@ public class TopicDao {
 	// getFileInfoFromTopicBoardIdx(int): 토픽글의 파일 조회 기능
 	// 파라미터: topic_board_idx
 	// 리턴: topic_board_idx, file_idx, file_name
-	public TopicBoardFileDto getFileInfoFromTopicBoardIdx(int topicBoardIdx) throws Exception {
+	public TopicBoardFileDto getFileInfoFromTopicBoardIdx(int topicBoardIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -320,7 +320,7 @@ public class TopicDao {
 	
 	// updateTopicBoard(int, String, String): 토픽글 수정하는 기능
 	// 파라미터: title, content, topic_board_idx
-	public void updateTopicBoard(int topicBoardIdx, String title, String content) throws Exception {
+	public void updateTopicBoard(int topicBoardIdx, String title, String content) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 		try {
@@ -347,7 +347,7 @@ public class TopicDao {
 	
 	// deleteTopicBoard(int): 토픽글 삭제하는 기능(+토픽글에 포함된 댓글도 함께 삭제)
 	// 파라미터: topic_board_idx
-	public void deleteTopicBoard(int topicBoardIdx) throws Exception {
+	public void deleteTopicBoard(int topicBoardIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -439,7 +439,7 @@ public class TopicDao {
 	
 	// deleteAllTopicBoard(int): 토픽에 포함된 모든 토픽글 삭제하는 기능
 	// 파라미터: topicIdx
-	public void deleteAllTopicBoard(int topicIdx) throws Exception {
+	public void deleteAllTopicBoard(int topicIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -474,7 +474,7 @@ public class TopicDao {
 	// getTopicBoardList(int, int, int): 토픽글 리스트 조회하는 기능	
 	// 파라미터: team_idx, topic_idx, member_idx(사용자)
 	// 리턴: 토픽글 리스트(topic_board_idx, topic_idx, member_idx(작성자), profile_pic_url, name, state, title, content, write_date, unread)
-	public ArrayList<TopicBoardDto> getTopicBoardList(int teamIdx, int paratopicIdx, int paramemberIdx) throws Exception {
+	public ArrayList<TopicBoardDto> getTopicBoardList(int teamIdx, int paratopicIdx, int paramemberIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -536,7 +536,7 @@ public class TopicDao {
 	
 	// addUnreadMember(int, int[]): 토픽글을 읽지 않은 멤버 데이터 추가하는 기능		
 	// 파라미터: topic_board_idx, member_idx(사용자 제외 멤버들)
-	public void addUnreadMember(int topicBoardIdx, int[] memberIdxArray) throws Exception {
+	public void addUnreadMember(int topicBoardIdx, int[] memberIdxArray) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
@@ -554,15 +554,19 @@ public class TopicDao {
 		} catch (Exception e) {
 			 e.printStackTrace();
 		} finally {
-			if (pstmt != null) pstmt.close();
-	        if (conn != null) conn.close();
+			try {
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 		}
 	}
 
 	// getTopicMembersExceptAuthor(int, int): 작성자를 제외하고 글을 읽지 않은 멤버 조회하는 기능
 	// 파라미터: topic_board_idx, member_idx 
 	// 리턴: 작성자 제외 안 읽은 멤버idx 리스트
-	public List<Integer> getTopicMembersExceptAuthor(int topicBoardIdx, int authorIdx) throws Exception {
+	public List<Integer> getTopicMembersExceptAuthor(int topicBoardIdx, int authorIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -582,9 +586,13 @@ public class TopicDao {
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-            if (rs != null) {rs.close();}
-            if (pstmt != null) {pstmt.close();}
-            if (conn != null) {conn.close();}
+	    	try {
+	            if (rs != null) {rs.close();}
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	    }
 
 	    return memberIdxList;
@@ -593,7 +601,7 @@ public class TopicDao {
 	// getTopicCommentCnt(int): 토픽글에 포함된 댓글수 조회하는 기능
 	// 파라미터: topic_board_idx
 	// 리턴: 댓글수
-	public int getTopicCommentCnt(int topicBoardIdx) throws Exception {
+	public int getTopicCommentCnt(int topicBoardIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -611,9 +619,13 @@ public class TopicDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-            if (rs != null) {rs.close();}
-            if (pstmt != null) {pstmt.close();}
-            if (conn != null) {conn.close();}
+	    	try {
+	            if (rs != null) {rs.close();}
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	    }
 		
 		return result;
@@ -622,7 +634,7 @@ public class TopicDao {
 	// getTopicCommentList(int, int): 토픽글의 토픽댓글 리스트 조회	
 	// 파라미터: topic_board_idx, team_idx
 	// 리턴: 댓글리스트(topic_comment_idx, topic_board_idx, member_idx, profile_pic_url, name, state, comments, write_date)
-	public ArrayList<TopicCommentDto> getTopicCommentList(int topicBoardIdx, int teamIdx) throws Exception {
+	public ArrayList<TopicCommentDto> getTopicCommentList(int topicBoardIdx, int teamIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -661,13 +673,14 @@ public class TopicDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-            if (rs != null) {rs.close();}
-            if (pstmt != null) {pstmt.close();}
-            if (conn != null) {conn.close();}
+	    	try {
+	            if (rs != null) {rs.close();}
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	    }
-		rs.close();
-		pstmt.close();
-		conn.close();
 		
 		return listRet;
 	}
@@ -675,7 +688,7 @@ public class TopicDao {
 	// writeTopicComment(int, int, String, Integer): 댓글 작성하는 기능	
 	// 파라미터: topic_board_idx, member_idx(작성자), comments, file_idx
 	// 리턴: topic_comment_idx(생성된 댓글의 idx)
-	public int writeTopicComment(int topicBoardIdx, int memberIdx, String comments, Integer fileIdx) throws Exception {
+	public int writeTopicComment(int topicBoardIdx, int memberIdx, String comments, Integer fileIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -702,9 +715,13 @@ public class TopicDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-            if (rs != null) {rs.close();}
-            if (pstmt != null) {pstmt.close();}
-            if (conn != null) {conn.close();}
+	    	try {
+	            if (rs != null) {rs.close();}
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	    }
 		
 		return ret;
@@ -712,7 +729,7 @@ public class TopicDao {
 		
 	// updateTopicComment(int, String, Integer): 토픽댓글 수정하는 기능
 	// 파라미터: topic_comment_idx, comments, file_idx
-	public void updateTopicComment(int topicCommemtIdx, String comments, Integer fileIdx) throws Exception {
+	public void updateTopicComment(int topicCommemtIdx, String comments, Integer fileIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    
@@ -733,15 +750,19 @@ public class TopicDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-            if (pstmt != null) {pstmt.close();}
-            if (conn != null) {conn.close();}
+	    	try {
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	    }
 		
 	}	
 	
 	// updateTopicCommentFile(int, Integer): 토픽댓글의 파일만 수정하는 기능
 	// 파라미터: topic_comment_idx, file_idx
-	public void updateTopicCommentFile(int topicCommemtIdx, Integer fileIdx) throws Exception {
+	public void updateTopicCommentFile(int topicCommemtIdx, Integer fileIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    
@@ -756,15 +777,19 @@ public class TopicDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-            if (pstmt != null) {pstmt.close();}
-            if (conn != null) {conn.close();}
+	    	try {
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	    }
 
 	}	
 	
 	// deleteTopicComment(int): 특정 댓글 삭제하는 기능
 	// 파라미터: topic_comment_idx
-	public void deleteTopicComment(int topicCommentIdx) throws Exception {
+	public void deleteTopicComment(int topicCommentIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    
@@ -777,14 +802,18 @@ public class TopicDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-            if (pstmt != null) {pstmt.close();}
-            if (conn != null) {conn.close();}
+	    	try {
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	    }
 	}
 	
 	// deleteAllTopicComment(int): 토픽글 내에 전체 댓글 삭제하는 기능
 	// 파라미터: topic_board_idx
-	public void deleteAllTopicComment(int topicBoardIdx) throws Exception {
+	public void deleteAllTopicComment(int topicBoardIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    
@@ -797,15 +826,19 @@ public class TopicDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-            if (pstmt != null) {pstmt.close();}
-            if (conn != null) {conn.close();}
+	    	try {
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	    }
 	}
 	
 	//  getTopicMemberList(int, int): 토픽방에 참여하는 멤버 전체 조회하는 기능	
 	//	파라미터: team_idx, topic_idx
 	//	리턴: 토픽 참여멤버 리스트(topic_idx, member_idx, profile_pic_url, name, department, position, power, manager)
-	public ArrayList<TopicMemberDto> getTopicMemberList(int teamIdx, int topicIdx) throws Exception {
+	public ArrayList<TopicMemberDto> getTopicMemberList(int teamIdx, int topicIdx) {
 		ArrayList<TopicMemberDto> listRet = new ArrayList<TopicMemberDto>();
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
@@ -839,9 +872,13 @@ public class TopicDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-            if (rs != null) {rs.close();}
-            if (pstmt != null) {pstmt.close();}
-            if (conn != null) {conn.close();}
+	    	try {
+	            if (rs != null) {rs.close();}
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	    }
 	    
 		return listRet;
@@ -849,7 +886,7 @@ public class TopicDao {
 	
 	// removeMemberInThisTopic(int, int): 토픽방에서 멤버 내보내기 기능		
 	// 파라미터: topic_idx, member_idx	
-	public void removeMemberInThisTopic(int topicIdx, int memberIdx) throws Exception {
+	public void removeMemberInThisTopic(int topicIdx, int memberIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    
@@ -864,14 +901,18 @@ public class TopicDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-            if (pstmt != null) {pstmt.close();}
-            if (conn != null) {conn.close();}
+	    	try {
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	    }
 	}
 
 	// inviteOtherMembersToThisTopic(int, int[]): 토픽방으로 멤버 초대하는 기능
 	// 파라미터: topic_idx, member_idx(1명 이상의 팀 멤버)	
-	public void inviteOtherMembersToThisTopic(int topicIdx, int[] memberIdxArray) throws Exception {
+	public void inviteOtherMembersToThisTopic(int topicIdx, int[] memberIdxArray) {
 		Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    
@@ -885,18 +926,22 @@ public class TopicDao {
 	            pstmt.addBatch();
 	        }
 	        pstmt.executeBatch();
-	    } catch (SQLException e) {
+	    } catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-	        if (pstmt != null) pstmt.close();
-	        if (conn != null) conn.close();
+	    	try {
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	    }
 	}
 	
 	// getTeamMemberListOutOfTopic(int, int): 해당 토픽에 소속되지 않은 팀 멤버 전체 조회 기능	
 	// 파라미터 : team_idx, topic_idx
 	// 리턴 : 팀 멤버 리스트(team_idx, member_idx, member_idx, profile_pic_url, name, department, position, power)
-	public ArrayList<TeamMemberDto> getTeamMemberListOutOfTopic(int teamIdx, int topicIdx) throws Exception {
+	public ArrayList<TeamMemberDto> getTeamMemberListOutOfTopic(int teamIdx, int topicIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -932,9 +977,13 @@ public class TopicDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-            if (rs != null) {rs.close();}
-            if (pstmt != null) {pstmt.close();}
-            if (conn != null) {conn.close();}
+	    	try {
+	            if (rs != null) {rs.close();}
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	    }
 		
 		return listRet;
@@ -942,7 +991,7 @@ public class TopicDao {
 	
 	// registerTopicNoti(int, int, String): 토픽 공지 등록하는 기능
 	// 파라미터: topic_idx, member_idx, content
-	public void registerTopicNoti(int topicIdx, int memberIdx, String content) throws Exception {
+	public void registerTopicNoti(int topicIdx, int memberIdx, String content) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    
@@ -958,14 +1007,18 @@ public class TopicDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-            if (pstmt != null) {pstmt.close();}
-            if (conn != null) {conn.close();}
+	    	try {
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	    }
 	}
 	
 	// updateTopicNoti(int, String): 토픽 공지 수정하는 기능
 	// 파라미터: topic_noti_idx, content	
-	public void updateTopicNoti(int topicNotiIdx, String content) throws Exception {
+	public void updateTopicNoti(int topicNotiIdx, String content) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    
@@ -981,14 +1034,18 @@ public class TopicDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-            if (pstmt != null) {pstmt.close();}
-            if (conn != null) {conn.close();}
+	    	try {
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	    }
 	}
 
 	// deleteTopicNoti(int): 토픽 공지 삭제하는 기능	
 	// 파라미터: topic_noti_idx
-	public void deleteTopicNoti(int topicNotiIdx) throws Exception {
+	public void deleteTopicNoti(int topicNotiIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    
@@ -1001,14 +1058,18 @@ public class TopicDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-            if (pstmt != null) {pstmt.close();}
-            if (conn != null) {conn.close();}
+	    	try {
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	    } 
 	}	
 
 	// deleteTopicNoti(int): 토픽 삭제 시 토픽 공지 삭제
 	// 파라미터: topic_idx
-	public void deleteNotiOfThisTopic(int topicIdx) throws Exception {
+	public void deleteNotiOfThisTopic(int topicIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    
@@ -1022,27 +1083,40 @@ public class TopicDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-            if (pstmt != null) {pstmt.close();}
-            if (conn != null) {conn.close();}
+	    	try {
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	    }
 	}	
 	
 	// updateTopic(int, String, String): 토픽 정보 변경하는 기능
 	// 파라미터: topic_idx, name, information
-	public void updateTopic(int topicIdx, String name, String information) throws Exception {
-		Connection conn = getConnection();
-		
-		String sql = "UPDATE topic SET name = ?, information = ?"
-					 + " WHERE topic_idx = ?";
-		PreparedStatement pstmt = conn.prepareStatement(sql);
-		
-		pstmt.setString(1, name);
-		pstmt.setString(2, information);
-		pstmt.setInt(3, topicIdx);
-		pstmt.executeUpdate();
-		
-		pstmt.close();
-		conn.close();
+	public void updateTopic(int topicIdx, String name, String information) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			String sql = "UPDATE topic SET name = ?, information = ?"
+					+ " WHERE topic_idx = ?";
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, name);
+			pstmt.setString(2, information);
+			pstmt.setInt(3, topicIdx);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) {pstmt.close();}
+				if (conn != null) {conn.close();}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	// deleteTopic(int): 토픽 삭제하는 기능(토픽, 토픽글, 토픽댓글, 토픽참여멤버)
@@ -1102,10 +1176,9 @@ public class TopicDao {
 
             // 트랜잭션 커밋
             conn.commit();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             // 트랜잭션 롤백
             conn.rollback();
-            throw e;
         } finally {
             // 자동 커밋 모드로 되돌림 및 Connection 닫기
             if (conn != null) {
@@ -1121,7 +1194,7 @@ public class TopicDao {
 	
 	// leaveTopic(int, int): 토픽 나가기 기능(사용자 본인이 토픽방을 나가는 기능)		
 	// 파라미터: topicIdx, memberIdx
-	public void leaveTopic(int topicIdx, int memberIdx) throws Exception {
+	public void leaveTopic(int topicIdx, int memberIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    
@@ -1136,14 +1209,18 @@ public class TopicDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-            if (pstmt != null) {pstmt.close();}
-            if (conn != null) {conn.close();}
+	    	try {
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	    }
 	}
 	
 	// designateTopicManager(int, int): 토픽관리자 지정하는 기능
 	// 파라미터: topic_idx, member_idx
-	public void designateTopicManager(int topicIdx, int memberIdx) throws Exception {
+	public void designateTopicManager(int topicIdx, int memberIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    
@@ -1159,14 +1236,17 @@ public class TopicDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-            if (pstmt != null) {pstmt.close();}
-            if (conn != null) {conn.close();}
-	    }
+	    	try {
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }	    }
 	}
 	
 	// revokeTopicManager(int, int): 토픽관리자 해제하는 기능
 	// 파라미터: topic_idx, member_idx
-	public void revokeTopicManager(int topicIdx, int memberIdx) throws Exception {
+	public void revokeTopicManager(int topicIdx, int memberIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    
@@ -1182,8 +1262,12 @@ public class TopicDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-            if (pstmt != null) {pstmt.close();}
-            if (conn != null) {conn.close();}
+	    	try {
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	    }
 	}	
 	
@@ -1192,7 +1276,7 @@ public class TopicDao {
 	// getTopicNameFromTopicIdx(int): 토픽방이름 불러오는 메서드
 	// 파라미터: topic_idx
 	// 리턴: name
-	public String getTopicNameFromTopicIdx(int topicIdx) throws Exception {
+	public String getTopicNameFromTopicIdx(int topicIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -1210,9 +1294,13 @@ public class TopicDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-	    	if (rs != null) {rs.close();}
-            if (pstmt != null) {pstmt.close();}
-            if (conn != null) {conn.close();}
+	    	try {
+	            if (rs != null) {rs.close();}
+	            if (pstmt != null) {pstmt.close();}
+	            if (conn != null) {conn.close();}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 	    }
 		
 		return topicName;

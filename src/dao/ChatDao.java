@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,7 @@ public class ChatDao {
 	// getChatContents(int, int): 특정 채팅방의 채팅글 조회
 	// 파라미터: team_idx, chatroom_idx, member_idx
 	// 리턴: 채팅글 리스트(chat_idx, chatroom_idx, member_idx, profile_url, name, state, content, file_idx, file_name, write_date, unread_cnt, modified
-	public ArrayList<ChatContentsDto> getChatContents(int teamIdx, int chatroomIdx, int memberIdx) throws Exception {
+	public ArrayList<ChatContentsDto> getChatContents(int teamIdx, int chatroomIdx, int memberIdx) {
 		ArrayList<ChatContentsDto> listRet = new ArrayList<ChatContentsDto>(); 
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
@@ -91,9 +90,13 @@ public class ChatDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-	        if (rs != null) rs.close();
-	        if (pstmt != null) pstmt.close();
-	        if (conn != null) conn.close();
+	    	try {
+	            if (rs != null) rs.close();
+	            if (pstmt != null) pstmt.close();
+	            if (conn != null) conn.close();
+	        } catch (Exception e) {
+	            e.printStackTrace(); 
+	        }
 	    }
 
 	    return listRet;
@@ -102,7 +105,7 @@ public class ChatDao {
 	// getChatCommentList(int, int): 특정 채팅글에 포함된 채팅댓글 리스트 조회
 	// 파라미터: chat_comment_idx, team_idx 
 	// 리턴: 채팅댓글 리스트(chat_comment_idx, chat_idx, member_idx, profile_pic_url, name, state, comments, write_date)
-	public ArrayList<ChatCommentDto> getChatCommentList(int chatIdx, int teamIdx) throws Exception {
+	public ArrayList<ChatCommentDto> getChatCommentList(int chatIdx, int teamIdx) {
 		ArrayList<ChatCommentDto> listRet = new ArrayList<ChatCommentDto>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -148,9 +151,13 @@ public class ChatDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-	        if (rs != null) rs.close();
-	        if (pstmt != null) pstmt.close();
-	        if (conn != null) conn.close();
+	    	try {
+	            if (rs != null) rs.close();
+	            if (pstmt != null) pstmt.close();
+	            if (conn != null) conn.close();
+	        } catch (Exception e) {
+	            e.printStackTrace(); 
+	        }
 	    }
 		
 		return listRet;
@@ -159,7 +166,7 @@ public class ChatDao {
 	// createChatroom(int, int, String, String): 채팅방 생성하는 기능
 	// 파라미터: chatroom_idx, name, information, team_idx, alarm
 	// 리턴: chatroom_idx
-	public int createChatroom(int teamIdx, int memberIdx, String name, String info) throws Exception {
+	public int createChatroom(int teamIdx, int memberIdx, String name, String info) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null; 
 	    ResultSet rs = null;
@@ -200,12 +207,13 @@ public class ChatDao {
 	
 	// inviteMembersToChatroom(int, int[]): 채팅방에 멤버 초대하는 기능
 	// 파라미터: chatroom_idx, member_idx
-	public void inviteMembersToChatroom(int chatroomIdx, int[] memberIdxArray) throws Exception {
-		Connection conn = getConnection();
+	public void inviteMembersToChatroom(int chatroomIdx, int[] memberIdxArray) {
+		Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    
 	    try {
 	        String sql = "INSERT INTO chat_member(chatroom_idx, member_idx) VALUES(?, ?)";
+	        conn = getConnection();
 	        pstmt = conn.prepareStatement(sql);
 	        for (int memberIdx : memberIdxArray) {
 	        	pstmt.setInt(1, chatroomIdx);
@@ -213,18 +221,22 @@ public class ChatDao {
 	            pstmt.addBatch(); // Batch 추가
 	        }
 	        pstmt.executeBatch(); // Batch 실행 - addBatch()와 executeBatch()를 사용하여 한 번의 데이터베이스 호출로 여러 레코드를 삽입
-	    } catch (SQLException e) {
+	    } catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-	        if (pstmt != null) pstmt.close();
-	        if (conn != null) conn.close();
+	    	try {
+	            if (pstmt != null) pstmt.close();
+	            if (conn != null) conn.close();
+	        } catch (Exception e) {
+	            e.printStackTrace(); 
+	        }
 	    }
 	}	
 	
 	// writeChat(int, int, String, Integer): 채팅글 작성하는 기능
 	// 파라미터: chat_idx, chatroom_idx, member_idx, content, file_idx
 	// 리턴 : chat_idx
-	public int writeChat(int chatroomIdx, int memberIdx, String content, Integer fileIdx) throws Exception {
+	public int writeChat(int chatroomIdx, int memberIdx, String content, Integer fileIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -264,7 +276,7 @@ public class ChatDao {
 	
 	// addUnreadChatToMember(int, int[]): 채팅을 안 읽은 멤버 데이터 추가하는 기능
 	// 파라미터: chat_idx, member_idx
-	public void addUnreadChatToMember(int chatIdx, int[] memberIdxArray) throws Exception {
+	public void addUnreadChatToMember(int chatIdx, int[] memberIdxArray) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
@@ -282,15 +294,19 @@ public class ChatDao {
 		} catch (Exception e) {
 			 e.printStackTrace();
 		} finally {
-			if (pstmt != null) pstmt.close();
-	        if (conn != null) conn.close();
+			try {
+	            if (pstmt != null) pstmt.close();
+	            if (conn != null) conn.close();
+	        } catch (Exception e) {
+	            e.printStackTrace(); 
+	        }
 		}
 	}
 	
 	// getChatMembersExceptAuthor(int, int): 채팅글의 안 읽은 사람수 데이터 조회
 	// 파라미터: chatroom_idx, member_idx
 	// 리턴: member_idx
-	public List<Integer> getChatMembersExceptAuthor(int chatroomIdx, int authorIdx) throws Exception {
+	public List<Integer> getChatMembersExceptAuthor(int chatroomIdx, int authorIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -310,9 +326,13 @@ public class ChatDao {
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-	        if (rs != null) rs.close();
-	        if (pstmt != null) pstmt.close();
-	        if (conn != null) conn.close();
+	    	try {
+	            if (rs != null) rs.close();
+	            if (pstmt != null) pstmt.close();
+	            if (conn != null) conn.close();
+	        } catch (Exception e) {
+	            e.printStackTrace(); 
+	        }
 	    }
 	    
 	    return memberIdxList;
@@ -320,7 +340,7 @@ public class ChatDao {
 	
 	// writeChatComment(int, int, String, Integer): 채팅댓글 작성
 	// 파라미터: chat_comment_idx, chat_idx, member_idx, comments, file_idx
-	public void writeChatComment(int chatIdx, int memberIdx, String comments, Integer fileIdx) throws Exception {
+	public void writeChatComment(int chatIdx, int memberIdx, String comments, Integer fileIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -352,7 +372,7 @@ public class ChatDao {
 	
 	// readChat(int, int): 채팅글 읽으면 안 읽은 멤버 숫자 줄어드는 기능
 	// 파라미터: chat_idx, member_idx
-	public void readChat(int chatIdx, int memberIdx) throws Exception {
+	public void readChat(int chatIdx, int memberIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -378,7 +398,7 @@ public class ChatDao {
 	
 	// deleteChatContent(int): 채팅글 삭제하는 기능
 	// 파라미터: chat_idx
-	public void deleteChatContent(int chatIdx) throws Exception {
+	public void deleteChatContent(int chatIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -414,21 +434,18 @@ public class ChatDao {
 			e.printStackTrace();
 		} finally {
 			try {
-	            if (rs != null) {rs.close();}
-	            if (pstmt != null) {pstmt.close();}
-	            if (conn != null) {conn.close();}
+	            if (rs != null) rs.close();
+	            if (pstmt != null) pstmt.close();
+	            if (conn != null) conn.close();
 	        } catch (Exception e) {
-	            e.printStackTrace();
+	            e.printStackTrace(); 
 	        }
 		}
-        rs.close();
-		pstmt.close();
-		conn.close();
 	}
 	
 	// deleteChatComment(int): 채팅댓글 삭제하는 기능
 	// 파라미터: chat_comment_idx
-	public void deleteChatComment(int chatCommentIdx) throws Exception {
+	public void deleteChatComment(int chatCommentIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -451,7 +468,7 @@ public class ChatDao {
 	
 	// updateChatContent(String, int): 채팅글 내용 수정하는 기능
 	// 파라미터: content, chat_idx
-	public void updateChatContent(String content, int chatIdx) throws Exception {
+	public void updateChatContent(String content, int chatIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -477,7 +494,7 @@ public class ChatDao {
 	
 	// updateChatComment(String, int): 채팅댓글 내용 수정하는 기능
 	// 파라미터: comments, chat_comment_idx, 
-	public void updateChatComment(String comments, int chatCommentIdx) throws Exception {
+	public void updateChatComment(String comments, int chatCommentIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -503,7 +520,7 @@ public class ChatDao {
 
 	// registerChatNotice(int, int, String, Integer): 공지 등록하는 기능
 	// 파라미터: chatroom_idx, member_idx, content, file_idx
-	public void registerChatNotice(int chatroomIdx, int memberIdx, String content, Integer fileIdx) throws Exception {
+	public void registerChatNotice(int chatroomIdx, int memberIdx, String content, Integer fileIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -534,7 +551,7 @@ public class ChatDao {
 	
 	// updateChatNotice(String, int): 채팅방 공지 수정하는 기능
 	// 파라미터: content, chat_noti_idx
-	public void updateChatNotice(String content, int chatNotiIdx) throws Exception {
+	public void updateChatNotice(String content, int chatNotiIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -560,7 +577,7 @@ public class ChatDao {
 	
 	// deleteChatNotice(int): 공지 삭제하는 기능
 	// 파라미터: chat_noti_idx
-	public void deleteChatNotice(int chatNotiIdx) throws Exception {
+	public void deleteChatNotice(int chatNotiIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -583,7 +600,7 @@ public class ChatDao {
 	
 	// createFileShareUrl(int): 파일외부공유용url생성
 	// 파라미터: file_idx
-	public void createFileShareUrl(int fileIdx) throws Exception {
+	public void createFileShareUrl(int fileIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		Common common = new Common();
@@ -611,7 +628,7 @@ public class ChatDao {
 	
 	// deleteFileShareUrl(int): 파일외부공유용url 삭제하는 기능
 	// 파라미터: file_idx
-	public void deleteFileShareUrl(int fileIdx) throws Exception {
+	public void deleteFileShareUrl(int fileIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -637,7 +654,7 @@ public class ChatDao {
 	// getChatroomMemberList(int, int): 채팅 참여 멤버 전체 조회하는 기능
 	// 파라미터: team_idx, chatroom_idx
 	// 리턴: chatroom_idx, member_idx, profile_url, state, name, department, position, power
-	public ArrayList<ChatroomMemberDto> getChatroomMemberList(int teamIdx, int chatroomIdx) throws Exception {
+	public ArrayList<ChatroomMemberDto> getChatroomMemberList(int teamIdx, int chatroomIdx) {
 		ArrayList<ChatroomMemberDto> listRet = new ArrayList<ChatroomMemberDto>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -685,9 +702,9 @@ public class ChatDao {
 	// getTeamMemberListOutOfChatroom(int, int): 해당 채팅에 소속되지 않은 팀 멤버 전체 조회하는 기능
 	// 파라미터 : team_idx, chatroom_idx
 	// 리턴 : 멤버 정보 리스트(team_idx, member_idx, profile_pic_url, name, department, position, power)
-	public ArrayList<TeamMemberDto> getTeamMemberListOutOfChatroom(int teamIdx, int chatroomIdx) throws Exception {
+	public ArrayList<TeamMemberDto> getTeamMemberListOutOfChatroom(int teamIdx, int chatroomIdx) {
 	    ArrayList<TeamMemberDto> listRet = new ArrayList<TeamMemberDto>();
-	    Connection conn = getConnection();
+	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
 	    
@@ -704,6 +721,7 @@ public class ChatDao {
 	    			" INNER JOIN member ON tm.member_idx = member.member_idx" + 
 	    			" WHERE tm.team_idx = ?" + 
 	    			" AND chat_members.member_idx IS NULL";
+	    	conn = getConnection();
 	    	pstmt = conn.prepareStatement(sql);
 	    	pstmt.setInt(1, chatroomIdx);
 	    	pstmt.setInt(2, teamIdx);
@@ -734,7 +752,7 @@ public class ChatDao {
 
 	// deleteChatroom(int): 채팅방 삭제하는 기능
 	// 파라미터: chatroom_idx
-	public void deleteChatroom(int chatroomIdx) throws Exception {
+	public void deleteChatroom(int chatroomIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -851,7 +869,7 @@ public class ChatDao {
 
 	// exitChatroom(int, int): 채팅방 내보내기 기능
 	// 파라미터: chatroom_idx, member_idx
-	public void exitChatroom(int chatroomIdx, int memberIdx) throws Exception {
+	public void exitChatroom(int chatroomIdx, int memberIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
@@ -865,14 +883,18 @@ public class ChatDao {
 		} catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-            if (pstmt != null) {pstmt.close();}
-            if (conn != null) {conn.close();}
+	    	try {
+	            if (pstmt != null) pstmt.close();
+	            if (conn != null) conn.close();
+	        } catch (Exception e) {
+	            e.printStackTrace(); 
+	        }
 	    }
 	}
 	
 	// leaveChatroom(int, int): 채팅방 나가기 기능
 	// 파라미터: chatroom_idx, member_idx
-	public void leaveChatroom(int chatroomIdx, int memberIdx) throws Exception {
+	public void leaveChatroom(int chatroomIdx, int memberIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -952,7 +974,7 @@ public class ChatDao {
 		
 	// inviteMemberToTopic(int, int): 채팅방에 참여중인 멤버를 다른 토픽에 초대하는 기능
 	// 파라미터: topic_idx, member_idx
-	public void inviteMemberToTopic(int topicIdx, int memberIdx) throws Exception {
+	public void inviteMemberToTopic(int topicIdx, int memberIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -976,7 +998,7 @@ public class ChatDao {
 
 	// updateChatroomInfo(int, String, String): 채팅방 정보 변경하는 기능
 	// 파라미터: chatroom_idx, name, information
-	public void updateChatroomInfo(int chatroomIdx, String chatName, String chatInfo) throws Exception {
+	public void updateChatroomInfo(int chatroomIdx, String chatName, String chatInfo) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -1001,7 +1023,7 @@ public class ChatDao {
 	
 	// alarmOnOffChatroom(int, int): 채팅방 알림 켜기/끄기 기능
 	// 파라미터: alarm, chatroom_idx
-	public void alarmOnOffChatroom(int alarm, int chatroomIdx) throws Exception {
+	public void alarmOnOffChatroom(int alarm, int chatroomIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -1026,7 +1048,7 @@ public class ChatDao {
 	// getChatroomNameFromChatroomIdx(int): 채팅방 이름 조회하는 기능
 	// 파라미터: chatroom_idx
 	// 리턴: name
-	public String getChatroomNameFromChatroomIdx(int chatroomIdx) throws Exception {
+	public String getChatroomNameFromChatroomIdx(int chatroomIdx) {
 		String strRet = null;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -1057,7 +1079,7 @@ public class ChatDao {
 	// getChatroomInformation(int): 채팅방의 설명 조회하는 기능
 	// 파라미터: chatroom_idx
 	// 리턴: information
-	public String getChatroomInformation(int chatroomIdx) throws Exception {
+	public String getChatroomInformation(int chatroomIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -1088,7 +1110,7 @@ public class ChatDao {
 	// getChatroomMemberCount(int): 채팅방 멤버 수 조회하는 기능
 	// 파라미터: chatroom_idx
 	// 리턴: 채팅방 내 멤버 수
-	public int getChatroomMemberCount(int chatroomIdx) throws Exception {
+	public int getChatroomMemberCount(int chatroomIdx) {
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
 	    ResultSet rs = null;
@@ -1102,10 +1124,16 @@ public class ChatDao {
 	        if (rs.next()) {
 	            memberCount = rs.getInt(1);
 	        }
-	    } finally {
-	        if (rs != null) rs.close();
-	        if (pstmt != null) pstmt.close();
-	        if (conn != null) conn.close();
+	    } catch (Exception e) {
+            e.printStackTrace(); 
+        } finally {
+	    	try {
+	            if (rs != null) rs.close();
+	            if (pstmt != null) pstmt.close();
+	            if (conn != null) conn.close();
+	        } catch (Exception e) {
+	            e.printStackTrace(); 
+	        }
 	    }
 	    return memberCount;
 	}

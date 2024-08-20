@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 //import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,7 @@ public class BookmarkDao {
 
 	// getAllBookmarkList(): 즐겨찾기 리스트 조회하는 기능
 	// 리턴: bookmark_idx, type, item_idx, content, time, location_name, author_name, profile_pic_url
-	public List<BookmarkListDto> getAllBookmarkList() throws Exception {
+	public List<BookmarkListDto> getAllBookmarkList() {
 	    List<BookmarkListDto> bookmarkList = new ArrayList<>();
 	    Connection conn = null;
 	    PreparedStatement pstmt = null;
@@ -153,7 +152,7 @@ public class BookmarkDao {
 	// isBookmarkChatroom(int, int): 채팅 즐겨찾기 여부 조회하는 기능	
 	// 파라미터 : member_idx, chatroom_idx
 	// 리턴: true / false
-	public boolean isBookmarkChatroom(int memberIdxFrom, int chatroomIdx) throws Exception {
+	public boolean isBookmarkChatroom(int memberIdxFrom, int chatroomIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -190,7 +189,7 @@ public class BookmarkDao {
 	// isBookmarkChat(int, int): 채팅글 즐겨찾기 여부 조회하는 기능	
 	// 파라미터 : member_idx, chat_idx
 	// 리턴: true / false
-	public boolean isBookmarkChat(int memberIdxFrom, int chatIdx) throws Exception {
+	public boolean isBookmarkChat(int memberIdxFrom, int chatIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -227,7 +226,7 @@ public class BookmarkDao {
 	// isBookmarkTopic(int, int): 토픽 즐겨찾기 여부 조회하는 기능	
 	// 파라미터 : member_idx, topic_idx
 	// 리턴: true / false
-	public boolean isBookmarkTopic(int memberIdxFrom, int topicIdx) throws Exception {
+	public boolean isBookmarkTopic(int memberIdxFrom, int topicIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -264,7 +263,7 @@ public class BookmarkDao {
 	// isBookamrkTopicBoard: 토픽글 즐겨찾기 여부 조회하는 기능	
 	// 파라미터 : member_idx, topic_board_idx
 	// 리턴: true / false
-	public boolean isBookmarkTopicBoard(int memberIdxFrom, int topicBoardIdx) throws Exception {
+	public boolean isBookmarkTopicBoard(int memberIdxFrom, int topicBoardIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -301,7 +300,7 @@ public class BookmarkDao {
 	// isBookmarkTopicComment(int, int): 토픽댓글 즐겨찾기 여부 조회하는 기능	
 	// 파라미터 : member_idx, topic_comment_idx
 	// 리턴: true / false
-	public boolean isBookmarkTopicComment(int memberIdxFrom, int topicCommentIdx) throws Exception {
+	public boolean isBookmarkTopicComment(int memberIdxFrom, int topicCommentIdx) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -338,7 +337,7 @@ public class BookmarkDao {
 	// isBookmark(int, String, int): 특정 항목이 즐겨찾기 되어 있는지 조회하는 기능
 	// 파라미터 : member_idx, something, idx
 	// 리턴: true / false
-	public boolean isBookmark(int memberIdxFrom, String something, int idx) throws Exception {
+	public boolean isBookmark(int memberIdxFrom, String something, int idx) {
 		final boolean DEBUG = true;    
 
 		if(DEBUG) {		
@@ -404,7 +403,7 @@ public class BookmarkDao {
 	
 	// addBookmarkSomething(int, String, int) : 즐겨찾기 추가하는 기능 
 	// 파라미터 : member_idx, something, idx
-	public void addBookmarkSomething(int memberIdx, String something, int idx) throws Exception {
+	public void addBookmarkSomething(int memberIdx, String something, int idx) {
 		final boolean DEBUG = true;    
 
 		if(DEBUG) {		
@@ -457,7 +456,7 @@ public class BookmarkDao {
 	
 	// removeBookmarkSomething(int, String, int): 즐겨찾기 해제하는 기능	
 	// 파라미터 : member_idx, something, idx
-	public void removeBookmarkSomething(int memberIdx, String something, int idx) throws Exception {
+	public void removeBookmarkSomething(int memberIdx, String something, int idx) {
 	    final boolean DEBUG = true;
 	    if(DEBUG) {
 	        String[] arrSomething = {
